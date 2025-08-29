@@ -7,6 +7,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useFreeLimit } from '@/hooks/useFreeLimit';
+import { handleBattleCredits } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues, getFinancialSystemInfo } from '@/utils/rewardDisplay';
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
@@ -14,6 +17,7 @@ import egyptArena from '@/assets/egypt-arena.png';
 
 const Training = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -30,8 +34,13 @@ const Training = () => {
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
   
-  // Hook para controlar limite de treinamentos
-  const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+    // Hook para controlar limite de treinamentos
+const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+  
+  // Hook para controlar limite free (3 treinos sem pontos)
+  const userType = 'free'; // TODO: pegar do perfil do usuário
+  const { canTrainFree, incrementFreeTraining, getFreeTrainingInfo } = useFreeLimit(userType);
+  const freeInfo = getFreeTrainingInfo();
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
@@ -72,25 +81,46 @@ const Training = () => {
       // Jogo terminou - salvar dados
       const battleDurationSeconds = Math.round((Date.now() - battleStartTime) / 1000);
       
-      // Calcular recompensas usando novo sistema
-      const rewards = getTrainingRewards('egito-antigo', score, questions.length);
-      
-      await saveBattleResult({
-        eraName: 'Egito Antigo',
-        questionsTotal: questions.length,
-        questionsCorrect: score,
-        xpEarned: rewards.xpEarned,
-        moneyEarned: rewards.moneyEarned,
-        battleDurationSeconds: battleDurationSeconds,
-      });
+      // Para usuários FREE: não ganham pontos/XP/créditos
+      if (userType === 'free') {
+        console.log('🆓 Usuário FREE: Treino concluído mas sem ganhos (apenas experiência)');
+      } else {
+        // Calcular recompensas usando novo sistema (apenas para usuários pagos)
+        const rewards = getTrainingRewards('egito-antigo', score, questions.length);
+        
+        await saveBattleResult({
+          eraName: 'Egito Antigo',
+          questionsTotal: questions.length,
+          questionsCorrect: score,
+          xpEarned: rewards.xpEarned,
+          moneyEarned: rewards.moneyEarned,
+          battleDurationSeconds: battleDurationSeconds,
+        });
+
+        // Sistema de Percepção de Créditos (apenas para usuários pagos)
+        const accuracyPercentage = Math.round((score / questions.length) * 100);
+        const perceptionCredits = handleBattleCredits({
+          battleType: 'training',
+          questionsCorrect: score,
+          questionsTotal: questions.length,
+          accuracyPercentage: accuracyPercentage
+        });
+        
+        console.log(`🎯 Treino concluído! +${perceptionCredits} créditos de percepção`);
+      }
       
       setGamePhase('finished');
     }
   };
 
   const startTraining = () => {
+    // Verificar limite free primeiro
+    if (userType === 'free' && !canTrainFree) {
+      return; // Usuário free atingiu limite de 3 treinos
+    }
+    
     if (!canTrain) {
-      return; // Não permitir iniciar se atingiu o limite
+      return; // Não permitir iniciar se atingiu o limite geral
     }
     
     setGamePhase('question');
@@ -102,8 +132,11 @@ const Training = () => {
     setSelectedAnswer(null);
     setShowExplanation(false);
     
-    // Incrementar contador de treinamentos
+    // Incrementar contadores
     incrementTrainingCount();
+    if (userType === 'free') {
+      incrementFreeTraining();
+    }
   };
 
   const restartTraining = () => {
@@ -176,15 +209,37 @@ const Training = () => {
             </p>
 
             {/* Informações do limite de treinamento */}
-            <div className="arena-card p-4 mb-6">
-              <h3 className="font-semibold mb-2">📊 Limite Diário de Treinamento</h3>
-              <p className="text-sm text-muted-foreground">
-                Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
-              </p>
-            </div>
+            {userType === 'free' ? (
+              <div className="arena-card p-4 mb-6 border-epic/30">
+                <h3 className="font-semibold mb-2 text-epic">🆓 Modo FREE - Treinamento Gratuito</h3>
+                <p className="text-sm text-muted-foreground">
+                  Treinos realizados hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Treinos restantes: <span className="font-bold text-victory">{freeInfo.remaining}</span>
+                </p>
+                <p className="text-xs text-warning mt-2">
+                  ⚠️ Modo gratuito: Não ganha XP, créditos ou pontos
+                </p>
+                {!canTrainFree && (
+                  <div className="mt-2 p-2 bg-warning/10 rounded border border-warning/20">
+                    <p className="text-xs text-warning font-medium text-center">
+                      ⏰ Limite diário atingido! Volte amanhã ou faça upgrade para modo PAGO
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="arena-card p-4 mb-6">
+                <h3 className="font-semibold mb-2">📊 Limite Diário de Treinamento</h3>
+                <p className="text-sm text-muted-foreground">
+                  Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
+                </p>
+              </div>
+            )}
 
             {/* Recompensas */}
             <div className="arena-card p-4 mb-6">
@@ -229,10 +284,13 @@ const Training = () => {
                 variant="victory" 
                 icon={<Play />}
                 onClick={startTraining}
-                disabled={!canTrain}
+                disabled={userType === 'free' ? !canTrainFree : !canTrain}
                 className="w-full"
               >
-                {canTrain ? 'Iniciar Treinamento' : 'Limite Atingido'}
+                {userType === 'free' ? 
+                  (canTrainFree ? '🆓 Iniciar Treino Gratuito' : 'Limite FREE Atingido') :
+                  (canTrain ? 'Iniciar Treinamento' : 'Limite Atingido')
+                }
               </ActionButton>
 
               {trainingCount > 0 && (
@@ -340,7 +398,7 @@ const Training = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       <ParticleBackground />
       
       {/* Fundo Temático Egípcio Continuado */}

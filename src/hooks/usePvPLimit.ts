@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Limite diário de partidas PvP para controlar ganhos
-const DAILY_PVP_LIMIT = 10; // Máximo 10 partidas PvP por dia
+const DAILY_PVP_LIMIT = 3; // Reduzido de 10 para 3 - Sistema de Percepção
 const STORAGE_KEY = 'pvp_daily_limit';
 
 interface PvPLimitData {

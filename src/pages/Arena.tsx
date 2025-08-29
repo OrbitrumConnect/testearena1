@@ -7,6 +7,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
 import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
+import { handleBattleCredits } from '@/utils/creditsIntegration';
 import { Player } from '@/types/arena';
 import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
@@ -119,17 +120,30 @@ const Arena = () => {
       if (finalResult && battleStartTime) {
         const battleDurationSeconds = Math.round((Date.now() - battleStartTime) / 1000);
         const isVictory = finalResult === 'victory';
-        const xpEarned = isVictory ? 150 : 50;
-        const moneyEarned = isVictory ? 9.00 : 2.00;
+        
+        // Usar sistema dinâmico de recompensas da Arena
+        const rewards = getArenaRewards('egito-antigo', correctAnswers, questions.length, isVictory);
         
         await saveBattleResult({
           eraName: 'Arena - Egito Antigo',
           questionsTotal: questions.length,
           questionsCorrect: correctAnswers,
-          xpEarned: xpEarned,
-          moneyEarned: moneyEarned,
+          xpEarned: rewards.xpEarned,
+          moneyEarned: rewards.moneyEarned,
           battleDurationSeconds: battleDurationSeconds,
+          battleType: 'pvp', // Novo: marcar como PvP para sistema de créditos
         });
+
+        // Novo: Sistema de Percepção de Créditos para PvP
+        const accuracyPercentage = Math.round((correctAnswers / questions.length) * 100);
+        const perceptionCredits = handleBattleCredits({
+          battleType: 'pvp',
+          questionsCorrect: correctAnswers,
+          questionsTotal: questions.length,
+          accuracyPercentage: accuracyPercentage
+        });
+        
+        console.log(`⚔️ Arena PvP concluída! +${perceptionCredits} créditos de percepção (${isVictory ? 'Vitória' : 'Derrota'})`);
       }
     }, 2000);
   };
@@ -383,7 +397,10 @@ const Arena = () => {
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
                 <p className={`text-2xl font-bold ${battleResult === 'victory' ? 'text-victory' : 'text-epic'}`}>
-                  {battleResult === 'victory' ? '+500 créditos' : '+50 créditos'}
+                  {battleResult === 'victory' ? '+900 créditos' : '+100 créditos'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  +{battleResult === 'victory' ? '15' : '15'} créditos de percepção
                 </p>
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
                 {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
@@ -392,7 +409,7 @@ const Arena = () => {
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">XP Ganho</h3>
                 <p className="text-2xl font-bold text-battle">
-                  +{battleResult === 'victory' ? '150' : '50'}
+                  +{battleResult === 'victory' ? '200' : '75'}
                 </p>
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
                 {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}

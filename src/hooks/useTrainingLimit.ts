@@ -8,7 +8,7 @@ interface TrainingData {
 export const useTrainingLimit = () => {
   const [trainingCount, setTrainingCount] = useState<number>(0);
   const [canTrain, setCanTrain] = useState<boolean>(true);
-  const MAX_TRAINING_PER_DAY = 3;
+  const MAX_TRAINING_PER_DAY = 9; // Aumentado de 3 para 9 - Sistema de Percepção
 
   useEffect(() => {
     checkDailyLimit();

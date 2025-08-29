@@ -180,18 +180,18 @@ const Landing = () => {
           
           <div className="flex items-center space-x-4">
             <ActionButton 
-              variant="battle" 
-              onClick={() => navigate('/app')}
-              className="text-sm px-4 py-2"
-            >
-              🚀 Entrar no App
-            </ActionButton>
-            <ActionButton 
               variant="epic" 
               onClick={() => setShowAuth(true)}
               className="text-sm px-4 py-2"
             >
               📊 Fazer Login
+            </ActionButton>
+            <ActionButton 
+              variant="battle" 
+              onClick={() => setShowAuth(true)}
+              className="text-sm px-4 py-2"
+            >
+              🚀 Cadastrar
             </ActionButton>
           </div>
         </div>
@@ -214,11 +214,11 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <ActionButton 
                 variant="epic" 
-                onClick={() => navigate('/app')}
+                onClick={() => setShowAuth(true)}
                 className="text-xl px-8 py-4 flex items-center gap-3"
                 icon={<Play />}
               >
-                Começar Grátis
+                Cadastrar Grátis
               </ActionButton>
               
               <ActionButton 
@@ -328,14 +328,23 @@ const Landing = () => {
                     </div>
                   </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">{era.description}</p>
-                  <ActionButton 
-                    variant={era.color as any} 
-                    className="w-full"
-                    onClick={() => navigate('/app')}
-                    icon={<ChevronRight />}
-                  >
-                    Explorar Era
-                  </ActionButton>
+                                    <div className="space-y-2">
+                    <ActionButton
+                      variant={era.color as any}
+                      className="w-full"
+                      onClick={() => navigate('/app')}
+                      icon={<ChevronRight />}
+                    >
+                      Explorar Era
+                    </ActionButton>
+                    <ActionButton
+                      variant="epic"
+                      className="w-full text-sm"
+                      onClick={() => navigate('/payment')}
+                    >
+                      💳 Assinar Premium
+                    </ActionButton>
+                  </div>
                 </div>
                 {/* Subtle animated background */}
                 <div className={`absolute inset-0 bg-gradient-to-br from-${era.color}/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500`} />

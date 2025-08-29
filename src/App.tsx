@@ -13,7 +13,10 @@ import Medieval from "./pages/Medieval";
 import Digital from "./pages/Digital";
 import Knowledge from "./pages/Knowledge";
 import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import Ranking from "./pages/Ranking";
+import Payment from "./pages/Payment";
+import WorldQuiz from "./pages/WorldQuiz";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +25,7 @@ const queryClient = new QueryClient();
 const AppWithMusic = () => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+  const isIndexPage = location.pathname === '/app';
 
   return (
     <>
@@ -35,13 +39,16 @@ const AppWithMusic = () => {
         <Route path="/digital" element={<Digital />} />
         <Route path="/knowledge" element={<Knowledge />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/world-quiz" element={<WorldQuiz />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       
-      {/* Música toca em todas as páginas EXCETO na Landing - MOVIDA PARA DEPOIS DAS ROTAS */}
-      {!isLandingPage && <PersistentBackgroundMusic autoPlay={true} />}
+      {/* Música toca em todas as páginas EXCETO Landing e Index (que tem no cabeçalho) */}
+      {!isLandingPage && !isIndexPage && <PersistentBackgroundMusic autoPlay={true} />}
     </>
   );
 };

@@ -7,11 +7,14 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { handleBattleCredits } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
 
 const Digital = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -80,6 +83,17 @@ const Digital = () => {
         moneyEarned: rewards.moneyEarned,
         battleDurationSeconds: battleDurationSeconds,
       });
+
+      // Novo: Sistema de Percepção de Créditos
+      const accuracyPercentage = Math.round((score / questions.length) * 100);
+      const perceptionCredits = handleBattleCredits({
+        battleType: 'training',
+        questionsCorrect: score,
+        questionsTotal: questions.length,
+        accuracyPercentage: accuracyPercentage
+      });
+      
+      console.log(`🎯 Treino Digital concluído! +${perceptionCredits} créditos de percepção`);
       
       setGamePhase('finished');
     }
@@ -328,7 +342,7 @@ const Digital = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0">
         <img 

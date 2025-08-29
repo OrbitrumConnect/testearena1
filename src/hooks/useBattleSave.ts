@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useCreditsPerception } from '@/hooks/useCreditsPerception';
 
 interface BattleData {
   eraName: string;
@@ -8,6 +9,7 @@ interface BattleData {
   xpEarned: number;
   moneyEarned: number;
   battleDurationSeconds?: number;
+  battleType?: 'training' | 'pvp' | 'tournament'; // Novo: tipo da batalha
 }
 
 export const useBattleSave = () => {

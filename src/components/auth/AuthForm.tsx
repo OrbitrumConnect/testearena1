@@ -9,9 +9,10 @@ import { useToast } from '@/hooks/use-toast';
 
 interface AuthFormProps {
   onAuthSuccess: () => void;
+  redirectToApp?: boolean;
 }
 
-export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
+export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,6 +35,11 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           title: "Login realizado com sucesso!",
           description: "Bem-vindo de volta, guerreiro!",
         });
+        
+        if (redirectToApp) {
+          window.location.href = '/app';
+          return;
+        }
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -47,8 +53,13 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         if (error) throw error;
         toast({
           title: "Conta criada com sucesso!",
-          description: "Verifique seu email para confirmar a conta.",
+          description: "Bem-vindo à Arena do Conhecimento!",
         });
+        
+        if (redirectToApp) {
+          window.location.href = '/app';
+          return;
+        }
       }
       onAuthSuccess();
     } catch (error) {

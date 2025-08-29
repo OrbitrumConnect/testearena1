@@ -23,9 +23,17 @@ import { useCredits } from '@/hooks/useCredits';
 import { useSubscription } from '@/hooks/useSubscription';
 import { calculateWithdrawal } from '@/utils/creditsSystem';
 import { SystemInfoCard } from '@/components/subscription/SystemInfoCard';
+import { PersistentBackgroundMusic } from '@/components/ui/persistent-background-music';
+import { Card } from '@/components/ui/card';
+import { TopCarousel } from '@/components/home/TopCarousel';
+import { EraCarousel } from '@/components/arena/EraCarousel';
 
 import arenaLogo from '@/assets/arena-logo.png';
 import egyptArena from '@/assets/egypt-arena.png';
+import egyptLandingBg from '@/assets/egypt-landing-bg.jpg';
+import mesopotamiaLandingBg from '@/assets/mesopotamia-landing-bg.jpg';
+import medievalLandingBg from '@/assets/medieval-landing-bg.jpg';
+import digitalLandingBg from '@/assets/digital-landing-bg.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -78,7 +86,8 @@ const Index = () => {
       title: 'Egito Antigo',
       ...egyptProgress,
       isActive: true,
-      icon: 'pyramid'
+      icon: 'pyramid',
+      background: egyptLandingBg
     },
     {
       id: 'mesopotamia',
@@ -86,7 +95,8 @@ const Index = () => {
       title: 'Mesopotâmia',
       ...mesopotamiaProgress,
       isActive: egyptProgress.progress >= 30, // Disponível se Egito >= 30%
-      icon: 'scroll'
+      icon: 'scroll',
+      background: mesopotamiaLandingBg
     },
     {
       id: 'medieval',
@@ -94,7 +104,8 @@ const Index = () => {
       title: 'Era Medieval',
       ...medievalProgress,
       isActive: mesopotamiaProgress.progress >= 30, // Disponível se Mesopotâmia >= 30%
-      icon: 'castle'
+      icon: 'castle',
+      background: medievalLandingBg
     },
     {
       id: 'future',
@@ -102,7 +113,18 @@ const Index = () => {
       title: 'Era Digital',
       ...digitalProgress,
       isActive: medievalProgress.progress >= 30, // Disponível se Medieval >= 30%
-      icon: 'robot'
+      icon: 'robot',
+      background: digitalLandingBg
+    },
+    {
+      id: 'world',
+      period: '2024 - Atual',
+      title: 'Mundo Real',
+      progress: 100, // Sempre ativo
+      isCompleted: false,
+      isActive: digitalProgress.progress >= 50, // Disponível se Digital >= 50%
+      icon: 'globe',
+      background: digitalLandingBg // Usar mesmo background da era digital
     }
   ];
 
@@ -176,35 +198,40 @@ const Index = () => {
       <header className={`relative z-10 ${isMobile ? 'p-2' : 'p-6'} border-b border-card-border bg-background-soft/80 backdrop-blur-sm`}>
         <div className="max-w-6xl mx-auto">
           {isMobile ? (
-            // Layout mobile - simplificado e empilhado
-            <div className="space-y-3">
+            // Layout mobile - organizado e compacto
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <img src={arenaLogo} alt="Arena" className="w-8 h-8" />
+                  <img src={arenaLogo} alt="Arena" className="w-7 h-7" />
                   <div>
-                    <h1 className="text-epic text-lg font-bold">Arena</h1>
+                    <h1 className="text-epic text-base font-bold">Arena</h1>
                     <p className="text-xs text-muted-foreground">Conhecimento</p>
                   </div>
                 </div>
-                <Settings className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-epic transition-colors" />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="text-left">
+                
+                <div className="text-center">
                   <p className="text-xs text-muted-foreground">
-                    {profile?.display_name || 'Guerreiro'}
+                    {profile?.display_name || 'Guerreiro Demo'}
                   </p>
                   <p className="text-xs font-semibold text-epic">
-                    Nível {Math.floor((profile?.total_xp || 0) / 100) + 1} • {(profile?.total_xp || 0).toLocaleString()} XP
+                    Nv{Math.floor((profile?.total_xp || 0) / 100) + 1} • {(profile?.total_xp || 0).toLocaleString()}XP
                   </p>
                 </div>
-                <div className="flex space-x-2">
+                
+                <div className="flex items-center space-x-1">
                   <ActionButton 
                     variant="epic" 
                     onClick={() => navigate('/dashboard')}
                     className="text-xs px-2 py-1"
                   >
                     📊
+                  </ActionButton>
+                  <ActionButton 
+                    variant="victory" 
+                    onClick={() => navigate('/payment')}
+                    className="text-xs px-2 py-1"
+                  >
+                    💳
                   </ActionButton>
                   <ActionButton 
                     variant="battle" 
@@ -217,58 +244,85 @@ const Index = () => {
                     variant="destructive" 
                     onClick={resetAllData}
                     disabled={resetting}
-                    className="text-xs px-2 py-1"
-                    title="Zerar dados de teste"
+                    className="text-xs px-1 py-1"
+                    title="Reset"
                   >
                     {resetting ? '⏳' : '🗑️'}
                   </ActionButton>
+
                 </div>
               </div>
             </div>
           ) : (
-            // Layout desktop - original
+            // Layout desktop - organizado
             <div className="flex items-center justify-between">
+              {/* Logo, Título e Música */}
               <div className="flex items-center space-x-4">
-                <img src={arenaLogo} alt="Arena do Conhecimento" className="w-12 h-12" />
+                <img src={arenaLogo} alt="Arena do Conhecimento" className="w-10 h-10" />
                 <div>
-                  <h1 className="text-epic text-2xl">Arena do Conhecimento</h1>
-                  <p className="text-sm text-muted-foreground">Batalhas Educativas</p>
+                  <h1 className="text-epic text-xl font-montserrat font-bold">Arena do Conhecimento</h1>
+                  <p className="text-xs text-muted-foreground">Batalhas Educativas</p>
+                </div>
+                
+                {/* Controle de Música - Movido do rodapé */}
+                <div className="ml-6">
+                  <PersistentBackgroundMusic autoPlay={true} className="relative" />
                 </div>
               </div>
               
-              <div className="flex items-center space-x-4">
+              {/* Informações do Usuário - Centro */}
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">
+                  {profile?.display_name || 'Guerreiro Demo'}
+                </p>
+                <p className="text-sm font-semibold text-epic">
+                  Nível {Math.floor((profile?.total_xp || 0) / 100) + 1} • {(profile?.total_xp || 0).toLocaleString()} XP
+                </p>
+              </div>
+              
+              {/* Botões de Ação - Direita */}
+              <div className="flex items-center space-x-2">
                 <ActionButton 
                   variant="epic" 
                   onClick={() => navigate('/dashboard')}
-                  className="text-sm px-4 py-2"
+                  className="text-xs px-3 py-2"
                 >
-                  📊 Dashboard
+                  📊
+                </ActionButton>
+                {/* Link secreto para admin */}
+                <ActionButton 
+                  variant="battle" 
+                  onClick={() => navigate('/admin')}
+                  className="text-xs px-2 py-2"
+                  title="Admin Dashboard (phpg69@gmail.com)"
+                >
+                  🛡️
+                </ActionButton>
+                <ActionButton 
+                  variant="victory" 
+                  onClick={() => navigate('/payment')}
+                  className="text-xs px-3 py-2"
+                >
+                  💳
                 </ActionButton>
                 <ActionButton 
                   variant="battle" 
                   onClick={() => navigate('/')}
-                  className="text-sm px-4 py-2"
+                  className="text-xs px-3 py-2"
                 >
-                  🏠 Landing
+                  🏠
                 </ActionButton>
                 <ActionButton 
                   variant="destructive" 
                   onClick={resetAllData}
                   disabled={resetting}
-                  className="text-sm px-4 py-2"
+                  className="text-xs px-3 py-2"
                   title="Zerar dados de teste"
                 >
-                  {resetting ? '⏳ Resetando...' : '🗑️ Reset'}
+                  {resetting ? '⏳' : '🗑️'}
                 </ActionButton>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">
-                    Bem-vindo, {profile?.display_name || 'Guerreiro'}!
-                  </p>
-                  <p className="text-sm font-semibold text-epic">
-                    Nível {Math.floor((profile?.total_xp || 0) / 100) + 1} • XP: {(profile?.total_xp || 0).toLocaleString()}
-                  </p>
-                </div>
-                <Settings className="w-6 h-6 text-muted-foreground cursor-pointer hover:text-epic transition-colors" />
+                
+                <Settings className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-epic transition-colors" />
               </div>
             </div>
           )}
@@ -276,18 +330,8 @@ const Index = () => {
       </header>
 
       <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-2 h-full overflow-y-auto' : 'p-6'}`}>
-        {/* Sistema de 3 - Informações da Assinatura */}
-        {!isMobile && userSubscription && subscriptionInfo?.systemDisplayInfo && (
-          <SystemInfoCard
-            currentMonth={userSubscription.current_cycle_month}
-            entryAmount={userSubscription.current_cycle_month === 1 ? 20 : userSubscription.current_cycle_month === 2 ? 16 : 12}
-            maxWithdrawal={20}
-            nextAmount={subscriptionInfo.nextPaymentInfo?.nextAmount || 20}
-            daysUntilPayment={subscriptionInfo.nextPaymentInfo?.daysUntilPayment || 30}
-            savings={subscriptionInfo.nextPaymentInfo?.savings || 0}
-            className="mb-6"
-          />
-        )}
+        {/* Top Carousel - Ranking + Notícias */}
+        <TopCarousel isMobile={isMobile} />
 
         {/* Balance & Stats Row */}
         <div className={`${isMobile ? 'space-y-2 mb-3' : 'grid lg:grid-cols-3 gap-6 mb-8'}`}>
@@ -343,7 +387,7 @@ const Index = () => {
         </div>
 
         {/* Timeline Section */}
-        <section className={isMobile ? 'mb-2' : 'mb-8'}>
+        <section className={isMobile ? 'mb-3' : 'mb-6'}>
           {!isMobile && (
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-montserrat font-bold text-xl">Linha do Tempo</h2>
@@ -351,7 +395,7 @@ const Index = () => {
             </div>
           )}
           
-          <div className={`${isMobile ? 'grid grid-cols-4 gap-1' : 'flex overflow-x-auto pb-4 space-x-4'} mb-2`}>
+          <div className={`${isMobile ? 'grid grid-cols-5 gap-1' : 'flex overflow-x-auto pb-2 space-x-4 scrollbar-hide'} mb-4`}>
             {timelineModules.map((module) => (
               <div
                 key={module.id}
@@ -361,25 +405,38 @@ const Index = () => {
                   else if (module.id === 'mesopotamia') navigate('/mesopotamia');
                   else if (module.id === 'medieval') navigate('/medieval');
                   else if (module.id === 'future') navigate('/digital');
+                  else if (module.id === 'world') navigate('/world-quiz');
                   else setSelectedModule(module.id);
                 }}
               >
                 {isMobile ? (
-                  // Mobile: Cards compactos
-                  <>
-                    <div className="text-lg mb-1">
-                      {module.icon === 'pyramid' ? '🏛️' :
-                       module.icon === 'scroll' ? '📜' :
-                       module.icon === 'castle' ? '⚔️' : '💻'}
+                  // Mobile: Cards compactos com background
+                  <div 
+                    className="relative overflow-hidden rounded-lg"
+                    style={{
+                      backgroundImage: `url(${module.background})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      minHeight: '80px'
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
+                    <div className="relative z-10 p-2 text-center">
+                      <div className="text-lg mb-1">
+                        {module.icon === 'pyramid' ? '🏛️' :
+                         module.icon === 'scroll' ? '📜' :
+                         module.icon === 'castle' ? '⚔️' :
+                         module.icon === 'robot' ? '💻' : '🌍'}
+                      </div>
+                      <p className="text-xs font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
+                      <div className="w-full bg-white/20 rounded-full h-1 mt-1">
+                        <div 
+                          className="bg-epic h-1 rounded-full transition-all duration-300" 
+                          style={{ width: `${module.progress}%` }}
+                        />
+                      </div>
                     </div>
-                    <p className="text-xs font-semibold">{module.title.split(' ')[0]}</p>
-                    <div className="w-full bg-muted/20 rounded-full h-1 mt-1">
-                      <div 
-                        className="bg-epic h-1 rounded-full transition-all duration-300" 
-                        style={{ width: `${module.progress}%` }}
-                      />
-                    </div>
-                  </>
+                  </div>
                 ) : (
                   // Desktop: Component original
                   <TimelineModule {...module} />
@@ -389,80 +446,10 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Current Arena */}
-        <section className={isMobile ? 'mb-2' : 'mb-8 mt-4'}>
-          <div className={`arena-card ${isMobile ? 'p-3' : 'p-8'} relative overflow-hidden`}>
-            {!isMobile && (
-              <div 
-                className="absolute inset-0 opacity-20 bg-cover bg-center"
-                style={{ backgroundImage: `url(${egyptArena})` }}
-              />
-            )}
-            
-            <div className="relative z-10">
-              {isMobile ? (
-                // Mobile: Layout compacto
-                <div className="text-center mb-3">
-                  <div className="flex items-center justify-center space-x-2 mb-2">
-                    <span className="text-2xl">🏛️</span>
-                    <h3 className="text-lg font-montserrat font-bold text-epic">Arena Egito</h3>
-                  </div>
-                </div>
-              ) : (
-                // Desktop: Layout original
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h3 className="text-4xl font-montserrat font-bold text-epic mb-3">
-                      Egito Antigo - Arena Ativa
-                    </h3>
-                    <p className="text-lg text-muted-foreground">
-                      Domine os mistérios do Nilo e conquiste conhecimento sobre economia antiga
-                    </p>
-                  </div>
-                  <div className="text-7xl opacity-80">🏛️</div>
-                </div>
-              )}
-              
-              <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'} max-w-full`}>
-                <ActionButton 
-                  variant="victory" 
-                  icon={<Play />}
-                  onClick={() => navigate('/training')}
-                  className={`${isMobile ? 'text-xs py-2' : 'text-base py-3'} w-full`}
-                >
-                  {isMobile ? 'Treinar' : 'Treinar Gratuito'}
-                </ActionButton>
-                
-                <ActionButton 
-                  variant="battle" 
-                  icon={<Sword />}
-                  onClick={() => navigate('/arena')}
-                  className={`${isMobile ? 'text-xs py-2' : 'text-base py-3'} w-full`}
-                >
-                  {isMobile ? 'Arena' : 'Entrar na Arena (900 créditos)'}
-                </ActionButton>
-                
-                <ActionButton 
-                  variant="epic" 
-                  icon={<Trophy />} 
-                  onClick={() => navigate('/ranking')}
-                  className={`${isMobile ? 'text-xs py-2' : 'text-base py-3'} w-full`}
-                >
-                  {isMobile ? 'Ranking' : 'Ranking Global'}
-                </ActionButton>
-                
-                <ActionButton 
-                  variant="epic" 
-                  icon={<BookOpen />} 
-                  onClick={() => navigate('/knowledge')}
-                  className={`${isMobile ? 'text-xs py-2' : 'text-base py-3'} w-full`}
-                >
-                  {isMobile ? 'Acervo' : 'Acervo Conhecimento'}
-                </ActionButton>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Era Carousel - Fundo animado que muda automaticamente */}
+        <EraCarousel isMobile={isMobile} />
+
+
 
         {/* Quick Actions */}
         <section className={isMobile ? 'pb-2' : ''}>
@@ -530,3 +517,4 @@ const Index = () => {
 };
 
 export default Index;
+

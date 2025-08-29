@@ -6,12 +6,17 @@ import { ParticleBackground } from '@/components/ui/particles';
 import { Progress } from '@/components/ui/progress';
 import { useArena } from '@/hooks/useArena';
 import { usePvPLimit } from '@/hooks/usePvPLimit';
+import { useBattleSave } from '@/hooks/useBattleSave';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Player } from '@/types/arena';
 import { RealPvPExplanation } from '@/components/arena/RealPvPExplanation';
+import { handleBattleCredits } from '@/utils/creditsIntegration';
 
 const ArenaNew = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const pvpLimit = usePvPLimit();
+  const { saveBattleResult } = useBattleSave();
   const { 
     currentPlayer, 
     phase, 
@@ -24,12 +29,47 @@ const ArenaNew = () => {
     actions 
   } = useArena();
 
+  // Salvar dados quando a batalha termina
+  useEffect(() => {
+    if (phase === 'finished' && battleState?.winner) {
+      const handleBattleFinished = async () => {
+        const isVictory = battleState.winner.id === currentPlayer.id;
+        const questionsCorrect = battleState.score || 3; // Simulado
+        const questionsTotal = 5; // Simulado
+        const accuracyPercentage = Math.round((questionsCorrect / questionsTotal) * 100);
+        
+        // Salvar dados da batalha
+        await saveBattleResult({
+          eraName: 'Arena PvP - Multi-Eras',
+          questionsTotal: questionsTotal,
+          questionsCorrect: questionsCorrect,
+          xpEarned: isVictory ? 200 : 75,
+          moneyEarned: isVictory ? 500 : 0, // créditos de plataforma
+          battleDurationSeconds: 180, // Simulado ~3min
+          battleType: 'pvp',
+        });
+
+        // Sistema de Percepção de Créditos para PvP
+        const perceptionCredits = handleBattleCredits({
+          battleType: 'pvp',
+          questionsCorrect: questionsCorrect,
+          questionsTotal: questionsTotal,
+          accuracyPercentage: accuracyPercentage
+        });
+        
+        console.log(`⚔️ PvP Real concluído! +${perceptionCredits} créditos de percepção (${isVictory ? 'Vitória' : 'Derrota'})`);
+      };
+      
+      handleBattleFinished();
+    }
+  }, [phase, battleState?.winner, currentPlayer.id, saveBattleResult]);
+
   // Renderizar lista de players (Lobby)
   const renderLobby = () => (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       <ParticleBackground />
       
-      <div className="relative z-10 max-w-6xl mx-auto p-6">
+      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         <div className="text-center mb-8">
           <ActionButton 
             variant="battle" 
@@ -39,6 +79,18 @@ const ArenaNew = () => {
           >
             Voltar ao Menu
           </ActionButton>
+        </div>
+
+        {/* Mini Card de Créditos na Arena */}
+        <div className="bg-epic/5 border border-epic/20 rounded-lg p-3 mb-4 max-w-md mx-auto">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Créditos Disponíveis</span>
+            <span className="text-epic font-bold">2.000</span>
+          </div>
+          <div className="flex items-center justify-between text-xs mt-1">
+            <span className="text-muted-foreground">Taxa PvP</span>
+            <span className="text-warning font-semibold">900 créditos</span>
+          </div>
         </div>
 
         <div className="arena-card-epic p-8 text-center mb-8">
@@ -314,11 +366,16 @@ const ArenaNew = () => {
                   <span className="text-destructive">Derrota!</span>
                 )}
               </h2>
-              <p className="text-xl mb-6">
-                {battleState.winner.id === currentPlayer.id 
-                  ? 'Você ganhou +500 créditos!' 
-                  : 'Você perdeu 900 créditos'}
-              </p>
+              <div className="mb-6">
+                <p className="text-xl mb-2">
+                  {battleState.winner.id === currentPlayer.id 
+                    ? 'Você ganhou +500 créditos!' 
+                    : 'Você perdeu 900 créditos'}
+                </p>
+                <p className="text-sm text-epic">
+                  +15 créditos de percepção
+                </p>
+              </div>
             </>
           ) : (
             <>

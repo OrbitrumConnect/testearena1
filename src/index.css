@@ -347,4 +347,13 @@ Todas as cores em HSL para consistência */
     transform: scale(1.2);
     background: hsl(var(--primary) / 0.8);
   }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+  }
 }

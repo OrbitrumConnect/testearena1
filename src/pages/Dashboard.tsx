@@ -129,10 +129,10 @@ const Dashboard = () => {
     battleHistory.reduce((acc, battle) => acc + battle.accuracy_percentage, 0) / battleHistory.length : 0;
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-3' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Header */}
         <div className={`flex ${isMobile ? 'flex-col space-y-3' : 'items-center justify-between'} ${isMobile ? 'mb-4' : 'mb-8'}`}>
           <div className="flex items-center gap-3">

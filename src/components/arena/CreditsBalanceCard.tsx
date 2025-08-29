@@ -1,6 +1,9 @@
-import { Coins, TrendingUp, Clock, Wallet, Info } from 'lucide-react';
+import { Coins, TrendingUp, Clock, Wallet, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { WalletDetailsModal } from '@/components/wallet/WalletDetailsModal';
+import { useCreditsPerception } from '@/hooks/useCreditsPerception';
+import { useMonthlyDecay } from '@/hooks/useMonthlyDecay';
 
 interface CreditsBalanceCardProps {
   creditsBalance: number;
@@ -20,6 +23,11 @@ export const CreditsBalanceCard = ({
   earnedCredits = 0
 }: CreditsBalanceCardProps) => {
   const [showInfo, setShowInfo] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showPerceptionDetails, setShowPerceptionDetails] = useState(false);
+  const { data: perceptionData, calculatePerceptionValue } = useCreditsPerception();
+  const { getDecayInfo } = useMonthlyDecay();
+  const decayInfo = getDecayInfo();
 
   return (
     <div className="arena-card-epic p-5">
@@ -29,10 +37,11 @@ export const CreditsBalanceCard = ({
           <h3 className="font-montserrat font-bold text-base">Créditos Arena</h3>
         </div>
         <button 
-          onClick={() => setShowInfo(!showInfo)}
+          onClick={() => setShowWalletModal(true)}
           className="glow-epic rounded-full p-1.5 hover:bg-epic/10 transition-colors"
+          title="Ver detalhes da carteira"
         >
-          <Info className="w-4 h-4 text-epic" />
+          <Wallet className="w-4 h-4 text-epic" />
         </button>
       </div>
       
@@ -45,8 +54,79 @@ export const CreditsBalanceCard = ({
         <div>
           <p className="text-xs text-muted-foreground mb-1">XP Total</p>
           <p className="text-victory text-xl font-bold">{xp.toLocaleString()}</p>
+          <p className="text-xs text-muted-foreground/60">
+            Nível {Math.floor(xp / 100) + 1}
+          </p>
         </div>
       </div>
+
+      {/* Sistema de Percepção - Só aparece se há créditos ganhos */}
+      {perceptionData.totalCredits > 0 && (
+        <div className="bg-epic/5 border border-epic/20 rounded-lg mb-3 overflow-hidden">
+          {/* Header Compacto - Sempre Visível */}
+          <div 
+            className="p-3 cursor-pointer hover:bg-epic/10 transition-colors"
+            onClick={() => setShowPerceptionDetails(!showPerceptionDetails)}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <p className="text-xs text-epic font-medium">Créditos Ganhos</p>
+                <span className="text-epic font-bold">{perceptionData.totalCredits.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-muted-foreground">≈ R$ {perceptionData.perceptionValue.toFixed(2)}</span>
+                {showPerceptionDetails ? (
+                  <ChevronUp className="w-4 h-4 text-epic" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-epic" />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Detalhes Expansíveis */}
+          {showPerceptionDetails && (
+            <div className="px-3 pb-3 border-t border-epic/10">
+              <div className="grid grid-cols-3 gap-2 mt-3 mb-3">
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground">Treinos</p>
+                  <p className="text-sm font-bold text-epic">{perceptionData.creditsFromTraining}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground">PvP</p>
+                  <p className="text-sm font-bold text-battle">{perceptionData.creditsFromPvP}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground">Torneios</p>
+                  <p className="text-sm font-bold text-victory">{perceptionData.creditsFromTournaments}</p>
+                </div>
+              </div>
+              
+              {decayInfo && decayInfo.isDecayActive && (
+                <div className="bg-battle/5 border border-battle/20 rounded p-2 mb-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-battle font-medium">Mês Anterior</span>
+                    <span className="text-muted-foreground">{decayInfo.statusText}</span>
+                  </div>
+                  <div className="w-full bg-battle/20 rounded-full h-1 mt-1">
+                    <div 
+                      className="bg-battle h-1 rounded-full transition-all" 
+                      style={{ width: `${100 - decayInfo.decayPercentage}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              
+              <p className="text-xs text-muted-foreground">
+                💡 Valor de percepção R$ 0,05/crédito • Não sacável
+                {decayInfo && decayInfo.isExpiringSoon && (
+                  <span className="text-battle ml-2">• {decayInfo.statusText}</span>
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
 
       {earnedCredits > 0 && (
         <div className="mb-3 p-2 bg-victory/10 rounded-lg border border-victory/20">
@@ -102,6 +182,15 @@ export const CreditsBalanceCard = ({
           </div>
         </div>
       )}
+
+      {/* Wallet Details Modal */}
+      <WalletDetailsModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
+        creditsBalance={creditsBalance}
+        canWithdraw={canWithdraw}
+        withdrawAmount={withdrawAmount}
+      />
     </div>
   );
 };
