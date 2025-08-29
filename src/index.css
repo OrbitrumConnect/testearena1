@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Arena do Conhecimento - Design System 
+Cores baseadas no universo educativo e batalhas épicas
+Todas as cores em HSL para consistência */
+
+@layer base {
+  :root {
+    /* Background System */
+    --background: 222 30% 8%;
+    --foreground: 210 40% 98%;
+    --background-soft: 222 25% 12%;
+    
+    /* Card System */
+    --card: 222 25% 12%;
+    --card-foreground: 210 40% 98%;
+    --card-border: 220 15% 20%;
+    
+    /* Arena Primary Colors */
+    --primary: 235 35% 35%;        /* Azul místico #4B5EAA */
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 235 65% 65%;   /* Para brilhos e highlights */
+    
+    /* Arena Secondary Colors */
+    --secondary: 220 80% 80%;      /* Azul celeste #A3BFFA */
+    --secondary-foreground: 235 35% 25%;
+    
+    /* Victory Colors */
+    --victory: 160 65% 48%;        /* Verde vitória #10B981 */
+    --victory-foreground: 210 40% 98%;
+    --victory-bright: 155 70% 58%; /* Verde claro #34D399 */
+    
+    /* Epic Colors */
+    --epic: 45 95% 58%;           /* Dourado épico #FBBF24 */
+    --epic-foreground: 45 20% 15%;
+    --epic-bright: 43 90% 65%;    /* Amarelo brilhante #F59E0B */
+    
+    /* Battle Colors */
+    --battle: 215 90% 60%;        /* Azul batalha #3B82F6 */
+    --battle-foreground: 210 40% 98%;
+    --battle-dark: 222 84% 15%;   /* Azul escuro #1E3A8A */
+    
+    /* Damage/Error Colors */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 210 40% 98%;
+    
+    /* UI Elements */
+    --muted: 222 20% 18%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 220 25% 20%;
+    --accent-foreground: 210 40% 98%;
+    --border: 220 15% 20%;
+    --input: 222 20% 15%;
+    --ring: 235 65% 65%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-victory: linear-gradient(135deg, hsl(var(--victory)), hsl(var(--victory-bright)));
+    --gradient-epic: linear-gradient(135deg, hsl(var(--epic)), hsl(var(--epic-bright)));
+    --gradient-battle: linear-gradient(135deg, hsl(var(--battle-dark)), hsl(var(--battle)));
+    --gradient-arena: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    
+    /* Shadows & Effects */
+    --shadow-epic: 0 0 40px hsl(var(--epic) / 0.4);
+    --shadow-victory: 0 0 30px hsl(var(--victory) / 0.3);
+    --shadow-battle: 0 0 35px hsl(var(--battle) / 0.3);
+    --shadow-glow: 0 4px 20px hsl(var(--primary-glow) / 0.2);
+    
+    /* Animations */
+    --transition-epic: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-battle: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat font-bold;
+  }
+}
+
+@layer components {
+  /* Arena Epic Text Effects */
+  .text-epic {
+    @apply text-4xl font-black bg-gradient-to-r from-epic to-epic-bright bg-clip-text text-transparent;
+  }
+  
+  .text-victory {
+    @apply text-2xl font-bold bg-gradient-to-r from-victory to-victory-bright bg-clip-text text-transparent;
+  }
+  
+  .text-battle {
+    @apply text-xl font-semibold bg-gradient-to-r from-battle-dark to-battle bg-clip-text text-transparent;
+  }
+
+  /* Arena Cards */
+  .arena-card {
+    @apply bg-card border border-card-border rounded-lg backdrop-blur-sm;
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .arena-card-epic {
+    @apply arena-card;
+    box-shadow: var(--shadow-epic);
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--epic) / 0.1));
+  }
+
+  /* Arena Buttons */
+  .btn-epic {
+    @apply px-6 py-3 rounded-lg font-montserrat font-bold text-epic-foreground;
+    background: var(--gradient-epic);
+    box-shadow: var(--shadow-epic);
+    transition: var(--transition-epic);
+  }
+  
+  .btn-epic:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 50px hsl(var(--epic) / 0.6);
+  }
+  
+  .btn-victory {
+    @apply px-6 py-3 rounded-lg font-montserrat font-bold text-victory-foreground;
+    background: var(--gradient-victory);
+    box-shadow: var(--shadow-victory);
+    transition: var(--transition-battle);
+  }
+  
+  .btn-victory:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 40px hsl(var(--victory) / 0.5);
+  }
+  
+  .btn-battle {
+    @apply px-6 py-3 rounded-lg font-montserrat font-bold text-battle-foreground;
+    background: var(--gradient-battle);
+    box-shadow: var(--shadow-battle);
+    transition: var(--transition-battle);
+  }
+  
+  .btn-battle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 40px hsl(var(--battle) / 0.5);
+  }
+
+  /* Timeline Effects */
+  .timeline-item {
+    @apply relative p-4 rounded-lg backdrop-blur-sm transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--primary) / 0.1));
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .timeline-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .timeline-item.completed {
+    background: linear-gradient(135deg, hsl(var(--victory) / 0.2), hsl(var(--victory) / 0.1));
+    border-color: hsl(var(--victory) / 0.3);
+  }
+
+  /* Floating Particles */
+  .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .particle {
+    position: absolute;
+    background: hsl(var(--primary-glow) / 0.3);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Progress Bars */
+  .progress-epic {
+    @apply h-3 rounded-full overflow-hidden;
+    background: hsl(var(--muted));
+  }
+  
+  .progress-epic-fill {
+    @apply h-full transition-all duration-1000 ease-out;
+    background: var(--gradient-epic);
+    box-shadow: 0 0 20px hsl(var(--epic) / 0.5);
+  }
+
+  /* Hover Scale Animation */
+  .hover-scale {
+    @apply transition-transform duration-200;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* Glow Effects */
+  .glow-epic {
+    animation: glow-epic 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow-epic {
+    from {
+      box-shadow: 0 0 20px hsl(var(--epic) / 0.5);
+    }
+    to {
+      box-shadow: 0 0 30px hsl(var(--epic) / 0.8), 0 0 40px hsl(var(--epic) / 0.3);
+    }
+  }
+
+  /* Background Gradients */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  /* Music Player Slider Styles */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: hsl(var(--muted));
+    border-radius: 2px;
+    outline: none;
+    transition: opacity 0.2s;
+  }
+
+  .slider:hover {
+    opacity: 1;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: hsl(var(--primary) / 0.8);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: hsl(var(--primary) / 0.8);
+  }
+}

@@ -1,0 +1,198 @@
+import { useState, useRef, useEffect } from 'react';
+import { Volume2, VolumeX, Music, SkipForward, SkipBack, Play, Pause } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+
+interface BackgroundMusicProps {
+  tracks?: string[];
+  autoPlay?: boolean;
+  className?: string;
+}
+
+export const BackgroundMusic = ({ 
+  tracks = [
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(4).mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(3).mp3'
+  ], 
+  autoPlay = false,
+  className = ""
+}: BackgroundMusicProps) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.src = tracks[currentTrack];
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+    }
+  }, [currentTrack, tracks]);
+
+  useEffect(() => {
+    if (autoPlay && audioRef.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  }, [autoPlay]);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
+  const nextTrack = () => {
+    setCurrentTrack((prev) => (prev + 1) % tracks.length);
+  };
+
+  const prevTrack = () => {
+    setCurrentTrack((prev) => (prev - 1 + tracks.length) % tracks.length);
+  };
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : newVolume;
+    }
+  };
+
+  return (
+    <>
+      {/* Hidden Audio Element */}
+      <audio
+        ref={audioRef}
+        loop={tracks.length === 1}
+        onEnded={() => {
+          if (tracks.length > 1) {
+            nextTrack();
+          }
+        }}
+        preload="auto"
+      />
+
+      {/* Music Controls */}
+      <div className={`${className.includes('relative') ? 'relative' : 'fixed bottom-6 right-6'} z-50`}>
+        <Card className={`arena-card p-2 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-auto'}`}>
+          <div className="flex items-center gap-2">
+            {/* Play/Pause Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={togglePlay}
+              className="p-2"
+            >
+              {isPlaying ? (
+                <Pause className="w-4 h-4 text-epic" />
+              ) : (
+                <Play className="w-4 h-4 text-epic" />
+              )}
+            </Button>
+
+            {/* Mute Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleMute}
+              className="p-2"
+            >
+              {isMuted ? (
+                <VolumeX className="w-4 h-4 text-destructive" />
+              ) : (
+                <Volume2 className="w-4 h-4 text-victory" />
+              )}
+            </Button>
+
+            {/* Expand Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleExpanded}
+              className="p-2"
+            >
+              <Music className="w-4 h-4" />
+            </Button>
+
+            {/* Expanded Controls */}
+            {isExpanded && (
+              <>
+                {/* Track Navigation */}
+                {tracks.length > 1 && (
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={prevTrack}
+                      className="p-1"
+                    >
+                      <SkipBack className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={nextTrack}
+                      className="p-1"
+                    >
+                      <SkipForward className="w-3 h-3" />
+                    </Button>
+                  </div>
+                )}
+
+                {/* Volume Slider */}
+                <div className="flex items-center gap-1 min-w-16">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="w-16 h-1 bg-muted rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+
+                {/* Track Info */}
+                <div className="text-xs text-muted-foreground">
+                  {currentTrack + 1}/{tracks.length}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Status */}
+          {isPlaying && (
+            <div className="mt-1 text-center">
+              <div className="text-xs text-muted-foreground">
+                {isMuted ? '🔇 Silenciado' : '🎵 Tocando'}
+              </div>
+            </div>
+          )}
+        </Card>
+      </div>
+    </>
+  );
+};
