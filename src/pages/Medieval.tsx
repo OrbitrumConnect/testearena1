@@ -24,6 +24,7 @@ const Medieval = () => {
   const [playerHp, setPlayerHp] = useState(100);
   const [enemyHp, setEnemyHp] = useState(100);
   const [battleStartTime] = useState(Date.now());
+  const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
 
   // Usar o hook para buscar 5 perguntas aleatórias da Era Medieval
   const { questions, loading, refetch } = useEraQuestions('medieval', 5);
@@ -53,12 +54,20 @@ const Medieval = () => {
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
-      // Jogador acerta - Inimigo perde HP (5% a mais de dano)
+      // Jogador acerta - Mostrar ataque do player e inimigo perde HP
+      setAttackEffect('player-attack');
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
     } else {
+      // Jogador erra - Mostrar ataque do inimigo e player perde HP
+      setAttackEffect('enemy-attack');
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
+
+    // Limpar efeito após 2 segundos
+    setTimeout(() => {
+      setAttackEffect(null);
+    }, 2000);
   };
 
   const nextQuestion = async () => {
@@ -437,9 +446,39 @@ const Medieval = () => {
           </div>
 
           {/* Efeito de Raio Apenas Durante Pergunta */}
-          {gamePhase === 'question' && (
+          {!attackEffect && gamePhase === 'question' && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
               <div className="text-4xl animate-ping opacity-50">⚡</div>
+            </div>
+          )}
+
+          {/* Fogo Viajando - Player Ataca (Você → Dragão) */}
+          {attackEffect === 'player-attack' && (
+            <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div 
+                className="text-2xl text-orange-500 transition-all duration-1500 ease-out"
+                style={{
+                  transform: 'translateX(300px)', // Sai de você e vai para o dragão
+                  opacity: '1'
+                }}
+              >
+                🔥💥
+              </div>
+            </div>
+          )}
+
+          {/* Fogo Viajando - Dragão Ataca (Dragão → Você) */}
+          {attackEffect === 'enemy-attack' && (
+            <div className="absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div 
+                className="text-2xl text-red-500 transition-all duration-1500 ease-out"
+                style={{
+                  transform: 'translateX(-300px)', // Sai do dragão e vai para você
+                  opacity: '1'
+                }}
+              >
+                🔥💥
+              </div>
             </div>
           )}
         </div>

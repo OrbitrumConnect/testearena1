@@ -531,14 +531,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           )}
 
-          {/* Fogo Viajando - Player Ataca (Esquerda → Direita) */}
+          {/* Fogo Viajando - Player Ataca (Você → Inimigo) */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-16 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <div 
-                className="text-3xl text-orange-500 transition-all duration-1000 ease-out animate-bounce"
+                className="text-2xl text-orange-500 transition-all duration-1500 ease-out"
                 style={{
-                  transform: 'translateX(200px)', // Move para a direita
-                  opacity: '0.8'
+                  transform: 'translateX(300px)', // Sai de você e vai para o inimigo
+                  opacity: '1'
                 }}
               >
                 🔥💥
@@ -546,14 +546,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           )}
 
-          {/* Fogo Viajando - Inimigo Ataca (Direita → Esquerda) */}
+          {/* Fogo Viajando - Inimigo Ataca (Inimigo → Você) */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-16 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className="absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <div 
-                className="text-3xl text-red-500 transition-all duration-1000 ease-out animate-bounce"
+                className="text-2xl text-red-500 transition-all duration-1500 ease-out"
                 style={{
-                  transform: 'translateX(-200px)', // Move para a esquerda
-                  opacity: '0.8'
+                  transform: 'translateX(-300px)', // Sai do inimigo e vai para você
+                  opacity: '1'
                 }}
               >
                 🔥💥
