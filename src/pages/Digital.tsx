@@ -399,41 +399,39 @@ const Digital = () => {
           <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador */}
             <div className="text-center">
-              <div className="text-7xl mb-2 animate-bounce">👨‍💻</div>
-              <div className="arena-card backdrop-blur-sm bg-victory/20 p-3 min-w-32">
-                <h3 className="font-montserrat font-bold text-sm text-victory">VOCÊ</h3>
-                <div className="text-xs text-muted-foreground">Hacker</div>
-                <div className="progress-epic mt-2">
+              <div className={`animate-bounce ${isMobile ? 'text-base mb-0' : 'text-7xl mb-0.5'}`}>👨‍💻</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
+                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
-                    className="h-2 bg-victory rounded-full transition-all duration-1000" 
+                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
-                <p className="text-xs font-semibold text-victory mt-1">HP: {playerHp}</p>
+                <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
               </div>
             </div>
 
             {/* Timer */}
-            <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/20 p-4 text-center border-2 border-cyan-500 glow-epic mx-4">
-              <div className="text-3xl mb-1">🕐</div>
-              <div className={`text-2xl font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'}`}>
-                {timeLeft}s
+            <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/20 text-center border border-cyan-500 ${isMobile ? 'p-0.5 mx-0.5 scale-75' : 'p-4 mx-4 border-2 glow-epic'}`}>
+              <div className={`${isMobile ? 'text-xs' : 'text-3xl'}`}>🕐</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
+                {timeLeft}
               </div>
             </div>
 
             {/* Inimigo */}
             <div className="text-center">
-              <div className="text-7xl mb-2 animate-pulse">🤖</div>
-              <div className="arena-card backdrop-blur-sm bg-destructive/20 p-3 min-w-32">
-                <h3 className="font-montserrat font-bold text-sm text-destructive">IA SUPREMA</h3>
-                <div className="text-xs text-muted-foreground">Superinteligência</div>
-                <div className="progress-epic mt-2">
+              <div className={`animate-pulse ${isMobile ? 'text-base mb-0' : 'text-7xl mb-0.5'}`}>🤖</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
+                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
-                    className="h-2 bg-destructive rounded-full transition-all duration-1000" 
+                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
                     style={{ width: `${enemyHp}%` }}
                   />
                 </div>
-                <p className="text-xs font-semibold text-destructive mt-1">HP: {enemyHp}</p>
+                <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
               </div>
             </div>
           </div>
