@@ -379,10 +379,10 @@ const Digital = () => {
         </div>
 
         {/* Barra de Progresso */}
-        <div className={isMobile ? 'mb-4' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2' : 'p-4'}`}>
-            <div className="flex items-center justify-between mb-2">
-              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso da Batalha</span>
+        <div className={isMobile ? 'mb-2' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
+            <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
+              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
             <div className="progress-epic">

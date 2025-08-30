@@ -458,10 +458,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-4' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2' : 'p-4'}`}>
-            <div className="flex items-center justify-between mb-2">
-              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso da Batalha</span>
+        <div className={isMobile ? 'mb-2' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
+            <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
+              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
             <div className="progress-epic">
@@ -476,44 +476,44 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         {/* Arena de Combate Visual */}
         <div className={`relative ${isMobile ? 'mb-2' : 'mb-4'}`}>
           {/* Personagens Lutando - Grandes e Visíveis */}
-          <div className={`flex items-center justify-between ${isMobile ? 'px-2 mb-3' : 'px-8 mb-6'}`}>
+          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-2' : 'px-8 mb-6'}`}>
             {/* Jogador - Lado Esquerdo */}
             <div className="text-center">
-              <div className={`mb-2 animate-bounce ${isMobile ? 'text-4xl' : 'text-7xl'}`}>🧙‍♂️</div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-2 min-w-20 scale-75' : 'p-3 min-w-32'}`}>
-                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>VOCÊ</h3>
-                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>Guerreiro</div>
+              <div className={`mb-1 animate-bounce ${isMobile ? 'text-2xl' : 'text-7xl'}`}>🧙‍♂️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-1 min-w-16 scale-50' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
+                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? 'Player' : 'Guerreiro'}</div>
                 <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
                     className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-victory mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>HP: {playerHp}</p>
+                <p className={`font-semibold text-victory mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? playerHp : `HP: ${playerHp}`}</p>
               </div>
             </div>
 
             {/* Timer Central - Menor */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border-2 border-epic glow-epic ${isMobile ? 'p-2 mx-2 scale-75' : 'p-4 mx-4'}`}>
-              <div className={`mb-1 ${isMobile ? 'text-xl' : 'text-3xl'}`}>⏰</div>
-              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border-2 border-epic glow-epic ${isMobile ? 'p-1 mx-1 scale-50' : 'p-4 mx-4'}`}>
+              <div className={`mb-1 ${isMobile ? 'text-lg' : 'text-3xl'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-sm' : 'text-2xl'}`}>
                 {timeLeft}s
               </div>
             </div>
 
             {/* IA Dummy - Lado Direito */}
             <div className="text-center">
-              <div className={`mb-2 animate-pulse ${isMobile ? 'text-4xl' : 'text-8xl'}`}>🗿</div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-2 min-w-20 scale-75' : 'p-3 min-w-32'}`}>
-                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>IA DUMMY</h3>
-                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>Esfinge</div>
+              <div className={`mb-1 animate-pulse ${isMobile ? 'text-2xl' : 'text-8xl'}`}>🗿</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-1 min-w-16 scale-50' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA DUMMY'}</h3>
+                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? 'Bot' : 'Esfinge'}</div>
                 <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
                     className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
                     style={{ width: `${enemyHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-destructive mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>HP: {enemyHp}</p>
+                <p className={`font-semibold text-destructive mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? enemyHp : `HP: ${enemyHp}`}</p>
               </div>
             </div>
           </div>

@@ -170,28 +170,28 @@ const Landing = () => {
 
       
       {/* Header */}
-      <header className="relative z-10 p-6 border-b border-card-border bg-background-soft/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <img src={arenaLogo} alt="Arena do Conhecimento" className="w-12 h-12" />
+      <header className={`relative z-10 border-b border-card-border bg-background-soft/80 backdrop-blur-sm ${isMobile ? 'p-3' : 'p-6'}`}>
+        <div className={`max-w-6xl mx-auto ${isMobile ? 'flex flex-col space-y-2' : 'flex items-center justify-between'}`}>
+          <div className={`flex items-center ${isMobile ? 'space-x-2' : 'space-x-4'}`}>
+            <img src={arenaLogo} alt="Arena do Conhecimento" className={`${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`} />
             <div>
-              <h1 className="text-epic text-2xl">Arena do Conhecimento</h1>
-              <p className="text-sm text-muted-foreground">Batalhas Educativas</p>
+              <h1 className={`text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>Arena do Conhecimento</h1>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Batalhas Educativas</p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className={`flex items-center ${isMobile ? 'space-x-2 self-center' : 'space-x-4'}`}>
             <ActionButton 
               variant="epic" 
               onClick={() => setShowAuth(true)}
-              className="text-sm px-4 py-2"
+              className={`${isMobile ? 'text-xs px-3 py-1' : 'text-sm px-4 py-2'}`}
             >
-              📊 Fazer Login
+              📊 Login
             </ActionButton>
             <ActionButton 
               variant="battle" 
               onClick={() => setShowAuth(true)}
-              className="text-sm px-4 py-2"
+              className={`${isMobile ? 'text-xs px-3 py-1' : 'text-sm px-4 py-2'}`}
             >
               🚀 Cadastrar
             </ActionButton>
@@ -201,23 +201,23 @@ const Landing = () => {
 
       <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'h-full overflow-y-auto' : ''}`}>
         {/* Hero Section */}
-        <section className={`text-center ${isMobile ? 'py-8 px-3' : 'py-20 px-6'}`}>
+        <section className={`text-center ${isMobile ? 'py-4 px-2' : 'py-20 px-6'}`}>
           <div className="max-w-4xl mx-auto">
-            <h1 className={`font-montserrat font-black mb-6 ${isMobile ? 'text-4xl' : 'text-6xl md:text-8xl'}`}>
+            <h1 className={`font-montserrat font-black ${isMobile ? 'text-2xl mb-3' : 'text-6xl md:text-8xl mb-6'}`}>
               <span className="text-epic">Arena do</span><br />
               <span className="text-victory">Conhecimento</span>
             </h1>
             
-            <p className={`text-muted-foreground mb-8 max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl md:text-2xl'}`}>
+            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xl md:text-2xl mb-8'}`}>
               Transforme seu conhecimento histórico em <span className="text-victory font-bold">créditos valiosos</span>. 
               Batalhe, aprenda e ganhe créditos dominando as eras da humanidade.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isMobile ? 'mb-6' : 'mb-12'}`}>
               <ActionButton 
                 variant="epic" 
                 onClick={() => setShowAuth(true)}
-                className="text-xl px-8 py-4 flex items-center gap-3"
+                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-xl px-8 py-4'}`}
                 icon={<Play />}
               >
                 Cadastrar Grátis
@@ -226,7 +226,7 @@ const Landing = () => {
               <ActionButton 
                 variant="battle" 
                 onClick={() => setShowAuth(true)}
-                className="text-xl px-8 py-4 flex items-center gap-3"
+                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-xl px-8 py-4'}`}
                 icon={<Shield />}
               >
                 Fazer Login
