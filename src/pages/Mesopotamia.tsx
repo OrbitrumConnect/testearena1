@@ -436,10 +436,12 @@ const Mesopotamia = () => {
             </div>
           </div>
 
-          {/* Efeitos de Batalha */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <div className="text-4xl animate-ping opacity-50">🔥</div>
-          </div>
+          {/* Efeito de Raio Apenas Durante Pergunta */}
+          {gamePhase === 'question' && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="text-4xl animate-ping opacity-50">⚡</div>
+            </div>
+          )}
         </div>
 
         {/* Pergunta */}

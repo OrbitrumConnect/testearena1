@@ -524,28 +524,40 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           </div>
 
-          {/* Efeitos de Batalha Dinâmicos */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            {attackEffect === 'player-attack' && (
-              <div className="text-4xl animate-bounce text-orange-500">🔥</div>
-            )}
-            {attackEffect === 'enemy-attack' && (
-              <div className="text-4xl animate-bounce text-red-500">🔥</div>
-            )}
-            {!attackEffect && gamePhase === 'question' && (
+          {/* Efeito de Raio Apenas Durante Pergunta */}
+          {!attackEffect && gamePhase === 'question' && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
               <div className="text-4xl animate-ping opacity-50">⚡</div>
-            )}
-          </div>
-
-          {/* Efeito de Fogo Direcionado */}
-          {attackEffect === 'player-attack' && (
-            <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <div className="text-2xl animate-pulse text-orange-500">🔥💥</div>
             </div>
           )}
+
+          {/* Fogo Viajando - Player Ataca (Esquerda → Direita) */}
+          {attackEffect === 'player-attack' && (
+            <div className="absolute left-16 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div 
+                className="text-3xl text-orange-500 transition-all duration-1000 ease-out animate-bounce"
+                style={{
+                  transform: 'translateX(200px)', // Move para a direita
+                  opacity: '0.8'
+                }}
+              >
+                🔥💥
+              </div>
+            </div>
+          )}
+
+          {/* Fogo Viajando - Inimigo Ataca (Direita → Esquerda) */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <div className="text-2xl animate-pulse text-red-500">🔥💥</div>
+            <div className="absolute right-16 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div 
+                className="text-3xl text-red-500 transition-all duration-1000 ease-out animate-bounce"
+                style={{
+                  transform: 'translateX(-200px)', // Move para a esquerda
+                  opacity: '0.8'
+                }}
+              >
+                🔥💥
+              </div>
             </div>
           )}
         </div>
