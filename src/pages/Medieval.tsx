@@ -422,9 +422,9 @@ const Medieval = () => {
             </div>
 
             {/* Timer */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/20 text-center border border-purple-500 ${isMobile ? 'p-0.5 mx-0.5 scale-50' : 'p-4 mx-4 border-2 glow-epic'}`}>
-              <div className={`${isMobile ? 'text-xs' : 'text-3xl'}`}>⏰</div>
-              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-purple-400'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
+            <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/20 text-center border border-purple-500 ${isMobile ? 'p-0.5 mx-0.5 scale-50 -mt-8' : 'p-3 mx-3 border-2 glow-epic -mt-6'}`}>
+              <div className={`${isMobile ? 'text-xs' : 'text-2xl'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-purple-400'} ${isMobile ? 'text-xs' : 'text-lg'}`}>
                 {timeLeft}
               </div>
             </div>

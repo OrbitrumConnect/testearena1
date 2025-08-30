@@ -500,10 +500,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               </div>
             </div>
 
-            {/* Timer Central - ULTRA Menor */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border border-epic ${isMobile ? 'p-0.5 mx-0.5 scale-50' : 'p-4 mx-4'}`}>
-              <div className={`${isMobile ? 'text-xs' : 'text-3xl'}`}>⏰</div>
-              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
+            {/* Timer Central - Menor e Acima */}
+            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border border-epic ${isMobile ? 'p-0.5 mx-0.5 scale-50 -mt-8' : 'p-3 mx-3 -mt-6'}`}>
+              <div className={`${isMobile ? 'text-xs' : 'text-2xl'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-xs' : 'text-lg'}`}>
                 {timeLeft}
               </div>
             </div>
