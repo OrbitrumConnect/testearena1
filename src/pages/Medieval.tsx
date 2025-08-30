@@ -399,8 +399,8 @@ const Medieval = () => {
           <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador */}
             <div className="text-center">
-              <div className={`animate-bounce ${isMobile ? 'text-base mb-0' : 'text-7xl mb-0.5'}`}>⚔️</div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`animate-bounce ${isMobile ? 'text-lg mb-0' : 'text-7xl mb-0.5'}`}>⚔️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
@@ -413,7 +413,7 @@ const Medieval = () => {
             </div>
 
             {/* Timer */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/20 text-center border border-purple-500 ${isMobile ? 'p-0.5 mx-0.5 scale-75' : 'p-4 mx-4 border-2 glow-epic'}`}>
+            <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/20 text-center border border-purple-500 ${isMobile ? 'p-0.5 mx-0.5 scale-50' : 'p-4 mx-4 border-2 glow-epic'}`}>
               <div className={`${isMobile ? 'text-xs' : 'text-3xl'}`}>⏰</div>
               <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-purple-400'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
                 {timeLeft}
@@ -422,8 +422,8 @@ const Medieval = () => {
 
             {/* Inimigo */}
             <div className="text-center">
-              <div className={`animate-pulse ${isMobile ? 'text-base mb-0' : 'text-7xl mb-0.5'}`}>🐲</div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`animate-pulse ${isMobile ? 'text-lg mb-0' : 'text-7xl mb-0.5'}`}>🐲</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'DRAG' : 'DRAGÃO SÁBIO'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 

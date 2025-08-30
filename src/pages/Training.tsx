@@ -27,6 +27,7 @@ const Training = () => {
   const [playerHp, setPlayerHp] = useState(100);
   const [enemyHp, setEnemyHp] = useState(100);
   const [battleStartTime] = useState(Date.now());
+  const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
 
   // Usar o hook para buscar 5 perguntas aleatórias do Egito Antigo
   const { questions, loading, refetch } = useEraQuestions('egito-antigo', 5);
@@ -61,13 +62,20 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
-      // Jogador acerta - Inimigo perde HP (5% a mais de dano)
+      // Jogador acerta - Mostrar ataque do player e inimigo perde HP
+      setAttackEffect('player-attack');
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
     } else {
-      // Jogador erra - Jogador perde HP
+      // Jogador erra - Mostrar ataque do inimigo e player perde HP
+      setAttackEffect('enemy-attack');
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
+
+    // Limpar efeito após 2 segundos
+    setTimeout(() => {
+      setAttackEffect(null);
+    }, 2000);
   };
 
   const nextQuestion = async () => {
@@ -451,10 +459,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Egito Antigo - {currentQuestion + 1}/{questions.length}</p>
           </div>
 
-          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-2 scale-75 self-end' : 'px-4 py-3'}`}>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
-            <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
-          </div>
+                        <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1 py-1 scale-50 self-end' : 'px-4 py-3'}`}>
+                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontos</p>
+                <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
+              </div>
         </div>
 
         {/* Barra de Progresso Épica */}
@@ -479,8 +487,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
           <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador - Lado Esquerdo */}
             <div className="text-center">
-              <div className={`animate-bounce ${isMobile ? 'text-base mb-0' : 'text-7xl mb-0.5'}`}>🧙‍♂️</div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`animate-bounce ${isMobile ? 'text-lg mb-0' : 'text-7xl mb-0.5'}`}>🧙‍♂️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
@@ -493,7 +501,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
 
             {/* Timer Central - ULTRA Menor */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border border-epic ${isMobile ? 'p-0.5 mx-0.5 scale-75' : 'p-4 mx-4'}`}>
+            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border border-epic ${isMobile ? 'p-0.5 mx-0.5 scale-50' : 'p-4 mx-4'}`}>
               <div className={`${isMobile ? 'text-xs' : 'text-3xl'}`}>⏰</div>
               <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
                 {timeLeft}
@@ -502,8 +510,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
             {/* IA Dummy - Lado Direito */}
             <div className="text-center">
-              <div className={`animate-pulse ${isMobile ? 'text-base mb-0' : 'text-8xl mb-0.5'}`}>🗿</div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-10 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`animate-pulse ${isMobile ? 'text-lg mb-0' : 'text-8xl mb-0.5'}`}>🗿</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA DUMMY'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
@@ -516,10 +524,30 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           </div>
 
-          {/* Efeitos de Batalha */}
+          {/* Efeitos de Batalha Dinâmicos */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <div className="text-4xl animate-ping opacity-50">⚡</div>
+            {attackEffect === 'player-attack' && (
+              <div className="text-4xl animate-bounce text-orange-500">🔥</div>
+            )}
+            {attackEffect === 'enemy-attack' && (
+              <div className="text-4xl animate-bounce text-red-500">🔥</div>
+            )}
+            {!attackEffect && gamePhase === 'question' && (
+              <div className="text-4xl animate-ping opacity-50">⚡</div>
+            )}
           </div>
+
+          {/* Efeito de Fogo Direcionado */}
+          {attackEffect === 'player-attack' && (
+            <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div className="text-2xl animate-pulse text-orange-500">🔥💥</div>
+            </div>
+          )}
+          {attackEffect === 'enemy-attack' && (
+            <div className="absolute right-1/4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div className="text-2xl animate-pulse text-red-500">🔥💥</div>
+            </div>
+          )}
         </div>
 
         {/* Pergunta em Balão Épico */}
