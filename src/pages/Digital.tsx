@@ -397,58 +397,32 @@ const Digital = () => {
       <ParticleBackground />
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full flex flex-col' : 'p-6'}`}>
-        {/* Barra de Progresso Integrada com Botão Voltar */}
-        <div className={isMobile ? 'mb-2' : 'mb-6'}>
+        {/* Barra de Progresso Épica - Padrão Egito */}
+        <div className={isMobile ? 'mb-2' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
-            {/* Linha Superior - Botão Voltar, Título e Informações */}
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              {/* Botão Voltar à Esquerda */}
-              <ActionButton 
-                variant="battle" 
-                icon={<ArrowLeft />}
-                onClick={() => navigate('/app')}
-                className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-2 py-1 scale-75' : 'text-sm px-3 py-2'}`}
-              >
-                {isMobile ? '' : 'Voltar'}
-              </ActionButton>
+              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               
-              {/* Título Central */}
-              <div className="text-center flex-1">
-                <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-sm' : 'text-lg'}`}>🤖 BATALHA DIGITAL</h1>
-                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Era da Tecnologia</p>
+              {/* Timer Integrado */}
+              <div className="flex items-center space-x-2">
+                <div 
+                  className={`${isMobile ? 'text-sm' : 'text-lg'}`}
+                  style={{ 
+                    filter: 'drop-shadow(0 0 6px rgba(0, 255, 255, 1))'
+                  }}
+                >⏱️</div>
+                <div 
+                  className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'} ${isMobile ? 'text-xs' : 'text-sm'}`}
+                  style={{ 
+                    filter: 'drop-shadow(0 0 4px rgba(0, 255, 255, 0.8))'
+                  }}
+                >
+                  {timeLeft}s
+                </div>
               </div>
               
-              {/* Informações à Direita */}
-              <div className="flex items-center space-x-4">
-                {/* Timer */}
-                <div className="flex items-center space-x-1">
-                  <div 
-                    className={`${isMobile ? 'text-sm' : 'text-lg'}`}
-                    style={{ filter: 'drop-shadow(0 0 6px rgba(0, 255, 255, 1))' }}
-                  >⏱️</div>
-                  <div 
-                    className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'} ${isMobile ? 'text-xs' : 'text-sm'}`}
-                    style={{ filter: 'drop-shadow(0 0 4px rgba(0, 255, 255, 0.8))' }}
-                  >
-                    {timeLeft}s
-                  </div>
-                </div>
-                
-                {/* Pergunta Atual */}
-                <div className="text-center">
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pergunta</p>
-                  <p className={`font-bold text-epic ${isMobile ? 'text-sm' : 'text-lg'}`}>{currentQuestion + 1}/{questions.length}</p>
-                </div>
-                
-                {/* Pontuação */}
-                <div className="text-center">
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
-                  <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-lg'}`}>{score}/{currentQuestion + 1}</p>
-                </div>
-              </div>
+              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
-            
-            {/* Barra de Progresso */}
             <div className="progress-epic">
               <div 
                 className="progress-epic-fill" 
