@@ -395,17 +395,17 @@ const Medieval = () => {
         </div>
 
         {/* Arena de Combate */}
-        <div className="relative mb-4">
-          <div className="flex items-center justify-between px-8 mb-6">
+        <div className={`relative ${isMobile ? 'mb-1' : 'mb-4'}`}>
+          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador */}
             <div className="text-center">
-              <div className="text-7xl mb-2 animate-bounce">⚔️</div>
-              <div className="arena-card backdrop-blur-sm bg-victory/20 p-3 min-w-32">
+              <div className={`mb-0.5 animate-bounce ${isMobile ? 'text-lg' : 'text-7xl'}`}>⚔️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className="font-montserrat font-bold text-sm text-victory">VOCÊ</h3>
                 <div className="text-xs text-muted-foreground">Cavaleiro</div>
-                <div className="progress-epic mt-2">
+                <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                   <div 
-                    className="h-2 bg-victory rounded-full transition-all duration-1000" 
+                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
@@ -414,10 +414,10 @@ const Medieval = () => {
             </div>
 
             {/* Timer */}
-            <div className="arena-card-epic backdrop-blur-sm bg-purple-500/20 p-4 text-center border-2 border-purple-500 glow-epic mx-4">
-              <div className="text-3xl mb-1">⏰</div>
-              <div className={`text-2xl font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-purple-400'}`}>
-                {timeLeft}s
+            <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/20 text-center border border-purple-500 ${isMobile ? 'p-0.5 mx-1 scale-75' : 'p-4 mx-4 border-2 glow-epic'}`}>
+              <div className={`${isMobile ? 'text-sm' : 'text-3xl mb-1'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-purple-400'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
+                {isMobile ? timeLeft : `${timeLeft}s`}
               </div>
             </div>
 

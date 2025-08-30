@@ -476,44 +476,42 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         {/* Arena de Combate Visual */}
         <div className={`relative ${isMobile ? 'mb-2' : 'mb-4'}`}>
           {/* Personagens Lutando - Grandes e Visíveis */}
-          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-2' : 'px-8 mb-6'}`}>
+          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador - Lado Esquerdo */}
             <div className="text-center">
-              <div className={`mb-1 animate-bounce ${isMobile ? 'text-2xl' : 'text-7xl'}`}>🧙‍♂️</div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-1 min-w-16 scale-50' : 'p-3 min-w-32'}`}>
+              <div className={`mb-0.5 animate-bounce ${isMobile ? 'text-lg' : 'text-7xl'}`}>🧙‍♂️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
-                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? 'Player' : 'Guerreiro'}</div>
-                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
+                <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                   <div 
-                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
+                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`}
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-victory mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? playerHp : `HP: ${playerHp}`}</p>
+                <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0.5' : 'text-xs mt-1'}`}>{isMobile ? playerHp : `HP: ${playerHp}`}</p>
               </div>
             </div>
 
-            {/* Timer Central - Menor */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border-2 border-epic glow-epic ${isMobile ? 'p-1 mx-1 scale-50' : 'p-4 mx-4'}`}>
-              <div className={`mb-1 ${isMobile ? 'text-lg' : 'text-3xl'}`}>⏰</div>
-              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-sm' : 'text-2xl'}`}>
-                {timeLeft}s
+            {/* Timer Central - MUITO Menor */}
+            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border border-epic ${isMobile ? 'p-0.5 mx-1 scale-75' : 'p-4 mx-4'}`}>
+              <div className={`${isMobile ? 'text-sm' : 'text-3xl'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-xs' : 'text-2xl'}`}>
+                {isMobile ? timeLeft : `${timeLeft}s`}
               </div>
             </div>
 
             {/* IA Dummy - Lado Direito */}
             <div className="text-center">
-              <div className={`mb-1 animate-pulse ${isMobile ? 'text-2xl' : 'text-8xl'}`}>🗿</div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-1 min-w-16 scale-50' : 'p-3 min-w-32'}`}>
+              <div className={`mb-0.5 animate-pulse ${isMobile ? 'text-lg' : 'text-8xl'}`}>🗿</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA DUMMY'}</h3>
-                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? 'Bot' : 'Esfinge'}</div>
-                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
+                <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                   <div 
-                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
+                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`}
                     style={{ width: `${enemyHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-destructive mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>{isMobile ? enemyHp : `HP: ${enemyHp}`}</p>
+                <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0.5' : 'text-xs mt-1'}`}>{isMobile ? enemyHp : `HP: ${enemyHp}`}</p>
               </div>
             </div>
           </div>
@@ -525,10 +523,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Pergunta em Balão Épico */}
-        <div className="arena-card-epic backdrop-blur-sm bg-epic/10 border-2 border-epic p-8 mb-6 glow-epic">
-          <div className="flex items-center justify-center mb-6">
-            <div className="inline-block px-6 py-2 bg-epic/30 rounded-full backdrop-blur-sm border border-epic">
-              <span className="text-epic font-bold text-sm uppercase tracking-wide">
+        <div className={`arena-card-epic backdrop-blur-sm bg-epic/10 border border-epic glow-epic ${isMobile ? 'p-2 mb-2' : 'p-8 mb-6 border-2'}`}>
+          <div className={`flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-6'}`}>
+            <div className={`inline-block bg-epic/30 rounded-full backdrop-blur-sm border border-epic ${isMobile ? 'px-2 py-1' : 'px-6 py-2'}`}>
+              <span className={`text-epic font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 🧠 {question.category === 'history' ? 'História' : 
                  question.category === 'finance' ? 'Finanças' : 
                  question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
@@ -536,17 +534,17 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           </div>
 
-          <h2 className="text-2xl font-montserrat font-bold text-center mb-8 text-foreground">
+          <h2 className={`font-montserrat font-bold text-center text-foreground ${isMobile ? 'text-sm mb-3' : 'text-2xl mb-8'}`}>
             {question.question}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 ${isMobile ? 'gap-2' : 'md:grid-cols-2 gap-4'}`}>
             {question.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
                 disabled={gamePhase !== 'question'}
-                className={`p-6 rounded-lg border-2 transition-all text-left backdrop-blur-sm ${
+                className={`rounded-lg border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-2' : 'p-6 border-2'} ${
                   gamePhase === 'question' 
                     ? 'border-border bg-card/80 hover:border-epic hover:bg-epic/20 hover:scale-105' 
                     : selectedAnswer === index
@@ -558,19 +556,19 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                         : 'border-border bg-card/50 opacity-50'
                 }`}
               >
-                <div className="flex items-center space-x-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                <div className={`flex items-center ${isMobile ? 'space-x-2' : 'space-x-4'}`}>
+                  <div className={`rounded-full flex items-center justify-center font-bold ${isMobile ? 'w-6 h-6 text-xs' : 'w-10 h-10 text-lg'} ${
                     gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
                     index === question.correct ? 'bg-victory text-victory-foreground' :
                     selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
                     'bg-muted text-muted-foreground'
                   }`}>
                     {gamePhase === 'result' && index === question.correct ? 
-                      <CheckCircle className="w-6 h-6" /> : 
+                      <CheckCircle className={`${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} /> : 
                       String.fromCharCode(65 + index)
                     }
                   </div>
-                  <span className="font-semibold text-lg">{option}</span>
+                  <span className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>{option}</span>
                 </div>
               </button>
             ))}

@@ -395,8 +395,8 @@ const Mesopotamia = () => {
         </div>
 
         {/* Arena de Combate */}
-        <div className="relative mb-4">
-          <div className="flex items-center justify-between px-8 mb-6">
+        <div className={`relative ${isMobile ? 'mb-1' : 'mb-4'}`}>
+          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
             {/* Jogador */}
             <div className="text-center">
               <div className="text-7xl mb-2 animate-bounce">🏺</div>
