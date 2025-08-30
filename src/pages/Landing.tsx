@@ -16,6 +16,7 @@ import {
 import { ParticleBackground } from '@/components/ui/particles';
 import { ActionButton } from '@/components/arena/ActionButton';
 import { AuthForm } from '@/components/auth/AuthForm';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import arenaLogo from '@/assets/arena-logo.png';
 import egyptBg from '@/assets/egypt-landing-bg.jpg';
@@ -26,6 +27,7 @@ import { Card } from '@/components/ui/card';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [showAuth, setShowAuth] = useState(false);
 
   const features = [
@@ -114,7 +116,7 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       {/* Dynamic Era Backgrounds */}
       <div className="absolute inset-0 z-0">
         <div className="h-full w-full">
@@ -197,16 +199,16 @@ const Landing = () => {
         </div>
       </header>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'h-full overflow-y-auto' : ''}`}>
         {/* Hero Section */}
-        <section className="text-center py-20 px-6">
+        <section className={`text-center ${isMobile ? 'py-8 px-3' : 'py-20 px-6'}`}>
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-6xl md:text-8xl font-montserrat font-black mb-6">
+            <h1 className={`font-montserrat font-black mb-6 ${isMobile ? 'text-4xl' : 'text-6xl md:text-8xl'}`}>
               <span className="text-epic">Arena do</span><br />
               <span className="text-victory">Conhecimento</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className={`text-muted-foreground mb-8 max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl md:text-2xl'}`}>
               Transforme seu conhecimento histórico em <span className="text-victory font-bold">créditos valiosos</span>. 
               Batalhe, aprenda e ganhe créditos dominando as eras da humanidade.
             </p>

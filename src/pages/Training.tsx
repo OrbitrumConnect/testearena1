@@ -185,7 +185,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       <div className="min-h-screen bg-background relative overflow-hidden">
         <ParticleBackground />
         
-        <div className="relative z-10 max-w-4xl mx-auto p-6">
+        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -315,7 +315,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       <div className="min-h-screen bg-background relative overflow-hidden">
         <ParticleBackground />
         
-        <div className="relative z-10 max-w-4xl mx-auto p-6">
+        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -434,7 +434,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
       </div>
       
-      <div className="relative z-10 max-w-4xl mx-auto p-6">
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Header de Batalha */}
         <div className="flex items-center justify-between mb-8">
           <ActionButton 
