@@ -72,10 +72,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
 
-    // Limpar efeito após 5 segundos (para ver a animação completa de 4s)
+    // Limpar efeito após 4 segundos (para ver a animação completa de 3s)
     setTimeout(() => {
       setAttackEffect(null);
-    }, 5000);
+    }, 4000);
   };
 
   const nextQuestion = async () => {
@@ -537,7 +537,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <div 
                 className="text-2xl text-orange-500"
                 style={{
-                  animation: 'fireFromPlayerToEnemy 4s ease-out forwards',
+                  animation: 'fireFromPlayerToEnemy 3s ease-out forwards',
                   zIndex: 9999
                 }}
               >
@@ -552,7 +552,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <div 
                 className="text-2xl text-red-500"
                 style={{
-                  animation: 'fireFromEnemyToPlayer 4s ease-out forwards',
+                  animation: 'fireFromEnemyToPlayer 3s ease-out forwards',
                   zIndex: 9999
                 }}
               >
@@ -569,14 +569,24 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 opacity: 1;
                 scale: 1;
               }
-              50% {
+              25% {
                 transform: translateX(200px);
+                opacity: 0.9;
+                scale: 1.1;
+              }
+              50% {
+                transform: translateX(400px);
                 opacity: 0.8;
                 scale: 1.2;
               }
+              75% {
+                transform: translateX(600px);
+                opacity: 0.7;
+                scale: 1.1;
+              }
               100% {
-                transform: translateX(400px);
-                opacity: 0.6;
+                transform: translateX(800px);
+                opacity: 0.5;
                 scale: 0.8;
               }
             }
@@ -587,14 +597,24 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 opacity: 1;
                 scale: 1;
               }
-              50% {
+              25% {
                 transform: translateX(-200px);
+                opacity: 0.9;
+                scale: 1.1;
+              }
+              50% {
+                transform: translateX(-400px);
                 opacity: 0.8;
                 scale: 1.2;
               }
+              75% {
+                transform: translateX(-600px);
+                opacity: 0.7;
+                scale: 1.1;
+              }
               100% {
-                transform: translateX(-400px);
-                opacity: 0.6;
+                transform: translateX(-800px);
+                opacity: 0.5;
                 scale: 0.8;
               }
             }
