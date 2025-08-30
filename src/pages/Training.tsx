@@ -95,7 +95,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
-      setTimeLeft(30);
       setGamePhase('question');
       setShowExplanation(false);
     } else {

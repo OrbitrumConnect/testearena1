@@ -87,7 +87,6 @@ const Medieval = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
-      // Não resetar timeLeft - continua correndo
       setGamePhase('question');
       setShowExplanation(false);
     } else {
@@ -378,6 +377,18 @@ const Medieval = () => {
       <ParticleBackground />
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
+        {/* Botão Voltar */}
+        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
+          <ActionButton 
+            variant="battle" 
+            icon={<ArrowLeft />}
+            onClick={() => navigate('/app')}
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
+          >
+            Voltar
+          </ActionButton>
+        </div>
+        
         {/* Barra de Progresso Épica - Padrão Egito */}
         <div className={isMobile ? 'mb-2' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
@@ -570,7 +581,7 @@ const Medieval = () => {
         </div>
 
         {/* Pergunta - 30% Menor */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-1 mt-12 scale-24' : 'p-2 mb-2 mt-16 border-2 glow-epic scale-56'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-1 mt-8 scale-24' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
             <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -591,7 +602,7 @@ const Medieval = () => {
                 key={index}
                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
                 disabled={gamePhase !== 'question'}
-                className={`p-6 rounded-lg border-2 transition-all text-left backdrop-blur-sm ${
+                className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-1' : 'p-4 border-2 rounded-lg'} ${
                   gamePhase === 'question' 
                     ? 'border-border bg-card/80 hover:border-purple-500 hover:bg-purple-500/20 hover:scale-105' 
                     : selectedAnswer === index
@@ -603,8 +614,8 @@ const Medieval = () => {
                         : 'border-border bg-card/50 opacity-50'
                 }`}
               >
-                <div className="flex items-center space-x-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-3'}`}>
+                  <div className={`rounded-full flex items-center justify-center font-bold ${isMobile ? 'w-4 h-4 text-xs' : 'w-8 h-8 text-sm'} ${
                     gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
                     index === question.correct ? 'bg-victory text-victory-foreground' :
                     selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
@@ -615,7 +626,7 @@ const Medieval = () => {
                       String.fromCharCode(65 + index)
                     }
                   </div>
-                  <span className="font-semibold text-lg">{option}</span>
+                  <span className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>{option}</span>
                 </div>
               </button>
             ))}

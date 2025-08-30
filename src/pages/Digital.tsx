@@ -98,9 +98,6 @@ const Digital = () => {
       setTimeout(() => setHitEffect('player'), 500);
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
-    
-    // Resetar timer para próxima pergunta (apenas quando responde)
-    setTimeLeft(30);
   };
 
   const nextQuestion = async () => {
@@ -397,6 +394,18 @@ const Digital = () => {
       <ParticleBackground />
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full flex flex-col' : 'p-6'}`}>
+        {/* Botão Voltar */}
+        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
+          <ActionButton 
+            variant="battle" 
+            icon={<ArrowLeft />}
+            onClick={() => navigate('/app')}
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
+          >
+            Voltar
+          </ActionButton>
+        </div>
+        
         {/* Barra de Progresso Épica - Padrão Egito */}
         <div className={isMobile ? 'mb-2' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
