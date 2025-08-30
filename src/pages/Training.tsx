@@ -72,10 +72,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
 
-    // Limpar efeito após 2 segundos
+    // Limpar efeito após 4 segundos (para ver a animação completa)
     setTimeout(() => {
       setAttackEffect(null);
-    }, 2000);
+    }, 4000);
   };
 
   const nextQuestion = async () => {
@@ -531,14 +531,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           )}
 
-          {/* Fogo Viajando - Player Ataca (Você → Inimigo) */}
+          {/* Fogo Viajando - ACERTO: Você → Inimigo */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
               <div 
-                className="text-2xl text-orange-500 transition-all duration-1500 ease-out"
+                className="text-3xl text-orange-500 transition-all duration-3000 ease-linear animate-pulse"
                 style={{
-                  transform: 'translateX(300px)', // Sai de você e vai para o inimigo
-                  opacity: '1'
+                  transform: 'translateX(400px)', // Muito mais longe
+                  animation: 'fireTravel 3s ease-out forwards'
                 }}
               >
                 🔥💥
@@ -546,14 +546,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </div>
           )}
 
-          {/* Fogo Viajando - Inimigo Ataca (Inimigo → Você) */}
+          {/* Fogo Viajando - ERRO: Inimigo → Você */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
               <div 
-                className="text-2xl text-red-500 transition-all duration-1500 ease-out"
+                className="text-3xl text-red-500 transition-all duration-3000 ease-linear animate-pulse"
                 style={{
-                  transform: 'translateX(-300px)', // Sai do inimigo e vai para você
-                  opacity: '1'
+                  transform: 'translateX(-400px)', // Muito mais longe
+                  animation: 'fireTravel 3s ease-out forwards'
                 }}
               >
                 🔥💥
