@@ -237,6 +237,11 @@ const Index = () => {
                 </div>
                 
                 <div className="flex items-center space-x-0.5">
+                  {/* Controle de Música Mobile */}
+                  <div className="mr-1">
+                    <PersistentBackgroundMusic autoPlay={true} className="scale-75" />
+                  </div>
+                  
                   <ActionButton 
                     variant="epic" 
                     onClick={() => navigate('/dashboard')}
