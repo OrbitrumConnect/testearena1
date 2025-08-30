@@ -24,6 +24,9 @@ const Digital = () => {
   const [playerHp, setPlayerHp] = useState(100);
   const [enemyHp, setEnemyHp] = useState(100);
   const [battleStartTime] = useState(Date.now());
+  const [attackEffect, setAttackEffect] = useState<'player' | 'enemy' | null>(null);
+  const [laserShots, setLaserShots] = useState<Array<{id: number, type: 'player' | 'enemy'}>>([]);
+  const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
 
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
   const { questions, loading, refetch } = useEraQuestions('digital', 25);
@@ -43,6 +46,32 @@ const Digital = () => {
     }
   }, [timeLeft, gamePhase]);
 
+  // Effect para limpar o efeito de ataque
+  useEffect(() => {
+    if (attackEffect) {
+      const timer = setTimeout(() => setAttackEffect(null), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [attackEffect]);
+
+  // Effect para limpar os tiros de laser
+  useEffect(() => {
+    if (laserShots.length > 0) {
+      const timer = setTimeout(() => {
+        setLaserShots([]);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [laserShots]);
+
+  // Effect para limpar o efeito de hit
+  useEffect(() => {
+    if (hitEffect) {
+      const timer = setTimeout(() => setHitEffect(null), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hitEffect]);
+
   const handleAnswer = (answerIndex: number | null) => {
     setSelectedAnswer(answerIndex);
     setGamePhase('result');
@@ -53,19 +82,31 @@ const Digital = () => {
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
+      // Jogador acerta - 3 tiros de laser do jogador para o inimigo
+      const shots = Array.from({length: 3}, (_, i) => ({id: Date.now() + i, type: 'player' as const}));
+      setLaserShots(shots);
+      // Ativar glow quando os lasers chegarem ao alvo (0.5s depois)
+      setTimeout(() => setHitEffect('enemy'), 500);
       // Jogador acerta - Inimigo perde HP (5% a mais de dano)
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
     } else {
+      // Jogador erra - 3 tiros de laser do inimigo para o jogador
+      const shots = Array.from({length: 3}, (_, i) => ({id: Date.now() + i, type: 'enemy' as const}));
+      setLaserShots(shots);
+      // Ativar glow quando os lasers chegarem ao alvo (0.5s depois)
+      setTimeout(() => setHitEffect('player'), 500);
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
+    
+    // Resetar timer para próxima pergunta (apenas quando responde)
+    setTimeLeft(30);
   };
 
   const nextQuestion = async () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
-      setTimeLeft(30);
       setGamePhase('question');
       setShowExplanation(false);
     } else {
@@ -355,36 +396,59 @@ const Digital = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
-        {/* Header de Batalha */}
-        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
-          <ActionButton 
-            variant="battle" 
-            icon={<ArrowLeft />}
-            onClick={() => navigate('/app')}
-            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
-          >
-            Voltar
-          </ActionButton>
-          
-          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
-            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>🤖 BATALHA DIGITAL</h1>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Era da Tecnologia - {currentQuestion + 1}/{questions.length}</p>
-          </div>
-
-          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-2 scale-75 self-end' : 'px-4 py-3'}`}>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
-            <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
-          </div>
-        </div>
-
-        {/* Barra de Progresso */}
-        <div className={isMobile ? 'mb-2' : 'mb-8'}>
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full flex flex-col' : 'p-6'}`}>
+        {/* Barra de Progresso Integrada com Botão Voltar */}
+        <div className={isMobile ? 'mb-2' : 'mb-6'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
+            {/* Linha Superior - Botão Voltar, Título e Informações */}
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
-              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
+              {/* Botão Voltar à Esquerda */}
+              <ActionButton 
+                variant="battle" 
+                icon={<ArrowLeft />}
+                onClick={() => navigate('/app')}
+                className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-2 py-1 scale-75' : 'text-sm px-3 py-2'}`}
+              >
+                {isMobile ? '' : 'Voltar'}
+              </ActionButton>
+              
+              {/* Título Central */}
+              <div className="text-center flex-1">
+                <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-sm' : 'text-lg'}`}>🤖 BATALHA DIGITAL</h1>
+                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Era da Tecnologia</p>
+              </div>
+              
+              {/* Informações à Direita */}
+              <div className="flex items-center space-x-4">
+                {/* Timer */}
+                <div className="flex items-center space-x-1">
+                  <div 
+                    className={`${isMobile ? 'text-sm' : 'text-lg'}`}
+                    style={{ filter: 'drop-shadow(0 0 6px rgba(0, 255, 255, 1))' }}
+                  >⏱️</div>
+                  <div 
+                    className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'} ${isMobile ? 'text-xs' : 'text-sm'}`}
+                    style={{ filter: 'drop-shadow(0 0 4px rgba(0, 255, 255, 0.8))' }}
+                  >
+                    {timeLeft}s
+                  </div>
+                </div>
+                
+                {/* Pergunta Atual */}
+                <div className="text-center">
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pergunta</p>
+                  <p className={`font-bold text-epic ${isMobile ? 'text-sm' : 'text-lg'}`}>{currentQuestion + 1}/{questions.length}</p>
+                </div>
+                
+                {/* Pontuação */}
+                <div className="text-center">
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
+                  <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-lg'}`}>{score}/{currentQuestion + 1}</p>
+                </div>
+              </div>
             </div>
+            
+            {/* Barra de Progresso */}
             <div className="progress-epic">
               <div 
                 className="progress-epic-fill" 
@@ -395,57 +459,94 @@ const Digital = () => {
         </div>
 
         {/* Arena de Combate */}
-        <div className={`relative ${isMobile ? 'mb-1' : 'mb-4'}`}>
-          <div className={`flex items-center justify-between ${isMobile ? 'px-1 mb-1' : 'px-8 mb-6'}`}>
-            {/* Jogador */}
-            <div className="text-center">
-              <div className={`animate-bounce ${isMobile ? 'text-lg mb-0' : 'text-7xl mb-0.5'}`}>👨‍💻</div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
-                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
-                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
-                  <div 
-                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
-                    style={{ width: `${playerHp}%` }}
-                  />
-                </div>
-                <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
-              </div>
+        <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-3' : 'h-40 mb-8'}`}>
+          {/* Jogador - Posição Esquerda (origem do ataque) */}
+          <div className="absolute left-6 top-3 text-center">
+            <div className={`animate-pulse ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+              <img 
+                src="/guerreirodigital.png" 
+                alt="Guerreiro Digital" 
+                className={`${isMobile ? 'w-8 h-8' : 'w-24 h-24'} object-contain`}
+                style={{ 
+                  filter: hitEffect === 'player' 
+                    ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
+                    : 'drop-shadow(0 0 12px rgba(14, 165, 233, 1))'
+                }}
+              />
             </div>
-
-            {/* Timer */}
-            <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/20 text-center border border-cyan-500 ${isMobile ? 'p-0.5 mx-0.5 scale-50 -mt-8' : 'p-3 mx-3 border-2 glow-epic -mt-6'}`}>
-              <div className={`${isMobile ? 'text-xs' : 'text-2xl'}`}>🕐</div>
-              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-cyan-400'} ${isMobile ? 'text-xs' : 'text-lg'}`}>
-                {timeLeft}
+            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-10 scale-65' : 'p-2 min-w-28'}`}>
+              <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
+              <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
+                <div 
+                  className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`}
+                  style={{ width: `${playerHp}%` }}
+                />
               </div>
-            </div>
-
-            {/* Inimigo */}
-            <div className="text-center">
-              <div className={`animate-pulse ${isMobile ? 'text-lg mb-0' : 'text-7xl mb-0.5'}`}>🤖</div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
-                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
-                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
-                  <div 
-                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
-                    style={{ width: `${enemyHp}%` }}
-                  />
-                </div>
-                <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
-              </div>
+              <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
             </div>
           </div>
 
-          {/* Efeito de Raio Apenas Durante Pergunta */}
-          {gamePhase === 'question' && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-              <div className="text-4xl animate-ping opacity-50">⚡</div>
+          {/* Inimigo - Posição Direita (alvo do ataque) */}
+          <div className="absolute right-6 top-3 text-center">
+            <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+              <img 
+                src="/bossdigital.png" 
+                alt="Boss Digital" 
+                className={`${isMobile ? 'w-10 h-10' : 'w-28 h-28'} object-contain`}
+                style={{ 
+                  filter: hitEffect === 'enemy' 
+                    ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
+                    : 'drop-shadow(0 0 12px rgba(239, 68, 68, 1))'
+                }}
+              />
             </div>
-          )}
+            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-10 scale-65' : 'p-2 min-w-28'}`}>
+              <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
+              <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
+                <div 
+                  className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`}
+                  style={{ width: `${enemyHp}%` }}
+                />
+              </div>
+              <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
+            </div>
+          </div>
+
+          {/* Efeito de 3 Tiros de Laser Neon Laranja */}
+          {laserShots.map((shot, index) => {
+            // Tamanhos diferentes para cada laser (30% menores)
+            const laserSizes = ['━━━', '━━', '━━━━'];
+            const laserSize = laserSizes[index % 3];
+            
+            // Posições verticais diferentes com mais espaçamento
+            const verticalPositions = [40, 50, 60]; // Posições em %
+            const verticalPos = verticalPositions[index % 3];
+            
+            return (
+              <div 
+                key={shot.id}
+                className={`absolute pointer-events-none ${isMobile ? 'text-xs' : 'text-lg'}`}
+                style={{
+                  left: shot.type === 'player' ? '16%' : 'auto',
+                  right: shot.type === 'enemy' ? '16%' : 'auto',
+                  top: `${verticalPos}%`,
+                  transform: 'translateY(-50%)',
+                  animation: `${shot.type === 'player' ? 'laser-travel-right' : 'laser-travel-left'} 1s ease-out forwards`,
+                  animationDelay: `${index * 0.2}s`,
+                  color: '#ff6b35',
+                  textShadow: '0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35',
+                  filter: 'drop-shadow(0 0 8px #ff6b35)',
+                  fontSize: index === 1 ? '0.85em' : index === 2 ? '0.65em' : '0.7em'
+                }}
+              >
+                {laserSize}
+              </div>
+            );
+          })}
         </div>
 
         {/* Pergunta */}
-        <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border-2 border-cyan-500 p-8 mb-6 glow-epic">
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border-2 border-cyan-500 glow-epic ${isMobile ? 'p-0.5 mb-0.5 scale-18 mt-4' : 'p-2 mb-2 scale-56 mt-16'}`}>
           <div className="flex items-center justify-center mb-6">
             <div className="inline-block px-6 py-2 bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500">
               <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">
@@ -456,17 +557,17 @@ const Digital = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl font-montserrat font-bold text-center mb-8 text-foreground">
+          <h2 className={`${isMobile ? 'text-lg mb-4' : 'text-2xl mb-8'} font-montserrat font-bold text-center text-foreground`}>
             {question.question}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-2' : 'gap-4'}`}>
             {question.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
                 disabled={gamePhase !== 'question'}
-                className={`p-6 rounded-lg border-2 transition-all text-left backdrop-blur-sm ${
+                className={`${isMobile ? 'p-1 text-xs' : 'p-4'} rounded-lg border-2 transition-all text-left backdrop-blur-sm ${
                   gamePhase === 'question' 
                     ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
                     : selectedAnswer === index

@@ -254,37 +254,40 @@ const Landing = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
+        <section className={`${isMobile ? 'py-6 px-2' : 'py-20 px-6'}`}>
+          <div className={`text-center ${isMobile ? 'mb-6' : 'mb-16'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-4xl mb-4'}`}>
               Por que Escolher a Arena?
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl'}`}>
               Uma plataforma revolucionária que combina educação, competição e recompensas reais
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${isMobile ? 'gap-3' : 'gap-6'}`}>
             {features.map((feature, index) => (
               <Card 
                 key={index} 
                 className={`
-                  relative overflow-hidden p-6 text-center hover-scale transition-all duration-300
+                  relative overflow-hidden text-center hover-scale transition-all duration-300
                   bg-gradient-to-br ${feature.bgGradient} 
                   border ${feature.borderColor}
                   hover:shadow-lg hover:scale-105
+                  ${isMobile ? 'p-3' : 'p-6'}
                 `}
               >
                 <div className="relative z-10">
-                  <div className="mb-4 flex justify-center">
-                    <div className="p-3 rounded-full bg-background/20 backdrop-blur-sm">
-                      {feature.icon}
+                  <div className={`flex justify-center ${isMobile ? 'mb-2' : 'mb-4'}`}>
+                    <div className={`rounded-full bg-background/20 backdrop-blur-sm ${isMobile ? 'p-2' : 'p-3'}`}>
+                      <div className={`${isMobile ? 'w-5 h-5' : 'w-8 h-8'}`}>
+                        {feature.icon}
+                      </div>
                     </div>
                   </div>
-                  <h3 className={`text-xl font-montserrat font-bold mb-3 text-${feature.color}`}>
+                  <h3 className={`font-montserrat font-bold text-${feature.color} ${isMobile ? 'text-sm mb-2' : 'text-xl mb-3'}`}>
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className={`text-muted-foreground leading-relaxed ${isMobile ? 'text-xs' : 'text-sm'}`}>
                     {feature.description}
                   </p>
                 </div>
@@ -296,40 +299,41 @@ const Landing = () => {
         </section>
 
         {/* Eras Section */}
-        <section className="py-20 px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
+        <section className={`${isMobile ? 'py-6 px-2' : 'py-20 px-6'}`}>
+          <div className={`text-center ${isMobile ? 'mb-6' : 'mb-16'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-4xl mb-4'}`}>
               Explore as Eras Históricas
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl'}`}>
               Cada era oferece desafios únicos, perguntas dinâmicas e oportunidades de aprendizado
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-6'}`}>
             {eras.map((era) => (
               <Card 
                 key={era.id} 
                 className={`
-                  relative overflow-hidden p-6 cursor-pointer transition-all duration-300
+                  relative overflow-hidden cursor-pointer transition-all duration-300
                   bg-gradient-to-br ${era.bgGradient} 
                   border ${era.borderColor}
                   hover:shadow-xl hover:scale-[1.02] hover:border-${era.color}/50
+                  ${isMobile ? 'p-3' : 'p-6'}
                 `}
               >
                 <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`text-4xl p-2 rounded-full bg-${era.color}/10 border border-${era.color}/20`}>
+                  <div className={`flex items-center mb-4 ${isMobile ? 'gap-2' : 'gap-4'}`}>
+                    <div className={`rounded-full bg-${era.color}/10 border border-${era.color}/20 ${isMobile ? 'text-2xl p-1' : 'text-4xl p-2'}`}>
                       {era.emoji}
                     </div>
                     <div>
-                      <h3 className={`text-xl font-montserrat font-bold text-${era.color}`}>
+                      <h3 className={`font-montserrat font-bold text-${era.color} ${isMobile ? 'text-sm' : 'text-xl'}`}>
                         {era.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground font-medium">{era.period}</p>
+                      <p className={`text-muted-foreground font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{era.period}</p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{era.description}</p>
+                  <p className={`text-muted-foreground leading-relaxed ${isMobile ? 'text-xs mb-3' : 'mb-6'}`}>{era.description}</p>
                                     <div className="space-y-2">
                     <ActionButton
                       variant={era.color as any}

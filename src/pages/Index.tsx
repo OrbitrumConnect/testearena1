@@ -9,7 +9,8 @@ import {
   Target,
   UserPlus,
   Settings,
-  Database
+  Database,
+  LogOut
 } from 'lucide-react';
 import { ParticleBackground } from '@/components/ui/particles';
 import { TimelineModule } from '@/components/arena/TimelineModule';
@@ -87,7 +88,8 @@ const Index = () => {
       ...egyptProgress,
       isActive: true,
       icon: 'pyramid',
-      background: egyptLandingBg
+      background: egyptLandingBg,
+      onClick: () => navigate('/training')
     },
     {
       id: 'mesopotamia',
@@ -96,7 +98,8 @@ const Index = () => {
       ...mesopotamiaProgress,
       isActive: egyptProgress.progress >= 30, // Disponível se Egito >= 30%
       icon: 'scroll',
-      background: mesopotamiaLandingBg
+      background: mesopotamiaLandingBg,
+      onClick: () => navigate('/mesopotamia')
     },
     {
       id: 'medieval',
@@ -105,7 +108,8 @@ const Index = () => {
       ...medievalProgress,
       isActive: mesopotamiaProgress.progress >= 30, // Disponível se Mesopotâmia >= 30%
       icon: 'castle',
-      background: medievalLandingBg
+      background: medievalLandingBg,
+      onClick: () => navigate('/medieval')
     },
     {
       id: 'future',
@@ -114,7 +118,8 @@ const Index = () => {
       ...digitalProgress,
       isActive: medievalProgress.progress >= 30, // Disponível se Medieval >= 30%
       icon: 'robot',
-      background: digitalLandingBg
+      background: digitalLandingBg,
+      onClick: () => navigate('/digital')
     },
     {
       id: 'world',
@@ -124,7 +129,8 @@ const Index = () => {
       isCompleted: false,
       isActive: digitalProgress.progress >= 50, // Disponível se Digital >= 50%
       icon: 'globe',
-      background: digitalLandingBg // Usar mesmo background da era digital
+      background: digitalLandingBg, // Usar mesmo background da era digital
+      onClick: () => navigate('/world-quiz')
     }
   ];
 
@@ -191,20 +197,32 @@ const Index = () => {
   }
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+      {/* Background Temático Home - Arena Principal */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url('/egypt-arena.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      <div className="absolute inset-0 bg-black/50" />
+      
       <ParticleBackground />
       
       {/* Header */}
-      <header className={`relative z-10 ${isMobile ? 'p-2' : 'p-6'} border-b border-card-border bg-background-soft/80 backdrop-blur-sm`}>
+      <header className={`relative z-10 ${isMobile ? 'p-1' : 'p-6'} border-b border-card-border bg-background-soft/80 backdrop-blur-sm`}>
         <div className="max-w-6xl mx-auto">
           {isMobile ? (
             // Layout mobile - organizado e compacto
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <img src={arenaLogo} alt="Arena" className="w-7 h-7" />
+                <div className="flex items-center space-x-1">
+                  <img src={arenaLogo} alt="Arena" className="w-5 h-5" />
                   <div>
-                    <h1 className="text-epic text-base font-bold">Arena</h1>
+                    <h1 className="text-epic text-sm font-bold">Arena</h1>
                     <p className="text-xs text-muted-foreground">Conhecimento</p>
                   </div>
                 </div>
@@ -218,38 +236,36 @@ const Index = () => {
                   </p>
                 </div>
                 
-                <div className="flex items-center space-x-1">
+                <div className="flex items-center space-x-0.5">
                   <ActionButton 
                     variant="epic" 
                     onClick={() => navigate('/dashboard')}
-                    className="text-xs px-2 py-1"
+                    className="text-xs px-1.5 py-0.5"
                   >
                     📊
                   </ActionButton>
                   <ActionButton 
                     variant="victory" 
                     onClick={() => navigate('/payment')}
-                    className="text-xs px-2 py-1"
+                    className="text-xs px-1.5 py-0.5"
                   >
                     💳
                   </ActionButton>
                   <ActionButton 
                     variant="battle" 
                     onClick={() => navigate('/')}
-                    className="text-xs px-2 py-1"
+                    className="text-xs px-1.5 py-0.5"
                   >
-                    🏠
+                    <LogOut className="w-3 h-3" />
                   </ActionButton>
                   <ActionButton 
-                    variant="destructive" 
+                    variant="battle" 
                     onClick={resetAllData}
                     disabled={resetting}
-                    className="text-xs px-1 py-1"
-                    title="Reset"
+                    className="text-xs px-1 py-0.5"
                   >
-                    {resetting ? '⏳' : '🗑️'}
+                    <span className="text-xs">{resetting ? '⏳' : '🗑️'}</span>
                   </ActionButton>
-
                 </div>
               </div>
             </div>
@@ -289,15 +305,7 @@ const Index = () => {
                 >
                   📊
                 </ActionButton>
-                {/* Link secreto para admin */}
-                <ActionButton 
-                  variant="battle" 
-                  onClick={() => navigate('/admin')}
-                  className="text-xs px-2 py-2"
-                  title="Admin Dashboard (phpg69@gmail.com)"
-                >
-                  🛡️
-                </ActionButton>
+
                 <ActionButton 
                   variant="victory" 
                   onClick={() => navigate('/payment')}
@@ -305,21 +313,30 @@ const Index = () => {
                 >
                   💳
                 </ActionButton>
+                
+                <ActionButton 
+                  variant="epic" 
+                  onClick={() => navigate('/admin')}
+                  className="text-xs px-3 py-2"
+                >
+                  🛠️
+                </ActionButton>
+
                 <ActionButton 
                   variant="battle" 
                   onClick={() => navigate('/')}
                   className="text-xs px-3 py-2"
                 >
-                  🏠
+                  <LogOut className="w-4 h-4" />
                 </ActionButton>
+
                 <ActionButton 
-                  variant="destructive" 
+                  variant="battle" 
                   onClick={resetAllData}
                   disabled={resetting}
                   className="text-xs px-3 py-2"
-                  title="Zerar dados de teste"
                 >
-                  {resetting ? '⏳' : '🗑️'}
+                  <span className="text-sm">{resetting ? '⏳' : '🗑️'}</span>
                 </ActionButton>
                 
                 <Settings className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-epic transition-colors" />
@@ -329,20 +346,20 @@ const Index = () => {
         </div>
       </header>
 
-      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-2 h-full overflow-y-auto' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Top Carousel - Ranking + Notícias */}
         <TopCarousel isMobile={isMobile} />
 
         {/* Balance & Stats Row */}
-        <div className={`${isMobile ? 'space-y-2 mb-3' : 'grid lg:grid-cols-3 gap-6 mb-8'}`}>
+        <div className={`${isMobile ? 'space-y-1 mb-2' : 'grid lg:grid-cols-3 gap-6 mb-8'}`}>
           {isMobile ? (
             // Mobile: Layout compacto empilhado
             <>
-              <div className="grid grid-cols-4 gap-1">
+              <div className="grid grid-cols-4 gap-0.5">
                 {stats.map((stat) => (
-                  <div key={stat.title} className="arena-card p-2 text-center">
-                    <p className="text-xs text-muted-foreground mb-1">{stat.title}</p>
-                    <p className={`text-sm font-bold ${
+                  <div key={stat.title} className="arena-card p-1 text-center">
+                    <p className="text-xs text-muted-foreground mb-0.5">{stat.title}</p>
+                    <p className={`text-xs font-bold ${
                       stat.type === 'history' ? 'text-victory' :
                       stat.type === 'finance' ? 'text-epic' :
                       stat.type === 'technology' ? 'text-battle' : 'text-legendary'
@@ -387,7 +404,7 @@ const Index = () => {
         </div>
 
         {/* Timeline Section */}
-        <section className={isMobile ? 'mb-3' : 'mb-6'}>
+        <section className={isMobile ? 'mb-2' : 'mb-6'}>
           {!isMobile && (
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-montserrat font-bold text-xl">Linha do Tempo</h2>
@@ -395,19 +412,12 @@ const Index = () => {
             </div>
           )}
           
-          <div className={`${isMobile ? 'grid grid-cols-5 gap-1' : 'flex overflow-x-auto pb-2 space-x-4 scrollbar-hide'} mb-4`}>
+          <div className={`${isMobile ? 'grid grid-cols-5 gap-0.5' : 'flex overflow-x-auto pb-2 space-x-4 scrollbar-hide'} mb-2`}>
             {timelineModules.map((module) => (
               <div
                 key={module.id}
                 className={`${isMobile ? 'arena-card p-2 text-center cursor-pointer hover-scale' : ''}`}
-                onClick={() => {
-                  if (module.id === 'egypt') navigate('/training');
-                  else if (module.id === 'mesopotamia') navigate('/mesopotamia');
-                  else if (module.id === 'medieval') navigate('/medieval');
-                  else if (module.id === 'future') navigate('/digital');
-                  else if (module.id === 'world') navigate('/world-quiz');
-                  else setSelectedModule(module.id);
-                }}
+                onClick={isMobile ? module.onClick : undefined}
               >
                 {isMobile ? (
                   // Mobile: Cards compactos com background
@@ -417,21 +427,21 @@ const Index = () => {
                       backgroundImage: `url(${module.background})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '80px'
+                      minHeight: '60px'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
-                    <div className="relative z-10 p-2 text-center">
-                      <div className="text-lg mb-1">
+                    <div className="relative z-10 p-1 text-center">
+                      <div className="text-sm mb-0.5">
                         {module.icon === 'pyramid' ? '🏛️' :
                          module.icon === 'scroll' ? '📜' :
                          module.icon === 'castle' ? '⚔️' :
                          module.icon === 'robot' ? '💻' : '🌍'}
                       </div>
                       <p className="text-xs font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
-                      <div className="w-full bg-white/20 rounded-full h-1 mt-1">
+                      <div className="w-full bg-white/20 rounded-full h-0.5 mt-0.5">
                         <div 
-                          className="bg-epic h-1 rounded-full transition-all duration-300" 
+                          className="bg-epic h-0.5 rounded-full transition-all duration-300" 
                           style={{ width: `${module.progress}%` }}
                         />
                       </div>
@@ -452,12 +462,12 @@ const Index = () => {
 
 
         {/* Quick Actions */}
-        <section className={isMobile ? 'pb-2' : ''}>
-          <div className={`grid ${isMobile ? 'grid-cols-4 gap-1' : 'grid-cols-1 md:grid-cols-4 gap-4'}`}>
-            <div className={`arena-card text-center ${isMobile ? 'p-1' : 'p-4'}`}>
-              <Users className={`text-battle mx-auto ${isMobile ? 'w-4 h-4' : 'w-8 h-8 mb-3'}`} />
+        <section className={isMobile ? 'pb-1' : ''}>
+          <div className={`grid ${isMobile ? 'grid-cols-4 gap-0.5' : 'grid-cols-1 md:grid-cols-4 gap-4'}`}>
+            <div className={`arena-card text-center ${isMobile ? 'p-0.5' : 'p-4'}`}>
+              <Users className={`text-battle mx-auto ${isMobile ? 'w-3 h-3' : 'w-8 h-8 mb-3'}`} />
               {!isMobile && <h4 className="font-montserrat font-bold mb-1 text-sm">Duelos Hoje</h4>}
-              <p className={`font-bold text-battle ${isMobile ? 'text-sm' : 'text-xl'}`}>
+              <p className={`font-bold text-battle ${isMobile ? 'text-xs' : 'text-xl'}`}>
                 {Math.min(totalBattles, 5)}/5
               </p>
               {isMobile && <p className="text-xs text-muted-foreground">Duelos</p>}
@@ -468,10 +478,10 @@ const Index = () => {
               )}
             </div>
             
-            <div className={`arena-card text-center ${isMobile ? 'p-1' : 'p-4'}`}>
-              <Target className={`text-victory mx-auto ${isMobile ? 'w-4 h-4' : 'w-8 h-8 mb-3'}`} />
+            <div className={`arena-card text-center ${isMobile ? 'p-0.5' : 'p-4'}`}>
+              <Target className={`text-victory mx-auto ${isMobile ? 'w-3 h-3' : 'w-8 h-8 mb-3'}`} />
               {!isMobile && <h4 className="font-montserrat font-bold mb-1 text-sm">Taxa Vitória</h4>}
-              <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{winRate}%</p>
+              <p className={`font-bold text-victory ${isMobile ? 'text-xs' : 'text-xl'}`}>{winRate}%</p>
               {isMobile && <p className="text-xs text-muted-foreground">Vitória</p>}
               {!isMobile && (
                 <p className="text-muted-foreground text-xs">
@@ -480,8 +490,8 @@ const Index = () => {
               )}
             </div>
             
-            <div className={`arena-card text-center cursor-pointer hover-scale ${isMobile ? 'p-1' : 'p-4'}`} onClick={() => navigate('/knowledge')}>
-              <Database className={`text-primary-glow mx-auto ${isMobile ? 'w-4 h-4' : 'w-8 h-8 mb-3'}`} />
+            <div className={`arena-card text-center cursor-pointer hover-scale ${isMobile ? 'p-0.5' : 'p-4'}`} onClick={() => navigate('/knowledge')}>
+              <Database className={`text-primary-glow mx-auto ${isMobile ? 'w-3 h-3' : 'w-8 h-8 mb-3'}`} />
               {!isMobile && <h4 className="font-montserrat font-bold mb-1 text-sm">Conhecimento</h4>}
               {isMobile ? (
                 <p className="text-xs text-muted-foreground">Acervo</p>
@@ -495,8 +505,8 @@ const Index = () => {
               )}
             </div>
             
-            <div className={`arena-card text-center ${isMobile ? 'p-1' : 'p-4'}`}>
-              <UserPlus className={`text-epic mx-auto ${isMobile ? 'w-4 h-4' : 'w-8 h-8 mb-3'}`} />
+            <div className={`arena-card text-center ${isMobile ? 'p-0.5' : 'p-4'}`}>
+              <UserPlus className={`text-epic mx-auto ${isMobile ? 'w-3 h-3' : 'w-8 h-8 mb-3'}`} />
               {!isMobile && <h4 className="font-montserrat font-bold mb-1 text-sm">Indicar Amigo</h4>}
               {isMobile ? (
                 <p className="text-xs text-muted-foreground">Indicar</p>

@@ -297,6 +297,68 @@ Todas as cores em HSL para consistência */
     }
   }
 
+  /* Animações de Ataque Digital */
+  @keyframes travel-right {
+    0% {
+      left: 15%;
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+    100% {
+      left: 75%;
+      opacity: 0;
+      transform: translateY(-50%) scale(0.3);
+    }
+  }
+
+  @keyframes travel-left {
+    0% {
+      right: 15%;
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+    100% {
+      right: 75%;
+      opacity: 0;
+      transform: translateY(-50%) scale(0.3);
+    }
+  }
+
+  /* Animações de Laser Neon Digital */
+  @keyframes laser-travel-right {
+    0% {
+      left: 12%;
+      opacity: 1;
+      transform: translateY(-50%) scaleX(1);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(-50%) scaleX(1.1);
+    }
+    100% {
+      left: 85%;
+      opacity: 0.3;
+      transform: translateY(-50%) scaleX(0.8);
+    }
+  }
+
+  @keyframes laser-travel-left {
+    0% {
+      right: 12%;
+      opacity: 1;
+      transform: translateY(-50%) scaleX(1);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(-50%) scaleX(1.1);
+    }
+    100% {
+      right: 85%;
+      opacity: 0.3;
+      transform: translateY(-50%) scaleX(0.8);
+    }
+  }
+
   /* Background Gradients */
   .bg-gradient-radial {
     background: radial-gradient(circle, var(--tw-gradient-stops));

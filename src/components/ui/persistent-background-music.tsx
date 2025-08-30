@@ -21,7 +21,10 @@ let globalState = {
   tracks: [
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(4).mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(3).mp3',
-    '/musica3.mp3' // Temporariamente servindo da pasta public
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica3.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica4.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica5.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3'
   ]
 };
 
@@ -29,7 +32,10 @@ export const PersistentBackgroundMusic = memo(({
   tracks = [
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(4).mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(3).mp3',
-    '/musica3.mp3' // Temporariamente servindo da pasta public
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica3.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica4.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica5.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3'
   ], 
   autoPlay = false,
   className = ""
@@ -129,13 +135,27 @@ export const PersistentBackgroundMusic = memo(({
   };
 
   const nextTrack = () => {
-    const next = (currentTrack + 1) % tracks.length;
-    setCurrentTrack(next);
+    if (globalAudio && globalState.tracks.length > 1) {
+      const next = (currentTrack + 1) % globalState.tracks.length;
+      globalState.currentTrack = next;
+      globalAudio.src = globalState.tracks[next];
+      setCurrentTrack(next);
+      if (isPlaying) {
+        globalAudio.play();
+      }
+    }
   };
 
   const prevTrack = () => {
-    const prev = (currentTrack - 1 + tracks.length) % tracks.length;
-    setCurrentTrack(prev);
+    if (globalAudio && globalState.tracks.length > 1) {
+      const prev = (currentTrack - 1 + globalState.tracks.length) % globalState.tracks.length;
+      globalState.currentTrack = prev;
+      globalAudio.src = globalState.tracks[prev];
+      setCurrentTrack(prev);
+      if (isPlaying) {
+        globalAudio.play();
+      }
+    }
   };
 
   const toggleExpanded = () => {
