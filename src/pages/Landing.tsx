@@ -48,12 +48,12 @@ const Landing = () => {
       borderColor: "border-epic/30"
     },
     {
-      icon: <BookOpen className="w-8 h-8 text-victory" />,
+      icon: <BookOpen className="w-8 h-8 text-epic" />,
       title: "Eras Históricas",
       description: "Explore desde o Egito Antigo até a Era Digital com conteúdo dinâmico",
-      color: "victory",
-      bgGradient: "from-victory/20 via-victory/10 to-transparent",
-      borderColor: "border-victory/30"
+      color: "epic",
+      bgGradient: "from-epic/20 via-epic/10 to-transparent",
+      borderColor: "border-epic/30"
     },
     {
       icon: <Users className="w-8 h-8 text-primary" />,
@@ -67,7 +67,7 @@ const Landing = () => {
 
   const stats = [
     { value: "10K+", label: "Guerreiros Ativos", icon: <Users className="w-6 h-6 text-epic" /> },
-    { value: "50M+", label: "Créditos Distribuídos", icon: <Trophy className="w-6 h-6 text-victory" /> },
+    { value: "50M+", label: "Créditos Distribuídos", icon: <Trophy className="w-6 h-6 text-epic" /> },
     { value: "4", label: "Eras Disponíveis", icon: <Crown className="w-6 h-6 text-battle" /> },
     { value: "95%", label: "Satisfação", icon: <Star className="w-6 h-6 text-primary" /> }
   ];
@@ -89,9 +89,9 @@ const Landing = () => {
       period: '2900-2800 a.C.',
       emoji: '📜',
       description: 'Explore o berço da civilização e seus códigos',
-      color: 'victory',
-      bgGradient: 'from-victory/20 via-victory/10 to-transparent',
-      borderColor: 'border-victory/40'
+      color: 'epic',
+      bgGradient: 'from-epic/20 via-epic/10 to-transparent',
+      borderColor: 'border-epic/40'
     },
     {
       id: 'medieval',
@@ -205,11 +205,11 @@ const Landing = () => {
           <div className="max-w-4xl mx-auto">
             <h1 className={`font-montserrat font-black ${isMobile ? 'text-2xl mb-3' : 'text-6xl md:text-8xl mb-6'}`}>
               <span className="text-epic">Arena do</span><br />
-              <span className="text-victory">Conhecimento</span>
+              <span className="text-epic">Conhecimento</span>
             </h1>
             
             <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xl md:text-2xl mb-8'}`}>
-              Transforme seu conhecimento histórico em <span className="text-victory font-bold">créditos valiosos</span>. 
+              Transforme seu conhecimento histórico em <span className="text-epic font-bold">créditos valiosos</span>. 
               Batalhe, aprenda e ganhe créditos dominando as eras da humanidade.
             </p>
 
