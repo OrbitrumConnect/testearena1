@@ -72,10 +72,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
 
-    // Limpar efeito após 4 segundos (para ver a animação completa)
+    // Limpar efeito após 6 segundos (para ver a animação completa de 5s)
     setTimeout(() => {
       setAttackEffect(null);
-    }, 4000);
+    }, 6000);
   };
 
   const nextQuestion = async () => {
@@ -533,12 +533,11 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ACERTO: Você → Inimigo */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
+            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
               <div 
-                className="text-3xl text-orange-500 transition-all duration-3000 ease-linear animate-pulse"
+                className="text-2xl text-orange-500"
                 style={{
-                  transform: 'translateX(400px)', // Muito mais longe
-                  animation: 'fireTravel 3s ease-out forwards'
+                  animation: 'fireFromPlayerToEnemy 5s ease-out forwards'
                 }}
               >
                 🔥💥
@@ -548,18 +547,56 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ERRO: Inimigo → Você */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
               <div 
-                className="text-3xl text-red-500 transition-all duration-3000 ease-linear animate-pulse"
+                className="text-2xl text-red-500"
                 style={{
-                  transform: 'translateX(-400px)', // Muito mais longe
-                  animation: 'fireTravel 3s ease-out forwards'
+                  animation: 'fireFromEnemyToPlayer 5s ease-out forwards'
                 }}
               >
                 🔥💥
               </div>
             </div>
           )}
+
+          {/* Adicionar CSS Keyframes */}
+          <style jsx>{`
+            @keyframes fireFromPlayerToEnemy {
+              0% {
+                transform: translateX(0px);
+                opacity: 1;
+                scale: 1;
+              }
+              50% {
+                transform: translateX(200px);
+                opacity: 0.8;
+                scale: 1.2;
+              }
+              100% {
+                transform: translateX(400px);
+                opacity: 0.6;
+                scale: 0.8;
+              }
+            }
+
+            @keyframes fireFromEnemyToPlayer {
+              0% {
+                transform: translateX(0px);
+                opacity: 1;
+                scale: 1;
+              }
+              50% {
+                transform: translateX(-200px);
+                opacity: 0.8;
+                scale: 1.2;
+              }
+              100% {
+                transform: translateX(-400px);
+                opacity: 0.6;
+                scale: 0.8;
+              }
+            }
+          `}</style>
         </div>
 
         {/* Pergunta em Balão Épico */}
