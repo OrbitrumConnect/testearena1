@@ -436,33 +436,33 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Header de Batalha */}
-        <div className="flex items-center justify-between mb-8">
+        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className="backdrop-blur-sm bg-battle-dark/80"
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
           >
             Voltar
           </ActionButton>
           
-          <div className="text-center arena-card-epic backdrop-blur-sm bg-card/80 px-6 py-3">
-            <h1 className="text-2xl font-montserrat font-bold text-epic">🏛️ BATALHA EM CURSO</h1>
-            <p className="text-muted-foreground">Egito Antigo - {currentQuestion + 1}/{questions.length}</p>
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
+            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>🏛️ BATALHA EM CURSO</h1>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Egito Antigo - {currentQuestion + 1}/{questions.length}</p>
           </div>
 
-          <div className="text-right arena-card backdrop-blur-sm bg-card/80 px-4 py-3">
-            <p className="text-sm text-muted-foreground">Pontuação</p>
-            <p className="text-xl font-bold text-victory">{score}/{currentQuestion + 1}</p>
+          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-2 scale-75 self-end' : 'px-4 py-3'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
+            <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
           </div>
         </div>
 
         {/* Barra de Progresso Épica */}
-        <div className="mb-8">
-          <div className="arena-card backdrop-blur-sm bg-card/80 p-4">
+        <div className={isMobile ? 'mb-4' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2' : 'p-4'}`}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-epic">Progresso da Batalha</span>
-              <span className="text-sm text-muted-foreground">{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
+              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso da Batalha</span>
+              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
             <div className="progress-epic">
               <div 
@@ -474,46 +474,46 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Arena de Combate Visual */}
-        <div className="relative mb-4">
+        <div className={`relative ${isMobile ? 'mb-2' : 'mb-4'}`}>
           {/* Personagens Lutando - Grandes e Visíveis */}
-          <div className="flex items-center justify-between px-8 mb-6">
+          <div className={`flex items-center justify-between ${isMobile ? 'px-2 mb-3' : 'px-8 mb-6'}`}>
             {/* Jogador - Lado Esquerdo */}
             <div className="text-center">
-              <div className="text-7xl mb-2 animate-bounce">🧙‍♂️</div>
-              <div className="arena-card backdrop-blur-sm bg-victory/20 p-3 min-w-32">
-                <h3 className="font-montserrat font-bold text-sm text-victory">VOCÊ</h3>
-                <div className="text-xs text-muted-foreground">Guerreiro</div>
-                <div className="progress-epic mt-2">
+              <div className={`mb-2 animate-bounce ${isMobile ? 'text-4xl' : 'text-7xl'}`}>🧙‍♂️</div>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-2 min-w-20 scale-75' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>VOCÊ</h3>
+                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>Guerreiro</div>
+                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
-                    className="h-2 bg-victory rounded-full transition-all duration-1000" 
+                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
-                <p className="text-xs font-semibold text-victory mt-1">HP: {playerHp}</p>
+                <p className={`font-semibold text-victory mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>HP: {playerHp}</p>
               </div>
             </div>
 
             {/* Timer Central - Menor */}
-            <div className="arena-card-epic backdrop-blur-sm bg-epic/20 p-4 text-center border-2 border-epic glow-epic mx-4">
-              <div className="text-3xl mb-1">⏰</div>
-              <div className={`text-2xl font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'}`}>
+            <div className={`arena-card-epic backdrop-blur-sm bg-epic/20 text-center border-2 border-epic glow-epic ${isMobile ? 'p-2 mx-2 scale-75' : 'p-4 mx-4'}`}>
+              <div className={`mb-1 ${isMobile ? 'text-xl' : 'text-3xl'}`}>⏰</div>
+              <div className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-epic'} ${isMobile ? 'text-lg' : 'text-2xl'}`}>
                 {timeLeft}s
               </div>
             </div>
 
             {/* IA Dummy - Lado Direito */}
             <div className="text-center">
-              <div className="text-8xl mb-2 animate-pulse">🗿</div>
-              <div className="arena-card backdrop-blur-sm bg-destructive/20 p-3 min-w-32">
-                <h3 className="font-montserrat font-bold text-sm text-destructive">IA DUMMY</h3>
-                <div className="text-xs text-muted-foreground">Esfinge</div>
-                <div className="progress-epic mt-2">
+              <div className={`mb-2 animate-pulse ${isMobile ? 'text-4xl' : 'text-8xl'}`}>🗿</div>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-2 min-w-20 scale-75' : 'p-3 min-w-32'}`}>
+                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>IA DUMMY</h3>
+                <div className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>Esfinge</div>
+                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
-                    className="h-2 bg-destructive rounded-full transition-all duration-1000" 
+                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
                     style={{ width: `${enemyHp}%` }}
                   />
                 </div>
-                <p className="text-xs font-semibold text-destructive mt-1">HP: {enemyHp}</p>
+                <p className={`font-semibold text-destructive mt-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>HP: {enemyHp}</p>
               </div>
             </div>
           </div>

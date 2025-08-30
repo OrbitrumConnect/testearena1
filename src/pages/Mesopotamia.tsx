@@ -357,33 +357,33 @@ const Mesopotamia = () => {
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Header de Batalha */}
-        <div className="flex items-center justify-between mb-8">
+        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className="backdrop-blur-sm bg-battle-dark/80"
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
           >
             Voltar
           </ActionButton>
           
-          <div className="text-center arena-card-epic backdrop-blur-sm bg-card/80 px-6 py-3">
-            <h1 className="text-2xl font-montserrat font-bold text-epic">📜 BATALHA MESOPOTÂMICA</h1>
-            <p className="text-muted-foreground">Berço da Civilização - {currentQuestion + 1}/{questions.length}</p>
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
+            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>📜 BATALHA MESOPOTÂMICA</h1>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Berço da Civilização - {currentQuestion + 1}/{questions.length}</p>
           </div>
 
-          <div className="text-right arena-card backdrop-blur-sm bg-card/80 px-4 py-3">
-            <p className="text-sm text-muted-foreground">Pontuação</p>
-            <p className="text-xl font-bold text-victory">{score}/{currentQuestion + 1}</p>
+          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-2 scale-75 self-end' : 'px-4 py-3'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontuação</p>
+            <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
           </div>
         </div>
 
         {/* Barra de Progresso */}
-        <div className="mb-8">
-          <div className="arena-card backdrop-blur-sm bg-card/80 p-4">
+        <div className={isMobile ? 'mb-4' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2' : 'p-4'}`}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-epic">Progresso da Batalha</span>
-              <span className="text-sm text-muted-foreground">{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
+              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso da Batalha</span>
+              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
             <div className="progress-epic">
               <div 
