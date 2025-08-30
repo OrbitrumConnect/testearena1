@@ -445,10 +445,10 @@ const Medieval = () => {
         </div>
 
         {/* Pergunta */}
-        <div className="arena-card-epic backdrop-blur-sm bg-purple-500/10 border-2 border-purple-500 p-8 mb-6 glow-epic">
-          <div className="flex items-center justify-center mb-6">
-            <div className="inline-block px-6 py-2 bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500">
-              <span className="text-purple-400 font-bold text-sm uppercase tracking-wide">
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-1' : 'p-8 mb-6 border-2 glow-epic'}`}>
+          <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
+            <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
+              <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 ⚔️ {question.category === 'history' ? 'História Medieval' : 
                  question.category === 'finance' ? 'Economia' : 
                  question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
@@ -456,7 +456,7 @@ const Medieval = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl font-montserrat font-bold text-center mb-8 text-foreground">
+          <h2 className={`font-montserrat font-bold text-center text-foreground ${isMobile ? 'text-xs mb-1' : 'text-2xl mb-8'}`}>
             {question.question}
           </h2>
 
