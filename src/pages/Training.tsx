@@ -72,10 +72,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       setPlayerHp(prev => Math.max(0, prev - damage));
     }
 
-    // Limpar efeito após 6 segundos (para ver a animação completa de 5s)
+    // Limpar efeito após 5 segundos (para ver a animação completa de 4s)
     setTimeout(() => {
       setAttackEffect(null);
-    }, 6000);
+    }, 5000);
   };
 
   const nextQuestion = async () => {
@@ -533,11 +533,12 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ACERTO: Você → Inimigo */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
+            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
               <div 
                 className="text-2xl text-orange-500"
                 style={{
-                  animation: 'fireFromPlayerToEnemy 5s ease-out forwards'
+                  animation: 'fireFromPlayerToEnemy 4s ease-out forwards',
+                  zIndex: 9999
                 }}
               >
                 🔥💥
@@ -547,11 +548,12 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ERRO: Inimigo → Você */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-50">
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
               <div 
                 className="text-2xl text-red-500"
                 style={{
-                  animation: 'fireFromEnemyToPlayer 5s ease-out forwards'
+                  animation: 'fireFromEnemyToPlayer 4s ease-out forwards',
+                  zIndex: 9999
                 }}
               >
                 🔥💥
