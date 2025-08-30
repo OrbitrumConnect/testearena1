@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { WalletDetailsModal } from '@/components/wallet/WalletDetailsModal';
 import { useCreditsPerception } from '@/hooks/useCreditsPerception';
 import { useMonthlyDecay } from '@/hooks/useMonthlyDecay';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface CreditsBalanceCardProps {
   creditsBalance: number;
@@ -22,6 +23,7 @@ export const CreditsBalanceCard = ({
   nextWithdraw,
   earnedCredits = 0
 }: CreditsBalanceCardProps) => {
+  const isMobile = useIsMobile();
   const [showInfo, setShowInfo] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showPerceptionDetails, setShowPerceptionDetails] = useState(false);
@@ -30,7 +32,7 @@ export const CreditsBalanceCard = ({
   const decayInfo = getDecayInfo();
 
   return (
-    <div className="arena-card-epic p-5">
+    <div className={`arena-card-epic ${isMobile ? 'p-4 scale-90' : 'p-5'}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
           <Coins className="w-5 h-5 text-epic" />

@@ -9,9 +9,9 @@ const Knowledge = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-gradient-subtle`}>
       {/* Header */}
-      <div className={`container mx-auto ${isMobile ? 'px-0 py-4' : 'px-4 py-6'}`}>
+      <div className={`container mx-auto ${isMobile ? 'px-0 py-4 h-full overflow-y-auto' : 'px-4 py-6'}`}>
         <div className={`flex items-center ${isMobile ? 'justify-between px-4 mb-4' : 'justify-between mb-6'}`}>
           <Button 
             variant="ghost" 

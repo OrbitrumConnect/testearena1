@@ -59,7 +59,7 @@ const Payment = () => {
 
   if (currentStep === 'confirmation') {
     return (
-      <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
         {/* Background temático do guerreiro */}
         <div 
           className="absolute inset-0 opacity-10 bg-cover bg-center"
@@ -67,7 +67,7 @@ const Payment = () => {
         />
         <ParticleBackground />
         
-        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className={`relative z-10 ${isMobile ? 'h-full overflow-y-auto' : 'min-h-screen'} flex items-center justify-center ${isMobile ? 'p-3' : 'p-4'}`}>
           <Card className="max-w-md w-full p-8 text-center arena-card-epic">
             <div className="text-6xl mb-6">🎉</div>
             <h1 className="text-2xl font-montserrat font-bold text-epic mb-4">
@@ -110,7 +110,7 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       {/* Background temático do guerreiro */}
       <div 
         className="absolute inset-0 opacity-10 bg-cover bg-center"
@@ -138,7 +138,7 @@ const Payment = () => {
         </div>
       </header>
 
-      <div className="relative z-10 max-w-6xl mx-auto p-6">
+      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'lg:grid-cols-3 gap-8'}`}>
           
           {/* Coluna da Esquerda - Resumo da Oferta */}

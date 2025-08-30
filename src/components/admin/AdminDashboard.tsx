@@ -61,7 +61,7 @@ export const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background flex items-center justify-center`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-epic mx-auto mb-4"></div>
           <p className="text-muted-foreground">Carregando dados administrativos...</p>

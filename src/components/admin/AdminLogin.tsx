@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { Shield, Eye, EyeOff } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 export const AdminLogin = () => {
+  const isMobile = useIsMobile();
   const [email, setEmail] = useState('phpg69@gmail.com');
   const [password, setPassword] = useState('p6p7p8P9!');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +33,7 @@ export const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative flex items-center justify-center`}>
       {/* Background administrativo */}
       <div className="absolute inset-0 bg-gradient-to-br from-battle/20 via-epic/10 to-background"></div>
       

@@ -50,7 +50,7 @@ const WorldQuiz = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       <ParticleBackground />
       
       {/* Header */}
@@ -76,7 +76,7 @@ const WorldQuiz = () => {
         </div>
       </header>
 
-      <div className="relative z-10 max-w-4xl mx-auto p-6">
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Stats Overview */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="arena-card text-center p-4">

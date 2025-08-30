@@ -109,7 +109,7 @@ const Ranking = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative flex items-center justify-center`}>
         <ParticleBackground />
         <div className="relative z-10 text-center">
           <div className="arena-card-epic p-8">
@@ -127,10 +127,10 @@ const Ranking = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-3' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Header */}
         <div className={`flex ${isMobile ? 'flex-col space-y-3' : 'items-center justify-between'} ${isMobile ? 'mb-4' : 'mb-8'}`}>
           <ActionButton 

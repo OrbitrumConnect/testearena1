@@ -6,6 +6,7 @@ import { ParticleBackground } from '@/components/ui/particles';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
 import { handleBattleCredits } from '@/utils/creditsIntegration';
 import { Player } from '@/types/arena';
@@ -31,6 +32,7 @@ interface Battle {
 
 const Arena = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [battle, setBattle] = useState<Battle>({
     player1: { name: 'Você', hp: 100, maxHp: 100, avatar: '⚔️' },
     player2: { name: 'IA Esfinge', hp: 100, maxHp: 100, avatar: '🗿' }
@@ -151,7 +153,7 @@ const Arena = () => {
   // Mostrar loading enquanto as perguntas carregam
   if (loading || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative flex items-center justify-center`}>
         <ParticleBackground />
         <div className="relative z-10 text-center">
           <div className="arena-card-epic p-8">
@@ -170,7 +172,7 @@ const Arena = () => {
 
   if (gamePhase === 'waiting') {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
         {/* Epic Arena Background - Fusão Suave das 4 Eras */}
         <div className="absolute inset-0 z-0">
           {/* Layer 1: Egypt (Base) */}
@@ -230,7 +232,7 @@ const Arena = () => {
         
         <ParticleBackground />
         
-        <div className="relative z-10 max-w-4xl mx-auto p-6">
+        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -315,7 +317,7 @@ const Arena = () => {
 
   if (gamePhase === 'finished') {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
         {/* Epic Arena Background - Fusão Suave das 4 Eras */}
         <div className="absolute inset-0 z-0">
           {/* Layer 1: Egypt (Base) */}
@@ -375,7 +377,7 @@ const Arena = () => {
         
         <ParticleBackground />
         
-        <div className="relative z-10 max-w-4xl mx-auto p-6">
+        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
           <div className="arena-card-epic p-8 text-center">
             <div className="text-6xl mb-6">
               {battleResult === 'victory' ? '🏆' : '💀'}
@@ -434,7 +436,7 @@ const Arena = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
       {/* Epic Arena Background - Fusão Suave das 4 Eras */}
       <div className="absolute inset-0 z-0">
         {/* Layer 1: Egypt (Base) */}
@@ -494,7 +496,7 @@ const Arena = () => {
       
       <ParticleBackground />
       
-      <div className="relative z-10 max-w-6xl mx-auto p-6">
+      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Battle HUD */}
         <div className="grid grid-cols-3 gap-6 mb-8">
           {/* Player 1 */}
