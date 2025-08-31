@@ -15,6 +15,7 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0); // Força nova busca a cada montagem
 
   const getRandomQuestions = async () => {
     try {
@@ -22,7 +23,7 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
       
       // Adicionar timestamp único para garantir que sempre busque perguntas diferentes
       const uniqueTimestamp = Date.now() + Math.random();
-      console.log(`🎲 Buscando perguntas aleatórias para ${eraSlug} - ${uniqueTimestamp}`);
+      console.log(`🎲 NOVA BUSCA de perguntas para ${eraSlug} - Timestamp: ${uniqueTimestamp} - RefreshKey: ${refreshKey}`);
       
       // Buscar a era pelo slug
       const { data: era, error: eraError } = await supabase
@@ -80,6 +81,8 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
           };
         });
         
+        console.log(`✅ Selecionadas ${randomizedQuestions.length} perguntas embaralhadas:`, 
+          randomizedQuestions.map(q => `"${q.question.substring(0, 30)}..."`));
         setQuestions(randomizedQuestions);
         return;
       }
@@ -126,8 +129,9 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
 
       // Se temos perguntas suficientes do banco, usar apenas elas
       if (formattedQuestions.length >= questionCount) {
+        console.log(`✅ Usando ${formattedQuestions.length} perguntas do banco para ${eraSlug}:`, 
+          formattedQuestions.map(q => `"${q.question.substring(0, 30)}..."`));
         setQuestions(formattedQuestions);
-        console.log(`✅ Usando ${formattedQuestions.length} perguntas do banco para ${eraSlug}`);
       } else {
         // Caso contrário, completar com perguntas padrão (fallback)
         const defaultQuestions = getDefaultQuestions(eraSlug);
@@ -147,9 +151,16 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
     }
   };
 
+  // Effect para gerar nova chave de refresh a cada montagem do componente
   useEffect(() => {
-    getRandomQuestions();
-  }, [eraSlug, questionCount]);
+    setRefreshKey(Date.now() + Math.random());
+  }, []);
+
+  useEffect(() => {
+    if (refreshKey > 0) { // Só executa após o refreshKey ser inicializado
+      getRandomQuestions();
+    }
+  }, [eraSlug, questionCount, refreshKey]);
 
   return { questions, loading, error, refetch: getRandomQuestions };
 };
