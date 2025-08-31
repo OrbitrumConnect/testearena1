@@ -372,14 +372,14 @@ const Medieval = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto scale-85 w-9/10 max-w-sm' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto scale-85 w-5/6 max-w-xs' : 'p-6'}`}>
         {/* Header com navegação */}
         <div className={`${isMobile ? 'flex justify-between items-center mb-2 px-1' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-1.5 py-0.5' : ''}`}
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-1 py-0.5 w-3/5' : ''}`}
           >
             {isMobile ? '←' : 'Voltar'}
           </ActionButton>
