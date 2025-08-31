@@ -42,7 +42,7 @@ const Index = () => {
   const [selectedModule, setSelectedModule] = useState('egypt');
   const [showLegalModal, setShowLegalModal] = useState(false);
   const isMobile = useIsMobile();
-  const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
   
   // Buscar dados reais do usuário
   const { profile, wallet, battleHistory, loading } = useDashboard();
@@ -50,24 +50,7 @@ const Index = () => {
   const { userSubscription, computed: subscriptionInfo } = useSubscription();
   const { resetAllData, resetting } = useResetData();
 
-  // Array de backgrounds para rotação (mesma ordem do EraCarousel)
-  const backgrounds = [
-    egyptLandingBg,
-    mesopotamiaLandingBg, 
-    medievalLandingBg,
-    digitalLandingBg
-  ];
 
-  // Rotação automática de backgrounds (sincronizada com EraCarousel)
-  useEffect(() => {
-    if (isMobile) {
-      const interval = setInterval(() => {
-        setCurrentBgIndex((prev) => (prev + 1) % backgrounds.length);
-      }, 4000); // 4 segundos - mesmo tempo do EraCarousel
-
-      return () => clearInterval(interval);
-    }
-  }, [isMobile, backgrounds.length]);
 
   // Calcular progresso real baseado nas batalhas por era
   const getEraProgress = (eraName: string) => {
@@ -260,11 +243,6 @@ const Index = () => {
                 </div>
                 
                 <div className="flex items-center space-x-0.5">
-                  {/* Controle de Música Mobile */}
-                  <div className="mr-1">
-                    <PersistentBackgroundMusic autoPlay={true} className="scale-75" />
-                  </div>
-                  
                   <ActionButton 
                     variant="epic" 
                     onClick={() => navigate('/dashboard')}
@@ -450,12 +428,12 @@ const Index = () => {
                 {isMobile ? (
                   // Mobile: Cards compactos com background
                   <div 
-                    className="relative overflow-hidden rounded-lg transition-all duration-1000"
+                    className="relative overflow-hidden rounded-lg"
                     style={{
-                      backgroundImage: `url(${backgrounds[currentBgIndex]})`,
+                      backgroundImage: `url(${module.background})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '80px'
+                      minHeight: '90px'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
@@ -486,6 +464,13 @@ const Index = () => {
 
         {/* Era Carousel - Fundo animado que muda automaticamente */}
         <EraCarousel isMobile={isMobile} />
+
+        {/* Controle de Música Mobile - Rodapé */}
+        {isMobile && (
+          <div className="flex justify-center mt-2 mb-2">
+            <PersistentBackgroundMusic autoPlay={true} className="scale-75" />
+          </div>
+        )}
 
 
 
