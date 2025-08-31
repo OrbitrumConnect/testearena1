@@ -21,7 +21,7 @@ const Training = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(50);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -71,6 +71,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
+      // Bônus de tempo por resposta correta (+3s)
+      setTimeLeft(prev => prev + 3);
       // Jogador acerta - Mostrar ataque do player e inimigo perde HP
       setAttackEffect('player-attack');
       // Ativar glow quando o raio chegar ao alvo (0.5s depois)
@@ -146,7 +148,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -167,7 +169,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);

@@ -18,7 +18,7 @@ const Mesopotamia = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(50);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -63,6 +63,8 @@ const Mesopotamia = () => {
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
+      // Bônus de tempo por resposta correta (+3s)
+      setTimeLeft(prev => prev + 3);
       // Jogador acerta - Inimigo perde HP (5% a mais de dano)
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
@@ -131,7 +133,7 @@ const Mesopotamia = () => {
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -149,7 +151,7 @@ const Mesopotamia = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);
@@ -390,6 +392,16 @@ const Mesopotamia = () => {
           >
             Voltar
           </ActionButton>
+          
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
+            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>🏛️ BATALHA EM CURSO</h1>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Mesopotâmia - {currentQuestion + 1}/{questions.length}</p>
+          </div>
+
+          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1 py-1 scale-50 self-end' : 'px-4 py-3'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontos</p>
+            <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
+          </div>
         </div>
         
         {/* Barra de Progresso Épica - Padrão Egito */}

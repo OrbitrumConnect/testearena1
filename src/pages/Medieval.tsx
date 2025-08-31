@@ -18,7 +18,7 @@ const Medieval = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(50);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -27,8 +27,8 @@ const Medieval = () => {
   const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
 
-  // Usar o hook para buscar 5 perguntas aleatórias da Era Medieval
-  const { questions, loading, refetch } = useEraQuestions('medieval', 5);
+  // Usar o hook para buscar 15 perguntas aleatórias da Era Medieval
+  const { questions, loading, refetch } = useEraQuestions('medieval', 15);
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
@@ -63,6 +63,8 @@ const Medieval = () => {
     
     if (answerIndex === questions[currentQuestion]?.correct) {
       setScore(score + 1);
+      // Bônus de tempo por resposta correta (+3s)
+      setTimeLeft(prev => prev + 3);
       // Jogador acerta - Mostrar ataque do player e inimigo perde HP
       setAttackEffect('player-attack');
       // Ativar glow quando o fogo chegar ao alvo (0.5s depois - fogo mais rápido)
@@ -128,7 +130,7 @@ const Medieval = () => {
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -146,7 +148,7 @@ const Medieval = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(30);
+    setTimeLeft(50);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);
@@ -387,6 +389,16 @@ const Medieval = () => {
           >
             Voltar
           </ActionButton>
+          
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
+            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>⚔️ BATALHA EM CURSO</h1>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Era Medieval - {currentQuestion + 1}/{questions.length}</p>
+          </div>
+
+          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1 py-1 scale-50 self-end' : 'px-4 py-3'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontos</p>
+            <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
+          </div>
         </div>
         
         {/* Barra de Progresso Épica - Padrão Egito */}
