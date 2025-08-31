@@ -58,7 +58,7 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
         const shuffleArray = (array: any[]) => {
           const shuffled = [...array];
           // Múltiplas passadas de shuffle para garantir randomização total
-          for (let pass = 0; pass < 3; pass++) {
+          for (let pass = 0; pass < 5; pass++) { // Aumentei para 5 passadas
             for (let i = shuffled.length - 1; i > 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
               [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -67,15 +67,22 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
           return shuffled;
         };
         
-        // Embaralhar perguntas MÚLTIPLAS VEZES e opções para cada pergunta
-        const multiShuffled = shuffleArray(shuffleArray(shuffleArray(defaultQuestions)));
+        // Embaralhar perguntas com máxima entropia
+        const timestamp = performance.now() + Math.random() * 1000;
+        
+        // Embaralhar várias vezes para máxima randomização  
+        let multiShuffled = [...defaultQuestions];
+        for (let i = 0; i < 7; i++) { // 7 shuffles para máxima aleatoriedade
+          multiShuffled = shuffleArray(multiShuffled);
+        }
+        
         const randomizedQuestions = multiShuffled.slice(0, questionCount).map((question, index) => {
           const shuffledOptions = shuffleArray([...question.options]);
           const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
           
           return {
             ...question,
-            id: `${question.id}-${Date.now()}-${Math.random()}-${index}`, // ID único com random para forçar re-render
+            id: `${question.id}-${timestamp}-${Math.random()}-${index}`, // ID único com timestamp para forçar re-render
             options: shuffledOptions,
             correct: correctIndex
           };
@@ -153,16 +160,25 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
 
   // Effect para gerar nova chave de refresh a cada montagem do componente
   useEffect(() => {
-    setRefreshKey(Date.now() + Math.random());
+    const newKey = Date.now() + Math.random() * 1000000;
+    console.log(`🔄 NOVA MONTAGEM do hook para ${eraSlug} - RefreshKey: ${newKey}`);
+    setRefreshKey(newKey);
   }, []);
 
   useEffect(() => {
     if (refreshKey > 0) { // Só executa após o refreshKey ser inicializado
+      console.log(`▶️ EXECUTANDO getRandomQuestions para ${eraSlug} com refreshKey: ${refreshKey}`);
       getRandomQuestions();
     }
   }, [eraSlug, questionCount, refreshKey]);
 
-  return { questions, loading, error, refetch: getRandomQuestions };
+  const forceNewQuestions = () => {
+    console.log(`🔄 FORÇANDO nova randomização para ${eraSlug}`);
+    setQuestions([]); // Limpar perguntas atuais
+    setRefreshKey(performance.now() + Math.random() * 1000000); // Nova chave força re-fetch
+  };
+
+  return { questions, loading, error, refetch: getRandomQuestions, forceNewQuestions };
 };
 
 // Perguntas padrão como fallback
