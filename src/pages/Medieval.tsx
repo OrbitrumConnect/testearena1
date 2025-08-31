@@ -396,8 +396,8 @@ const Medieval = () => {
         </div>
         
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-2 mx-1' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1.5 scale-80' : 'p-4'}`}>
+        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
@@ -416,8 +416,8 @@ const Medieval = () => {
         </div>
 
         {/* Arena de Combate */}
-        <div className={`relative ${isMobile ? 'mb-2 mx-1' : 'mb-4'}`}>
-          <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-24 mb-1' : 'h-40 mb-6'}`}>
+        <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
+          <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
             <div className={`absolute left-1 text-center ${isMobile ? 'top-0' : ''}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
@@ -572,8 +572,8 @@ const Medieval = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-2 mb-2 mt-4 mx-1 scale-80' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
-          <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1.5 mb-2 mt-2 mx-1 scale-70' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
+          <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 ⚔️ {question.category === 'history' ? 'História Medieval' : 
@@ -583,17 +583,17 @@ const Medieval = () => {
             </div>
           </div>
 
-          <h2 className={`font-montserrat font-bold text-center text-foreground ${isMobile ? 'text-xs mb-1' : 'text-2xl mb-8'}`}>
+          <h2 className={`font-montserrat font-bold text-center text-foreground ${isMobile ? 'text-xs mb-0.5' : 'text-2xl mb-8'}`}>
             {question.question}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-1' : 'gap-4'}`}>
             {question.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
                 disabled={gamePhase !== 'question'}
-                className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-1' : 'p-4 border-2 rounded-lg'} ${
+                className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-0.5 text-xs' : 'p-4 border-2 rounded-lg'} ${
                   gamePhase === 'question' 
                     ? 'border-border bg-card/80 hover:border-purple-500 hover:bg-purple-500/20 hover:scale-105' 
                     : selectedAnswer === index
