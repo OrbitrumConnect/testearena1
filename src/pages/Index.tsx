@@ -42,12 +42,32 @@ const Index = () => {
   const [selectedModule, setSelectedModule] = useState('egypt');
   const [showLegalModal, setShowLegalModal] = useState(false);
   const isMobile = useIsMobile();
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
   
   // Buscar dados reais do usuário
   const { profile, wallet, battleHistory, loading } = useDashboard();
   const { userCredits, loading: creditsLoading, computed } = useCredits();
   const { userSubscription, computed: subscriptionInfo } = useSubscription();
   const { resetAllData, resetting } = useResetData();
+
+  // Array de backgrounds para rotação (mesma ordem do EraCarousel)
+  const backgrounds = [
+    egyptLandingBg,
+    mesopotamiaLandingBg, 
+    medievalLandingBg,
+    digitalLandingBg
+  ];
+
+  // Rotação automática de backgrounds (sincronizada com EraCarousel)
+  useEffect(() => {
+    if (isMobile) {
+      const interval = setInterval(() => {
+        setCurrentBgIndex((prev) => (prev + 1) % backgrounds.length);
+      }, 4000); // 4 segundos - mesmo tempo do EraCarousel
+
+      return () => clearInterval(interval);
+    }
+  }, [isMobile, backgrounds.length]);
 
   // Calcular progresso real baseado nas batalhas por era
   const getEraProgress = (eraName: string) => {
@@ -381,7 +401,7 @@ const Index = () => {
                 creditsBalance={userCredits?.credits_balance || 400}
                 xp={profile?.total_xp || 0}
                 canWithdraw={computed.daysSinceDeposit >= 30}
-                withdrawAmount={4.50}
+                withdrawAmount={5.00}
                 nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
                 earnedCredits={userCredits?.credits_earned || 0}
               />
@@ -394,7 +414,7 @@ const Index = () => {
                   creditsBalance={userCredits?.credits_balance || 400}
                   xp={profile?.total_xp || 0}
                   canWithdraw={computed.daysSinceDeposit >= 30}
-                  withdrawAmount={4.50}
+                  withdrawAmount={5.00}
                   nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
                   earnedCredits={userCredits?.credits_earned || 0}
                 />
@@ -430,23 +450,23 @@ const Index = () => {
                 {isMobile ? (
                   // Mobile: Cards compactos com background
                   <div 
-                    className="relative overflow-hidden rounded-lg"
+                    className="relative overflow-hidden rounded-lg transition-all duration-1000"
                     style={{
-                      backgroundImage: `url(${module.background})`,
+                      backgroundImage: `url(${backgrounds[currentBgIndex]})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '60px'
+                      minHeight: '80px'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
-                    <div className="relative z-10 p-1 text-center">
-                      <div className="text-sm mb-0.5">
+                    <div className="relative z-10 p-1.5 text-center">
+                      <div className="text-base mb-1">
                         {module.icon === 'pyramid' ? '🏛️' :
                          module.icon === 'scroll' ? '📜' :
                          module.icon === 'castle' ? '⚔️' :
                          module.icon === 'robot' ? '💻' : '🌍'}
                       </div>
-                      <p className="text-xs font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
+                      <p className="text-sm font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
                       <div className="w-full bg-white/20 rounded-full h-0.5 mt-0.5">
                         <div 
                           className="bg-epic h-0.5 rounded-full transition-all duration-300" 
