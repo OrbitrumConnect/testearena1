@@ -32,7 +32,7 @@ export const CreditsBalanceCard = ({
   const decayInfo = getDecayInfo();
 
   return (
-    <div className={`arena-card-epic ${isMobile ? 'p-2 scale-75 max-h-[135px] overflow-hidden' : 'p-5'}`}>
+    <div className={`arena-card-epic ${isMobile ? 'p-2 scale-75 max-h-[155px] overflow-hidden' : 'p-5'}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
           <Coins className="w-5 h-5 text-epic" />

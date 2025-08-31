@@ -12,7 +12,7 @@ const eraData = [
     description: 'Domine os mistérios do Nilo e conquiste conhecimento sobre economia antiga',
     period: '3000-2900 a.C.',
     emoji: '🏛️',
-    background: '/src/assets/egypt-landing-bg.jpg',
+    background: '/egypt-landing-bg.jpg',
     color: 'epic',
     routes: {
       training: '/training',
@@ -28,7 +28,7 @@ const eraData = [
     description: 'Explore a terra entre rios e desvende os segredos da escrita cuneiforme',
     period: '2900-2800 a.C.',
     emoji: '📜',
-    background: '/src/assets/mesopotamia-landing-bg.jpg',
+    background: '/mesopotamia-landing-bg.jpg',
     color: 'battle',
     routes: {
       training: '/mesopotamia',
@@ -44,7 +44,7 @@ const eraData = [
     description: 'Navegue pela política feudal e conquiste conhecimento sobre economia medieval',
     period: '1000-1100 d.C.',
     emoji: '⚔️',
-    background: '/src/assets/medieval-landing-bg.jpg',
+    background: '/medieval-landing-bg.jpg',
     color: 'victory',
     routes: {
       training: '/medieval',
@@ -60,7 +60,7 @@ const eraData = [
     description: 'Domine tecnologia moderna e conquiste conhecimento sobre economia digital',
     period: '2000-2100 d.C.',
     emoji: '💻',
-    background: '/src/assets/digital-landing-bg.jpg',
+    background: '/digital-landing-bg.jpg',
     color: 'legendary',
     routes: {
       training: '/digital',
@@ -76,7 +76,7 @@ const eraData = [
     description: 'Explore eventos atuais que moldam nossa sociedade e economia global',
     period: '2024 - Atual',
     emoji: '🌍',
-    background: '/src/assets/digital-landing-bg.jpg',
+    background: '/digital-landing-bg.jpg',
     color: 'destructive',
     routes: {
       training: '/world-quiz',
