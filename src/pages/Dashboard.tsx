@@ -131,7 +131,7 @@ const Dashboard = () => {
 
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
-      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Background Temático - Castelo Medieval */}
       <div 
         className="absolute inset-0"
