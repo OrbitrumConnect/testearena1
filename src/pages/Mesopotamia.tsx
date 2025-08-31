@@ -18,7 +18,7 @@ const Mesopotamia = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(50);
+  const [timeLeft, setTimeLeft] = useState(80);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -133,7 +133,7 @@ const Mesopotamia = () => {
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(50);
+    setTimeLeft(80);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -151,7 +151,7 @@ const Mesopotamia = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(50);
+    setTimeLeft(80);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);
@@ -648,6 +648,13 @@ const Mesopotamia = () => {
                 Explicação:
               </h4>
               <p className="text-muted-foreground">{question.explanation}</p>
+              {question.source && (
+                <div className="mt-3 pt-3 border-t border-card-border/30">
+                  <p className="text-xs text-muted-foreground/80 italic">
+                    📚 Fonte: {question.source}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>

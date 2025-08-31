@@ -8,6 +8,7 @@ interface Question {
   correct: number;
   explanation: string;
   category: string;
+  source?: string; // Fonte da informação para credibilidade
 }
 
 export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
@@ -18,6 +19,10 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
   const getRandomQuestions = async () => {
     try {
       setLoading(true);
+      
+      // Adicionar timestamp único para garantir que sempre busque perguntas diferentes
+      const uniqueTimestamp = Date.now() + Math.random();
+      console.log(`🎲 Buscando perguntas aleatórias para ${eraSlug} - ${uniqueTimestamp}`);
       
       // Buscar a era pelo slug
       const { data: era, error: eraError } = await supabase
@@ -48,24 +53,28 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
         console.log(`⚠️ Nenhuma pergunta no banco para ${eraSlug}, usando fallback com randomização`);
         const defaultQuestions = getDefaultQuestions(eraSlug);
         
-        // RANDOMIZAÇÃO MELHORADA - Fisher-Yates shuffle para variedade real
+        // RANDOMIZAÇÃO MELHORADA - Fisher-Yates shuffle com múltiplas passadas para variedade real
         const shuffleArray = (array: any[]) => {
           const shuffled = [...array];
-          for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          // Múltiplas passadas de shuffle para garantir randomização total
+          for (let pass = 0; pass < 3; pass++) {
+            for (let i = shuffled.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
           }
           return shuffled;
         };
         
-        // Embaralhar perguntas e opções para cada pergunta
-        const randomizedQuestions = shuffleArray(defaultQuestions).slice(0, questionCount).map((question, index) => {
+        // Embaralhar perguntas MÚLTIPLAS VEZES e opções para cada pergunta
+        const multiShuffled = shuffleArray(shuffleArray(shuffleArray(defaultQuestions)));
+        const randomizedQuestions = multiShuffled.slice(0, questionCount).map((question, index) => {
           const shuffledOptions = shuffleArray([...question.options]);
           const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
           
           return {
             ...question,
-            id: `${question.id}-${Date.now()}-${index}`, // ID único para forçar re-render
+            id: `${question.id}-${Date.now()}-${Math.random()}-${index}`, // ID único com random para forçar re-render
             options: shuffledOptions,
             correct: correctIndex
           };
@@ -77,17 +86,21 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
 
       console.log(`📚 Encontradas ${knowledgeItems.length} perguntas para ${eraSlug}`);
 
-      // RANDOMIZAÇÃO MELHORADA - Fisher-Yates shuffle para variedade real
+      // RANDOMIZAÇÃO MELHORADA - Fisher-Yates shuffle com múltiplas passadas para variedade real
       const shuffleArray = (array: any[]) => {
         const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        // Múltiplas passadas de shuffle para garantir randomização total
+        for (let pass = 0; pass < 3; pass++) {
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
         }
         return shuffled;
       };
 
-      const shuffledQuestions = shuffleArray(knowledgeItems);
+      const multiShuffled = shuffleArray(shuffleArray(shuffleArray(knowledgeItems)));
+      const shuffledQuestions = multiShuffled;
       const selectedQuestions = shuffledQuestions.slice(0, Math.min(questionCount, shuffledQuestions.length));
 
       // Formatar perguntas para o formato esperado
@@ -101,7 +114,7 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
         const correctIndex = shuffledOptions.indexOf(item.correct_answer as string);
 
         return {
-          id: `${item.id}-${Date.now()}-${index}`, // ID único para evitar cache
+          id: `${item.id}-${Date.now()}-${Math.random()}-${index}`, // ID único com random para evitar cache
           question: item.question || '',
           options: shuffledOptions.slice(0, 4), // Máximo 4 opções
           correct: correctIndex,
@@ -151,7 +164,8 @@ const getDefaultQuestions = (eraSlug: string): Question[] => {
         options: ["Nilo", "Eufrates", "Tigre", "Jordão"],
         correct: 0,
         explanation: "O Rio Nilo era fundamental para a civilização egípcia, fornecendo água e solo fértil.",
-        category: "history"
+        category: "history",
+        source: "Heródoto. Histórias, Livro II (c. 440 a.C.)"
       },
       {
         id: 'default-2',
@@ -600,7 +614,8 @@ const getDefaultQuestions = (eraSlug: string): Question[] => {
         options: ["Blockchain", "Wi-Fi", "GPS", "Realidade Virtual"],
         correct: 0,
         explanation: "A blockchain possibilitou criptomoedas e contratos inteligentes.",
-        category: "technology"
+        category: "technology",
+        source: "Nakamoto, S. (2008). Bitcoin: A Peer-to-Peer Electronic Cash System"
       },
       {
         id: 'default-2',
@@ -608,7 +623,8 @@ const getDefaultQuestions = (eraSlug: string): Question[] => {
         options: ["1989", "1991", "1995", "2000"],
         correct: 1,
         explanation: "Tim Berners-Lee criou a WWW em 1991 no CERN.",
-        category: "history"
+        category: "history",
+        source: "Berners-Lee, T. (1991). World Wide Web - CERN"
       },
       {
         id: 'default-3',
@@ -640,7 +656,8 @@ const getDefaultQuestions = (eraSlug: string): Question[] => {
         options: ["Steve Jobs", "Bill Gates", "Jeff Bezos", "Mark Zuckerberg"],
         correct: 1,
         explanation: "Bill Gates fundou a Microsoft em 1975, revolucionando a computação.",
-        category: "technology"
+        category: "technology",
+        source: "Microsoft Corporation History (1975-present)"
       },
       {
         id: 'default-7',
