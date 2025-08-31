@@ -130,7 +130,8 @@ const Dashboard = () => {
     battleHistory.reduce((acc, battle) => acc + battle.accuracy_percentage, 0) / battleHistory.length : 0;
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Background Temático - Castelo Medieval */}
       <div 
         className="absolute inset-0"
@@ -274,7 +275,7 @@ const Dashboard = () => {
               
               <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
                 <p className="text-green-400 font-semibold text-center">
-                  ✨ Limite diário: 9 treinos gratuitos por era!
+                  ✨ Limite diário: 6 treinos gratuitos por era!
                 </p>
               </div>
             </Card>
@@ -517,14 +518,14 @@ const Dashboard = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>
-                  <span className="font-bold text-green-400">R$ 20,00</span>
+                  <span className="font-bold text-green-400">R$ 5,00</span>
                 </div>
               </div>
 
               {/* Solicitação PIX Integrada */}
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-                  <h4 className="text-green-400 font-semibold mb-2">💰 Solicitar PIX - R$ 20,00</h4>
+                  <h4 className="text-green-400 font-semibold mb-2">💰 Solicitar PIX - R$ 5,00</h4>
                   <p className="text-sm text-gray-300 mb-3">
                     Solicitação mensal disponível para usuários ativos. Processamento em até 24 horas úteis.
                   </p>
@@ -545,7 +546,7 @@ const Dashboard = () => {
                       className="w-full"
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Solicitar R$ 20 via PIX
+                      Solicitar R$ 5 via PIX
                     </ActionButton>
                   </div>
                 </div>
@@ -570,6 +571,7 @@ const Dashboard = () => {
 
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

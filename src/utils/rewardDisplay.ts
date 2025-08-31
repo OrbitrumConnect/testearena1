@@ -1,30 +1,39 @@
-// Utilitário para exibir contribuições para ROI mensal por era
+// Utilitário para exibir recompensas do novo sistema (100 créditos = R$ 1,00)
 export const getRewardDisplayValues = (eraSlug: string) => {
-  const contributionValues: Record<string, { excellent: string; victory: string; base: string }> = {
-    'egito-antigo': { excellent: '0,036', victory: '0,030', base: '0,020' },
-    'mesopotamia': { excellent: '0,048', victory: '0,040', base: '0,030' },
-    'medieval': { excellent: '0,060', victory: '0,050', base: '0,040' },
-    'digital': { excellent: '0,072', victory: '0,060', base: '0,050' }
+  const rewardValues: Record<string, { excellent: string; victory: string; base: string }> = {
+    'egito-antigo': { excellent: '3 créditos', victory: '2 créditos', base: '1 crédito' },
+    'mesopotamia': { excellent: '4 créditos', victory: '3 créditos', base: '2 créditos' },
+    'medieval': { excellent: '5 créditos', victory: '4 créditos', base: '3 créditos' },
+    'digital': { excellent: '6 créditos', victory: '5 créditos', base: '4 créditos' }
   };
   
-  return contributionValues[eraSlug] || contributionValues['egito-antigo'];
+  return rewardValues[eraSlug] || rewardValues['egito-antigo'];
 };
 
-// Informações do sistema de créditos para display
+// Informações do novo sistema financeiro para display
 export const getFinancialSystemInfo = () => {
   return {
-    initialDeposit: '2.000 créditos',
-    platformFee: 'Taxa plataforma incluída',
-    playableAmount: '1.900 créditos',
-    activityRewards: 'Recompensas por Atividade',
-    monthlyTarget: 'Meta de Atividade Mensal',
-    dailyTarget: '73 créditos',
+    // Sistema de Assinatura
+    subscriptionCycle: 'Ciclo de 3 meses com desconto',
+    month1: 'R$ 5,00 → 400 créditos',
+    month2: 'R$ 3,50 → 280 créditos',
+    month3: 'R$ 2,00 → 160 créditos',
+    conversion: '100 créditos = R$ 1,00',
+    
+    // Sistema de Vidas
+    livesPerDay: '3 vidas grátis/dia',
+    extraLifeCost: '10 créditos/vida',
+    resetTime: 'Reset à meia-noite',
     
     // PvP Arena
-    pvpBet: '900 créditos',
-    pvpWinnerGets: '+500 créditos',
-    pvpLoserLoses: '-900 créditos',
-    pvpPoolTotal: '1.800 créditos',
-    platformRevenue: '400 créditos'
+    pvpEntry: '50 créditos',
+    pvpVictory: '80 créditos',
+    pvpProfit: '+30 créditos (vitória)',
+    pvpLoss: '-50 créditos (derrota)',
+    
+    // Sistema de Saque
+    minWithdrawal: 'R$ 2,00 (200 créditos)',
+    withdrawalFee: '10% taxa de saque',
+    conversionRate: '100 créditos = R$ 1,00'
   };
 };

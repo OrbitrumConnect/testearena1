@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-// Constantes do sistema de percepção de valor
-const CREDIT_TO_PERCEPTION_RATE = 0.05; // R$ 0,05 por crédito
-const MAX_SACABLE_VALUE = 20.00;        // Sempre R$ 20,00
+// Constantes do sistema de percepção de valor (novo sistema)
+const CREDIT_TO_PERCEPTION_RATE = 0.01; // R$ 0,01 por crédito (100 créditos = R$ 1,00)
+const MAX_SACABLE_VALUE = 5.00;         // Máximo R$ 5,00 sacável
 
 interface CreditsPerceptionData {
   totalCredits: number;
@@ -89,13 +89,13 @@ export const useCreditsPerception = () => {
 
   // Função para obter estatísticas mensais estimadas
   const getMonthlyProjection = () => {
-    const trainingsPerDay = 9;
+    const trainingsPerDay = 3; // 3 vidas grátis (novo sistema)
     const pvpPerDay = 3;
     const tournamentsPerMonth = 10;
     const daysInMonth = 30;
     
-    const projectedTrainingCredits = trainingsPerDay * 10 * daysInMonth; // 10 créditos por treino
-    const projectedPvPCredits = pvpPerDay * 15 * daysInMonth; // 15 créditos por PvP
+    const projectedTrainingCredits = trainingsPerDay * 3 * daysInMonth; // 3 créditos por treino (novo sistema)
+    const projectedPvPCredits = pvpPerDay * 30 * daysInMonth; // 30 créditos líquidos por PvP
     const projectedTournamentCredits = tournamentsPerMonth * 50; // 50 créditos por torneio
     
     const totalProjected = projectedTrainingCredits + projectedPvPCredits + projectedTournamentCredits;

@@ -10,7 +10,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Player } from '@/types/arena';
 import { RealPvPExplanation } from '@/components/arena/RealPvPExplanation';
-import { handleBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits } from '@/utils/creditsIntegration';
 
 const ArenaNew = () => {
   const navigate = useNavigate();
@@ -49,15 +49,15 @@ const ArenaNew = () => {
           battleType: 'pvp',
         });
 
-        // Sistema de Percepção de Créditos para PvP
-        const perceptionCredits = handleBattleCredits({
+        // Novo Sistema de Créditos para PvP
+        const creditsResult = handleNewBattleCredits({
           battleType: 'pvp',
           questionsCorrect: questionsCorrect,
           questionsTotal: questionsTotal,
           accuracyPercentage: accuracyPercentage
         });
         
-        console.log(`⚔️ PvP Real concluído! +${perceptionCredits} créditos de percepção (${isVictory ? 'Vitória' : 'Derrota'})`);
+        console.log(`⚔️ PvP Real concluído! ${creditsResult.message} (${isVictory ? 'Vitória' : 'Derrota'})`);
       };
       
       handleBattleFinished();
@@ -85,11 +85,11 @@ const ArenaNew = () => {
         <div className="bg-epic/5 border border-epic/20 rounded-lg p-3 mb-4 max-w-md mx-auto">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Créditos Disponíveis</span>
-            <span className="text-epic font-bold">2.000</span>
+            <span className="text-epic font-bold">500</span>
           </div>
           <div className="flex items-center justify-between text-xs mt-1">
             <span className="text-muted-foreground">Taxa PvP</span>
-            <span className="text-warning font-semibold">900 créditos</span>
+            <span className="text-warning font-semibold">1,5 créditos</span>
           </div>
         </div>
 

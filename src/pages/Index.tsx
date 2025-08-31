@@ -28,6 +28,7 @@ import { PersistentBackgroundMusic } from '@/components/ui/persistent-background
 import { Card } from '@/components/ui/card';
 import { TopCarousel } from '@/components/home/TopCarousel';
 import { EraCarousel } from '@/components/arena/EraCarousel';
+import { LegalPoliciesModal } from '@/components/legal/LegalPoliciesModal';
 
 import arenaLogo from '@/assets/arena-logo.png';
 import egyptArena from '@/assets/egypt-arena.png';
@@ -39,6 +40,7 @@ import digitalLandingBg from '@/assets/digital-landing-bg.jpg';
 const Index = () => {
   const navigate = useNavigate();
   const [selectedModule, setSelectedModule] = useState('egypt');
+  const [showLegalModal, setShowLegalModal] = useState(false);
   const isMobile = useIsMobile();
   
   // Buscar dados reais do usuário
@@ -155,7 +157,7 @@ const Index = () => {
     },
     { 
       title: 'Saldo Total', 
-      value: `${(userCredits?.credits_balance || 2000).toLocaleString()} créditos`, 
+      value: `${(userCredits?.credits_balance || 400).toLocaleString()} créditos`, 
       type: 'finance' as const, 
       percentage: Math.min(100, Math.round((wallet?.balance || 0) * 2)), // Conversão para %
       isImproving: (wallet?.balance || 0) > 0 
@@ -197,7 +199,8 @@ const Index = () => {
   }
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Background Temático Home - Arena Principal */}
       <div 
         className="absolute inset-0"
@@ -375,10 +378,10 @@ const Index = () => {
                 ))}
               </div>
               <CreditsBalanceCard 
-                creditsBalance={userCredits?.credits_balance || 2000}
+                creditsBalance={userCredits?.credits_balance || 400}
                 xp={profile?.total_xp || 0}
                 canWithdraw={computed.daysSinceDeposit >= 30}
-                withdrawAmount={18.05}
+                withdrawAmount={4.50}
                 nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
                 earnedCredits={userCredits?.credits_earned || 0}
               />
@@ -388,10 +391,10 @@ const Index = () => {
             <>
               <div className="lg:col-span-1">
                 <CreditsBalanceCard 
-                  creditsBalance={userCredits?.credits_balance || 2000}
+                  creditsBalance={userCredits?.credits_balance || 400}
                   xp={profile?.total_xp || 0}
                   canWithdraw={computed.daysSinceDeposit >= 30}
-                  withdrawAmount={18.05}
+                  withdrawAmount={4.50}
                   nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
                   earnedCredits={userCredits?.credits_earned || 0}
                 />
@@ -526,6 +529,23 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Link sutil para políticas */}
+        <div className="text-center pb-4">
+          <button
+            onClick={() => setShowLegalModal(true)}
+            className="text-xs text-muted-foreground hover:text-epic transition-colors underline decoration-dotted"
+          >
+            Termos & Políticas
+          </button>
+        </div>
+      </div>
+
+      {/* Modal de Políticas */}
+      <LegalPoliciesModal 
+        isOpen={showLegalModal} 
+        onClose={() => setShowLegalModal(false)} 
+      />
       </div>
     </div>
   );

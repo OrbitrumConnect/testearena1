@@ -9,7 +9,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useFreeLimit } from '@/hooks/useFreeLimit';
-import { handleBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues, getFinancialSystemInfo } from '@/utils/rewardDisplay';
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
@@ -21,7 +21,7 @@ const Training = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(80);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -119,16 +119,18 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
           battleDurationSeconds: battleDurationSeconds,
         });
 
-        // Sistema de Percepção de Créditos (apenas para usuários pagos)
+        // Novo Sistema de Créditos
         const accuracyPercentage = Math.round((score / questions.length) * 100);
-        const perceptionCredits = handleBattleCredits({
+        const creditsResult = handleNewBattleCredits({
           battleType: 'training',
           questionsCorrect: score,
           questionsTotal: questions.length,
-          accuracyPercentage: accuracyPercentage
+          accuracyPercentage: accuracyPercentage,
+          eraSlug: 'egito-antigo',
+          usedExtraLife: false
         });
         
-        console.log(`🎯 Treino concluído! +${perceptionCredits} créditos de percepção`);
+        console.log(`🎯 Treino concluído! ${creditsResult.message}`);
       }
       
       setGamePhase('finished');
@@ -148,7 +150,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(80);
+    setTimeLeft(60);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -169,7 +171,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(80);
+    setTimeLeft(60);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);
@@ -219,21 +221,21 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-8'}`}>
-            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-6xl mb-6'}`}>🏺</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-4'}`}>
+            <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>🏺</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg mb-2' : 'text-3xl mb-4'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-2xl mb-2'}`}>
               Treinamento: Egito Antigo
             </h2>
             
-            <p className={`text-muted-foreground ${isMobile ? 'text-sm mb-3' : 'text-lg mb-6'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-2' : 'text-base mb-4'}`}>
               Teste seus conhecimentos sobre a civilização egípcia e ganhe recompensas!
             </p>
 
             {/* Informações do limite de treinamento */}
             {userType === 'free' ? (
-              <div className={`arena-card border-epic/30 ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
-                <h3 className={`font-semibold text-epic ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>🆓 Modo FREE</h3>
+              <div className={`arena-card border-epic/30 ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+                <h3 className={`font-semibold text-epic ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🆓 Modo FREE</h3>
                 <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
                   Hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
                 </p>
@@ -252,8 +254,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 )}
               </div>
             ) : (
-              <div className="arena-card p-4 mb-6">
-                <h3 className="font-semibold mb-2">📊 Limite Diário de Treinamento</h3>
+              <div className="arena-card p-3 mb-3">
+                <h3 className="font-semibold mb-1 text-sm">📊 Limite Diário de Treinamento</h3>
                 <p className="text-sm text-muted-foreground">
                   Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
                 </p>
@@ -264,8 +266,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             )}
 
             {/* Recompensas */}
-            <div className="arena-card p-4 mb-6">
-              <h3 className="font-semibold mb-2">💰 Recompensas</h3>
+            <div className="arena-card p-3 mb-3">
+              <h3 className="font-semibold mb-1 text-sm">💰 Recompensas</h3>
               <div className="text-xs space-y-2">
                 <div className="bg-muted/50 p-2 rounded">
                   <p className="text-muted-foreground">Depósito {getFinancialSystemInfo().initialDeposit} • Taxa {getFinancialSystemInfo().platformFee}</p>
@@ -420,7 +422,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
   const question = questions[currentQuestion];
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       <ParticleBackground />
       
       {/* Fundo Temático Egípcio Continuado */}
@@ -753,6 +756,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </ActionButton>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

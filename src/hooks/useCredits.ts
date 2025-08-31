@@ -49,7 +49,7 @@ export const useCredits = () => {
           const demoCredits: UserCredits = {
             id: 'demo-credits',
             user_id: 'demo-user',
-            credits_balance: 2000, // 2.000 créditos iniciais
+            credits_balance: 400, // 400 créditos iniciais (novo sistema)
             credits_earned: 0,
             credits_spent: 0,
             monthly_bonus: 0,
@@ -87,7 +87,7 @@ export const useCredits = () => {
         // Criar registro inicial de créditos
         const newCredits: Partial<UserCredits> = {
           user_id: user.id,
-          credits_balance: 2000,
+          credits_balance: 400, // 400 créditos (novo sistema)
           credits_earned: 0,
           credits_spent: 0,
           monthly_bonus: 0,

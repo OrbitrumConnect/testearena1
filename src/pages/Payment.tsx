@@ -37,7 +37,7 @@ const Payment = () => {
   const isPromoActive = today <= promoEndDate;
   
   // Cálculo dos valores
-  const regularPrice = 20.00;
+  const regularPrice = 5.00; // Novo sistema - Mês 1
   const discountPercent = isPromoActive ? 50 : 0;
   const currentPrice = isPromoActive ? regularPrice * 0.5 : regularPrice;
   const maxWithdrawal = isPromoActive ? currentPrice * 0.95 : regularPrice * 0.95; // 95% após taxas

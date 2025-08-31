@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const FREE_TRAINING_LIMIT = 9; // Limite de treinos para usuários free
+const FREE_TRAINING_LIMIT = 6; // 9 vidas grátis por dia
 
 export const useFreeLimit = (userType: 'free' | 'paid' | 'vip' | 'banned' = 'free') => {
   const [freeTrainingCount, setFreeTrainingCount] = useState(0);

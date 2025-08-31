@@ -40,9 +40,9 @@ export const WalletDetailsModal = ({
   const systemData = {
     currentMonth: 1,
     totalMonths: 3,
-    currentPayment: 20.00,
-    maxWithdrawal: 20.00,
-    nextPayment: 16.00,
+    currentPayment: 5.00,
+    maxWithdrawal: 5.00,
+    nextPayment: 3.50,
     daysUntilNext: 30,
     daysSinceDeposit: 15
   };
@@ -170,9 +170,9 @@ export const WalletDetailsModal = ({
                   Regras de Saque
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                  <li>• Apenas valor depositado (R$ 20,00) é sacável</li>
+                  <li>• Apenas valor depositado (R$ 5,00) é sacável</li>
                   <li>• Período mínimo: 30 dias após depósito</li>
-                  <li>• Taxa administrativa: R$ 1,00</li>
+                  <li>• Taxa administrativa: R$ 0,50</li>
                   <li>• Créditos ganhos em atividades são apenas internos</li>
                   <li>• Processamento: 24-48h úteis</li>
                 </ul>
@@ -216,14 +216,14 @@ export const WalletDetailsModal = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-3 rounded-lg bg-epic/10">
-                <div className="text-lg font-bold text-epic">2000</div>
+                <div className="text-lg font-bold text-epic">500</div>
                 <div className="text-sm text-muted-foreground">Créditos Depositados</div>
                 <div className="text-xs text-epic mt-1">✅ Sacáveis</div>
               </div>
               
               <div className="text-center p-3 rounded-lg bg-legendary/10">
                 <div className="text-lg font-bold text-legendary">
-                  {Math.round(creditsBalance - 2000)}
+                  {Math.round(creditsBalance - 500)}
                 </div>
                 <div className="text-sm text-muted-foreground">Créditos Ganhos</div>
                 <div className="text-xs text-legendary mt-1">⚠️ Apenas Internos</div>

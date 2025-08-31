@@ -32,44 +32,44 @@ const Landing = () => {
 
   const features = [
     {
+      icon: <BookOpen className="w-8 h-8 text-primary" />,
+      title: "Estudo e Treino",
+      description: "Quizzes diários atualizados com notícias globais. Quanto mais você pratica, maior seu desempenho.",
+      color: "primary",
+      bgGradient: "from-primary/20 via-primary/10 to-transparent",
+      borderColor: "border-primary/30"
+    },
+    {
       icon: <Sword className="w-8 h-8 text-battle" />,
-      title: "Batalhas Épicas",
-      description: "Enfrente desafios históricos únicos e ganhe créditos por suas habilidades",
+      title: "PvP Meritocrático 1x1",
+      description: "Duelos de conhecimento contra outros usuários. Suas habilidades decidem o resultado, não a sorte.",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
     },
     {
       icon: <Trophy className="w-8 h-8 text-epic" />,
-      title: "Ganhe por Conhecimento",
-      description: "Transforme seu aprendizado em créditos através de competições educativas",
+      title: "Ganhe Créditos por Mérito",
+      description: "A cada vitória, você acumula créditos baseados no seu desempenho. Sistema progressivo mensal: 1º mês R$ 5, 2º mês R$ 3,50, 3º mês R$ 2.",
       color: "epic",
       bgGradient: "from-epic/20 via-epic/10 to-transparent",
       borderColor: "border-epic/30"
     },
     {
-      icon: <BookOpen className="w-8 h-8 text-epic" />,
-      title: "Eras Históricas",
-      description: "Explore desde o Egito Antigo até a Era Digital com conteúdo dinâmico",
-      color: "epic",
-      bgGradient: "from-epic/20 via-epic/10 to-transparent",
-      borderColor: "border-epic/30"
-    },
-    {
-      icon: <Users className="w-8 h-8 text-primary" />,
-      title: "Comunidade Global",
-      description: "Compete com guerreiros do conhecimento de todo o mundo",
-      color: "primary",
-      bgGradient: "from-primary/20 via-primary/10 to-transparent",
-      borderColor: "border-primary/30"
+      icon: <Crown className="w-8 h-8 text-legendary" />,
+      title: "Top 5% Elite + Bônus",
+      description: "Apenas os melhores recebem +20% de bônus. Saques inteligentes até 80% + mérito via PIX.",
+      color: "legendary",
+      bgGradient: "from-legendary/20 via-legendary/10 to-transparent",
+      borderColor: "border-legendary/30"
     }
   ];
 
   const stats = [
-    { value: "10K+", label: "Guerreiros Ativos", icon: <Users className="w-6 h-6 text-epic" /> },
-    { value: "50M+", label: "Créditos Distribuídos", icon: <Trophy className="w-6 h-6 text-epic" /> },
-    { value: "4", label: "Eras Disponíveis", icon: <Crown className="w-6 h-6 text-battle" /> },
-    { value: "95%", label: "Satisfação", icon: <Star className="w-6 h-6 text-primary" /> }
+    { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
+    { value: "R$ 2-50", label: "Ganho Mensal", icon: <Trophy className="w-6 h-6 text-epic" /> },
+    { value: "Top 5%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
+    { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
 
   const eras = [
@@ -117,6 +117,7 @@ const Landing = () => {
 
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[1.03] origin-top-left w-[97%]'}>
       {/* Dynamic Era Backgrounds */}
       <div className="absolute inset-0 z-0">
         <div className="h-full w-full">
@@ -201,23 +202,28 @@ const Landing = () => {
 
       <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'h-full overflow-y-auto' : ''}`}>
         {/* Hero Section */}
-        <section className={`text-center ${isMobile ? 'py-4 px-2' : 'py-20 px-6'}`}>
+        <section className={`text-center ${isMobile ? 'py-4 px-2' : 'py-12 px-6'}`}>
           <div className="max-w-4xl mx-auto">
-            <h1 className={`font-montserrat font-black ${isMobile ? 'text-2xl mb-3' : 'text-6xl md:text-8xl mb-6'}`}>
-              <span className="text-epic">Arena do</span><br />
+            <h1 className={`font-montserrat font-black ${isMobile ? 'text-2xl mb-3' : 'text-2xl md:text-3xl mb-4'}`}>
+              <span className="text-epic">A Arena do</span><br />
               <span className="text-epic">Conhecimento</span>
             </h1>
             
-            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xl md:text-2xl mb-8'}`}>
-              Transforme seu conhecimento histórico em <span className="text-epic font-bold">créditos valiosos</span>. 
-              Batalhe, aprenda e ganhe créditos dominando as eras da humanidade.
+            <p className={`text-epic font-bold max-w-3xl mx-auto ${isMobile ? 'text-sm mb-2' : 'text-sm md:text-base mb-3'}`}>
+              Aprenda, Compita e Ganhe Mérito Real!
+            </p>
+            
+            <p className={`text-muted-foreground max-w-3xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xs md:text-sm mb-4'}`}>
+              Transforme seu conhecimento em vitória e recompensas reais. 
+              Nosso app combina quiz atualizado, PvP meritocrático e pagamentos proporcionais. 
+              <span className="text-epic font-bold">Cada vitória é fruto do seu esforço e aprendizado, nunca de sorte.</span>
             </p>
 
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isMobile ? 'mb-6' : 'mb-12'}`}>
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isMobile ? 'mb-6' : 'mb-8'}`}>
               <ActionButton 
                 variant="epic" 
                 onClick={() => setShowAuth(true)}
-                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-xl px-8 py-4'}`}
+                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-sm px-5 py-2'}`}
                 icon={<Play />}
               >
                 Cadastrar Grátis
@@ -226,7 +232,7 @@ const Landing = () => {
               <ActionButton 
                 variant="battle" 
                 onClick={() => setShowAuth(true)}
-                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-xl px-8 py-4'}`}
+                className={`flex items-center gap-3 ${isMobile ? 'text-sm px-4 py-2' : 'text-sm px-5 py-2'}`}
                 icon={<Shield />}
               >
                 Fazer Login
@@ -238,7 +244,7 @@ const Landing = () => {
               {stats.map((stat, index) => (
                 <div 
                   key={index} 
-                  className="arena-card p-6 text-center bg-gradient-to-br from-background/50 to-background/20 backdrop-blur-sm border border-border/50 hover:border-epic/30 transition-all duration-300 hover:scale-105"
+                  className="arena-card p-4 text-center bg-gradient-to-br from-background/50 to-background/20 backdrop-blur-sm border border-border/50 hover:border-epic/30 transition-all duration-300 hover:scale-105"
                 >
                   <div className="mb-3 flex justify-center">
                     <div className="p-2 rounded-full bg-background/30 backdrop-blur-sm">
@@ -254,12 +260,12 @@ const Landing = () => {
         </section>
 
         {/* Features Section */}
-        <section className={`${isMobile ? 'py-6 px-2' : 'py-20 px-6'}`}>
-          <div className={`text-center ${isMobile ? 'mb-6' : 'mb-16'}`}>
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-4xl mb-4'}`}>
+        <section className={`${isMobile ? 'py-6 px-2' : 'py-8 px-6'}`}>
+          <div className={`text-center ${isMobile ? 'mb-6' : 'mb-12'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-2xl mb-3'}`}>
               Por que Escolher a Arena?
             </h2>
-            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl'}`}>
+            <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-base'}`}>
               Uma plataforma revolucionária que combina educação, competição e recompensas reais
             </p>
           </div>
@@ -273,7 +279,7 @@ const Landing = () => {
                   bg-gradient-to-br ${feature.bgGradient} 
                   border ${feature.borderColor}
                   hover:shadow-lg hover:scale-105
-                  ${isMobile ? 'p-3' : 'p-6'}
+                  ${isMobile ? 'p-2' : 'p-4'}
                 `}
               >
                 <div className="relative z-10">
@@ -298,10 +304,114 @@ const Landing = () => {
           </div>
         </section>
 
+        {/* Como Funciona Section */}
+        <section className={`${isMobile ? 'py-6 px-2' : 'py-8 px-6'}`}>
+          <div className={`text-center ${isMobile ? 'mb-6' : 'mb-10'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-2xl mb-3'}`}>
+              🎯 Como Funciona o Sistema Meritocrático
+            </h2>
+            <p className={`text-muted-foreground max-w-4xl mx-auto ${isMobile ? 'text-sm' : 'text-base'}`}>
+              Um sistema justo onde o <span className="text-epic font-bold">conhecimento paga de verdade</span>
+            </p>
+          </div>
+
+          <div className={`grid gap-4 max-w-6xl mx-auto ${isMobile ? 'grid-cols-2' : 'md:grid-cols-4'}`}>
+            {/* Passo 1 */}
+            <Card className={`arena-card text-center bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+              <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
+                <div className={`rounded-full bg-primary/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
+                  <BookOpen className={`text-primary ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
+                </div>
+              </div>
+              <h3 className={`font-bold text-primary ${isMobile ? 'text-xs mb-1' : 'mb-2'}`}>1. Estude</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                3 treinos grátis/dia + quizzes atualizados
+              </p>
+            </Card>
+
+            {/* Passo 2 */}
+            <Card className={`arena-card text-center bg-gradient-to-br from-battle/20 to-battle/5 border-battle/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+              <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
+                <div className={`rounded-full bg-battle/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
+                  <Sword className={`text-battle ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
+                </div>
+              </div>
+              <h3 className={`font-bold text-battle ${isMobile ? 'text-xs mb-1' : 'mb-2'}`}>2. Compita</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                PvP 1x1 onde habilidade decide
+              </p>
+            </Card>
+
+            {/* Passo 3 */}
+            <Card className={`arena-card text-center bg-gradient-to-br from-epic/20 to-epic/5 border-epic/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+              <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
+                <div className={`rounded-full bg-epic/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
+                  <Trophy className={`text-epic ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
+                </div>
+              </div>
+              <h3 className={`font-bold text-epic ${isMobile ? 'text-xs mb-1' : 'mb-2'}`}>3. Ganhe</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Top 5% recebem +20% bônus
+              </p>
+            </Card>
+
+            {/* Passo 4 */}
+            <Card className={`arena-card text-center bg-gradient-to-br from-legendary/20 to-legendary/5 border-legendary/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+              <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
+                <div className={`rounded-full bg-legendary/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
+                  <Target className={`text-legendary ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
+                </div>
+              </div>
+              <h3 className={`font-bold text-legendary ${isMobile ? 'text-xs mb-1' : 'mb-2'}`}>4. Saque</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Até 80% sacável via PIX
+              </p>
+            </Card>
+          </div>
+
+          {/* Exemplos de Ganho */}
+          <div className={`text-center ${isMobile ? 'mt-4 px-1' : 'mt-8 px-6'}`}>
+            <Card className={`arena-card-epic max-w-4xl mx-auto ${isMobile ? 'p-3' : 'p-6'}`}>
+              <h3 className={`font-bold text-epic ${isMobile ? 'text-sm mb-3' : 'text-2xl mb-4'}`}>
+                💰 Exemplos de Ganho Mensal
+              </h3>
+              <div className={`grid gap-2 ${isMobile ? 'grid-cols-2 text-xs' : 'md:grid-cols-4'}`}>
+                <div className="text-center">
+                  <div className={`font-bold text-amber-600 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥉</div>
+                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Iniciante</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 2-8</div>
+                </div>
+                <div className="text-center">
+                  <div className={`font-bold text-gray-400 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥈</div>
+                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Ativo</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 10-25</div>
+                </div>
+                <div className="text-center">
+                  <div className={`font-bold text-yellow-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥇</div>
+                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Top 20%</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 25-50</div>
+                </div>
+                <div className="text-center">
+                  <div className={`font-bold text-purple-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>👑</div>
+                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Elite 5%</div>
+                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 50-100+</div>
+                </div>
+              </div>
+              <p className={`text-muted-foreground ${isMobile ? 'mt-2 text-xs' : 'mt-4 text-sm'}`}>
+                <span className="text-epic font-bold">100% transparente:</span> Sistema matematicamente sustentável
+              </p>
+              <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2 text-xs'}`}>
+                <span className="text-orange-400 font-semibold">⚖️ Importante:</span> Os valores pagos são proporcionais ao seu desempenho. 
+                Sistema meritocrático transparente - resultados individuais podem variar.
+              </p>
+            </Card>
+          </div>
+        </section>
+
         {/* Eras Section */}
-        <section className={`${isMobile ? 'py-6 px-2' : 'py-20 px-6'}`}>
+        <section className={`${isMobile ? 'py-6 px-2' : 'py-12 px-6'}`}>
           <div className={`text-center ${isMobile ? 'mb-6' : 'mb-16'}`}>
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-4xl mb-4'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xl mb-2' : 'text-3xl mb-4'}`}>
               Explore as Eras Históricas
             </h2>
             <p className={`text-muted-foreground max-w-2xl mx-auto ${isMobile ? 'text-sm' : 'text-xl'}`}>
@@ -360,16 +470,28 @@ const Landing = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-6">
+        <section className="py-12 px-6">
           <Card className="arena-card-epic p-12 text-center max-w-4xl mx-auto">
             <Zap className="w-16 h-16 text-epic mx-auto mb-6" />
             <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
-              Pronto para a Batalha?
+              🏛️ Comece a Ganhar por Mérito Agora!
             </h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Junte-se a milhares de guerreiros do conhecimento e comece a conquistar créditos 
-              com suas habilidades históricas hoje mesmo!
+            <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
+              Junte-se ao primeiro quiz que <span className="text-epic font-bold">realmente paga por conhecimento</span>. 
+              Sistema meritocrático transparente onde cada vitória é sua conquista!
             </p>
+            <div className="space-y-3 mb-8 max-w-2xl mx-auto">
+              <p className="text-orange-400 text-sm">
+                💡 <span className="font-semibold">Ganhos baseados em mérito:</span> Sem garantias fixas. 
+                Valores dependem do seu desempenho e dedicação aos estudos.
+              </p>
+              <p className="text-green-400 text-sm font-semibold">
+                🚫 <span className="font-bold">NÃO É APOSTA:</span> Todo ganho depende de conhecimento e esforço.
+              </p>
+              <p className="text-blue-400 text-sm">
+                🎓 <span className="font-semibold">Menores de 18:</span> Modo FREE + Treinos (sem PvP) + Saque limitado 50%/mês.
+              </p>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <ActionButton 
@@ -398,13 +520,49 @@ const Landing = () => {
         </section>
       </div>
 
-      {/* Auth Modal */}
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-card-border bg-background-soft/80 backdrop-blur-sm p-4 mt-4">
+        <div className="max-w-6xl mx-auto text-center space-y-3">
+          <div className="flex flex-wrap justify-center gap-2 text-xs">
+            <button 
+              onClick={() => setShowAuth(true)}
+              className="text-epic hover:text-epic/80 transition-colors text-xs"
+            >
+              📝 Cadastro Grátis
+            </button>
+            <span className="text-muted-foreground">•</span>
+            <button 
+              onClick={() => setShowAuth(true)}
+              className="text-muted-foreground hover:text-epic transition-colors text-xs"
+            >
+              📋 Políticas
+            </button>
+            <span className="text-muted-foreground">•</span>
+            <span className="text-muted-foreground">
+              💎 R$ 5/mês (PIX)
+            </span>
+          </div>
+          <p className="text-muted-foreground text-xs">
+            🆓 <span className="text-epic text-xs">Free:</span> 6 partidas/dia • 
+            <span className="text-muted-foreground">💎 Pago: Ilimitado + créditos salvos</span>
+          </p>
+          <p className="text-blue-400 text-xs">
+            🎓 <span className="font-semibold">Seguro por idade:</span> Menores de 18 = FREE sem PvP + saque 50%/mês • Maiores de 18 = acesso completo
+          </p>
+          <p className="text-muted-foreground">
+            © 2025 Arena do Conhecimento • Transformando educação em oportunidade
+          </p>
+        </div>
+      </footer>
+      </div>
+
+      {/* Auth Modal - Fora do container scale */}
       {showAuth && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="relative max-w-md w-full">
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative max-w-md w-full max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowAuth(false)}
-              className="absolute -top-12 right-0 text-muted-foreground hover:text-epic transition-colors"
+              className="absolute -top-10 right-0 text-muted-foreground hover:text-epic transition-colors z-10"
             >
               ✕ Fechar
             </button>
@@ -415,15 +573,6 @@ const Landing = () => {
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-card-border bg-background-soft/80 backdrop-blur-sm p-6 mt-20">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-muted-foreground">
-            © 2024 Arena do Conhecimento • Transformando educação em oportunidade
-          </p>
-        </div>
-      </footer>
     </div>
   );
 };

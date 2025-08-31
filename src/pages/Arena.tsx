@@ -8,7 +8,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
-import { handleBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits } from '@/utils/creditsIntegration';
 import { Player } from '@/types/arena';
 import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
@@ -138,14 +138,14 @@ const Arena = () => {
 
         // Novo: Sistema de Percepção de Créditos para PvP
         const accuracyPercentage = Math.round((correctAnswers / questions.length) * 100);
-        const perceptionCredits = handleBattleCredits({
+        const creditsResult = handleNewBattleCredits({
           battleType: 'pvp',
           questionsCorrect: correctAnswers,
           questionsTotal: questions.length,
           accuracyPercentage: accuracyPercentage
         });
         
-        console.log(`⚔️ Arena PvP concluída! +${perceptionCredits} créditos de percepção (${isVictory ? 'Vitória' : 'Derrota'})`);
+        console.log(`⚔️ Arena PvP concluída! ${creditsResult.message} (${isVictory ? 'Vitória' : 'Derrota'})`);
       }
     }, 2000);
   };
@@ -153,7 +153,8 @@ const Arena = () => {
   // Mostrar loading enquanto as perguntas carregam
   if (loading || questions.length === 0) {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative flex items-center justify-center`}>
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative flex items-center justify-center`}>
+        <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
         <ParticleBackground />
         <div className="relative z-10 text-center">
           <div className="arena-card-epic p-8">
@@ -166,13 +167,14 @@ const Arena = () => {
             </p>
           </div>
         </div>
+        </div>
       </div>
     );
   }
 
   if (gamePhase === 'waiting') {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
         {/* Epic Arena Background - Fusão Suave das 4 Eras */}
         <div className="absolute inset-0 z-0">
           {/* Layer 1: Egypt (Base) */}
@@ -298,10 +300,10 @@ const Arena = () => {
 
             <div className="arena-card p-4 mb-8 bg-epic/10 border-epic">
               <p className="text-epic font-semibold">
-                💰 Custo da Batalha: 900 créditos
+                💰 Custo da Batalha: 1,5 créditos
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Vitória: +500 créditos | Derrota: -900 créditos | Pool: 1.800 créditos
+                Vitória: +2 créditos | Derrota: -1,5 créditos | App retém: 0,5 créditos
               </p>
             </div>
 
@@ -317,7 +319,7 @@ const Arena = () => {
 
   if (gamePhase === 'finished') {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
         {/* Epic Arena Background - Fusão Suave das 4 Eras */}
         <div className="absolute inset-0 z-0">
           {/* Layer 1: Egypt (Base) */}
@@ -399,10 +401,10 @@ const Arena = () => {
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
                 <p className={`text-2xl font-bold ${battleResult === 'victory' ? 'text-victory' : 'text-epic'}`}>
-                  {battleResult === 'victory' ? '+900 créditos' : '+100 créditos'}
+                  {battleResult === 'victory' ? '+2 créditos' : '+0 créditos'}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  +{battleResult === 'victory' ? '15' : '15'} créditos de percepção
+                  {battleResult === 'victory' ? 'Vitória PvP!' : 'Experiência de batalha'}
                 </p>
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
                 {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
@@ -436,7 +438,7 @@ const Arena = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
       {/* Epic Arena Background - Fusão Suave das 4 Eras */}
       <div className="absolute inset-0 z-0">
         {/* Layer 1: Egypt (Base) */}

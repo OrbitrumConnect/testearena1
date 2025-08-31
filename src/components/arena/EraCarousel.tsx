@@ -95,6 +95,9 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
+  
+  // Verificar tipo de usuário para bloquear Quiz Mundo Real para FREE
+  const userType = 'free'; // TODO: pegar do perfil do usuário real
 
   // Auto-rotation a cada 4 segundos
   useEffect(() => {
@@ -112,6 +115,8 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
   }, []);
 
   const currentEra = eraData[currentIndex];
+  const isWorldQuiz = currentEra.id === 'world';
+  const isBlocked = userType === 'free' && isWorldQuiz;
 
   return (
     <section className={isMobile ? 'mb-3' : 'mb-6'}>
@@ -194,12 +199,16 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
           {/* Botões de ação - SEMPRE na mesma posição */}
           <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-2 lg:grid-cols-4 gap-3'} w-full`}>
             <ActionButton 
-              variant="victory" 
+              variant={isBlocked ? 'secondary' : 'victory'} 
               icon={<Play />}
-              onClick={() => navigate(currentEra.routes.training)}
-              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300`}
+              onClick={() => isBlocked ? null : navigate(currentEra.routes.training)}
+              disabled={isBlocked}
+              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300 ${isBlocked ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              {isMobile ? 'Treinar' : 'Treinar Gratuito'}
+              {isBlocked ? 
+                (isMobile ? '🔒 Pago' : '🔒 Quiz Pago') : 
+                (isMobile ? 'Treinar' : 'Treinar Gratuito')
+              }
             </ActionButton>
             
             <ActionButton 

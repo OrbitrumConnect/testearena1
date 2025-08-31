@@ -9,6 +9,35 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const WorldQuiz = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  // Verificar tipo de usuário - bloquear para FREE
+  const userType = 'free'; // TODO: pegar do perfil do usuário real
+  
+  // Se for usuário FREE, redirecionar para home
+  if (userType === 'free') {
+    return (
+      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative flex items-center justify-center`}>
+        <ParticleBackground />
+        <div className="relative z-10 text-center arena-card-epic p-8 max-w-md mx-auto">
+          <div className="text-6xl mb-4">🔒</div>
+          <h2 className="text-2xl font-montserrat font-bold text-epic mb-4">
+            Acesso Restrito
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            O Quiz do Mundo Real é exclusivo para usuários pagos. Você ainda pode acessar as 4 eras históricas gratuitamente!
+          </p>
+          <div className="space-y-3">
+            <ActionButton variant="epic" onClick={() => navigate('/payment')} className="w-full">
+              💎 Upgrade para Pago
+            </ActionButton>
+            <ActionButton variant="secondary" onClick={() => navigate('/app')} className="w-full">
+              🏠 Voltar ao Menu
+            </ActionButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const currentEvents = [
     {

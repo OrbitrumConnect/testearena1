@@ -18,6 +18,7 @@ import Ranking from "./pages/Ranking";
 import Payment from "./pages/Payment";
 import WorldQuiz from "./pages/WorldQuiz";
 import NotFound from "./pages/NotFound";
+import { ProtectedRoute } from "./components/legal/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -31,18 +32,18 @@ const AppWithMusic = () => {
     <>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/app" element={<Index />} />
-        <Route path="/training" element={<Training />} />
-        <Route path="/arena" element={<ArenaNew />} />
-        <Route path="/mesopotamia" element={<Mesopotamia />} />
-        <Route path="/medieval" element={<Medieval />} />
-        <Route path="/digital" element={<Digital />} />
-        <Route path="/knowledge" element={<Knowledge />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/ranking" element={<Ranking />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/world-quiz" element={<WorldQuiz />} />
+        <Route path="/app" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+        <Route path="/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
+        <Route path="/arena" element={<ProtectedRoute><ArenaNew /></ProtectedRoute>} />
+        <Route path="/mesopotamia" element={<ProtectedRoute><Mesopotamia /></ProtectedRoute>} />
+        <Route path="/medieval" element={<ProtectedRoute><Medieval /></ProtectedRoute>} />
+        <Route path="/digital" element={<ProtectedRoute><Digital /></ProtectedRoute>} />
+        <Route path="/knowledge" element={<ProtectedRoute><Knowledge /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/ranking" element={<ProtectedRoute><Ranking /></ProtectedRoute>} />
+        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+        <Route path="/world-quiz" element={<ProtectedRoute><WorldQuiz /></ProtectedRoute>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

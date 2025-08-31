@@ -206,7 +206,8 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative overflow-hidden`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Background Temático Admin - Digital */}
       <div 
         className="absolute inset-0"
@@ -371,10 +372,10 @@ const AdminDashboard = () => {
                 {user.cpf && (
                   <Button
                     className="w-full mt-2"
-                    onClick={() => sendPixPayment(`req-${user.id}`, user.user_id, user.cpf, 20)}
+                    onClick={() => sendPixPayment(`req-${user.id}`, user.user_id, user.cpf, 5)}
                   >
                     <Send className="h-4 w-4 mr-2" />
-                    Enviar R$ 20 via PIX
+                    Enviar R$ 5 via PIX
                   </Button>
                 )}
               </div>
@@ -499,6 +500,7 @@ const AdminDashboard = () => {
             ))}
           </div>
         </Card>
+      </div>
       </div>
     </div>
   );

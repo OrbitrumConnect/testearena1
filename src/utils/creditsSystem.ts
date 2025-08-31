@@ -3,14 +3,14 @@
 
 export interface CreditsConfig {
   // Entrada do usuário
-  initialDeposit: number; // R$ 20,00
-  platformRetention: number; // R$ 1,00
-  creditsReceived: number; // 2.000 créditos
+  initialDeposit: number; // R$ 5,00
+  platformRetention: number; // R$ 0,50
+  creditsReceived: number; // 500 créditos
 
   // PvP Arena
-  pvpBetCredits: number; // 900 créditos
-  pvpWinnerCredits: number; // 1.400 créditos
-  pvpPlatformFeeCredits: number; // 400 créditos
+  pvpBetCredits: number; // 1,5 créditos
+  pvpWinnerCredits: number; // 2 créditos
+  pvpPlatformFeeCredits: number; // 0,5 créditos
 
   // Treinos
   trainingRewards: {

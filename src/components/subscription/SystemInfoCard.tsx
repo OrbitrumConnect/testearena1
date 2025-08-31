@@ -112,18 +112,18 @@ export const SystemInfoCard = ({
           <div className="grid grid-cols-3 gap-2">
             <div>
               <p className="font-semibold text-epic">Mês 1</p>
-              <p>2.000 créditos</p>
+              <p>500 créditos</p>
               <p className="text-muted-foreground">Padrão</p>
             </div>
             <div>
               <p className="font-semibold text-warning">Mês 2</p>
-              <p>1.600 créditos</p>
-              <p className="text-victory">-400 créditos</p>
+              <p>350 créditos</p>
+              <p className="text-victory">-R$ 1,50</p>
             </div>
             <div>
               <p className="font-semibold text-victory">Mês 3</p>
-              <p>1.200 créditos</p>
-              <p className="text-victory">-800 créditos</p>
+              <p>200 créditos</p>
+              <p className="text-victory">-R$ 3,00</p>
             </div>
           </div>
           

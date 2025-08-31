@@ -27,24 +27,24 @@ export interface UserSubscription {
 export const SUBSCRIPTION_CONFIG: Record<1 | 2 | 3, SubscriptionCycle> = {
   1: {
     month: 1,
-    entryAmount: 20.00,      // R$ 20,00
-    creditsReceived: 2000,   // 2.000 créditos
-    maxWithdrawal: 20.00,    // Pode sacar até R$ 20,00
-    platformRetention: 1.00  // R$ 1,00 taxa
+    entryAmount: 5.00,       // R$ 5,00
+    creditsReceived: 500,    // 500 créditos
+    maxWithdrawal: 5.00,     // Pode sacar até R$ 5,00
+    platformRetention: 0.50  // R$ 0,50 taxa
   },
   2: {
     month: 2,
-    entryAmount: 16.00,      // R$ 16,00 (economia de R$ 4,00)
-    creditsReceived: 1600,   // 1.600 créditos
-    maxWithdrawal: 20.00,    // Devolução do valor pago
-    platformRetention: 1.00  // R$ 1,00 taxa
+    entryAmount: 3.50,       // R$ 3,50 (economia de R$ 1,50)
+    creditsReceived: 350,    // 350 créditos
+    maxWithdrawal: 5.00,     // Devolução do valor pago
+    platformRetention: 0.35  // R$ 0,35 taxa
   },
   3: {
     month: 3,
-    entryAmount: 12.00,      // R$ 12,00 (economia de R$ 8,00)
-    creditsReceived: 1200,   // 1.200 créditos  
-    maxWithdrawal: 20.00,    // Devolução do valor pago
-    platformRetention: 1.00  // R$ 1,00 taxa
+    entryAmount: 2.00,       // R$ 2,00 (economia de R$ 3,00)
+    creditsReceived: 200,    // 200 créditos  
+    maxWithdrawal: 5.00,     // Devolução do valor pago
+    platformRetention: 0.20  // R$ 0,20 taxa
   }
 };
 

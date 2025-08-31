@@ -34,9 +34,9 @@ export const TermsOfService = () => {
           <div className="bg-muted/20 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">💰 Entrada na Plataforma</h3>
             <ul className="space-y-2">
-              <li>• Valor de entrada: <strong>R$ 20,00</strong></li>
-              <li>• Taxa de plataforma: <strong>R$ 1,00</strong> (retida para manutenção)</li>
-              <li>• Créditos recebidos: <strong>2.000 créditos</strong> para uso interno</li>
+              <li>• Valor de entrada: <strong>R$ 5,00</strong></li>
+              <li>• Taxa de plataforma: <strong>R$ 0,50</strong> (retida para manutenção)</li>
+              <li>• Créditos recebidos: <strong>500 créditos</strong> para uso interno</li>
               <li>• O valor pago <strong>não constitui compra</strong> de créditos</li>
               <li>• É uma <strong>taxa de acesso</strong> aos serviços da plataforma</li>
             </ul>

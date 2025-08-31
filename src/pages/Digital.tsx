@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { handleBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
 
@@ -18,7 +18,7 @@ const Digital = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(80);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [gamePhase, setGamePhase] = useState<'start' | 'question' | 'result' | 'finished'>('start');
   const [showExplanation, setShowExplanation] = useState(false);
   const [playerHp, setPlayerHp] = useState(100);
@@ -124,16 +124,18 @@ const Digital = () => {
         battleDurationSeconds: battleDurationSeconds,
       });
 
-      // Novo: Sistema de Percepção de Créditos
+      // Novo Sistema de Créditos
       const accuracyPercentage = Math.round((score / questions.length) * 100);
-      const perceptionCredits = handleBattleCredits({
+      const creditsResult = handleNewBattleCredits({
         battleType: 'training',
         questionsCorrect: score,
         questionsTotal: questions.length,
-        accuracyPercentage: accuracyPercentage
+        accuracyPercentage: accuracyPercentage,
+        eraSlug: 'digital',
+        usedExtraLife: false
       });
       
-      console.log(`🎯 Treino Digital concluído! +${perceptionCredits} créditos de percepção`);
+      console.log(`🎯 Treino Digital concluído! ${creditsResult.message}`);
       
       setGamePhase('finished');
     }
@@ -147,7 +149,7 @@ const Digital = () => {
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
-    setTimeLeft(80);
+    setTimeLeft(60);
     setPlayerHp(100);
     setEnemyHp(100);
     setSelectedAnswer(null);
@@ -165,7 +167,7 @@ const Digital = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
-    setTimeLeft(80);
+    setTimeLeft(60);
     setGamePhase('question');
     setShowExplanation(false);
     setPlayerHp(100);
@@ -215,20 +217,20 @@ const Digital = () => {
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-8'}`}>
-            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-6xl mb-6'}`}>💻</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-4'}`}>
+            <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>💻</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg mb-2' : 'text-3xl mb-4'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-2xl mb-2'}`}>
               Treinamento: Era Digital
             </h2>
             
-            <p className={`text-muted-foreground ${isMobile ? 'text-sm mb-3' : 'text-lg mb-6'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-2' : 'text-base mb-4'}`}>
               Domine os conhecimentos da era digital e tecnológica!
             </p>
 
             {/* Informações do limite de treinamento */}
-            <div className={`arena-card ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
-              <h3 className={`font-semibold ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>📊 Limite Diário</h3>
+            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>📊 Limite Diário</h3>
               <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 Hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
               </p>
@@ -238,8 +240,8 @@ const Digital = () => {
             </div>
 
             {/* Informações de recompensas */}
-            <div className={`arena-card ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
-              <h3 className={`font-semibold ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>💰 Recompensas</h3>
+            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>💰 Recompensas</h3>
               <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
                 <div className="text-center">
                   <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
@@ -278,16 +280,7 @@ const Digital = () => {
                 {canTrain ? 'Iniciar Treinamento' : 'Limite Atingido'}
               </ActionButton>
 
-              {trainingCount > 0 && (
-                <ActionButton 
-                  variant="battle" 
-                  icon={<Target />}
-                  onClick={resetTrainingCount}
-                  className={`w-full ${isMobile ? 'text-xs py-1' : ''}`}
-                >
-                  🔄 Reset Contador (Teste)
-                </ActionButton>
-              )}
+
             </div>
           </div>
         </div>
@@ -382,7 +375,8 @@ const Digital = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
+    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
+      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -623,6 +617,7 @@ const Digital = () => {
             </ActionButton>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

@@ -116,12 +116,12 @@ export const PixRequestForm = ({ userId, displayName, onRequestSent }: PixReques
             required
           />
           <p className="text-sm text-gray-400 mt-1">
-            Digite seu CPF para receber R$ 20,00 via PIX
+            Digite seu CPF para receber R$ 5,00 via PIX
           </p>
         </div>
 
         <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-          <h4 className="text-green-400 font-semibold mb-2">💰 Valor do PIX: R$ 20,00</h4>
+          <h4 className="text-green-400 font-semibold mb-2">💰 Valor do PIX: R$ 5,00</h4>
           <p className="text-sm text-gray-300">
             Solicitação mensal disponível para usuários ativos. 
             Processamento em até 24 horas úteis.
@@ -138,7 +138,7 @@ export const PixRequestForm = ({ userId, displayName, onRequestSent }: PixReques
           ) : (
             <>
               <Send className="h-4 w-4 mr-2" />
-              Solicitar R$ 20 via PIX
+              Solicitar R$ 5 via PIX
             </>
           )}
         </Button>
