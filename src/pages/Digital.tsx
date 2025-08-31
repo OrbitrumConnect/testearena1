@@ -413,7 +413,7 @@ const Digital = () => {
         </div>
         
         {/* Barra de Progresso Épica - Padrão Egito */}
-        <div className={isMobile ? 'mb-2 -mt-6' : 'mb-8'}>
+        <div className={isMobile ? 'mb-2' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -463,7 +463,7 @@ const Digital = () => {
                 }}
               />
             </div>
-            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
+            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-10 scale-65' : 'p-2 min-w-28'}`}>
               <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
               <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                 <div 
@@ -489,7 +489,7 @@ const Digital = () => {
                 }}
               />
             </div>
-            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
+            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-10 scale-65' : 'p-2 min-w-28'}`}>
               <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
               <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                 <div 
@@ -535,7 +535,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border-2 border-cyan-500 glow-epic ${isMobile ? 'p-0.5 mb-0.5 scale-20 mt-4' : 'p-2 mb-2 scale-56 mt-16'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border-2 border-cyan-500 glow-epic ${isMobile ? 'p-0.5 mb-0.5 scale-18 mt-4' : 'p-2 mb-2 scale-56 mt-16'}`}>
           <div className="flex items-center justify-center mb-6">
             <div className="inline-block px-6 py-2 bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500">
               <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">

@@ -399,7 +399,7 @@ const Mesopotamia = () => {
         </div>
         
         {/* Barra de Progresso Épica - Padrão Egito */}
-        <div className={isMobile ? 'mb-2' : 'mb-8'}>
+        <div className={isMobile ? 'mb-2 -mt-6' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -582,7 +582,7 @@ const Mesopotamia = () => {
         </div>
 
         {/* Pergunta - Responsiva como Medieval */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-amber-500/10 border border-amber-500 ${isMobile ? 'p-1 mb-1 mt-8 scale-24' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-amber-500/10 border border-amber-500 ${isMobile ? 'p-1 mb-1 mt-8 scale-26' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
             <div className={`inline-block bg-amber-500/30 rounded-full backdrop-blur-sm border border-amber-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-amber-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

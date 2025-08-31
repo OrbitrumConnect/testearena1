@@ -483,7 +483,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-2' : 'mb-8'}>
+        <div className={isMobile ? 'mb-2 -mt-6' : 'mb-8'}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -674,7 +674,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Pergunta em Balão Épico - 30% Menor */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-epic/10 border border-epic ${isMobile ? 'p-1 mb-1 mt-8 scale-24' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-epic/10 border border-epic ${isMobile ? 'p-1 mb-1 mt-8 scale-26' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-4'}`}>
             <div className={`inline-block bg-epic/30 rounded-full backdrop-blur-sm border border-epic ${isMobile ? 'px-1 py-0.5' : 'px-4 py-1.5'}`}>
               <span className={`text-epic font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-xs'}`}>
