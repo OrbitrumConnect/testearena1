@@ -455,7 +455,7 @@ const Digital = () => {
               <img 
                 src="/guerreirodigital.png" 
                 alt="Guerreiro Digital" 
-                className={`${isMobile ? 'w-16 h-16' : 'w-24 h-24'} object-contain`}
+                className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
                 style={{ 
                   filter: hitEffect === 'player' 
                     ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
@@ -481,7 +481,7 @@ const Digital = () => {
               <img 
                 src="/bossdigital.png" 
                 alt="Boss Digital" 
-                className={`${isMobile ? 'w-18 h-18' : 'w-28 h-28'} object-contain`}
+                className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
                 style={{ 
                   filter: hitEffect === 'enemy' 
                     ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 

@@ -442,7 +442,7 @@ const Mesopotamia = () => {
                 <img 
                   src="/hero-mesopotamia.png" 
                   alt="Herói Mesopotâmia" 
-                  className={`${isMobile ? 'w-8 h-8' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'player' 
                       ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
@@ -470,7 +470,7 @@ const Mesopotamia = () => {
                 <img 
                   src="/enkidu-mesopotamia.png" 
                   alt="Enkidu Mesopotâmia" 
-                  className={`${isMobile ? 'w-10 h-10' : 'w-28 h-28'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'enemy' 
                       ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 

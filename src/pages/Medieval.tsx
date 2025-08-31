@@ -424,7 +424,7 @@ const Medieval = () => {
                 <img 
                   src="/hero-medieval.png" 
                   alt="Herói Medieval" 
-                  className={`${isMobile ? 'w-12 h-12' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
                   style={{ 
                     transform: 'scaleX(-1)', 
                     filter: hitEffect === 'player' 
