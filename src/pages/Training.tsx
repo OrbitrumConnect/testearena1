@@ -206,40 +206,40 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         <ParticleBackground />
         
         <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
-          <div className="text-center mb-8">
+          <div className={`text-center ${isMobile ? 'mb-2' : 'mb-8'}`}>
             <ActionButton 
               variant="battle" 
               icon={<ArrowLeft />}
               onClick={() => navigate('/app')}
-              className="mb-6"
+              className={isMobile ? 'mb-2 text-sm px-3 py-1' : 'mb-6'}
             >
               Voltar ao Menu
             </ActionButton>
           </div>
 
-          <div className="arena-card-epic p-8 text-center">
-            <div className="text-6xl mb-6">🏺</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-8'}`}>
+            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-6xl mb-6'}`}>🏺</div>
             
-            <h2 className="text-3xl font-montserrat font-bold text-epic mb-4">
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg mb-2' : 'text-3xl mb-4'}`}>
               Treinamento: Egito Antigo
             </h2>
             
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className={`text-muted-foreground ${isMobile ? 'text-sm mb-3' : 'text-lg mb-6'}`}>
               Teste seus conhecimentos sobre a civilização egípcia e ganhe recompensas!
             </p>
 
             {/* Informações do limite de treinamento */}
             {userType === 'free' ? (
-              <div className="arena-card p-4 mb-6 border-epic/30">
-                <h3 className="font-semibold mb-2 text-epic">🆓 Modo FREE - Treinamento Gratuito</h3>
-                <p className="text-sm text-muted-foreground">
-                  Treinos realizados hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
+              <div className={`arena-card border-epic/30 ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
+                <h3 className={`font-semibold text-epic ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>🆓 Modo FREE</h3>
+                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                  Hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Treinos restantes: <span className="font-bold text-victory">{freeInfo.remaining}</span>
+                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                  Restantes: <span className="font-bold text-victory">{freeInfo.remaining}</span>
                 </p>
-                <p className="text-xs text-warning mt-2">
-                  ⚠️ Modo gratuito: Não ganha XP, créditos ou pontos
+                <p className={`text-warning ${isMobile ? 'text-xs mt-1' : 'text-xs mt-2'}`}>
+                  ⚠️ Gratuito: Não ganha XP/créditos
                 </p>
                 {!canTrainFree && (
                   <div className="mt-2 p-2 bg-warning/10 rounded border border-warning/20">
@@ -474,7 +474,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                         <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1 py-1 scale-50 self-end' : 'px-4 py-3'}`}>
                 <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontos</p>
                 <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
-              </div>
+          </div>
         </div>
 
         {/* Barra de Progresso Épica */}
@@ -573,9 +573,9 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Efeito de Raio Apenas Durante Pergunta */}
           {!attackEffect && gamePhase === 'question' && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-              <div className="text-4xl animate-ping opacity-50">⚡</div>
-            </div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="text-4xl animate-ping opacity-50">⚡</div>
+          </div>
           )}
 
           {/* Fogo Viajando - ACERTO: Você → Inimigo */}

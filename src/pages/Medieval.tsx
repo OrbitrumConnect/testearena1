@@ -185,76 +185,76 @@ const Medieval = () => {
         <ParticleBackground />
         
         <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
-          <div className="text-center mb-8">
+          <div className={`text-center ${isMobile ? 'mb-2' : 'mb-8'}`}>
             <ActionButton 
               variant="battle" 
               icon={<ArrowLeft />}
               onClick={() => navigate('/app')}
-              className="mb-6"
+              className={isMobile ? 'mb-2 text-sm px-3 py-1' : 'mb-6'}
             >
               Voltar ao Menu
             </ActionButton>
           </div>
 
-          <div className="arena-card-epic p-8 text-center">
-            <div className="text-6xl mb-6">⚔️</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-8'}`}>
+            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-6xl mb-6'}`}>⚔️</div>
             
-            <h2 className="text-3xl font-montserrat font-bold text-epic mb-4">
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg mb-2' : 'text-3xl mb-4'}`}>
               Treinamento: Era Medieval
             </h2>
             
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className={`text-muted-foreground ${isMobile ? 'text-sm mb-3' : 'text-lg mb-6'}`}>
               Teste seus conhecimentos sobre a época medieval!
             </p>
 
             {/* Informações do limite de treinamento */}
-            <div className="arena-card p-4 mb-6">
-              <h3 className="font-semibold mb-2">📊 Limite Diário de Treinamento</h3>
-              <p className="text-sm text-muted-foreground">
-                Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
+            <div className={`arena-card ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>📊 Limite Diário</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
               </p>
-              <p className="text-sm text-muted-foreground">
-                Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
               </p>
             </div>
 
             {/* Informações de recompensas */}
-            <div className="arena-card p-4 mb-6">
-              <h3 className="font-semibold mb-2">💰 Recompensas</h3>
-              <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className={`arena-card ${isMobile ? 'p-2 mb-3' : 'p-4 mb-6'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-sm mb-1' : 'mb-2'}`}>💰 Recompensas</h3>
+              <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
                 <div className="text-center">
-                  <p className="text-epic font-bold">🏆 90%+</p>
-                  <p className="text-muted-foreground">7 créditos</p>
+                  <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>7 créditos</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-victory font-bold">✅ 70%+</p>
-                  <p className="text-muted-foreground">6 créditos</p>
+                  <p className={`text-victory font-bold ${isMobile ? 'text-xs' : ''}`}>✅ 70%+</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>6 créditos</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-warning font-bold">📚 Base</p>
-                  <p className="text-muted-foreground">4 créditos</p>
+                  <p className={`text-warning font-bold ${isMobile ? 'text-xs' : ''}`}>📚 Base</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>4 créditos</p>
                 </div>
               </div>
             </div>
 
             {/* Alerta de limite atingido */}
             {!canTrain && (
-              <Alert className="mb-6">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
+              <Alert className={isMobile ? 'mb-3 p-2' : 'mb-6'}>
+                <AlertTriangle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                <AlertDescription className={isMobile ? 'text-xs' : ''}>
                   ⚠️ Você atingiu o limite diário de {maxTrainings} treinamentos. 
                   Volte amanhã para continuar treinando!
                 </AlertDescription>
               </Alert>
             )}
 
-            <div className="flex flex-col gap-4">
+            <div className={`flex flex-col ${isMobile ? 'gap-2' : 'gap-4'}`}>
               <ActionButton 
                 variant="victory" 
                 icon={<Play />}
                 onClick={startTraining}
                 disabled={!canTrain}
-                className="w-full"
+                className={`w-full ${isMobile ? 'text-sm py-2' : ''}`}
               >
                 {canTrain ? 'Iniciar Treinamento' : 'Limite Atingido'}
               </ActionButton>
@@ -264,7 +264,7 @@ const Medieval = () => {
                   variant="battle" 
                   icon={<Target />}
                   onClick={resetTrainingCount}
-                  className="w-full"
+                  className={`w-full ${isMobile ? 'text-xs py-1' : ''}`}
                 >
                   🔄 Reset Contador (Teste)
                 </ActionButton>
