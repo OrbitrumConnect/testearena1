@@ -220,7 +220,7 @@ const Index = () => {
       
       {/* Header */}
       <header className={`relative z-10 ${isMobile ? 'p-1' : 'p-6'} border-b border-card-border bg-background-soft/80 backdrop-blur-sm`}>
-        <div className="max-w-6xl mx-auto w-96/100">
+        <div className="max-w-6xl mx-auto w-94/100">
           {isMobile ? (
             // Layout mobile - organizado e compacto
             <div className="space-y-1">
@@ -352,7 +352,7 @@ const Index = () => {
         </div>
       </header>
 
-      <div className={`relative z-10 max-w-6xl mx-auto w-96/100 ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-6xl mx-auto w-94/100 ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
         {/* Top Carousel - Ranking + Notícias */}
         <TopCarousel isMobile={isMobile} />
 
@@ -433,8 +433,8 @@ const Index = () => {
                       backgroundImage: `url(${module.background})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '66px',
-                      transform: 'scale(1.1)'
+                      minHeight: '69px',
+                      transform: 'scale(1.1) scaleY(1.05)'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>

@@ -197,7 +197,7 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
           )}
           
           {/* Botões de ação - SEMPRE na mesma posição */}
-          <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-2 lg:grid-cols-4 gap-3'} w-full`} style={isMobile ? {transform: 'scale(1.05)'} : {}}>
+          <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-2 lg:grid-cols-4 gap-3'} w-full`} style={isMobile ? {transform: 'scale(1.05) scaleY(1.05)'} : {}}>
             <ActionButton 
               variant={isBlocked ? 'secondary' : 'victory'} 
               icon={<Play />}
