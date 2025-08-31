@@ -270,7 +270,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <h3 className="font-semibold mb-1 text-sm">💰 Recompensas</h3>
               <div className="text-xs space-y-2">
                 <div className="bg-muted/50 p-2 rounded">
-                  <p className="text-muted-foreground">Depósito {getFinancialSystemInfo().initialDeposit} • Taxa {getFinancialSystemInfo().platformFee}</p>
+                  <p className="text-muted-foreground">Saque mín {getFinancialSystemInfo().minWithdrawal} • Taxa {getFinancialSystemInfo().withdrawalFee}</p>
                 </div>
                 <div className="grid grid-cols-3 gap-1">
                   <div className="text-center">
@@ -287,7 +287,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
-                  ⭐ Meta diária sugerida: {getFinancialSystemInfo().dailyTarget}
+                  ⭐ Sistema: {getFinancialSystemInfo().subscriptionCycle}
                 </p>
               </div>
             </div>

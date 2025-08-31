@@ -459,7 +459,7 @@ const Digital = () => {
               </div>
               <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
             </div>
-          </div>
+            </div>
 
             {/* Inimigo - Posição Direita */}
             <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
@@ -485,7 +485,9 @@ const Digital = () => {
               </div>
               <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
             </div>
+            </div>
           </div>
+        </div>
 
           {/* Efeito de 3 Tiros de Laser Neon Laranja */}
           {laserShots.map((shot, index) => {
@@ -603,7 +605,6 @@ const Digital = () => {
             </ActionButton>
           </div>
         )}
-      </div>
       </div>
     </div>
   );
