@@ -433,18 +433,18 @@ const Index = () => {
                       backgroundImage: `url(${module.background})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '90px'
+                      minHeight: '60px'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
-                    <div className="relative z-10 p-1.5 text-center">
-                      <div className="text-base mb-1">
+                    <div className="relative z-10 p-1 text-center">
+                      <div className="text-sm mb-0.5">
                         {module.icon === 'pyramid' ? '🏛️' :
                          module.icon === 'scroll' ? '📜' :
                          module.icon === 'castle' ? '⚔️' :
                          module.icon === 'robot' ? '💻' : '🌍'}
                       </div>
-                      <p className="text-sm font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
+                      <p className="text-xs font-semibold text-white drop-shadow-md">{module.title.split(' ')[0]}</p>
                       <div className="w-full bg-white/20 rounded-full h-0.5 mt-0.5">
                         <div 
                           className="bg-epic h-0.5 rounded-full transition-all duration-300" 
