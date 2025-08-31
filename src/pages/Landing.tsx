@@ -117,7 +117,7 @@ const Landing = () => {
 
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} bg-background relative`}>
-      <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[1.03] origin-top-left w-[97%]'}>
+      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[1.03] origin-top-left w-[97%]'}>
       {/* Dynamic Era Backgrounds */}
       <div className="absolute inset-0 z-0">
         <div className="h-full w-full">
