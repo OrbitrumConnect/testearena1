@@ -384,7 +384,7 @@ const Medieval = () => {
             {isMobile ? '←' : 'Voltar'}
           </ActionButton>
           
-          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1.5 py-0.5 flex-1 mx-1' : 'px-6 py-3'}`}>
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1.5 py-0.5 flex-1 mx-1 w-4/5' : 'px-6 py-3'}`}>
             <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xs' : 'text-2xl'}`}>⚔️ BATALHA</h1>
             <p className={`text-muted-foreground ${isMobile ? 'text-xs leading-none' : ''}`}>{currentQuestion + 1}/{questions.length}</p>
           </div>
@@ -419,7 +419,7 @@ const Medieval = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-2 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/hero-medieval.png" 
