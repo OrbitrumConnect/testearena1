@@ -379,7 +379,7 @@ const Medieval = () => {
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-0.5 py-0.5 w-2/5' : ''}`}
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-0.5 py-0.5 w-1/4' : ''}`}
           >
             {isMobile ? '←' : 'Voltar'}
           </ActionButton>
