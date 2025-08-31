@@ -377,7 +377,7 @@ const Landing = () => {
               </h3>
               <div className={`grid gap-2 ${isMobile ? 'grid-cols-2 text-xs' : 'md:grid-cols-4'}`}>
                 <div className="text-center">
-                  <div className={`font-bold text-amber-600 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥉</div>
+                  <div className={`font-bold text-gray-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥉</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Iniciante</div>
                   <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 2-8</div>
                 </div>
@@ -387,7 +387,7 @@ const Landing = () => {
                   <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 10-25</div>
                 </div>
                 <div className="text-center">
-                  <div className={`font-bold text-yellow-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥇</div>
+                  <div className={`font-bold text-gray-300 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥇</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Top 20%</div>
                   <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 25-50</div>
                 </div>
@@ -401,7 +401,7 @@ const Landing = () => {
                 <span className="text-epic font-bold">100% transparente:</span> Sistema matematicamente sustentável
               </p>
               <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2 text-xs'}`}>
-                <span className="text-orange-400 font-semibold">⚖️ Importante:</span> Os valores pagos são proporcionais ao seu desempenho. 
+                <span className="text-gray-400 font-semibold">⚖️ Importante:</span> Os valores pagos são proporcionais ao seu desempenho. 
                 Sistema meritocrático transparente - resultados individuais podem variar.
               </p>
             </Card>
@@ -481,7 +481,7 @@ const Landing = () => {
               Sistema meritocrático transparente onde cada vitória é sua conquista!
             </p>
             <div className="space-y-3 mb-8 max-w-2xl mx-auto">
-              <p className="text-orange-400 text-sm">
+              <p className="text-gray-400 text-sm">
                 💡 <span className="font-semibold">Ganhos baseados em mérito:</span> Sem garantias fixas. 
                 Valores dependem do seu desempenho e dedicação aos estudos.
               </p>
