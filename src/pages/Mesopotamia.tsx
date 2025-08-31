@@ -450,7 +450,7 @@ const Mesopotamia = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-60' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 
@@ -478,7 +478,7 @@ const Mesopotamia = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-3 min-w-32'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-60' : 'p-3 min-w-32'}`}>
                 <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'ENKIDU' : 'ENKIDU SÁBIO'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
                   <div 

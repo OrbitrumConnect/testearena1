@@ -433,7 +433,7 @@ const Medieval = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12' : 'p-2 min-w-28'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-80' : 'p-2 min-w-28'}`}>
                 <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                   <div 
@@ -461,7 +461,7 @@ const Medieval = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12' : 'p-2 min-w-28'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-80' : 'p-2 min-w-28'}`}>
                 <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'DRAGÃO' : 'DRAGÃO SÁBIO'}</h3>
                 <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                   <div 
