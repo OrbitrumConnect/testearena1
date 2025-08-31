@@ -372,7 +372,7 @@ const Medieval = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto scale-85' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto scale-85 w-9/10 max-w-sm' : 'p-6'}`}>
         {/* Header com navegação */}
         <div className={`${isMobile ? 'flex justify-between items-center mb-2 px-1' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
@@ -419,7 +419,7 @@ const Medieval = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute left-2 text-center ${isMobile ? 'top-5' : ''}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/hero-medieval.png" 
@@ -448,7 +448,7 @@ const Medieval = () => {
 
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute right-1 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/dragon-medieval.png" 
