@@ -414,7 +414,7 @@ const Digital = () => {
         
         {/* Barra de Progresso Épica - Padrão Egito */}
         <div className={isMobile ? 'mb-2' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-60' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               

@@ -433,7 +433,8 @@ const Index = () => {
                       backgroundImage: `url(${module.background})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      minHeight: '60px'
+                      minHeight: '66px',
+                      transform: 'scale(1.1)'
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>

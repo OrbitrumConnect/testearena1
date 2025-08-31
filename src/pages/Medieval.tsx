@@ -397,7 +397,7 @@ const Medieval = () => {
         
         {/* Barra de Progresso Épica */}
         <div className={isMobile ? 'mb-2 mx-1' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1.5' : 'p-4'}`}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1.5 scale-80' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
@@ -572,7 +572,7 @@ const Medieval = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-2 mb-2 mt-4 mx-1' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-2 mb-2 mt-4 mx-1 scale-80' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
             <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
