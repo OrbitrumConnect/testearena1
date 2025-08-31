@@ -373,44 +373,47 @@ const Medieval = () => {
       <ParticleBackground />
       
       <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
-        {/* Botão Voltar */}
-        <div className={`${isMobile ? 'flex flex-col space-y-2 mb-4' : 'flex items-center justify-between mb-8'}`}>
+        {/* Header com navegação */}
+        <div className={`${isMobile ? 'grid grid-cols-3 gap-1 mb-3' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'self-start text-sm px-3 py-2' : ''}`}
+            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-2 py-1' : ''}`}
           >
-            Voltar
+            {isMobile ? '←' : 'Voltar'}
           </ActionButton>
           
-          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-3 py-2 scale-50' : 'px-6 py-3'}`}>
-            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>⚔️ BATALHA EM CURSO</h1>
+          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-1' : 'px-6 py-3'}`}>
+            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-sm' : 'text-2xl'}`}>⚔️ BATALHA EM CURSO</h1>
             <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>Era Medieval - {currentQuestion + 1}/{questions.length}</p>
           </div>
 
-          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1 py-1 scale-50 self-end' : 'px-4 py-3'}`}>
+          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-2 py-1' : 'px-4 py-3'}`}>
             <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Pontos</p>
             <p className={`font-bold text-victory ${isMobile ? 'text-sm' : 'text-xl'}`}>{score}/{currentQuestion + 1}</p>
           </div>
         </div>
         
-        {/* Barra de Progresso Épica - Padrão Egito */}
-        <div className={isMobile ? 'mb-2 -mt-6' : 'mb-8'}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75' : 'p-4'}`}>
-            <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
+        {/* Barra de Progresso Épica */}
+        <div className={isMobile ? 'mb-3' : 'mb-8'}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2 mx-1' : 'p-4'}`}>
+            <div className={`flex items-center justify-between ${isMobile ? 'mb-2' : 'mb-2'}`}>
+              <div className="flex items-center space-x-2">
+                <span className={`font-semibold text-epic ${isMobile ? 'text-sm' : 'text-sm'}`}>Progresso</span>
+                <span className={`text-victory font-bold ${isMobile ? 'text-sm' : 'text-lg'}`}>{score}/{currentQuestion + 1}</span>
+              </div>
               
               {/* Timer Integrado */}
               <div className="flex items-center space-x-2">
                 <div 
-                  className={`${isMobile ? 'text-sm' : 'text-lg'}`}
+                  className={`${isMobile ? 'text-lg' : 'text-lg'}`}
                   style={{ 
                     filter: 'drop-shadow(0 0 6px rgba(255, 193, 7, 1))'
                   }}
                 >⏰</div>
                 <div 
-                  className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-yellow-400'} ${isMobile ? 'text-xs' : 'text-sm'}`}
+                  className={`font-bold ${timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-yellow-400'} ${isMobile ? 'text-sm' : 'text-sm'}`}
                   style={{ 
                     filter: 'drop-shadow(0 0 4px rgba(255, 193, 7, 0.8))'
                   }}
@@ -419,7 +422,7 @@ const Medieval = () => {
                 </div>
               </div>
               
-              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
+              <span className={`text-muted-foreground ${isMobile ? 'text-sm' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
             </div>
             <div className="progress-epic">
               <div 
@@ -431,15 +434,15 @@ const Medieval = () => {
         </div>
 
         {/* Arena de Combate */}
-        <div className={`relative ${isMobile ? 'mb-1' : 'mb-4'}`}>
-          <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
+        <div className={`relative ${isMobile ? 'mb-2 mx-1' : 'mb-4'}`}>
+          <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-32 mb-2' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda (origem do fogo) */}
             <div className="absolute left-2 text-center">
-              <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+              <div className={`${isMobile ? 'mb-1' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/hero-medieval.png" 
                   alt="Herói Medieval" 
-                  className={`${isMobile ? 'w-8 h-8' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-16 h-16' : 'w-24 h-24'} object-contain`}
                   style={{ 
                     transform: 'scaleX(-1)', 
                     filter: hitEffect === 'player' 
@@ -448,15 +451,15 @@ const Medieval = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
-                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'YOU' : 'VOCÊ'}</h3>
-                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-1 min-w-16' : 'p-2 min-w-28'}`}>
+                <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
+                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
-                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
+                    className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`} 
                     style={{ width: `${playerHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
+                <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-1' : 'text-xs mt-1'}`}>{playerHp}</p>
               </div>
             </div>
 
@@ -464,11 +467,11 @@ const Medieval = () => {
 
             {/* Inimigo - Posição Direita (origem do fogo) */}
             <div className="absolute right-2 text-center">
-              <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+              <div className={`${isMobile ? 'mb-1' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/dragon-medieval.png" 
                   alt="Dragão Medieval" 
-                  className={`${isMobile ? 'w-10 h-10' : 'w-28 h-28'} object-contain`}
+                  className={`${isMobile ? 'w-18 h-18' : 'w-28 h-28'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'enemy' 
                       ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
@@ -476,15 +479,15 @@ const Medieval = () => {
                   }}
                 />
               </div>
-              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
-                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'DRAG' : 'DRAGÃO SÁBIO'}</h3>
-                <div className={`progress-epic ${isMobile ? 'mt-0' : 'mt-2'}`}>
+              <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-1 min-w-16' : 'p-2 min-w-28'}`}>
+                <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'DRAGÃO' : 'DRAGÃO SÁBIO'}</h3>
+                <div className={`progress-epic ${isMobile ? 'mt-1' : 'mt-2'}`}>
                   <div 
-                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-0.5' : 'h-2'}`} 
+                    className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`} 
                     style={{ width: `${enemyHp}%` }}
                   />
                 </div>
-                <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
+                <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-1' : 'text-xs mt-1'}`}>{enemyHp}</p>
               </div>
             </div>
           </div>
@@ -586,8 +589,8 @@ const Medieval = () => {
           `}</style>
         </div>
 
-        {/* Pergunta - 30% Menor */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-1 mt-8 scale-26' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
+        {/* Pergunta */}
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-2 mb-2 mt-4 mx-1' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-1' : 'mb-6'}`}>
             <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
