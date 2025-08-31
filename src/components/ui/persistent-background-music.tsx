@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, memo } from 'react';
 import { Volume2, VolumeX, Music, SkipForward, SkipBack, Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PersistentBackgroundMusicProps {
   tracks?: string[];
@@ -43,6 +44,7 @@ export const PersistentBackgroundMusic = memo(({
   const [isPlaying, setIsPlaying] = useState(globalState.isPlaying);
   const [isMuted, setIsMuted] = useState(globalState.isMuted);
   const [currentTrack, setCurrentTrack] = useState(globalState.currentTrack);
+  const isMobile = useIsMobile();
   const [isExpanded, setIsExpanded] = useState(globalState.isExpanded);
   const [volume, setVolume] = useState(globalState.volume);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -179,7 +181,7 @@ export const PersistentBackgroundMusic = memo(({
 
       {/* Music Controls */}
       <div className={`${className.includes('relative') ? 'relative' : 'fixed bottom-6 right-6'} z-[9999]`}>
-        <Card className={`arena-card p-2 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-auto'}`}>
+        <Card className={`arena-card p-2 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-auto'} ${isMobile ? 'scale-60' : ''}`}>
           <div className="flex items-center gap-2">
             {/* Play/Pause Button */}
             <Button
