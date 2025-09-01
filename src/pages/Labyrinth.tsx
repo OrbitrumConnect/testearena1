@@ -94,6 +94,43 @@ const Labyrinth = () => {
       const canvasX = (x / rect.width) * 400;
       const canvasY = (y / rect.height) * 400;
       
+      // Verificar se tocou em um baú (distância maior para facilitar)
+      const touchedChest = chests.find(chest => {
+        const distance = Math.sqrt(
+          Math.pow(canvasX - chest.position.x, 2) + Math.pow(canvasY - chest.position.y, 2)
+        );
+        console.log('🎯 Distância para baú:', chest.id, distance, 'posição:', chest.position.x, chest.position.y);
+        return distance < 50 && !chest.isOpen; // Aumentado de 30 para 50
+      });
+      
+      if (touchedChest && touchedChest.question) {
+        console.log('📦 Abrindo baú:', touchedChest.id);
+        // Abrir baú diretamente
+        setGameState(prev => ({
+          ...prev,
+          phase: 'question',
+          currentQuestion: touchedChest.question,
+          selectedAnswer: null,
+          showExplanation: false
+        }));
+        
+        // Marcar baú como aberto
+        setChests(prev => prev.map(chest => 
+          chest.id === touchedChest.id 
+            ? { ...chest, isOpen: true }
+            : chest
+        ));
+        
+        // Atualizar contadores
+        setGameState(prev => ({
+          ...prev,
+          chestsOpened: prev.chestsOpened + 1,
+          score: prev.score + 100
+        }));
+        
+        return; // Não mover o jogador se tocou em um baú
+      }
+      
       // Verificar colisão antes de mover
       const walls = [
         // Paredes externas
@@ -1356,8 +1393,8 @@ const Labyrinth = () => {
                                  transformOrigin: 'center', 
                                  margin: '-120px auto -126px auto', // Reduzido 20% (de -158px para -126px)
                                  backgroundColor: 'rgba(0, 0, 0, 0.33)', 
-                                 width: '115%', 
-                                 marginLeft: isMobile ? '-20%' : 'auto', 
+                                 width: '130%', // Aumentado 15% (de 115% para 130%)
+                                 marginLeft: isMobile ? '-35%' : '-15%', // Movido 15% para direita
                                  marginRight: 'auto',
                                  boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
                                  border: '2px solid rgba(255, 215, 0, 0.6)'
@@ -1402,76 +1439,76 @@ const Labyrinth = () => {
                                      {/* Mobile controls removidos - usando touch direto */}
                 </div>
                 
-                                 {/* Status Panel & Rules */}
-                                   <div className="space-y-4" style={{ marginLeft: isMobile ? '-40%' : '-20%' }}>
-                   {/* Status */}
-                   <div>
-                     <h3 className="font-bold mb-3 text-victory">Status</h3>
-                     
-                     <div className="space-y-2 text-sm">
-                       <div className="flex justify-between">
-                         <span>Chaves:</span>
-                         <span className="font-bold">{gameState.keysCollected}/4</span>
-                       </div>
-                       
-                       <div className="flex justify-between">
-                         <span>Baús:</span>
-                         <span className="font-bold">{gameState.chestsOpened}/{gameState.totalChests}</span>
-                       </div>
-                       
-                       <div className="flex justify-between">
-                         <span>Portal:</span>
-                         <span className="font-bold">{gameState.keysCollected >= 3 ? '🟢' : '🔴'}</span>
-                       </div>
-                     </div>
-                     
-                     <div className="mt-4">
-                       <div className="text-xs text-muted-foreground mb-1">Progresso da Exploração</div>
-                       <div className="bg-muted rounded-full h-2">
-                         <div 
-                           className="bg-victory rounded-full h-2 transition-all duration-300" 
-                           style={{ width: `${(gameState.chestsOpened / gameState.totalChests) * 100}%` }}
-                         />
-                       </div>
-                     </div>
-                   </div>
-                   
-                                       {/* Game Rules */}
-                    <div>
-                      <h3 className="font-bold mb-2 text-legendary">Como Jogar</h3>
+                                 {/* Status Panel & Rules - Movido para dentro do card principal */}
+                <div className="space-y-4">
+                  {/* Status */}
+                  <div>
+                    <h3 className="font-bold mb-3 text-victory">Status</h3>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Chaves:</span>
+                        <span className="font-bold">{gameState.keysCollected}/4</span>
+                      </div>
                       
-                      <div className="space-y-1 text-xs">
-                        <div className="flex items-center gap-1">
-                          <span className="text-blue-400">👆</span>
-                          <span>Toque para mover</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <span className="text-yellow-400">📦</span>
-                          <span>Toque nos baús</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <span className="text-red-400">👹</span>
-                          <span>Evite inimigos</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <span className="text-green-400">🗝️</span>
-                          <span>3+ chaves</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <span className="text-purple-400">🚪</span>
-                          <span>Saia pelo portal</span>
-                        </div>
-                        
-                        <div className="mt-2 p-2 bg-muted rounded text-center">
-                          <div className="text-xs font-bold">Responda e escape!</div>
-                        </div>
+                      <div className="flex justify-between">
+                        <span>Baús:</span>
+                        <span className="font-bold">{gameState.chestsOpened}/{gameState.totalChests}</span>
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <span>Portal:</span>
+                        <span className="font-bold">{gameState.keysCollected >= 3 ? '🟢' : '🔴'}</span>
                       </div>
                     </div>
-                 </div>
+                    
+                    <div className="mt-4">
+                      <div className="text-xs text-muted-foreground mb-1">Progresso da Exploração</div>
+                      <div className="bg-muted rounded-full h-2">
+                        <div 
+                          className="bg-victory rounded-full h-2 transition-all duration-300" 
+                          style={{ width: `${(gameState.chestsOpened / gameState.totalChests) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Game Rules */}
+                  <div>
+                    <h3 className="font-bold mb-2 text-legendary">Como Jogar</h3>
+                    
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-center gap-1">
+                        <span className="text-blue-400">👆</span>
+                        <span>Toque para mover</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1">
+                        <span className="text-yellow-400">📦</span>
+                        <span>Toque nos baús</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1">
+                        <span className="text-red-400">👹</span>
+                        <span>Evite inimigos</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-400">🗝️</span>
+                        <span>3+ chaves</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1">
+                        <span className="text-purple-400">🚪</span>
+                        <span>Saia pelo portal</span>
+                      </div>
+                      
+                      <div className="mt-2 p-2 bg-muted rounded text-center">
+                        <div className="text-xs font-bold">Responda e escape!</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
