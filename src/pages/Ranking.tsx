@@ -61,19 +61,40 @@ const Ranking = () => {
             </div>
           </div>
           
-          <div className="text-right">
-            <p className={`font-bold text-epic ${isMobile ? 'text-base' : 'text-xl'}`}>
-              {user.total_xp.toLocaleString()} XP
-            </p>
-            <div className="flex gap-2 justify-end">
-              <Badge variant="outline" className={isMobile ? 'text-xs px-1' : ''}>
-                {user.total_battles} batalhas
-              </Badge>
-              <Badge variant="secondary" className={`${user.win_rate >= 70 ? 'bg-victory/20 text-victory' : 'bg-muted'} ${isMobile ? 'text-xs px-1' : ''}`}>
-                {user.win_rate}% vitórias
-              </Badge>
-            </div>
-          </div>
+                        <div className="text-right">
+                <p className={`font-bold text-epic ${isMobile ? 'text-base' : 'text-xl'}`}>
+                  {user.total_xp.toLocaleString()} XP
+                </p>
+                <div className="flex gap-2 justify-end">
+                  <Badge variant="outline" className={isMobile ? 'text-xs px-1' : ''}>
+                    {user.total_battles} batalhas
+                  </Badge>
+                  <Badge variant="secondary" className={`${user.win_rate >= 70 ? 'bg-victory/20 text-victory' : 'bg-muted'} ${isMobile ? 'text-xs px-1' : ''}`}>
+                    {user.win_rate}% vitórias
+                  </Badge>
+                </div>
+                {/* Bônus por ranking */}
+                {user.position <= 1 && (
+                  <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-500 mt-1">
+                    +45 créditos/mês
+                  </Badge>
+                )}
+                {user.position > 1 && user.position <= 5 && (
+                  <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 mt-1">
+                    +35 créditos/mês
+                  </Badge>
+                )}
+                {user.position > 5 && user.position <= 10 && (
+                  <Badge variant="secondary" className="bg-green-500/20 text-green-500 mt-1">
+                    +25 créditos/mês
+                  </Badge>
+                )}
+                {user.position > 10 && user.position <= 20 && (
+                  <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 mt-1">
+                    +15 créditos/mês
+                  </Badge>
+                )}
+              </div>
         </div>
       </CardContent>
     </Card>
@@ -148,7 +169,7 @@ const Ranking = () => {
               Ranking Global
             </h1>
             <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2'}`}>
-              Os melhores guerreiros da Arena do Conhecimento
+              Os melhores guerreiros - ROI 120-250% anual
             </p>
           </div>
         </div>

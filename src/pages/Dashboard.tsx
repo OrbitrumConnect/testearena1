@@ -273,11 +273,11 @@ const Dashboard = () => {
                 ))}
               </div>
               
-              <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
-                <p className="text-green-400 font-semibold text-center">
-                  ✨ Limite diário: 6 treinos gratuitos por era!
-                </p>
-              </div>
+                               <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
+                   <p className="text-green-400 font-semibold text-center">
+                     ✨ Limite diário: 10 vidas gratuitas por era!
+                   </p>
+                 </div>
             </Card>
 
             {/* Histórico de Batalhas */}
@@ -511,10 +511,10 @@ const Dashboard = () => {
                   </Badge>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Treinos Disponíveis</span>
-                  <span className="font-bold text-victory">9/dia</span>
-                </div>
+                                 <div className="flex items-center justify-between">
+                   <span className="text-sm text-muted-foreground">Vidas Disponíveis</span>
+                   <span className="font-bold text-victory">10/dia</span>
+                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>

@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,0 créditos.",
+                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos (lucro 1,0).",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
@@ -50,7 +50,7 @@ const Landing = () => {
     {
       icon: <Trophy className="w-8 h-8 text-epic" />,
       title: "Ganhe Créditos por Mérito",
-      description: "Saque fixo 4 créditos/mês + PvP 2,0 créditos/vitória + Top 10% acumulação 90% + bônus 20%.",
+                      description: "Sistema de 3 meses: Mês 1 (R$ 5,00) → Mês 2 (R$ 3,50) → Mês 3 (R$ 2,00). Progressão obrigatória.",
       color: "epic",
       bgGradient: "from-epic/20 via-epic/10 to-transparent",
       borderColor: "border-epic/30"
@@ -67,7 +67,7 @@ const Landing = () => {
 
   const stats = [
     { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
-    { value: "48-400", label: "Créditos/Mês", icon: <Trophy className="w-6 h-6 text-epic" /> },
+                    { value: "Sistema 3 Meses", label: "Progressão Escalonada", icon: <Trophy className="w-6 h-6 text-epic" /> },
     { value: "Top 10%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
     { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
@@ -215,8 +215,8 @@ const Landing = () => {
             
             <p className={`text-muted-foreground max-w-3xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xs md:text-sm mb-4'}`}>
               Transforme seu conhecimento em vitória e recompensas reais. 
-              Nosso app combina quiz atualizado, PvP meritocrático e pagamentos proporcionais. 
-              <span className="text-epic font-bold">Cada vitória é fruto do seu esforço e aprendizado, nunca de sorte.</span>
+              Nosso app combina quiz educativo, PvP meritocrático e sistema de 3 meses progressivo. 
+              <span className="text-epic font-bold">ROI de 120-250% anual baseado em habilidade e dedicação.</span>
             </p>
 
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isMobile ? 'mb-6' : 'mb-8'}`}>

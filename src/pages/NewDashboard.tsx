@@ -206,7 +206,7 @@ const NewDashboard: React.FC = () => {
                     <span className="text-epic">3.</span>
                     <div>
                       <div className="text-white font-medium">Use as vidas grátis</div>
-                      <div className="text-gray-400">3 vidas por dia, reset à meia-noite</div>
+                      <div className="text-gray-400">10 vidas por dia, reset à meia-noite</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">

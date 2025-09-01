@@ -34,8 +34,14 @@ const Arena = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Obter valores do PvP baseados no plano do usuário
-  const pvpValues = getPvPValues();
+  // Valores do PvP atualizados (sistema sustentável)
+  const pvpValues = {
+    betAmount: 1.5, // 1.5 créditos entrada
+    netWin: 2.5, // 2.5 créditos vitória
+    netLoss: -1.5, // -1.5 créditos derrota
+    totalPool: 3.0, // Pool total
+    profit: 1.0 // Lucro por vitória
+  };
   const [battle, setBattle] = useState<Battle>({
     player1: { name: 'Você', hp: 100, maxHp: 100, avatar: '⚔️' },
     player2: { name: 'IA Esfinge', hp: 100, maxHp: 100, avatar: '🗿' }
@@ -256,7 +262,7 @@ const Arena = () => {
               Arena do Conhecimento
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Prepare-se para a batalha no Egito Antigo!
+              Prepare-se para a batalha PvP meritocrática!
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -308,7 +314,10 @@ const Arena = () => {
                 💰 Custo da Batalha: {pvpValues.betAmount} créditos
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Vitória: +{pvpValues.netWin} créditos | Derrota: {pvpValues.netLoss} créditos | Pool: {pvpValues.totalPool} créditos
+                Vitória: +{pvpValues.netWin} créditos (lucro {pvpValues.profit}) | Derrota: {pvpValues.netLoss} créditos
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                🏆 Sistema sustentável: ROI 120-250% anual para jogadores ativos
               </p>
             </div>
 

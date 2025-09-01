@@ -278,7 +278,7 @@ const Labyrinth = () => {
   const [gameState, setGameState] = useState<GameState>({
     phase: 'exploring',
     timeLeft: currentEra.maxTime,
-    lives: 3,
+    lives: 10,
     chestsOpened: 0,
     totalChests: 4,
     keysCollected: 0,
@@ -591,7 +591,7 @@ const Labyrinth = () => {
       gameStarted: true,
       phase: 'exploring',
       timeLeft: currentEra.maxTime,
-      lives: 3,
+      lives: 10,
       chestsOpened: 0,
       keysCollected: 0,
       score: 0,
@@ -1339,7 +1339,7 @@ const Labyrinth = () => {
                  </div>
                  <div className="bg-card/50 p-2 rounded">
                    <Heart className={`mx-auto mb-1 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
-                   <p><strong>Vidas:</strong> 3</p>
+                   <p><strong>Vidas:</strong> 10</p>
                  </div>
                  <div className="bg-card/50 p-2 rounded">
                    <Trophy className={`mx-auto mb-1 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
