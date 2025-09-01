@@ -183,9 +183,9 @@ const Payment = () => {
 
                 {isPromoActive && (
                   <div className="text-center">
-                    <span className="bg-epic text-white px-3 py-1 rounded-full text-sm font-bold">
-                      Economia: {(regularPrice - currentPrice).toFixed(2)} créditos
-                    </span>
+                                      <span className="bg-epic text-white px-3 py-1 rounded-full text-sm font-bold">
+                    Desconto: {(regularPrice - currentPrice).toFixed(2)} créditos
+                  </span>
                   </div>
                 )}
               </div>
@@ -202,27 +202,27 @@ const Payment = () => {
                 <div className="bg-muted/20 rounded-lg p-3">
                   <div className="flex justify-between text-sm mb-2">
                     <span>Limite de saque deste mês:</span>
-                    <span className="font-bold text-epic">R$ {maxWithdrawal.toFixed(2)}</span>
+                    <span className="font-bold text-epic">{maxWithdrawal.toFixed(0)} créditos</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Valor disponível para devolução após taxas administrativas (5%)
+                    Valor disponível para saque após taxas administrativas (5%)
                   </p>
                 </div>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
                     <span>🏛️ Mês 1 (Atual)</span>
-                    <span className="font-semibold">R$ {currentPrice.toFixed(2)}</span>
+                    <span className="font-semibold">{currentPrice.toFixed(0)} créditos</span>
                   </div>
                   {!isPromoActive && (
                     <>
                       <div className="flex items-center justify-between text-muted-foreground">
                         <span>📜 Mês 2</span>
-                        <span>R$ 16,00</span>
+                        <span>350 créditos</span>
                       </div>
                       <div className="flex items-center justify-between text-muted-foreground">
                         <span>⚔️ Mês 3</span>
-                        <span>R$ 12,00</span>
+                        <span>200 créditos</span>
                       </div>
                     </>
                   )}
@@ -238,7 +238,7 @@ const Payment = () => {
                   <div className="text-xs">
                     <span className="font-semibold text-warning">⚖️ Legal:</span>
                     <span className="text-muted-foreground ml-1">
-                      Saque limitado • Créditos internos • CVM/LGPD OK
+                      Créditos para uso interno • Não constitui investimento • LGPD compliant
                     </span>
                   </div>
                 </div>
@@ -428,7 +428,7 @@ const Payment = () => {
                     <span>Processando...</span>
                   </div>
                 ) : (
-                  `Pagar R$ ${currentPrice.toFixed(2)} - ${paymentMethod.toUpperCase()}`
+                  `Pagar ${currentPrice.toFixed(0)} créditos - ${paymentMethod.toUpperCase()}`
                 )}
               </ActionButton>
 

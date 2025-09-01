@@ -525,7 +525,9 @@ const Dashboard = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>
-                  <span className="font-bold text-green-400">5 créditos</span>
+                  <span className="font-bold text-green-400">
+                    {localStorage.getItem('userAge') === 'minor' ? '2.5 créditos (50%)' : '5 créditos'}
+                  </span>
                 </div>
               </div>
 
