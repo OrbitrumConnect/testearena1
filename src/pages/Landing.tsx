@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-      description: "Duelos de conhecimento contra outros usuários. Custo R$ 3,00 por partida - vencedor recebe R$ 1,80.",
+      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,0 créditos.",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
@@ -50,7 +50,7 @@ const Landing = () => {
     {
       icon: <Trophy className="w-8 h-8 text-epic" />,
       title: "Ganhe Créditos por Mérito",
-      description: "Saque fixo R$ 4/mês + PvP R$ 1,80/vitória + Top 10% acumulação 90% + bônus 20%.",
+      description: "Saque fixo 4 créditos/mês + PvP 2,0 créditos/vitória + Top 10% acumulação 90% + bônus 20%.",
       color: "epic",
       bgGradient: "from-epic/20 via-epic/10 to-transparent",
       borderColor: "border-epic/30"
@@ -67,7 +67,7 @@ const Landing = () => {
 
   const stats = [
     { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
-    { value: "R$ 48-400", label: "Ganho Anual", icon: <Trophy className="w-6 h-6 text-epic" /> },
+    { value: "48-400", label: "Créditos/Mês", icon: <Trophy className="w-6 h-6 text-epic" /> },
     { value: "Top 10%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
     { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
@@ -379,29 +379,29 @@ const Landing = () => {
                 <div className="text-center">
                   <div className={`font-bold text-gray-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥉</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Iniciante</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 48/ano</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>48 créditos/mês</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-gray-400 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥈</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Ativo</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 120/ano</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>120 créditos/mês</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-gray-300 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥇</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Top 20%</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 200/ano</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>200 créditos/mês</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-purple-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>👑</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Elite 10%</div>
-                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 200-400/ano</div>
+                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>200-400 créditos/mês</div>
                 </div>
               </div>
               <p className={`text-muted-foreground ${isMobile ? 'mt-2 text-xs' : 'mt-4 text-sm'}`}>
                 <span className="text-epic font-bold">100% transparente:</span> Sistema matematicamente sustentável
               </p>
               <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2 text-xs'}`}>
-                <span className="text-gray-400 font-semibold">⚖️ Importante:</span> Os valores pagos são proporcionais ao seu desempenho. 
+                <span className="text-gray-400 font-semibold">⚖️ Importante:</span> Os créditos acumulados são proporcionais ao seu desempenho. 
                 Sistema meritocrático transparente - resultados individuais podem variar.
               </p>
             </Card>
@@ -474,7 +474,7 @@ const Landing = () => {
           <Card className="arena-card-epic p-12 text-center max-w-4xl mx-auto">
             <Zap className="w-16 h-16 text-epic mx-auto mb-6" />
             <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
-              🏛️ Comece a Ganhar por Mérito Agora!
+              🏛️ Comece a Acumular Créditos por Mérito Agora!
             </h2>
             <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
               Junte-se ao primeiro quiz que <span className="text-epic font-bold">realmente paga por conhecimento</span>. 
@@ -514,7 +514,7 @@ const Landing = () => {
             </div>
             
             <p className="text-sm text-muted-foreground mt-6">
-              ✨ Grátis para começar • 🧠 Aprenda com diversão • 🏆 Créditos por conhecimento
+              ✨ Grátis para começar • 🧠 Aprenda com diversão • �� Créditos por conhecimento
             </p>
           </Card>
         </section>
