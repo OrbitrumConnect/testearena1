@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos (lucro 1,0).",
+                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos.",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
@@ -50,7 +50,7 @@ const Landing = () => {
     {
       icon: <Trophy className="w-8 h-8 text-epic" />,
       title: "Ganhe Créditos por Mérito",
-                      description: "Sistema de 3 meses: Mês 1 (R$ 5,00) → Mês 2 (R$ 3,50) → Mês 3 (R$ 2,00). Progressão obrigatória.",
+                      description: "Sistema progressivo de 3 meses: Mês 1 → Mês 2 → Mês 3. Progressão baseada em engajamento.",
       color: "epic",
       bgGradient: "from-epic/20 via-epic/10 to-transparent",
       borderColor: "border-epic/30"
@@ -67,8 +67,8 @@ const Landing = () => {
 
   const stats = [
     { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
-                    { value: "Sistema 3 Meses", label: "Progressão Escalonada", icon: <Trophy className="w-6 h-6 text-epic" /> },
-    { value: "Top 10%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
+                    { value: "Sistema 3 Meses", label: "Progressão Meritocrática", icon: <Trophy className="w-6 h-6 text-gray-400" /> },
+          { value: "Top 10%", label: "Bônus Especiais", icon: <Crown className="w-6 h-6 text-gray-400" /> },
     { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
 
@@ -204,19 +204,19 @@ const Landing = () => {
         {/* Hero Section */}
         <section className={`text-center ${isMobile ? 'py-4 px-2' : 'py-12 px-6'}`}>
           <div className="max-w-4xl mx-auto">
-            <h1 className={`font-montserrat font-black ${isMobile ? 'text-2xl mb-3' : 'text-2xl md:text-3xl mb-4'}`}>
-              <span className="text-epic">A Arena do</span><br />
-              <span className="text-epic">Conhecimento</span>
+            <h1 className={`font-montserrat font-black ${isMobile ? 'text-xl mb-3' : 'text-xl md:text-2xl mb-4'}`}>
+              <span className="text-gray-300">A Arena do</span><br />
+              <span className="text-gray-200">Conhecimento</span>
             </h1>
             
-            <p className={`text-epic font-bold max-w-3xl mx-auto ${isMobile ? 'text-sm mb-2' : 'text-sm md:text-base mb-3'}`}>
-              Aprenda, Compita e Ganhe Mérito Real!
+            <p className={`text-gray-300 font-bold max-w-3xl mx-auto ${isMobile ? 'text-sm mb-2' : 'text-sm md:text-base mb-3'}`}>
+              Aprenda, Compita e Acumule Créditos por Mérito!
             </p>
             
-            <p className={`text-muted-foreground max-w-3xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xs md:text-sm mb-4'}`}>
-              Transforme seu conhecimento em vitória e recompensas reais. 
-              Nosso app combina quiz educativo, PvP meritocrático e sistema de 3 meses progressivo. 
-              <span className="text-epic font-bold">ROI de 120-250% anual baseado em habilidade e dedicação.</span>
+            <p className={`text-gray-400 max-w-3xl mx-auto ${isMobile ? 'text-xs mb-4' : 'text-xs md:text-sm mb-4'}`}>
+              Transforme seu conhecimento em vitória e créditos acumulados. 
+              Nosso app combina quiz educativo, PvP meritocrático e sistema progressivo de 3 meses. 
+              <span className="text-gray-300 font-bold">Créditos proporcionais ao seu desempenho e dedicação.</span>
             </p>
 
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isMobile ? 'mb-6' : 'mb-8'}`}>
@@ -401,7 +401,7 @@ const Landing = () => {
                 <span className="text-epic font-bold">100% transparente:</span> Sistema matematicamente sustentável
               </p>
               <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2 text-xs'}`}>
-                <span className="text-gray-400 font-semibold">⚖️ Importante:</span> Os créditos acumulados são proporcionais ao seu desempenho. 
+                <span className="text-gray-400 font-semibold">⚖️ Importante:</span> Créditos são para uso interno da plataforma. Não constitui investimento ou promessa de retorno financeiro. 
                 Sistema meritocrático transparente - resultados individuais podem variar.
               </p>
             </Card>
@@ -474,7 +474,7 @@ const Landing = () => {
           <Card className="arena-card-epic p-12 text-center max-w-4xl mx-auto">
             <Zap className="w-16 h-16 text-epic mx-auto mb-6" />
             <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
-              🏛️ Comece a Acumular Créditos por Mérito Agora!
+              🏛️ Comece a Aprender e Competir Agora!
             </h2>
             <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
               Junte-se ao primeiro quiz que <span className="text-epic font-bold">realmente paga por conhecimento</span>. 
