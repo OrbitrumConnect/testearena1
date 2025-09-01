@@ -293,7 +293,7 @@ const Digital = () => {
       <div className="min-h-screen bg-background relative overflow-hidden">
         <ParticleBackground />
         
-        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
+        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto scale-85 w-11/12 max-w-sm ml-2' : 'p-6'}`}>
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
