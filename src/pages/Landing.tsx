@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-      description: "Duelos de conhecimento contra outros usuários. Suas habilidades decidem o resultado, não a sorte.",
+      description: "Duelos de conhecimento contra outros usuários. Custo R$ 3,00 por partida - vencedor recebe R$ 1,80.",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
@@ -50,15 +50,15 @@ const Landing = () => {
     {
       icon: <Trophy className="w-8 h-8 text-epic" />,
       title: "Ganhe Créditos por Mérito",
-      description: "A cada vitória, você acumula créditos baseados no seu desempenho. Sistema progressivo mensal: 1º mês R$ 5, 2º mês R$ 3,50, 3º mês R$ 2.",
+      description: "Saque fixo R$ 4/mês + PvP R$ 1,80/vitória + Top 10% acumulação 90% + bônus 20%.",
       color: "epic",
       bgGradient: "from-epic/20 via-epic/10 to-transparent",
       borderColor: "border-epic/30"
     },
     {
       icon: <Crown className="w-8 h-8 text-legendary" />,
-      title: "Top 5% Elite + Bônus",
-      description: "Apenas os melhores recebem +20% de bônus. Saques inteligentes até 80% + mérito via PIX.",
+      title: "Top 10% Elite + Bônus",
+      description: "Apenas os melhores recebem +20% de bônus. Acumulação 90% + saques inteligentes até 80% via PIX.",
       color: "legendary",
       bgGradient: "from-legendary/20 via-legendary/10 to-transparent",
       borderColor: "border-legendary/30"
@@ -67,8 +67,8 @@ const Landing = () => {
 
   const stats = [
     { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
-    { value: "R$ 2-50", label: "Ganho Mensal", icon: <Trophy className="w-6 h-6 text-epic" /> },
-    { value: "Top 5%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
+    { value: "R$ 48-400", label: "Ganho Anual", icon: <Trophy className="w-6 h-6 text-epic" /> },
+    { value: "Top 10%", label: "Recebem +20%", icon: <Crown className="w-6 h-6 text-legendary" /> },
     { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
 
@@ -379,22 +379,22 @@ const Landing = () => {
                 <div className="text-center">
                   <div className={`font-bold text-gray-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥉</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Iniciante</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 2-8</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 48/ano</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-gray-400 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥈</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Ativo</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 10-25</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 120/ano</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-gray-300 ${isMobile ? 'text-lg' : 'text-2xl'}`}>🥇</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Top 20%</div>
-                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 25-50</div>
+                  <div className={`text-epic font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 200/ano</div>
                 </div>
                 <div className="text-center">
                   <div className={`font-bold text-purple-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>👑</div>
-                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Elite 5%</div>
-                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 50-100+</div>
+                  <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Elite 10%</div>
+                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>R$ 200-400/ano</div>
                 </div>
               </div>
               <p className={`text-muted-foreground ${isMobile ? 'mt-2 text-xs' : 'mt-4 text-sm'}`}>

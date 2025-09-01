@@ -46,8 +46,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'digital': { base: 1.0, victory: 2.0, excellent: 3.5 }
     },
 
-    pvpBetCredits: 3,
-    pvpWinnerCredits: 5,
+    pvpBetCredits: 3.00, // R$ 3,00 por partida
+    pvpWinnerCredits: 1.80, // R$ 1,80 para vencedor
     monthlyBonusMax: 60,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30
@@ -66,8 +66,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'digital': { base: 0.7, victory: 1.4, excellent: 2.5 }
     },
 
-    pvpBetCredits: 2,
-    pvpWinnerCredits: 3.5,
+    pvpBetCredits: 3.00, // R$ 3,00 por partida
+    pvpWinnerCredits: 1.80, // R$ 1,80 para vencedor
     monthlyBonusMax: 42,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30
@@ -86,8 +86,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'digital': { base: 0.4, victory: 0.8, excellent: 1.5 }
     },
 
-    pvpBetCredits: 1,
-    pvpWinnerCredits: 2,
+    pvpBetCredits: 3.00, // R$ 3,00 por partida
+    pvpWinnerCredits: 1.80, // R$ 1,80 para vencedor
     monthlyBonusMax: 24,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30

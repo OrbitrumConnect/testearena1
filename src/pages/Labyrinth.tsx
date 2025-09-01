@@ -122,12 +122,12 @@ const Labyrinth = () => {
             : chest
         ));
         
-        // Atualizar contadores
-        setGameState(prev => ({
-          ...prev,
-          chestsOpened: prev.chestsOpened + 1,
-          score: prev.score + 100
-        }));
+                 // Atualizar contadores
+         setGameState(prev => ({
+           ...prev,
+           chestsOpened: prev.chestsOpened + 1,
+           score: prev.score + 100 // Ajustado para alinhar com sistema PvP
+         }));
         
         return; // Não mover o jogador se tocou em um baú
       }
@@ -692,31 +692,35 @@ const Labyrinth = () => {
 
           if (isCollision(newX, newY)) return prev;
 
-          // Verificar se chegou no portal de saída (área 30x30 centrada na posição do portal)
-          const portalRange = 15; // Raio do portal
-          if (newX >= portalPosition.x - portalRange && newX <= portalPosition.x + portalRange && 
-              newY >= portalPosition.y - portalRange && newY <= portalPosition.y + portalRange && 
-              prev.keysCollected >= 3) {
-            
-            // Calcular créditos baseado nas chaves coletadas (performance)
-            const questionsCorrect = prev.keysCollected; // 4 máximo
-            const totalQuestions = 4; // 4 baús total
-            const accuracyPercentage = (questionsCorrect / totalQuestions) * 100;
-            
-            // Obter plano do usuário e integrar com sistema de créditos
-            const userPlan = getUserPlan();
-            handleNewBattleCredits({
-              battleType: 'training',
-              questionsCorrect,
-              questionsTotal: totalQuestions,
-              accuracyPercentage,
-              eraSlug: 'digital',
-              usedExtraLife: false,
-              planType: userPlan
-            });
-            
-            return { ...prev, phase: 'victory', score: prev.score + 500 };
-          }
+                     // Verificar se chegou no portal de saída (área 30x30 centrada na posição do portal)
+           const portalRange = 15; // Raio do portal
+           if (newX >= portalPosition.x - portalRange && newX <= portalPosition.x + portalRange && 
+               newY >= portalPosition.y - portalRange && newY <= portalPosition.y + portalRange && 
+               prev.keysCollected >= 3) {
+             
+             console.log('🚪 Portal alcançado! Chaves:', prev.keysCollected, 'Fase:', prev.phase);
+             
+             // Calcular créditos baseado nas chaves coletadas (performance)
+             const questionsCorrect = prev.keysCollected; // 4 máximo
+             const totalQuestions = 4; // 4 baús total
+             const accuracyPercentage = (questionsCorrect / totalQuestions) * 100;
+             
+             // Obter plano do usuário e integrar com sistema de créditos
+             const userPlan = getUserPlan();
+             handleNewBattleCredits({
+               battleType: 'training',
+               questionsCorrect,
+               questionsTotal: totalQuestions,
+               accuracyPercentage,
+               eraSlug: 'digital',
+               usedExtraLife: false,
+               planType: userPlan
+             });
+             
+             // Forçar mudança para fase de vitória
+             console.log('🏆 Mudando para fase de vitória!');
+             return { ...prev, phase: 'victory', score: prev.score + 300 }; // Ajustado para alinhar com sistema PvP
+           }
 
           return {
             ...prev,
@@ -961,12 +965,12 @@ const Labyrinth = () => {
     
     setTimeout(() => {
       if (isCorrect) {
-        // Resposta correta - ganhar chave e pontos
-        setGameState(prev => ({
-          ...prev,
-          keysCollected: prev.keysCollected + 1,
-          chestsOpened: prev.chestsOpened + 1,
-          score: prev.score + 500,
+                 // Resposta correta - ganhar chave e pontos
+         setGameState(prev => ({
+           ...prev,
+           keysCollected: prev.keysCollected + 1,
+           chestsOpened: prev.chestsOpened + 1,
+           score: prev.score + 200, // Ajustado para alinhar com sistema PvP
           phase: 'exploring',
           currentQuestion: null,
           selectedAnswer: null,
@@ -1397,7 +1401,7 @@ const Labyrinth = () => {
                                                                                                                                                                                                                                                                   <div className="arena-card p-4" style={{ 
                                  transform: 'scale(0.6) translateY(40px)', 
                                  transformOrigin: 'center', 
-                                 margin: '-120px auto -126px auto', // Reduzido 20% (de -158px para -126px)
+                                                                   margin: '-138px auto -126px auto', // Mobile: subir 15% (de -120px para -138px)
                                  backgroundColor: 'rgba(0, 0, 0, 0.33)', 
                                  width: isMobile ? '150%' : '130%', // Mobile: 150%, Web: 130%
                                                                    marginLeft: isMobile ? '-30%' : '-15%', // Mobile: -30% (15% mais à esquerda), Web: -15%
