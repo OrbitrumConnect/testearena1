@@ -80,6 +80,76 @@ const Labyrinth = () => {
     }
   };
 
+  // Funções de touch para mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile || gameState.phase !== 'exploring') return;
+    
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    
+    // Converter coordenadas do touch para coordenadas do canvas
+    const canvasX = (x / rect.width) * 400;
+    const canvasY = (y / rect.height) * 400;
+    
+    // Verificar se tocou em um baú
+    const touchedChest = chests.find(chest => {
+      const distance = Math.sqrt(
+        Math.pow(canvasX - chest.position.x, 2) + Math.pow(canvasY - chest.position.y, 2)
+      );
+      return distance < 30 && !chest.isOpen;
+    });
+    
+    if (touchedChest && touchedChest.question) {
+      // Abrir baú diretamente
+      setGameState(prev => ({
+        ...prev,
+        phase: 'question',
+        currentQuestion: touchedChest.question,
+        selectedAnswer: null,
+        showExplanation: false
+      }));
+      return;
+    }
+    
+    // Mover jogador para a posição do touch
+    const newX = Math.max(20, Math.min(380, canvasX));
+    const newY = Math.max(20, Math.min(380, canvasY));
+    
+    setGameState(prev => ({
+      ...prev,
+      playerPosition: { x: newX, y: newY }
+    }));
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile || gameState.phase !== 'exploring') return;
+    e.preventDefault();
+    
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    
+    // Converter coordenadas do touch para coordenadas do canvas
+    const canvasX = (x / rect.width) * 400;
+    const canvasY = (y / rect.height) * 400;
+    
+    // Mover jogador suavemente
+    const newX = Math.max(20, Math.min(380, canvasX));
+    const newY = Math.max(20, Math.min(380, canvasY));
+    
+    setGameState(prev => ({
+      ...prev,
+      playerPosition: { x: newX, y: newY }
+    }));
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    // Finalizar movimento
+  };
+
   const eraConfigs: Record<Era, EraConfig> = {
     'egito-antigo': {
       name: 'Labirinto do Faraó',
@@ -1240,28 +1310,28 @@ const Labyrinth = () => {
         ) : (
           // Game Screen
           <div>
-                                                   <div className="flex justify-center items-center mb-4 gap-6" style={{ marginTop: '20px' }}>
+                                                   <div className="flex justify-center items-center mb-4 gap-4" style={{ marginTop: '20px' }}>
                 <ActionButton 
                   variant="battle" 
                   icon={<ArrowLeft />}
                   onClick={quitGame}
-                  className={isMobile ? 'text-xs px-2 py-1' : ''}
+                  className={isMobile ? 'text-xs px-3 py-2' : ''}
                 >
                   {isMobile ? '←' : 'Sair'}
                 </ActionButton>
                 
-                <div className="arena-card p-2 flex items-center gap-2">
-                  <Clock size={16} />
+                <div className="arena-card p-3 flex items-center gap-2">
+                  <Clock size={18} />
                   <span className="font-bold">{formatTime(gameState.timeLeft)}</span>
                 </div>
                 
-                <div className="arena-card p-2 flex items-center gap-2">
-                  <Heart size={16} className="text-destructive" />
+                <div className="arena-card p-3 flex items-center gap-2">
+                  <Heart size={18} className="text-destructive" />
                   <span className="font-bold">{gameState.lives}</span>
                 </div>
                 
-                <div className="arena-card p-2 flex items-center gap-2">
-                  <Trophy size={16} className="text-victory" />
+                <div className="arena-card p-3 flex items-center gap-2">
+                  <Trophy size={18} className="text-victory" />
                   <span className="font-bold">{gameState.score}</span>
                 </div>
               </div>
@@ -1271,7 +1341,7 @@ const Labyrinth = () => {
                                 transformOrigin: 'center', 
                                 margin: '-120px auto -158px auto', 
                                 backgroundColor: 'rgba(0, 0, 0, 0.33)', 
-                                width: '85%', 
+                                width: '115%', 
                                 marginLeft: 'auto', 
                                 marginRight: 'auto',
                                 boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
@@ -1285,7 +1355,10 @@ const Labyrinth = () => {
                       ref={canvasRef} 
                       width={400} 
                       height={400} 
-                      className="w-full border-2 border-card-border rounded"
+                      className="w-full border-2 border-card-border rounded cursor-pointer"
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
                     />
                     
                                                               {/* Hero image overlay */}
@@ -1354,13 +1427,13 @@ const Labyrinth = () => {
                      
                      <div className="space-y-2 text-xs">
                        <div className="flex items-center gap-2">
-                         <span className="text-blue-400">⌨️</span>
-                         <span>Use <strong>WASD</strong> para mover</span>
+                         <span className="text-blue-400">👆</span>
+                         <span>Toque no canvas para mover</span>
                        </div>
                        
                        <div className="flex items-center gap-2">
                          <span className="text-yellow-400">📦</span>
-                         <span>Pressione <strong>E</strong> nos baús</span>
+                         <span>Toque nos baús para abrir</span>
                        </div>
                        
                        <div className="flex items-center gap-2">
@@ -1378,7 +1451,7 @@ const Labyrinth = () => {
                          <span>Saia pelo portal roxo</span>
                        </div>
                        
-                       <div className="mt-3 p-2 bg-muted rounded text-center">
+                       <div className="mt-3 p-3 bg-muted rounded text-center">
                          <div className="text-xs text-muted-foreground">Objetivo</div>
                          <div className="text-xs font-bold">Responda questões e escape!</div>
                        </div>
