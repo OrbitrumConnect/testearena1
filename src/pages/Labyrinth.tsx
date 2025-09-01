@@ -81,9 +81,10 @@ const Labyrinth = () => {
   };
 
         // Funções de touch para mobile
-    const handleTouchStart = (e: React.TouchEvent) => {
-      if (!isMobile || gameState.phase !== 'exploring') return;
-      e.preventDefault(); // Prevenir movimento da página
+         const handleTouchStart = (e: React.TouchEvent) => {
+       if (!isMobile || gameState.phase !== 'exploring') return;
+       e.preventDefault(); // Prevenir movimento da página
+       e.stopPropagation(); // Parar propagação do evento
       
       const touch = e.touches[0];
       const rect = e.currentTarget.getBoundingClientRect();
@@ -179,9 +180,10 @@ const Labyrinth = () => {
       }
     };
 
-           const handleTouchMove = (e: React.TouchEvent) => {
-      if (!isMobile || gameState.phase !== 'exploring') return;
-      e.preventDefault();
+                       const handleTouchMove = (e: React.TouchEvent) => {
+       if (!isMobile || gameState.phase !== 'exploring') return;
+       e.preventDefault();
+       e.stopPropagation(); // Parar propagação do evento
       
       const touch = e.touches[0];
       const rect = e.currentTarget.getBoundingClientRect();
@@ -571,14 +573,15 @@ const Labyrinth = () => {
      ];
     setChests(newChests);
     
-                      // 4 inimigos: posições em áreas livres do labirinto (evitando posição inicial do jogador)
-       const newEnemies: Enemy[] = [
-         { id: 'e1', x: 80, y: 80, direction: 0, speed: 1.5, lastUpdate: Date.now() },   // Área superior esquerda
-         { id: 'e2', x: 320, y: 80, direction: 1, speed: 1.5, lastUpdate: Date.now() },  // Área superior direita
-         { id: 'e3', x: 80, y: 320, direction: 2, speed: 1.5, lastUpdate: Date.now() },  // Área inferior esquerda (longe do jogador)
-         { id: 'e4', x: 320, y: 320, direction: 3, speed: 1.5, lastUpdate: Date.now() }  // Área inferior direita
-       ];
-    setEnemies(newEnemies);
+                             // 4 inimigos: posições em áreas livres do labirinto (evitando posição inicial do jogador)
+        const newEnemies: Enemy[] = [
+          { id: 'e1', x: 80, y: 80, direction: 0, speed: 1.5, lastUpdate: Date.now() },   // Área superior esquerda
+          { id: 'e2', x: 320, y: 80, direction: 1, speed: 1.5, lastUpdate: Date.now() },  // Área superior direita
+          { id: 'e3', x: 80, y: 320, direction: 2, speed: 1.5, lastUpdate: Date.now() },  // Área inferior esquerda (longe do jogador)
+          { id: 'e4', x: 320, y: 320, direction: 3, speed: 1.5, lastUpdate: Date.now() }  // Área inferior direita
+        ];
+     console.log('👹 Inimigos criados:', newEnemies); // Debug
+     setEnemies(newEnemies);
   }, [egyptQuestions, mesopotamiaQuestions, medievalQuestions, digitalQuestions]);
 
   const startGame = () => {
@@ -747,9 +750,11 @@ const Labyrinth = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [gameState.gameStarted, gameState.phase, gameState.playerPosition, chests, isMobile]);
 
-  // Lógica dos inimigos estilo Pac-Man
-  useEffect(() => {
-    if (!gameState.gameStarted || gameState.phase !== 'exploring') return;
+     // Lógica dos inimigos estilo Pac-Man
+   useEffect(() => {
+     if (!gameState.gameStarted || gameState.phase !== 'exploring') return;
+     
+     console.log('🎮 Inimigos ativos:', enemies.length); // Debug
     
     // Todas as paredes do labirinto
     const allWalls = [
@@ -783,11 +788,12 @@ const Labyrinth = () => {
        );
      };
     
-    const updateEnemies = () => {
-      setEnemies(prevEnemies => 
-        prevEnemies.map(enemy => {
-          const now = Date.now();
-          const deltaTime = now - enemy.lastUpdate;
+         const updateEnemies = () => {
+       console.log('🔄 Atualizando inimigos...'); // Debug
+       setEnemies(prevEnemies => 
+         prevEnemies.map(enemy => {
+           const now = Date.now();
+           const deltaTime = now - enemy.lastUpdate;
           
                      // Movimento linear simples (não persegue o player)  
            const speed = enemy.speed * 0.9; // Velocidade aumentada para 90% (25% mais rápido que antes)
@@ -866,9 +872,9 @@ const Labyrinth = () => {
       );
     };
 
-    const enemyInterval = setInterval(updateEnemies, 100); // 100ms = movimento mais lento e previsível
-    return () => clearInterval(enemyInterval);
-  }, [gameState.gameStarted, gameState.phase, gameState.playerPosition]); // Adicionado playerPosition de volta
+         const enemyInterval = setInterval(updateEnemies, 100); // 100ms = movimento mais lento e previsível
+     return () => clearInterval(enemyInterval);
+   }, [gameState.gameStarted, gameState.phase]); // Dependências corretas
 
   // Função para encontrar posição segura para baú (sem colisão com muros ou outros baús)
   const findSafePosition = (excludeChestId?: string) => {
