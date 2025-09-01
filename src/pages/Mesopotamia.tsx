@@ -11,6 +11,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
+import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 const Mesopotamia = () => {
   const navigate = useNavigate();
@@ -73,6 +74,16 @@ const Mesopotamia = () => {
       setAttackEffect('player-attack');
       // Ativar glow quando a lança chegar ao alvo (0.5s depois)
       setTimeout(() => setHitEffect('enemy'), 500);
+      
+      // CALCULAR CRÉDITOS GANHOS (SISTEMA CORRETO)
+      const userPlan = getUserPlan();
+      const trainingCredits = calculateTrainingCredits(
+        userPlan,
+        'mesopotamia',
+        score + 1,
+        questions.length
+      );
+      console.log(`📜 Mesopotâmia: ${trainingCredits.creditsEarned} créditos ganhos!`);
     } else {
       setPlayerHp(prev => Math.max(0, prev - damage));
       

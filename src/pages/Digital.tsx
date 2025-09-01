@@ -11,6 +11,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
+import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 const Digital = () => {
   const navigate = useNavigate();
@@ -92,6 +93,16 @@ const Digital = () => {
       // Jogador acerta - Inimigo perde HP (5% a mais de dano)
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
+      
+      // CALCULAR CRÉDITOS GANHOS (SISTEMA CORRETO)
+      const userPlan = getUserPlan();
+      const trainingCredits = calculateTrainingCredits(
+        userPlan,
+        'digital',
+        score + 1,
+        questions.length
+      );
+      console.log(`💻 Digital: ${trainingCredits.creditsEarned} créditos ganhos!`);
     } else {
       // Jogador erra - 3 tiros de laser do inimigo para o jogador
       const shots = Array.from({length: 3}, (_, i) => ({id: Date.now() + i, type: 'enemy' as const}));

@@ -104,9 +104,9 @@ export const NewWallet: React.FC<NewWalletProps> = ({ className = '' }) => {
             <div className="text-xs text-muted-foreground">200 créditos</div>
           </div>
           <div className="text-center p-3 rounded border">
-            <div className="text-xs text-muted-foreground">Taxa de Saque</div>
-            <div className="text-sm font-semibold">10%</div>
-            <div className="text-xs text-muted-foreground">sobre o valor</div>
+                      <div className="text-xs text-muted-foreground">Taxa de Saque</div>
+          <div className="text-sm font-semibold">22.5%</div>
+          <div className="text-xs text-muted-foreground">sobre o valor</div>
           </div>
         </div>
 
@@ -153,7 +153,7 @@ export const NewWallet: React.FC<NewWalletProps> = ({ className = '' }) => {
         <div className="pt-3 border-t">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <CreditCard className="w-3 h-3" />
-            100 créditos = R$ 1,00
+            Sistema de créditos internos • Não constitui investimento
           </div>
         </div>
       </CardContent>

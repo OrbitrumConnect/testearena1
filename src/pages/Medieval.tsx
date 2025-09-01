@@ -11,6 +11,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
+import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 const Medieval = () => {
   const navigate = useNavigate();
@@ -71,6 +72,16 @@ const Medieval = () => {
       setTimeout(() => setHitEffect('enemy'), 500);
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
+      
+      // CALCULAR CRÉDITOS GANHOS (SISTEMA CORRETO)
+      const userPlan = getUserPlan();
+      const trainingCredits = calculateTrainingCredits(
+        userPlan,
+        'medieval',
+        score + 1,
+        questions.length
+      );
+      console.log(`⚔️ Medieval: ${trainingCredits.creditsEarned} créditos ganhos!`);
     } else {
       // Jogador erra - Mostrar ataque do inimigo e player perde HP
       setAttackEffect('enemy-attack');

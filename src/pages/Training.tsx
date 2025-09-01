@@ -79,6 +79,16 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       setTimeout(() => setHitEffect('enemy'), 500);
       const enemyDamage = Math.round(damage * 1.05);
       setEnemyHp(prev => Math.max(0, prev - enemyDamage));
+      
+      // CALCULAR CRÉDITOS GANHOS (SISTEMA CORRETO)
+      const userPlan = getUserPlan();
+      const trainingCredits = calculateTrainingCredits(
+        userPlan,
+        'egito-antigo',
+        score + 1,
+        questions.length
+      );
+      console.log(`🎯 Treino: ${trainingCredits.creditsEarned} créditos ganhos!`);
     } else {
       // Jogador erra - Mostrar ataque do inimigo e player perde HP
       setAttackEffect('enemy-attack');

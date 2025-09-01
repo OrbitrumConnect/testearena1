@@ -42,8 +42,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   premium: {
     // 💎 MÊS 1 - R$ 5,00 (OBRIGATÓRIO PARA TODOS)
     initialDeposit: 5.00,
-    platformRetention: 0.50,
-    creditsReceived: 500, // R$ 4,50 + 50 bônus
+    platformRetention: 1.50, // R$ 1,50 retido pela plataforma
+    creditsReceived: 350, // R$ 3,50 para o usuário
     monthType: 'month1',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -56,9 +56,9 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 2.5, // R$ 0,025 para vencedor (lucro 1.0)
+    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
     monthlyBonusMax: 60,
-    withdrawalFeePercent: 5,
+    withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
@@ -67,8 +67,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   standard: {
     // 🥈 MÊS 2 - R$ 3,50 (SÓ QUEM PAGOU MÊS 1)
     initialDeposit: 3.50,
-    platformRetention: 0.35,
-    creditsReceived: 350, // R$ 3,15 + 35 bônus
+    platformRetention: 1.05, // R$ 1,05 retido pela plataforma
+    creditsReceived: 245, // R$ 2,45 para o usuário
     monthType: 'month2',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -81,9 +81,9 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 2.5, // R$ 0,025 para vencedor (lucro 1.0)
+    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
     monthlyBonusMax: 42,
-    withdrawalFeePercent: 5,
+    withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
@@ -92,8 +92,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   basic: {
     // 🥉 MÊS 3 - R$ 2,00 (SÓ QUEM PAGOU MÊS 2)
     initialDeposit: 2.00,
-    platformRetention: 0.20,
-    creditsReceived: 200, // R$ 1,80 + 20 bônus
+    platformRetention: 0.60, // R$ 0,60 retido pela plataforma
+    creditsReceived: 140, // R$ 1,40 para o usuário
     monthType: 'month3',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -106,9 +106,9 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 2.5, // R$ 0,025 para vencedor (lucro 1.0)
+    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
     monthlyBonusMax: 24,
-    withdrawalFeePercent: 5,
+    withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
@@ -246,26 +246,26 @@ export const calculateMonthlyBonus = (
   // Calcular bônus base (REDUZIDO para usuários regulares)
   let bonusCredits = Math.round(planConfig.monthlyBonusMax * totalScore * 0.6); // 60% do bônus base
   
-  // BÔNUS ESPECIAL PARA TOP RANKINGS (DISTRIBUÍDO)
-  if (userRank) {
-    switch (userRank) {
-      case 'top1':
-        bonusCredits += 45; // +45 créditos para Top 1 (ROI 250%+)
-        break;
-      case 'top5':
-        bonusCredits += 35; // +35 créditos para Top 5 (ROI 200%+)
-        break;
-      case 'top10':
-        bonusCredits += 25; // +25 créditos para Top 10 (ROI 189%)
-        break;
-      case 'top20':
-        bonusCredits += 15; // +15 créditos para Top 20 (ROI 150%)
-        break;
-      default:
-        // Usuário regular: sem bônus extra (ROI 120%)
-        break;
+      // BÔNUS ESPECIAL PARA TOP RANKINGS (DISTRIBUÍDO)
+    if (userRank) {
+      switch (userRank) {
+        case 'top1':
+          bonusCredits += 180; // +180 créditos para Top 1 (ROI 400%+)
+          break;
+        case 'top5':
+          bonusCredits += 135; // +135 créditos para Top 5 (ROI 300%+)
+          break;
+        case 'top10':
+          bonusCredits += 90; // +90 créditos para Top 10 (ROI 250%+)
+          break;
+        case 'top20':
+          bonusCredits += 67; // +67 créditos para Top 20 (ROI 200%+)
+          break;
+        default:
+          // Usuário regular: sem bônus extra (ROI 120%)
+          break;
+      }
     }
-  }
   
   return {
     bonusCredits,
@@ -287,7 +287,10 @@ export const calculateWithdrawal = (
   planType: PlanType, 
   daysSinceDeposit: number, 
   monthlyEarnings: number = 0,
-  isAdult: boolean = true
+  isAdult: boolean = true,
+  userRank?: 'top1' | 'top5' | 'top10' | 'top20' | 'regular',
+  pvpEarnings: number = 0,
+  trainingEarnings: number = 0
 ) => {
   const planConfig = PLAN_CONFIGS[planType];
   
@@ -301,20 +304,39 @@ export const calculateWithdrawal = (
     };
   }
   
-  // SUSTENTÁVEL: Saque baseado em ganhos reais
+  // CALCULAR TOTAL DE CRÉDITOS DISPONÍVEIS
+  const baseCredits = planConfig.creditsReceived; // Créditos do plano
+  const rankingBonus = userRank === 'top1' ? 45 : userRank === 'top5' ? 35 : userRank === 'top10' ? 25 : userRank === 'top20' ? 15 : 0;
+  const totalCredits = baseCredits + rankingBonus + pvpEarnings + trainingEarnings;
+  
+  // APLICAR LIMITE POR IDADE
   const maxWithdrawal = isAdult ? planConfig.maxMonthlyWithdrawal : planConfig.maxWithdrawalUnder18;
-  const baseWithdrawal = Math.min(monthlyEarnings, maxWithdrawal);
-  const fee = baseWithdrawal > 50 ? baseWithdrawal * (planConfig.withdrawalFeePercent / 100) : 0; // Taxa 5% para >R$ 0,50
-  const finalAmount = baseWithdrawal - fee;
+  const withdrawableCredits = Math.min(totalCredits, maxWithdrawal);
+  
+  // APLICAR TAXA ADMINISTRATIVA (12.5%)
+  const fee = withdrawableCredits * (planConfig.withdrawalFeePercent / 100);
+  const finalAmount = withdrawableCredits - fee;
   
   return {
     canWithdraw: true,
-    withdrawableAmount: baseWithdrawal,
+    withdrawableAmount: withdrawableCredits,
     fee,
     finalAmount,
     planType: planType,
     isAdult,
     maxWithdrawal,
+    totalCredits,
+    rankingBonus,
+    breakdown: {
+      baseCredits,
+      rankingBonus,
+      pvpEarnings,
+      trainingEarnings,
+      totalCredits,
+      withdrawableCredits,
+      fee,
+      finalAmount
+    },
     message: `Disponível para saque: ${finalAmount.toFixed(0)} créditos (R$ ${(finalAmount / 100).toFixed(2)})${!isAdult ? ' - Limite 50% para menores de 18' : ''}`
   };
 };

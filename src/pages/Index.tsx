@@ -42,7 +42,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [selectedModule, setSelectedModule] = useState('egypt');
   const [showLegalModal, setShowLegalModal] = useState(false);
-  const [showAgeVerification, setShowAgeVerification] = useState(true);
+  const [showAgeVerification, setShowAgeVerification] = useState(false);
   const [isAdult, setIsAdult] = useState<boolean | null>(null);
   const isMobile = useIsMobile();
 
@@ -59,6 +59,18 @@ const Index = () => {
     // Salvar no localStorage
     localStorage.setItem('userAge', isAdult ? 'adult' : 'minor');
   };
+
+  // Verificar se já tem idade salva no localStorage
+  useEffect(() => {
+    const savedAge = localStorage.getItem('userAge');
+    if (savedAge) {
+      setIsAdult(savedAge === 'adult');
+      setShowAgeVerification(false);
+    } else {
+      // Só mostrar verificação se NÃO tem idade salva (primeira vez)
+      setShowAgeVerification(true);
+    }
+  }, []);
 
   // Se ainda não verificou a idade, mostrar verificação
   if (showAgeVerification) {

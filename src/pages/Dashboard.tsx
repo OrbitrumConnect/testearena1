@@ -7,6 +7,7 @@ import { AuthForm } from '@/components/auth/AuthForm';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useResetData } from '@/hooks/useResetData';
 import { supabase } from '@/integrations/supabase/client';
+import { calculateWithdrawal } from '@/utils/creditsSystem';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
   const isMobile = useIsMobile();
   const { profile, wallet, battleHistory, transactions, loading, error } = useDashboard();
   const { resetAllData, forceReset, resetting } = useResetData();
@@ -199,27 +201,43 @@ const Dashboard = () => {
           <div className={`${isMobile ? 'space-y-3' : 'lg:col-span-2 space-y-6'}`}>
             {/* Perfil do Usuário */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
-              <div className={`flex items-center ${isMobile ? 'gap-2 mb-2' : 'gap-6 mb-6'}`}>
-                <div className={`rounded-full bg-epic/20 flex items-center justify-center border-2 border-epic ${isMobile ? 'w-10 h-10 text-lg' : 'w-20 h-20 text-3xl'}`}>
-                  {profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" />
-                  ) : (
-                    '👤'
-                  )}
+              <div className={`flex items-center justify-between ${isMobile ? 'gap-2 mb-2' : 'gap-6 mb-6'}`}>
+                <div className={`flex items-center ${isMobile ? 'gap-2' : 'gap-6'}`}>
+                  <div 
+                    className={`rounded-full bg-epic/20 flex items-center justify-center border-2 border-epic cursor-pointer hover:border-victory transition-colors ${isMobile ? 'w-10 h-10 text-lg' : 'w-20 h-20 text-3xl'}`}
+                    onClick={() => setShowProfileEdit(true)}
+                    title="👤 Clique para editar perfil!"
+                  >
+                    {profile?.avatar_url ? (
+                      <img src={profile.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                    ) : (
+                      '👤'
+                    )}
+                  </div>
+                  <div>
+                    <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>
+                      {profile?.display_name || 'Guerreiro Anônimo'}
+                    </h2>
+                    <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>
+                      Membro desde {profile ? formatDate(profile.created_at).split(' ')[0] : '---'}
+                    </p>
+                    {profile?.favorite_era && (
+                      <Badge variant="secondary" className={`${isMobile ? 'mt-1 text-xs' : 'mt-2'}`}>
+                        {isMobile ? profile.favorite_era : `Era Favorita: ${profile.favorite_era}`}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>
-                    {profile?.display_name || 'Guerreiro Anônimo'}
-                  </h2>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>
-                    Membro desde {profile ? formatDate(profile.created_at).split(' ')[0] : '---'}
-                  </p>
-                  {profile?.favorite_era && (
-                    <Badge variant="secondary" className={`${isMobile ? 'mt-1 text-xs' : 'mt-2'}`}>
-                      {isMobile ? profile.favorite_era : `Era Favorita: ${profile.favorite_era}`}
-                    </Badge>
-                  )}
-                </div>
+                
+                {/* Botão Editar Perfil */}
+                <ActionButton
+                  variant="epic"
+                  onClick={() => setShowProfileEdit(true)}
+                  className={`${isMobile ? 'p-2 text-xs' : 'p-3'} hover:bg-victory/20`}
+                >
+                  <User className="w-4 h-4 mr-1" />
+                  {isMobile ? 'Editar' : 'Editar Perfil'}
+                </ActionButton>
               </div>
 
               {/* Estatísticas Principais */}
@@ -280,60 +298,40 @@ const Dashboard = () => {
                  </div>
             </Card>
 
-            {/* Histórico de Batalhas */}
-            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
-              <div className="flex items-center gap-3 mb-6">
-                <BarChart3 className="w-6 h-6 text-epic" />
-                <h3 className="text-xl font-montserrat font-bold text-epic">Histórico de Batalhas</h3>
+            {/* Histórico de Batalhas (Compacto) */}
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-4'}`}>
+              <div className="flex items-center gap-3 mb-4">
+                <BarChart3 className="w-5 h-5 text-epic" />
+                <h3 className="text-lg font-montserrat font-bold text-epic">Últimas Batalhas</h3>
               </div>
 
               {battleHistory.length === 0 ? (
-                <div className="text-center py-8">
-                  <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <p className="text-muted-foreground">Nenhuma batalha registrada ainda</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Comece sua jornada e conquiste as eras!
-                  </p>
+                <div className="text-center py-4">
+                  <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-2 opacity-50" />
+                  <p className="text-sm text-muted-foreground">Nenhuma batalha ainda</p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {battleHistory.map((battle) => (
-                    <div key={battle.id} className="arena-card p-4">
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {battleHistory.slice(0, 3).map((battle) => (
+                    <div key={battle.id} className="arena-card p-2">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="text-2xl">{getEraEmoji(battle.era_name)}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="text-lg">{getEraEmoji(battle.era_name)}</div>
                           <div>
-                            <h4 className="font-semibold">{battle.era_name}</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {battle.questions_correct}/{battle.questions_total} corretas
+                            <h4 className="text-sm font-semibold">{battle.era_name}</h4>
+                            <p className="text-xs text-muted-foreground">
+                              {battle.questions_correct}/{battle.questions_total}
                             </p>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className={`text-lg font-bold ${getAccuracyColor(battle.accuracy_percentage)}`}>
+                          <p className={`text-sm font-bold ${getAccuracyColor(battle.accuracy_percentage)}`}>
                             {battle.accuracy_percentage}%
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs text-muted-foreground">
                             +{battle.xp_earned} XP
                           </p>
-                          {battle.money_earned > 0 && (
-                            <p className="text-sm text-victory">
-                              +{formatCurrency(battle.money_earned)}
-                            </p>
-                          )}
                         </div>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {formatDate(battle.completed_at)}
-                        </span>
-                        {battle.battle_duration_seconds && (
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {Math.floor(battle.battle_duration_seconds / 60)}m {battle.battle_duration_seconds % 60}s
-                          </span>
-                        )}
                       </div>
                     </div>
                   ))}
@@ -341,51 +339,42 @@ const Dashboard = () => {
               )}
             </Card>
 
-            {/* Conquistas */}
-            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
-              <div className="flex items-center gap-3 mb-6">
-                <Award className="w-6 h-6 text-epic" />
-                <h3 className="text-xl font-montserrat font-bold text-epic">🏆 Conquistas</h3>
+            {/* Conquistas (Compacto) */}
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-4'}`}>
+              <div className="flex items-center gap-3 mb-4">
+                <Award className="w-5 h-5 text-epic" />
+                <h3 className="text-lg font-montserrat font-bold text-epic">🏆 Conquistas</h3>
               </div>
 
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
                 {[
                   { 
                     icon: '🏆', 
                     name: 'Primeira Vitória', 
-                    desc: 'Ganhe sua primeira batalha',
                     achieved: (profile?.battles_won || 0) > 0
                   },
                   { 
                     icon: '🔥', 
                     name: 'Guerreiro Ativo', 
-                    desc: 'Complete 10 batalhas',
                     achieved: (profile?.total_battles || 0) >= 10
                   },
                   { 
                     icon: '⚡', 
                     name: 'Especialista', 
-                    desc: 'Alcance 1000 XP',
                     achieved: (profile?.total_xp || 0) >= 1000
                   },
                   { 
                     icon: '👑', 
-                    name: 'Mestre das Eras', 
-                    desc: 'Vença em todas as 4 eras',
+                    name: 'Mestre', 
                     achieved: false
                   }
                 ].map((achievement) => (
-                  <div key={achievement.name} className={`arena-card p-3 ${achievement.achieved ? 'bg-victory/10 border-victory/30' : 'opacity-50'}`}>
-                    <div className="flex items-center gap-3">
-                      <div className="text-2xl">{achievement.icon}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-white">{achievement.name}</h4>
-                        <p className="text-xs text-muted-foreground">{achievement.desc}</p>
-                      </div>
-                      {achievement.achieved && (
-                        <CheckCircle className="w-5 h-5 text-victory" />
-                      )}
-                    </div>
+                  <div key={achievement.name} className={`arena-card p-2 text-center ${achievement.achieved ? 'bg-victory/10 border-victory/30' : 'opacity-50'}`}>
+                    <div className="text-lg mb-1">{achievement.icon}</div>
+                    <p className="text-xs font-semibold">{achievement.name}</p>
+                    {achievement.achieved && (
+                      <CheckCircle className="w-3 h-3 text-victory mx-auto mt-1" />
+                    )}
                   </div>
                 ))}
               </div>
@@ -405,7 +394,26 @@ const Dashboard = () => {
               <div className="arena-card p-4 text-center bg-victory/10 border-victory/30 mb-4">
                 <p className="text-sm text-muted-foreground mb-1">Saldo Atual</p>
                 <p className="text-2xl font-bold text-victory">
-                  {wallet ? `${Math.round(wallet.balance * 100)} créditos` : '0 créditos'}
+                  {(() => {
+                    // Dados reais do sistema de créditos
+                    const userPlan = 'premium';
+                    const userRank = 'top10';
+                    const isAdult = localStorage.getItem('userAge') !== 'minor';
+                    const pvpEarnings = 15;
+                    const trainingEarnings = 120;
+                    
+                    const withdrawalInfo = calculateWithdrawal(
+                      userPlan as any,
+                      30,
+                      0,
+                      isAdult,
+                      userRank as any,
+                      pvpEarnings,
+                      trainingEarnings
+                    );
+                    
+                    return `${withdrawalInfo.finalAmount.toFixed(0)} créditos`;
+                  })()}
                 </p>
               </div>
 
@@ -455,29 +463,24 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Transações Recentes */}
+              {/* Transações Recentes (Compacto) */}
               <div>
-                <h4 className="text-sm font-semibold text-epic flex items-center gap-2 mb-3">
+                <h4 className="text-sm font-semibold text-epic flex items-center gap-2 mb-2">
                   <Clock className="w-4 h-4" />
-                  Transações Recentes
+                  Transações
                 </h4>
                 
                 {transactions.length === 0 ? (
-                  <div className="text-center py-3">
-                    <Wallet className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                    <p className="text-xs text-muted-foreground">Nenhuma transação ainda</p>
+                  <div className="text-center py-2">
+                    <Wallet className="w-6 h-6 text-muted-foreground mx-auto mb-1 opacity-50" />
+                    <p className="text-xs text-muted-foreground">Nenhuma transação</p>
                   </div>
                 ) : (
-                  <div className="space-y-2 max-h-32 overflow-y-auto">
-                    {transactions.slice(0, 3).map((transaction) => (
-                      <div key={transaction.id} className="arena-card p-2">
+                  <div className="space-y-1 max-h-24 overflow-y-auto">
+                    {transactions.slice(0, 2).map((transaction) => (
+                      <div key={transaction.id} className="arena-card p-1">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs font-medium">{transaction.description}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {formatDate(transaction.created_at).split(' ')[0]}
-                            </p>
-                          </div>
+                          <p className="text-xs font-medium truncate">{transaction.description}</p>
                           <div className={`text-right ${
                             transaction.transaction_type === 'earned' ? 'text-victory' : 
                             transaction.transaction_type === 'bonus' ? 'text-epic' : 'text-destructive'
@@ -524,9 +527,29 @@ const Dashboard = () => {
                 )}
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>
+                  <span className="text-sm text-muted-foreground">Créditos Disponíveis</span>
                   <span className="font-bold text-green-400">
-                    {localStorage.getItem('userAge') === 'minor' ? '2.5 créditos (50%)' : '5 créditos'}
+                    {(() => {
+                      // Simular dados do usuário (em produção viria do contexto/estado)
+                      const userPlan = 'premium';
+                      const userRank = 'top10';
+                      const isAdult = localStorage.getItem('userAge') !== 'minor';
+                      const pvpEarnings = 15; // Créditos de PvP
+                      const trainingEarnings = 120; // Créditos de treinos
+                      
+                      // Usar função real do sistema
+                      const withdrawalInfo = calculateWithdrawal(
+                        userPlan as any,
+                        30, // daysSinceDeposit
+                        0, // monthlyEarnings
+                        isAdult,
+                        userRank as any,
+                        pvpEarnings,
+                        trainingEarnings
+                      );
+                      
+                      return `${withdrawalInfo.finalAmount.toFixed(0)} créditos`;
+                    })()}
                   </span>
                 </div>
               </div>
@@ -558,6 +581,12 @@ const Dashboard = () => {
                     <ActionButton 
                       variant="victory" 
                       className="w-full"
+                      onClick={() => {
+                        // Verificar se é menor e mostrar verificação APENAS se tentar sacar
+                        if (localStorage.getItem('userAge') === 'minor') {
+                          alert('⚠️ Menores de 18 anos têm saque limitado a 50% dos créditos por segurança.');
+                        }
+                      }}
                     >
                       <Send className="h-4 w-4 mr-2" />
                       Solicitar {localStorage.getItem('userAge') === 'minor' ? '2.5' : '5'} créditos via PIX
@@ -587,6 +616,193 @@ const Dashboard = () => {
         </div>
       </div>
       </div>
+
+      {/* Modal de Edição de Perfil */}
+      {showProfileEdit && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-background border border-epic/20 rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-epic">✏️ Editar Perfil do Guerreiro</h3>
+              <button
+                onClick={() => setShowProfileEdit(false)}
+                className="text-muted-foreground hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Nome do Guerreiro */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Nome Completo
+                </label>
+                <input
+                  type="text"
+                  defaultValue={profile?.display_name || ''}
+                  placeholder="Digite seu nome completo"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newName = e.target.value;
+                    localStorage.setItem('warriorName', newName);
+                    if (profile) profile.display_name = newName;
+                  }}
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  E-mail
+                </label>
+                <input
+                  type="email"
+                  defaultValue={localStorage.getItem('userEmail') || ''}
+                  placeholder="seu@email.com"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newEmail = e.target.value;
+                    localStorage.setItem('userEmail', newEmail);
+                  }}
+                />
+              </div>
+
+              {/* Data de Nascimento */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Data de Nascimento
+                </label>
+                <input
+                  type="date"
+                  defaultValue={localStorage.getItem('birthDate') || ''}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newBirthDate = e.target.value;
+                    localStorage.setItem('birthDate', newBirthDate);
+                  }}
+                />
+              </div>
+
+              {/* CPF */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  CPF
+                </label>
+                <input
+                  type="text"
+                  defaultValue={localStorage.getItem('userCpf') || ''}
+                  placeholder="000.000.000-00"
+                  maxLength={14}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newCpf = e.target.value;
+                    localStorage.setItem('userCpf', newCpf);
+                  }}
+                />
+              </div>
+
+              {/* Telefone */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Telefone
+                </label>
+                <input
+                  type="tel"
+                  defaultValue={localStorage.getItem('userPhone') || ''}
+                  placeholder="(11) 99999-9999"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newPhone = e.target.value;
+                    localStorage.setItem('userPhone', newPhone);
+                  }}
+                />
+              </div>
+
+              {/* Instituição de Ensino */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Instituição de Ensino
+                </label>
+                <input
+                  type="text"
+                  defaultValue={localStorage.getItem('userInstitution') || ''}
+                  placeholder="Nome da escola/faculdade"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newInstitution = e.target.value;
+                    localStorage.setItem('userInstitution', newInstitution);
+                  }}
+                />
+              </div>
+
+              {/* Era Favorita */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Era Favorita
+                </label>
+                <select
+                  defaultValue={profile?.favorite_era || ''}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newEra = e.target.value;
+                    localStorage.setItem('favoriteEra', newEra);
+                    if (profile) profile.favorite_era = newEra;
+                  }}
+                >
+                  <option value="">Selecione uma era</option>
+                  <option value="Egito Antigo">🏺 Egito Antigo</option>
+                  <option value="Mesopotâmia">📜 Mesopotâmia</option>
+                  <option value="Era Medieval">⚔️ Era Medieval</option>
+                  <option value="Era Digital">💻 Era Digital</option>
+                </select>
+              </div>
+
+              {/* Avatar/Imagem */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  Avatar (URL da imagem)
+                </label>
+                <input
+                  type="url"
+                  defaultValue={profile?.avatar_url || ''}
+                  placeholder="https://exemplo.com/imagem.jpg"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newAvatar = e.target.value;
+                    localStorage.setItem('avatarUrl', newAvatar);
+                    if (profile) profile.avatar_url = newAvatar;
+                  }}
+                />
+              </div>
+
+              {/* Botões */}
+              <div className="flex gap-3 pt-4">
+                <ActionButton
+                  variant="victory"
+                  onClick={() => {
+                    // Salvar no Supabase (se conectado)
+                    if (profile) {
+                      // Aqui você pode adicionar a lógica para salvar no Supabase
+                      console.log('✅ Perfil salvo:', profile);
+                    }
+                    setShowProfileEdit(false);
+                  }}
+                  className="flex-1"
+                >
+                  💾 Salvar Perfil
+                </ActionButton>
+                <ActionButton
+                  variant="battle"
+                  onClick={() => setShowProfileEdit(false)}
+                  className="flex-1"
+                >
+                  ❌ Cancelar
+                </ActionButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

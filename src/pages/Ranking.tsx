@@ -35,15 +35,15 @@ const Ranking = () => {
 
   const RankingUserCard = ({ user, showEraStats = false }: { user: RankingUser; showEraStats?: boolean }) => (
     <Card className={`${getPositionBg(user.position)} hover-scale transition-all duration-300`}>
-      <CardContent className={`${isMobile ? 'p-3' : 'p-4'}`}>
+      <CardContent className={`${isMobile ? 'p-2' : 'p-3'}`}>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               {getPositionIcon(user.position)}
-              <span className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'}`}>#{user.position}</span>
+              <span className={`font-bold ${isMobile ? 'text-xs' : 'text-sm'}`}>#{user.position}</span>
             </div>
             
-            <div className={`w-10 h-10 rounded-full bg-epic/20 flex items-center justify-center text-lg border-2 border-epic ${isMobile ? 'w-8 h-8 text-sm' : ''}`}>
+            <div className={`w-8 h-8 rounded-full bg-epic/20 flex items-center justify-center text-sm border-2 border-epic ${isMobile ? 'w-6 h-6 text-xs' : ''}`}>
               {user.avatar_url ? (
                 <img src={user.avatar_url} alt="Avatar" className="w-full h-full rounded-full object-cover" />
               ) : (
@@ -52,49 +52,49 @@ const Ranking = () => {
             </div>
             
             <div>
-              <h4 className={`font-semibold ${isMobile ? 'text-sm' : 'text-base'}`}>{user.display_name}</h4>
+              <h4 className={`font-semibold ${isMobile ? 'text-xs' : 'text-sm'}`}>{user.display_name}</h4>
               {user.favorite_era && (
-                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-xs'}`}>
                   {user.favorite_era}
                 </p>
               )}
             </div>
           </div>
           
-                        <div className="text-right">
-                <p className={`font-bold text-epic ${isMobile ? 'text-base' : 'text-xl'}`}>
-                  {user.total_xp.toLocaleString()} XP
-                </p>
-                <div className="flex gap-2 justify-end">
-                  <Badge variant="outline" className={isMobile ? 'text-xs px-1' : ''}>
-                    {user.total_battles} batalhas
-                  </Badge>
-                  <Badge variant="secondary" className={`${user.win_rate >= 70 ? 'bg-victory/20 text-victory' : 'bg-muted'} ${isMobile ? 'text-xs px-1' : ''}`}>
-                    {user.win_rate}% vitórias
-                  </Badge>
-                </div>
-                {/* Bônus por ranking */}
-                {user.position <= 1 && (
-                  <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-500 mt-1">
-                    +45 créditos/mês
-                  </Badge>
-                )}
-                {user.position > 1 && user.position <= 5 && (
-                  <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 mt-1">
-                    +35 créditos/mês
-                  </Badge>
-                )}
-                {user.position > 5 && user.position <= 10 && (
-                  <Badge variant="secondary" className="bg-green-500/20 text-green-500 mt-1">
-                    +25 créditos/mês
-                  </Badge>
-                )}
-                {user.position > 10 && user.position <= 20 && (
-                  <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 mt-1">
-                    +15 créditos/mês
-                  </Badge>
-                )}
-              </div>
+          <div className="text-right">
+            <p className={`font-bold text-epic ${isMobile ? 'text-sm' : 'text-base'}`}>
+              {user.total_xp.toLocaleString()} XP
+            </p>
+            <div className="flex gap-1 justify-end">
+              <Badge variant="outline" className="text-xs px-1">
+                {user.total_battles} batalhas
+              </Badge>
+              <Badge variant="secondary" className={`${user.win_rate >= 70 ? 'bg-victory/20 text-victory' : 'bg-muted'} text-xs px-1`}>
+                {user.win_rate}% vitórias
+              </Badge>
+            </div>
+            {/* Bônus por ranking (compacto) */}
+            {user.position <= 1 && (
+              <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-500 mt-1 text-xs">
+                +45 créditos/mês
+              </Badge>
+            )}
+            {user.position > 1 && user.position <= 5 && (
+              <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 mt-1 text-xs">
+                +35 créditos/mês
+              </Badge>
+            )}
+            {user.position > 5 && user.position <= 10 && (
+              <Badge variant="secondary" className="bg-green-500/20 text-green-500 mt-1 text-xs">
+                +25 créditos/mês
+              </Badge>
+            )}
+            {user.position > 10 && user.position <= 20 && (
+              <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 mt-1 text-xs">
+                +15 créditos/mês
+              </Badge>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -168,9 +168,9 @@ const Ranking = () => {
               <Trophy className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
               Ranking Global
             </h1>
-            <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2'}`}>
-              Os melhores guerreiros - ROI 120-250% anual
-            </p>
+                         <p className={`text-muted-foreground ${isMobile ? 'mt-1 text-xs' : 'mt-2'}`}>
+               Os melhores guerreiros - Sistema meritocrático
+             </p>
           </div>
         </div>
 

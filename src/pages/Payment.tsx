@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { calculateWithdrawal } from '@/utils/creditsSystem';
 import egyptArena from '@/assets/egypt-arena.png';
 
 const Payment = () => {
@@ -40,7 +41,24 @@ const Payment = () => {
   const regularPrice = 5.00; // Novo sistema - Mês 1
   const discountPercent = isPromoActive ? 50 : 0;
   const currentPrice = isPromoActive ? regularPrice * 0.5 : regularPrice;
-  const maxWithdrawal = isPromoActive ? currentPrice * 0.95 : regularPrice * 0.95; // 95% após taxas
+  // Simular dados do usuário (em produção viria do contexto/estado)
+  const userRank = 'top10'; // Exemplo: top1, top5, top10, top20, regular
+  const isAdult = localStorage.getItem('userAge') !== 'minor';
+  const pvpEarnings = 10; // Créditos de PvP
+  const trainingEarnings = 30; // Créditos de treinos
+  
+  // Usar função real do sistema
+  const withdrawalInfo = calculateWithdrawal(
+    'premium', // planType
+    30, // daysSinceDeposit (exemplo)
+    0, // monthlyEarnings
+    isAdult,
+    userRank as any,
+    pvpEarnings,
+    trainingEarnings
+  );
+  
+  const maxWithdrawal = withdrawalInfo.finalAmount;
 
   const handlePayment = async () => {
     if (!acceptTerms) {
@@ -170,21 +188,21 @@ const Payment = () => {
                 {isPromoActive && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground line-through">Preço normal</span>
-                    <span className="text-muted-foreground line-through">{regularPrice.toFixed(2)} créditos</span>
+                    <span className="text-muted-foreground line-through">R$ {regularPrice.toFixed(2)}</span>
                   </div>
                 )}
                 
                 <div className="flex items-center justify-between text-lg">
                   <span className="font-semibold">Valor a pagar</span>
                   <span className="text-2xl font-bold text-epic">
-                    {currentPrice.toFixed(2)} créditos
+                    R$ {currentPrice.toFixed(2)}
                   </span>
                 </div>
 
                 {isPromoActive && (
                   <div className="text-center">
                                       <span className="bg-epic text-white px-3 py-1 rounded-full text-sm font-bold">
-                    Desconto: {(regularPrice - currentPrice).toFixed(2)} créditos
+                    Desconto: R$ {(regularPrice - currentPrice).toFixed(2)}
                   </span>
                   </div>
                 )}
@@ -205,24 +223,24 @@ const Payment = () => {
                     <span className="font-bold text-epic">{maxWithdrawal.toFixed(0)} créditos</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Valor disponível para saque após taxas administrativas (5%)
+                    Valor disponível para saque após taxas administrativas (12.5%)
                   </p>
                 </div>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
                     <span>🏛️ Mês 1 (Atual)</span>
-                    <span className="font-semibold">{currentPrice.toFixed(0)} créditos</span>
+                    <span className="font-semibold">437 créditos sacáveis</span>
                   </div>
                   {!isPromoActive && (
                     <>
                       <div className="flex items-center justify-between text-muted-foreground">
                         <span>📜 Mês 2</span>
-                        <span>350 créditos</span>
+                        <span>306 créditos sacáveis</span>
                       </div>
                       <div className="flex items-center justify-between text-muted-foreground">
                         <span>⚔️ Mês 3</span>
-                        <span>200 créditos</span>
+                        <span>175 créditos sacáveis</span>
                       </div>
                     </>
                   )}
@@ -230,6 +248,18 @@ const Payment = () => {
               </div>
 
               <Separator className="my-6" />
+
+              {/* Explicação do Sistema */}
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 mb-4">
+                <h4 className="font-semibold text-blue-600 mb-2">📊 Como Funciona o Sistema:</h4>
+                <div className="text-xs text-blue-500 space-y-1">
+                  <p>• <strong>Mês 1:</strong> R$ 5,00 → 500 créditos → 437 sacáveis (taxa 12.5%)</p>
+                  <p>• <strong>Mês 2:</strong> R$ 3,50 → 350 créditos → 306 sacáveis (taxa 12.5%)</p>
+                  <p>• <strong>Mês 3:</strong> R$ 2,00 → 200 créditos → 175 sacáveis (taxa 12.5%)</p>
+                  <p>• <strong>Bônus:</strong> Top 1 (+45), Top 5 (+35), Top 10 (+25), Top 20 (+15)</p>
+                  <p>• <strong>Menores de 18:</strong> Limite 50% dos valores acima</p>
+                </div>
+              </div>
 
               {/* Aviso Legal - Compacto */}
               <div className="bg-warning/10 border border-warning/30 rounded-lg p-3">
@@ -428,7 +458,7 @@ const Payment = () => {
                     <span>Processando...</span>
                   </div>
                 ) : (
-                  `Pagar ${currentPrice.toFixed(0)} créditos - ${paymentMethod.toUpperCase()}`
+                  `Pagar R$ ${currentPrice.toFixed(2)} - ${paymentMethod.toUpperCase()}`
                 )}
               </ActionButton>
 

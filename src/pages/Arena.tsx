@@ -9,6 +9,7 @@ import { useArena } from '@/hooks/useArena';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
 import { handleNewBattleCredits, getUserPlan, getPvPValues } from '@/utils/creditsIntegration';
+import { calculateArenaCredits } from '@/utils/creditsSystem';
 import { Player } from '@/types/arena';
 import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
@@ -134,6 +135,10 @@ const Arena = () => {
         
         // Usar sistema dinâmico de recompensas da Arena
         const rewards = getArenaRewards('egito-antigo', correctAnswers, questions.length, isVictory);
+        
+        // CALCULAR CRÉDITOS PvP (SISTEMA CORRETO)
+        const pvpCredits = calculateArenaCredits(userPlan, isVictory);
+        console.log(`⚔️ PvP: ${pvpCredits.creditsEarned} créditos ganhos!`);
         
         await saveBattleResult({
           eraName: 'Arena - Egito Antigo',
@@ -317,7 +322,7 @@ const Arena = () => {
                 Vitória: +{pvpValues.netWin} créditos (lucro {pvpValues.profit}) | Derrota: {pvpValues.netLoss} créditos
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                🏆 Sistema sustentável: ROI 120-250% anual para jogadores ativos
+                🏆 Sistema sustentável: Recompensas por mérito para jogadores ativos
               </p>
             </div>
 

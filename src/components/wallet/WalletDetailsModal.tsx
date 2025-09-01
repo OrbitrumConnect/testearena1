@@ -80,7 +80,7 @@ export const WalletDetailsModal = ({
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-victory mb-1">
-                  R$ {withdrawAmount.toFixed(2)}
+                  {withdrawAmount.toFixed(0)} créditos
                 </div>
                 <p className="text-sm text-muted-foreground">Valor Sacável</p>
               </div>
@@ -99,33 +99,33 @@ export const WalletDetailsModal = ({
               <div className="text-center p-3 rounded-lg border-l-4 border-l-epic bg-epic/5">
                 <div className="text-lg font-bold text-epic">Mês {systemData.currentMonth}/3</div>
                 <div className="text-sm text-muted-foreground mb-2">Atual</div>
-                <Badge variant="outline" className="text-xs">
-                  🚀 R$ {systemData.currentPayment.toFixed(2)}
-                </Badge>
+                                  <Badge variant="outline" className="text-xs">
+                    🚀 {systemData.currentPayment.toFixed(0)} créditos
+                  </Badge>
               </div>
 
               {/* Devolução */}
               <div className="text-center p-3 rounded-lg border-l-4 border-l-victory bg-victory/5">
                 <div className="text-lg font-bold text-victory">Devolução</div>
                 <div className="text-sm text-muted-foreground mb-2">Disponível</div>
-                <Badge variant="outline" className="text-xs">
-                  💸 R$ {systemData.maxWithdrawal.toFixed(2)}
-                </Badge>
+                                  <Badge variant="outline" className="text-xs">
+                    💸 {systemData.maxWithdrawal.toFixed(0)} créditos
+                  </Badge>
               </div>
 
               {/* Próximo */}
               <div className="text-center p-3 rounded-lg border-l-4 border-l-battle bg-battle/5">
                 <div className="text-lg font-bold text-battle">Próximo</div>
                 <div className="text-sm text-muted-foreground mb-2">Em {systemData.daysUntilNext}d</div>
-                <Badge variant="outline" className="text-xs">
-                  📅 R$ {systemData.nextPayment.toFixed(2)}
-                </Badge>
+                                  <Badge variant="outline" className="text-xs">
+                    📅 {systemData.nextPayment.toFixed(0)} créditos
+                  </Badge>
               </div>
             </div>
 
             <div className="bg-muted/10 rounded-lg p-3">
               <p className="text-sm text-center text-victory font-medium">
-                💰 Economia de R$ {(systemData.currentPayment - systemData.nextPayment).toFixed(2)} este mês!
+                💰 Economia de {(systemData.currentPayment - systemData.nextPayment).toFixed(0)} créditos este mês!
               </p>
             </div>
           </Card>
@@ -170,10 +170,10 @@ export const WalletDetailsModal = ({
                   Regras de Saque
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                  <li>• Apenas valor depositado (R$ 5,00) é sacável</li>
+                  <li>• Valor depositado + créditos ganhos são sacáveis</li>
                   <li>• Período mínimo: 30 dias após depósito</li>
-                  <li>• Taxa administrativa: R$ 0,50</li>
-                  <li>• Créditos ganhos em atividades são apenas internos</li>
+                  <li>• Taxa administrativa: 22.5%</li>
+                  <li>• Créditos de PvP e treinos acumulam</li>
                   <li>• Processamento: 24-48h úteis</li>
                 </ul>
               </div>
