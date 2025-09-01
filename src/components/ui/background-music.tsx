@@ -17,7 +17,7 @@ export const BackgroundMusic = ({
     '/musica4.mp3',
     '/musica5.mp3',
     '/musica6.mp3',
-    '/musica7_otimizada.mp3',
+                      '/musica7.mp3',
     '/musica8.mp3'
   ], 
   autoPlay = false,
