@@ -321,10 +321,21 @@ const Arena = () => {
               </p>
             </div>
 
-            <ActionButton variant="epic" onClick={startBattle} className="text-xl px-8 py-4">
-              <Sword className="w-6 h-6" />
-              Iniciar Batalha!
-            </ActionButton>
+            {localStorage.getItem('userAge') === 'minor' ? (
+              <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                <p className="text-orange-600 font-semibold text-center">
+                  ⚠️ PvP disponível apenas para maiores de 18 anos
+                </p>
+                <p className="text-xs text-orange-500 text-center mt-1">
+                  Continue treinando para melhorar suas habilidades!
+                </p>
+              </div>
+            ) : (
+              <ActionButton variant="epic" onClick={startBattle} className="text-xl px-8 py-4">
+                <Sword className="w-6 h-6" />
+                Iniciar Batalha!
+              </ActionButton>
+            )}
           </div>
         </div>
       </div>

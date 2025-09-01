@@ -511,10 +511,17 @@ const Dashboard = () => {
                   </Badge>
                 </div>
                 
-                                 <div className="flex items-center justify-between">
-                   <span className="text-sm text-muted-foreground">Vidas Disponíveis</span>
-                   <span className="font-bold text-victory">10/dia</span>
-                 </div>
+                                                 <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Vidas Disponíveis</span>
+                  <span className="font-bold text-victory">10/dia</span>
+                </div>
+                {localStorage.getItem('userAge') === 'minor' && (
+                  <div className="mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                    <p className="text-xs text-blue-600 font-semibold">
+                      🛡️ Modo Restrito: PvP desabilitado, saque limitado a 50%
+                    </p>
+                  </div>
+                )}
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>
@@ -525,9 +532,14 @@ const Dashboard = () => {
               {/* Solicitação PIX Integrada */}
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-                  <h4 className="text-green-400 font-semibold mb-2">💰 Solicitar PIX - 5 créditos</h4>
+                  <h4 className="text-green-400 font-semibold mb-2">
+                    💰 Solicitar PIX - {localStorage.getItem('userAge') === 'minor' ? '2.5 créditos (50%)' : '5 créditos'}
+                  </h4>
                   <p className="text-sm text-gray-300 mb-3">
-                    Solicitação mensal disponível para usuários ativos. Processamento em até 24 horas úteis.
+                    {localStorage.getItem('userAge') === 'minor' 
+                      ? 'Saque limitado a 50% dos créditos (proteção para menores). Processamento em até 24 horas úteis.'
+                      : 'Solicitação mensal disponível para usuários ativos. Processamento em até 24 horas úteis.'
+                    }
                   </p>
                   
                   <div className="space-y-3">
@@ -546,7 +558,7 @@ const Dashboard = () => {
                       className="w-full"
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Solicitar 5 créditos via PIX
+                      Solicitar {localStorage.getItem('userAge') === 'minor' ? '2.5' : '5'} créditos via PIX
                     </ActionButton>
                   </div>
                 </div>

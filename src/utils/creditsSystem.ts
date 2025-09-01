@@ -12,6 +12,7 @@ export interface PlanConfig {
   platformRetention: number; // Taxa plataforma
   creditsReceived: number; // Créditos iniciais
   monthType: MonthType; // Tipo do mês na progressão
+  isAdultOnly: boolean; // Apenas para maiores de 18 anos
 
   // Treinos (ROI controlado)
   trainingRewards: {
@@ -33,6 +34,7 @@ export interface PlanConfig {
   withdrawalFeePercent: number; // 5%
   withdrawalMinDays: number; // 30 dias
   maxMonthlyWithdrawal: number; // Limite legal
+  maxWithdrawalUnder18: number; // Limite para menores de 18 (50%)
 }
 
 // 📊 CONFIGURAÇÕES DOS 3 PLANOS - PROGRESSÃO OBRIGATÓRIA
@@ -43,6 +45,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     platformRetention: 0.50,
     creditsReceived: 500, // R$ 4,50 + 50 bônus
     monthType: 'month1',
+    isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
       'egito-antigo': { base: 0.3, victory: 0.7, excellent: 1.4 },
@@ -57,7 +60,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     monthlyBonusMax: 60,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30,
-    maxMonthlyWithdrawal: 100 // R$ 1,00/mês (limite legal)
+    maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
+    maxWithdrawalUnder18: 50 // 50% para menores de 18
   },
 
   standard: {
@@ -66,6 +70,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     platformRetention: 0.35,
     creditsReceived: 350, // R$ 3,15 + 35 bônus
     monthType: 'month2',
+    isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
       'egito-antigo': { base: 0.2, victory: 0.5, excellent: 1.0 },
@@ -80,7 +85,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     monthlyBonusMax: 42,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30,
-    maxMonthlyWithdrawal: 100 // R$ 1,00/mês (limite legal)
+    maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
+    maxWithdrawalUnder18: 50 // 50% para menores de 18
   },
 
   basic: {
@@ -89,6 +95,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     platformRetention: 0.20,
     creditsReceived: 200, // R$ 1,80 + 20 bônus
     monthType: 'month3',
+    isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
       'egito-antigo': { base: 0.1, victory: 0.3, excellent: 0.6 },
@@ -103,7 +110,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     monthlyBonusMax: 24,
     withdrawalFeePercent: 5,
     withdrawalMinDays: 30,
-    maxMonthlyWithdrawal: 100 // R$ 1,00/mês (limite legal)
+    maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
+    maxWithdrawalUnder18: 50 // 50% para menores de 18
   }
 };
 
@@ -275,7 +283,12 @@ export const calculateMonthlyBonus = (
 };
 
 // 💸 Cálculo de Saque por Plano (SUSTENTÁVEL E LEGAL)
-export const calculateWithdrawal = (planType: PlanType, daysSinceDeposit: number, monthlyEarnings: number = 0) => {
+export const calculateWithdrawal = (
+  planType: PlanType, 
+  daysSinceDeposit: number, 
+  monthlyEarnings: number = 0,
+  isAdult: boolean = true
+) => {
   const planConfig = PLAN_CONFIGS[planType];
   
   if (daysSinceDeposit < planConfig.withdrawalMinDays) {
@@ -283,12 +296,14 @@ export const calculateWithdrawal = (planType: PlanType, daysSinceDeposit: number
       canWithdraw: false,
       daysRemaining: planConfig.withdrawalMinDays - daysSinceDeposit,
       message: `Saque disponível em ${planConfig.withdrawalMinDays - daysSinceDeposit} dias`,
-      planType: planType
+      planType: planType,
+      isAdult
     };
   }
   
-  // SUSTENTÁVEL: Saque baseado em ganhos reais (máximo 100 créditos/mês)
-  const baseWithdrawal = Math.min(monthlyEarnings, planConfig.maxMonthlyWithdrawal);
+  // SUSTENTÁVEL: Saque baseado em ganhos reais
+  const maxWithdrawal = isAdult ? planConfig.maxMonthlyWithdrawal : planConfig.maxWithdrawalUnder18;
+  const baseWithdrawal = Math.min(monthlyEarnings, maxWithdrawal);
   const fee = baseWithdrawal > 50 ? baseWithdrawal * (planConfig.withdrawalFeePercent / 100) : 0; // Taxa 5% para >R$ 0,50
   const finalAmount = baseWithdrawal - fee;
   
@@ -298,7 +313,9 @@ export const calculateWithdrawal = (planType: PlanType, daysSinceDeposit: number
     fee,
     finalAmount,
     planType: planType,
-    message: `Disponível para saque: ${finalAmount.toFixed(0)} créditos (R$ ${(finalAmount / 100).toFixed(2)})`
+    isAdult,
+    maxWithdrawal,
+    message: `Disponível para saque: ${finalAmount.toFixed(0)} créditos (R$ ${(finalAmount / 100).toFixed(2)})${!isAdult ? ' - Limite 50% para menores de 18' : ''}`
   };
 };
 

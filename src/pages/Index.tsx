@@ -29,6 +29,7 @@ import { Card } from '@/components/ui/card';
 import { TopCarousel } from '@/components/home/TopCarousel';
 import { EraCarousel } from '@/components/arena/EraCarousel';
 import { LegalPoliciesModal } from '@/components/legal/LegalPoliciesModal';
+import { AgeVerification } from '@/components/ui/age-verification';
 
 import arenaLogo from '@/assets/arena-logo.png';
 import egyptArena from '@/assets/egypt-arena.png';
@@ -41,6 +42,8 @@ const Index = () => {
   const navigate = useNavigate();
   const [selectedModule, setSelectedModule] = useState('egypt');
   const [showLegalModal, setShowLegalModal] = useState(false);
+  const [showAgeVerification, setShowAgeVerification] = useState(true);
+  const [isAdult, setIsAdult] = useState<boolean | null>(null);
   const isMobile = useIsMobile();
 
   
@@ -50,7 +53,21 @@ const Index = () => {
   const { userSubscription, computed: subscriptionInfo } = useSubscription();
   const { resetAllData, resetting } = useResetData();
 
+  const handleVerificationComplete = (isAdult: boolean) => {
+    setIsAdult(isAdult);
+    setShowAgeVerification(false);
+    // Salvar no localStorage
+    localStorage.setItem('userAge', isAdult ? 'adult' : 'minor');
+  };
 
+  // Se ainda não verificou a idade, mostrar verificação
+  if (showAgeVerification) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <AgeVerification onVerificationComplete={handleVerificationComplete} />
+      </div>
+    );
+  }
 
   // Calcular progresso real baseado nas batalhas por era
   const getEraProgress = (eraName: string) => {
