@@ -1400,7 +1400,7 @@ const Labyrinth = () => {
                                  margin: '-120px auto -126px auto', // Reduzido 20% (de -158px para -126px)
                                  backgroundColor: 'rgba(0, 0, 0, 0.33)', 
                                  width: isMobile ? '150%' : '130%', // Mobile: 150%, Web: 130%
-                                 marginLeft: isMobile ? 'auto' : '-15%', // Mobile: centralizado, Web: -15%
+                                                                   marginLeft: isMobile ? '-30%' : '-15%', // Mobile: -30% (15% mais à esquerda), Web: -15%
                                  marginRight: 'auto',
                                  boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
                                  border: '2px solid rgba(255, 215, 0, 0.6)'
@@ -1418,15 +1418,19 @@ const Labyrinth = () => {
                     margin: '0 auto', 
                     textAlign: isMobile ? 'center' : 'left' 
                   }}>
-                    <canvas 
-                      ref={canvasRef} 
-                      width={400} 
-                      height={400} 
-                      className="w-full border-2 border-card-border rounded cursor-pointer"
-                      onTouchStart={handleTouchStart}
-                      onTouchMove={handleTouchMove}
-                      onTouchEnd={handleTouchEnd}
-                    />
+                                         <canvas 
+                       ref={canvasRef} 
+                       width={400} 
+                       height={400} 
+                       className="w-full border-2 border-card-border rounded cursor-pointer"
+                       style={{ 
+                         touchAction: 'none', // Desabilitar gestos do navegador
+                         userSelect: 'none'   // Prevenir seleção de texto
+                       }}
+                       onTouchStart={handleTouchStart}
+                       onTouchMove={handleTouchMove}
+                       onTouchEnd={handleTouchEnd}
+                     />
                     
                                                               {/* Hero image overlay */}
                        <img
