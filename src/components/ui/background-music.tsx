@@ -38,9 +38,19 @@ export const BackgroundMusic = ({
 
   useEffect(() => {
     if (audioRef.current) {
+      // Forçar recarregamento da música
+      audioRef.current.load();
       audioRef.current.src = tracks[currentTrack];
+      
+      // Adicionar logs para debug
+      console.log('🎵 Carregando música:', tracks[currentTrack]);
+      console.log('🎵 Track atual:', currentTrack + 1);
+      
       if (isPlaying) {
-        audioRef.current.play();
+        audioRef.current.play().catch(error => {
+          console.error('❌ Erro ao tocar música:', error);
+          console.error('🎵 Src da música:', tracks[currentTrack]);
+        });
       }
     }
   }, [currentTrack, tracks]);
@@ -68,7 +78,10 @@ export const BackgroundMusic = ({
   };
 
   const nextTrack = () => {
-    setCurrentTrack((prev) => (prev + 1) % tracks.length);
+    const nextTrackIndex = (currentTrack + 1) % tracks.length;
+    console.log('⏭️ Próxima música:', nextTrackIndex + 1, 'de', tracks.length);
+    console.log('🎵 URL da próxima música:', tracks[nextTrackIndex]);
+    setCurrentTrack(nextTrackIndex);
   };
 
   const prevTrack = () => {
@@ -95,8 +108,19 @@ export const BackgroundMusic = ({
         loop={tracks.length === 1}
         onEnded={() => {
           if (tracks.length > 1) {
+            console.log('🔄 Música terminou, indo para próxima...');
             nextTrack();
           }
+        }}
+        onError={(e) => {
+          console.error('❌ Erro no elemento de áudio:', e);
+          console.error('🎵 Src atual:', tracks[currentTrack]);
+        }}
+        onLoadStart={() => {
+          console.log('📥 Iniciando carregamento da música:', tracks[currentTrack]);
+        }}
+        onCanPlay={() => {
+          console.log('✅ Música pronta para tocar:', tracks[currentTrack]);
         }}
         preload="auto"
       />
