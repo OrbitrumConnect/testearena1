@@ -1,10 +1,10 @@
-// Utilitário para exibir recompensas do novo sistema (100 créditos = R$ 1,00)
+// Utilitário para exibir recompensas do sistema balanceado (100 créditos = R$ 1,00)
 export const getRewardDisplayValues = (eraSlug: string) => {
   const rewardValues: Record<string, { excellent: string; victory: string; base: string }> = {
-    'egito-antigo': { excellent: '3 créditos', victory: '2 créditos', base: '1 crédito' },
-    'mesopotamia': { excellent: '4 créditos', victory: '3 créditos', base: '2 créditos' },
-    'medieval': { excellent: '5 créditos', victory: '4 créditos', base: '3 créditos' },
-    'digital': { excellent: '6 créditos', victory: '5 créditos', base: '4 créditos' }
+    'egito-antigo': { excellent: '4 créditos', victory: '2 créditos', base: '1 crédito' },
+    'mesopotamia': { excellent: '8 créditos', victory: '4 créditos', base: '2 créditos' },
+    'medieval': { excellent: '12 créditos', victory: '6 créditos', base: '3 créditos' },
+    'digital': { excellent: '16 créditos', victory: '8 créditos', base: '4 créditos' }
   };
   
   return rewardValues[eraSlug] || rewardValues['egito-antigo'];

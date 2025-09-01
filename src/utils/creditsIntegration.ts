@@ -10,12 +10,12 @@ interface NewCreditsEarnedParams {
   usedExtraLife?: boolean;
 }
 
-// Recompensas por era (baseadas no novo sistema)
+// Recompensas por era (sistema balanceado - ROI 200-400% para elite 3%)
 const ERA_REWARDS = {
-  'egito-antigo': { base: 1, victory: 2, excellent: 3 },
-  'mesopotamia': { base: 2, victory: 3, excellent: 4 },
-  'medieval': { base: 3, victory: 4, excellent: 5 },
-  'digital': { base: 4, victory: 5, excellent: 6 }
+  'egito-antigo': { base: 1, victory: 2, excellent: 4 },
+  'mesopotamia': { base: 2, victory: 4, excellent: 8 },
+  'medieval': { base: 3, victory: 6, excellent: 12 },
+  'digital': { base: 4, victory: 8, excellent: 16 }
 };
 
 // Função para calcular créditos do novo sistema
@@ -50,9 +50,19 @@ export const calculateNewCreditsEarned = (params: NewCreditsEarnedParams): {
       reason: `${accuracyPercentage >= 90 ? 'Excelente' : accuracyPercentage >= 70 ? 'Vitória' : 'Participação'} em ${eraSlug}`
     };
   } else if (battleType === 'pvp') {
-    // Sistema PvP
-    const entryCost = 50; // 50 créditos para entrar
-    const victoryReward = 80; // 80 créditos se ganhar
+    // Sistema PvP balanceado por mês
+    const PVP_CONFIG = {
+      month1: { entry: 15, prize: 25 },
+      month2: { entry: 10, prize: 17 },
+      month3: { entry: 6, prize: 12 }
+    };
+    
+    // TODO: Implementar lógica de mês atual
+    const currentMonth = 1; // Por enquanto fixo no mês 1
+    const pvpData = PVP_CONFIG[`month${currentMonth}` as keyof typeof PVP_CONFIG];
+    
+    const entryCost = pvpData.entry;
+    const victoryReward = pvpData.prize;
     const isVictory = accuracyPercentage >= 70; // Considerando vitória com 70%+
     
     return {
