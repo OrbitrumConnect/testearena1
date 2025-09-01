@@ -80,71 +80,128 @@ const Labyrinth = () => {
     }
   };
 
-  // Funções de touch para mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!isMobile || gameState.phase !== 'exploring') return;
-    
-    const touch = e.touches[0];
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    
-    // Converter coordenadas do touch para coordenadas do canvas
-    const canvasX = (x / rect.width) * 400;
-    const canvasY = (y / rect.height) * 400;
-    
-    // Verificar se tocou em um baú
-    const touchedChest = chests.find(chest => {
-      const distance = Math.sqrt(
-        Math.pow(canvasX - chest.position.x, 2) + Math.pow(canvasY - chest.position.y, 2)
-      );
-      return distance < 30 && !chest.isOpen;
-    });
-    
-    if (touchedChest && touchedChest.question) {
-      // Abrir baú diretamente
-      setGameState(prev => ({
-        ...prev,
-        phase: 'question',
-        currentQuestion: touchedChest.question,
-        selectedAnswer: null,
-        showExplanation: false
-      }));
-      return;
-    }
-    
-    // Mover jogador para a posição do touch
-    const newX = Math.max(20, Math.min(380, canvasX));
-    const newY = Math.max(20, Math.min(380, canvasY));
-    
-    setGameState(prev => ({
-      ...prev,
-      playerPosition: { x: newX, y: newY }
-    }));
-  };
+        // Funções de touch para mobile
+    const handleTouchStart = (e: React.TouchEvent) => {
+      if (!isMobile || gameState.phase !== 'exploring') return;
+      e.preventDefault(); // Prevenir movimento da página
+      
+      const touch = e.touches[0];
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      
+      // Converter coordenadas do touch para coordenadas do canvas
+      const canvasX = (x / rect.width) * 400;
+      const canvasY = (y / rect.height) * 400;
+      
+      // Verificar colisão antes de mover
+      const walls = [
+        // Paredes externas
+        { x: 0, y: 0, width: 400, height: 20 },
+        { x: 0, y: 380, width: 400, height: 20 },
+        { x: 0, y: 0, width: 20, height: 400 },
+        { x: 380, y: 0, width: 20, height: 400 },
+        
+        // Labirinto com muros variados
+        { x: 100, y: 100, width: 40, height: 10 },
+        { x: 80, y: 180, width: 30, height: 10 },
+        { x: 70, y: 260, width: 35, height: 10 },
+        { x: 150, y: 120, width: 10, height: 40 },
+        { x: 250, y: 140, width: 10, height: 35 },
+        { x: 180, y: 200, width: 45, height: 10 },
+        { x: 120, y: 300, width: 10, height: 30 },
+        { x: 280, y: 280, width: 25, height: 10 }
+      ];
+      
+      const isCollision = (x: number, y: number) => {
+        if (x < 30 || x > 370 || y < 30 || y > 370) return true;
+        return walls.some(wall =>
+          x + 20 > wall.x && x - 20 < wall.x + wall.width &&
+          y + 20 > wall.y && y - 20 < wall.y + wall.height
+        );
+      };
+      
+      // Mover jogador para a posição do touch (movimento gradual)
+      const currentX = gameState.playerPosition.x;
+      const currentY = gameState.playerPosition.y;
+      
+      // Calcular direção e mover gradualmente
+      const deltaX = canvasX - currentX;
+      const deltaY = canvasY - currentY;
+      const speed = 0.5; // Movimento inicial mais suave (50% da distância)
+      
+      const newX = Math.max(20, Math.min(380, currentX + deltaX * speed));
+      const newY = Math.max(20, Math.min(380, currentY + deltaY * speed));
+      
+      // Verificar colisão antes de aplicar movimento
+      if (!isCollision(newX, newY)) {
+        setGameState(prev => ({
+          ...prev,
+          playerPosition: { x: newX, y: newY }
+        }));
+      }
+    };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isMobile || gameState.phase !== 'exploring') return;
-    e.preventDefault();
-    
-    const touch = e.touches[0];
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-    
-    // Converter coordenadas do touch para coordenadas do canvas
-    const canvasX = (x / rect.width) * 400;
-    const canvasY = (y / rect.height) * 400;
-    
-    // Mover jogador suavemente
-    const newX = Math.max(20, Math.min(380, canvasX));
-    const newY = Math.max(20, Math.min(380, canvasY));
-    
-    setGameState(prev => ({
-      ...prev,
-      playerPosition: { x: newX, y: newY }
-    }));
-  };
+           const handleTouchMove = (e: React.TouchEvent) => {
+      if (!isMobile || gameState.phase !== 'exploring') return;
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      
+      // Converter coordenadas do touch para coordenadas do canvas
+      const canvasX = (x / rect.width) * 400;
+      const canvasY = (y / rect.height) * 400;
+      
+      // Verificar colisão antes de mover
+      const walls = [
+        // Paredes externas
+        { x: 0, y: 0, width: 400, height: 20 },
+        { x: 0, y: 380, width: 400, height: 20 },
+        { x: 0, y: 0, width: 20, height: 400 },
+        { x: 380, y: 0, width: 20, height: 400 },
+        
+        // Labirinto com muros variados
+        { x: 100, y: 100, width: 40, height: 10 },
+        { x: 80, y: 180, width: 30, height: 10 },
+        { x: 70, y: 260, width: 35, height: 10 },
+        { x: 150, y: 120, width: 10, height: 40 },
+        { x: 250, y: 140, width: 10, height: 35 },
+        { x: 180, y: 200, width: 45, height: 10 },
+        { x: 120, y: 300, width: 10, height: 30 },
+        { x: 280, y: 280, width: 25, height: 10 }
+      ];
+      
+      const isCollision = (x: number, y: number) => {
+        if (x < 30 || x > 370 || y < 30 || y > 370) return true;
+        return walls.some(wall =>
+          x + 20 > wall.x && x - 20 < wall.x + wall.width &&
+          y + 20 > wall.y && y - 20 < wall.y + wall.height
+        );
+      };
+      
+      // Mover jogador mais suavemente (movimento gradual)
+      const currentX = gameState.playerPosition.x;
+      const currentY = gameState.playerPosition.y;
+      
+      // Calcular direção e mover gradualmente
+      const deltaX = canvasX - currentX;
+      const deltaY = canvasY - currentY;
+      const speed = 0.3; // Movimento mais suave (30% da distância)
+      
+      const newX = Math.max(20, Math.min(380, currentX + deltaX * speed));
+      const newY = Math.max(20, Math.min(380, currentY + deltaY * speed));
+      
+      // Verificar colisão antes de aplicar movimento
+      if (!isCollision(newX, newY)) {
+        setGameState(prev => ({
+          ...prev,
+          playerPosition: { x: newX, y: newY }
+        }));
+      }
+    };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     // Finalizar movimento
@@ -1137,49 +1194,7 @@ const Labyrinth = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-     const MobileControls = () => (
-     <div className="flex flex-col items-center gap-2 mt-4" style={{ zIndex: 5, position: 'relative' }}>
-       <div className="grid grid-cols-3 gap-2">
-         <div></div>
-         <ActionButton 
-           variant="battle" 
-           className="w-12 h-12 text-xl"
-           onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'w' }))}
-         >
-           ↑
-         </ActionButton>
-         <div></div>
-         <ActionButton 
-           variant="battle" 
-           className="w-12 h-12 text-xl"
-           onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))}
-         >
-           ←
-         </ActionButton>
-         <ActionButton 
-           variant="battle" 
-           className="w-12 h-12 text-xl"
-           onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }))}
-         >
-           ↓
-         </ActionButton>
-         <ActionButton 
-           variant="battle" 
-           className="w-12 h-12 text-xl"
-           onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'd' }))}
-         >
-           →
-         </ActionButton>
-       </div>
-       <ActionButton 
-         variant="epic" 
-         className="w-16 h-12 text-lg"
-         onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'e' }))}
-       >
-         E
-       </ActionButton>
-     </div>
-   );
+           {/* Mobile controls removidos - usando touch direto */}
 
      return (
      <div className="min-h-screen bg-background relative overflow-hidden">
@@ -1263,49 +1278,49 @@ const Labyrinth = () => {
               Voltar ao Menu
             </ActionButton>
             
-            <div className="arena-card-epic p-8 text-center mb-6">
-              <div className="text-6xl mb-4">🏛️</div>
-              <h1 className="text-epic text-3xl font-bold mb-4">{currentEra.name}</h1>
-              <p className="text-muted-foreground mb-6">
-                Explore o labirinto, responda perguntas, colete chaves e escape pelo portal!
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
-                <div className="bg-card/50 p-3 rounded">
-                  <Clock className="mx-auto mb-2" size={24} />
-                  <p><strong>Tempo:</strong> {Math.floor(currentEra.maxTime / 60)} minutos</p>
-                </div>
-                <div className="bg-card/50 p-3 rounded">
-                  <Heart className="mx-auto mb-2" size={24} />
-                  <p><strong>Vidas:</strong> 3 vidas</p>
-                </div>
-                <div className="bg-card/50 p-3 rounded">
-                  <Trophy className="mx-auto mb-2" size={24} />
-                  <p><strong>Objetivo:</strong> Responda 4 perguntas, colete 3+ chaves e escape pelo portal</p>
-                </div>
-              </div>
-              
-              <ActionButton variant="epic" onClick={startGame} className="text-xl px-8 py-4">
-                🚀 Iniciar Aventura
-              </ActionButton>
-            </div>
+                         <div className={`arena-card-epic text-center mb-6 ${isMobile ? 'p-4' : 'p-6'}`}>
+               <div className={`${isMobile ? 'text-4xl mb-2' : 'text-5xl mb-3'}`}>🏛️</div>
+               <h1 className={`text-epic font-bold mb-3 ${isMobile ? 'text-xl' : 'text-2xl'}`}>{currentEra.name}</h1>
+               <p className={`text-muted-foreground mb-4 ${isMobile ? 'text-sm' : 'text-base'}`}>
+                 Explore o labirinto, responda perguntas, colete chaves e escape pelo portal!
+               </p>
+               
+               <div className={`grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                 <div className="bg-card/50 p-2 rounded">
+                   <Clock className={`mx-auto mb-1 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+                   <p><strong>Tempo:</strong> {Math.floor(currentEra.maxTime / 60)} min</p>
+                 </div>
+                 <div className="bg-card/50 p-2 rounded">
+                   <Heart className={`mx-auto mb-1 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+                   <p><strong>Vidas:</strong> 3</p>
+                 </div>
+                 <div className="bg-card/50 p-2 rounded">
+                   <Trophy className={`mx-auto mb-1 ${isMobile ? 'w-4 h-4' : 'w-5 h-5'}`} />
+                   <p><strong>Objetivo:</strong> 4 perguntas, 3+ chaves</p>
+                 </div>
+               </div>
+               
+               <ActionButton variant="epic" onClick={startGame} className={`${isMobile ? 'text-base px-6 py-3' : 'text-lg px-8 py-4'}`}>
+                 🚀 Iniciar Aventura
+               </ActionButton>
+             </div>
             
-            <div className="arena-card p-4 text-left">
-              <h3 className="text-lg font-bold mb-3">Como Jogar:</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div>
-                  <p><strong>WASD:</strong> Mover pelo labirinto</p>
-                  <p><strong>E:</strong> Abrir baús próximos</p>
-                </div>
-                <div>
-                  <p><strong>🏺 Egito:</strong> Pergunta de história</p>
-                  <p><strong>🏛️ Mesopotâmia:</strong> Pergunta de ciência</p>
-                  <p><strong>⚔️ Medieval:</strong> Pergunta de guerra</p>
-                  <p><strong>🤖 Digital:</strong> Pergunta de tecnologia</p>
-                  <p><strong>🚪 Portal:</strong> Precisa de 3 chaves para escapar</p>
-                </div>
-              </div>
-            </div>
+                         <div className={`arena-card text-left ${isMobile ? 'p-3' : 'p-4'}`}>
+               <h3 className={`font-bold mb-2 ${isMobile ? 'text-base' : 'text-lg'}`}>Como Jogar:</h3>
+               <div className={`grid grid-cols-1 md:grid-cols-2 gap-2 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                 <div>
+                   <p><strong>WASD:</strong> Mover pelo labirinto</p>
+                   <p><strong>E:</strong> Abrir baús próximos</p>
+                 </div>
+                 <div>
+                   <p><strong>🏺 Egito:</strong> Pergunta de história</p>
+                   <p><strong>🏛️ Mesopotâmia:</strong> Pergunta de ciência</p>
+                   <p><strong>⚔️ Medieval:</strong> Pergunta de guerra</p>
+                   <p><strong>🤖 Digital:</strong> Pergunta de tecnologia</p>
+                   <p><strong>🚪 Portal:</strong> Precisa de 3 chaves para escapar</p>
+                 </div>
+               </div>
+             </div>
           </div>
         ) : (
           // Game Screen
@@ -1336,17 +1351,17 @@ const Labyrinth = () => {
                 </div>
               </div>
             
-                                                                                                                                                                                                                                                     <div className="arena-card p-4" style={{ 
-                                transform: 'scale(0.6) translateY(40px)', 
-                                transformOrigin: 'center', 
-                                margin: '-120px auto -158px auto', 
-                                backgroundColor: 'rgba(0, 0, 0, 0.33)', 
-                                width: '115%', 
-                                marginLeft: 'auto', 
-                                marginRight: 'auto',
-                                boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
-                                border: '2px solid rgba(255, 215, 0, 0.6)'
-                              }}>
+                                                                                                                                                                                                                                                                  <div className="arena-card p-4" style={{ 
+                                 transform: 'scale(0.6) translateY(40px)', 
+                                 transformOrigin: 'center', 
+                                 margin: '-120px auto -126px auto', // Reduzido 20% (de -158px para -126px)
+                                 backgroundColor: 'rgba(0, 0, 0, 0.33)', 
+                                 width: '115%', 
+                                 marginLeft: isMobile ? '-20%' : 'auto', 
+                                 marginRight: 'auto',
+                                 boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
+                                 border: '2px solid rgba(255, 215, 0, 0.6)'
+                               }}>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* Game Canvas */}
                 <div className="lg:col-span-2">
@@ -1384,11 +1399,11 @@ const Labyrinth = () => {
                        />
                   </div>
                   
-                  {isMobile && <MobileControls />}
+                                     {/* Mobile controls removidos - usando touch direto */}
                 </div>
                 
                                  {/* Status Panel & Rules */}
-                 <div className="space-y-4" style={{ marginLeft: '-20%' }}>
+                                   <div className="space-y-4" style={{ marginLeft: isMobile ? '-40%' : '-20%' }}>
                    {/* Status */}
                    <div>
                      <h3 className="font-bold mb-3 text-victory">Status</h3>
@@ -1421,42 +1436,41 @@ const Labyrinth = () => {
                      </div>
                    </div>
                    
-                   {/* Game Rules */}
-                   <div>
-                     <h3 className="font-bold mb-3 text-legendary">Como Jogar</h3>
-                     
-                     <div className="space-y-2 text-xs">
-                       <div className="flex items-center gap-2">
-                         <span className="text-blue-400">👆</span>
-                         <span>Toque no canvas para mover</span>
-                       </div>
-                       
-                       <div className="flex items-center gap-2">
-                         <span className="text-yellow-400">📦</span>
-                         <span>Toque nos baús para abrir</span>
-                       </div>
-                       
-                       <div className="flex items-center gap-2">
-                         <span className="text-red-400">👹</span>
-                         <span>Evite os inimigos vermelhos</span>
-                       </div>
-                       
-                       <div className="flex items-center gap-2">
-                         <span className="text-green-400">🗝️</span>
-                         <span>Colete <strong>3 chaves</strong> mínimo</span>
-                       </div>
-                       
-                       <div className="flex items-center gap-2">
-                         <span className="text-purple-400">🚪</span>
-                         <span>Saia pelo portal roxo</span>
-                       </div>
-                       
-                       <div className="mt-3 p-3 bg-muted rounded text-center">
-                         <div className="text-xs text-muted-foreground">Objetivo</div>
-                         <div className="text-xs font-bold">Responda questões e escape!</div>
-                       </div>
-                     </div>
-                   </div>
+                                       {/* Game Rules */}
+                    <div>
+                      <h3 className="font-bold mb-2 text-legendary">Como Jogar</h3>
+                      
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center gap-1">
+                          <span className="text-blue-400">👆</span>
+                          <span>Toque para mover</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <span className="text-yellow-400">📦</span>
+                          <span>Toque nos baús</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <span className="text-red-400">👹</span>
+                          <span>Evite inimigos</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <span className="text-green-400">🗝️</span>
+                          <span>3+ chaves</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <span className="text-purple-400">🚪</span>
+                          <span>Saia pelo portal</span>
+                        </div>
+                        
+                        <div className="mt-2 p-2 bg-muted rounded text-center">
+                          <div className="text-xs font-bold">Responda e escape!</div>
+                        </div>
+                      </div>
+                    </div>
                  </div>
               </div>
 

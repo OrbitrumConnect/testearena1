@@ -11,14 +11,14 @@ interface BackgroundMusicProps {
 
 export const BackgroundMusic = ({ 
   tracks = [
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(4).mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/Untitled%20(3).mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica3.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica4.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica5.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica7.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica8.mp3'
+    '/Untitled (4).mp3',
+    '/Untitled (3).mp3',
+    '/musica3.mp3',
+    '/musica4.mp3',
+    '/musica5.mp3',
+    '/musica6.mp3',
+    '/musica7.mp3',
+    '/Musica8.mp3'
   ], 
   autoPlay = false,
   className = ""

@@ -223,14 +223,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-3'}`}>
-            <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>🏺</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-4'}`}>
+            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-4xl mb-3'}`}>🏺</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-xl mb-2'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-2' : 'text-xl mb-2'}`}>
               Treinamento: Egito Antigo
             </h2>
             
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-2' : 'text-base mb-4'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-3' : 'text-base mb-4'}`}>
               Teste seus conhecimentos sobre a civilização egípcia e ganhe recompensas!
             </p>
 
