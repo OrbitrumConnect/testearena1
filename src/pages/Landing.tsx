@@ -539,7 +539,7 @@ const Landing = () => {
             </button>
             <span className="text-muted-foreground">•</span>
             <span className="text-muted-foreground">
-              💎 R$ 5/mês (PIX)
+                              💎 5 créditos/mês (PIX)
             </span>
           </div>
           <p className="text-muted-foreground text-xs">

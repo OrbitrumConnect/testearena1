@@ -170,21 +170,21 @@ const Payment = () => {
                 {isPromoActive && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground line-through">Preço normal</span>
-                    <span className="text-muted-foreground line-through">R$ {regularPrice.toFixed(2)}</span>
+                    <span className="text-muted-foreground line-through">{regularPrice.toFixed(2)} créditos</span>
                   </div>
                 )}
                 
                 <div className="flex items-center justify-between text-lg">
                   <span className="font-semibold">Valor a pagar</span>
                   <span className="text-2xl font-bold text-epic">
-                    R$ {currentPrice.toFixed(2)}
+                    {currentPrice.toFixed(2)} créditos
                   </span>
                 </div>
 
                 {isPromoActive && (
                   <div className="text-center">
                     <span className="bg-epic text-white px-3 py-1 rounded-full text-sm font-bold">
-                      Economia: R$ {(regularPrice - currentPrice).toFixed(2)}
+                      Economia: {(regularPrice - currentPrice).toFixed(2)} créditos
                     </span>
                   </div>
                 )}

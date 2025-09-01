@@ -518,14 +518,14 @@ const Dashboard = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">PIX Mensal Disponível</span>
-                  <span className="font-bold text-green-400">R$ 5,00</span>
+                  <span className="font-bold text-green-400">5 créditos</span>
                 </div>
               </div>
 
               {/* Solicitação PIX Integrada */}
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-                  <h4 className="text-green-400 font-semibold mb-2">💰 Solicitar PIX - R$ 5,00</h4>
+                  <h4 className="text-green-400 font-semibold mb-2">💰 Solicitar PIX - 5 créditos</h4>
                   <p className="text-sm text-gray-300 mb-3">
                     Solicitação mensal disponível para usuários ativos. Processamento em até 24 horas úteis.
                   </p>
@@ -546,7 +546,7 @@ const Dashboard = () => {
                       className="w-full"
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Solicitar R$ 5 via PIX
+                      Solicitar 5 créditos via PIX
                     </ActionButton>
                   </div>
                 </div>
@@ -555,7 +555,7 @@ const Dashboard = () => {
                 <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
                   <h4 className="text-blue-400 font-semibold mb-2">🚀 Upgrade para VIP</h4>
                   <p className="text-sm text-gray-300 mb-3">
-                    Treinos ilimitados + R$ 50/mês + Suporte prioritário
+                    Treinos ilimitados + 50 créditos/mês + Suporte prioritário
                   </p>
                   <ActionButton 
                     variant="epic" 
