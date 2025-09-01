@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Trophy, BookOpen, Users } from 'lucide-react';
 import { ActionButton } from '@/components/arena/ActionButton';
+import { getPvPValues } from '@/utils/creditsIntegration';
 
 // Dados das eras para o carousel
 const eraData = [
@@ -95,6 +96,9 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
+  
+  // Obter valores do PvP dinâmicos
+  const pvpValues = getPvPValues();
   
   // Verificar tipo de usuário para bloquear Quiz Mundo Real para FREE
   const userType = 'free'; // TODO: pegar do perfil do usuário real
@@ -217,7 +221,7 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
               onClick={() => navigate(currentEra.routes.arena)}
               className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300`}
             >
-              {isMobile ? 'Arena' : 'Arena (900 créditos)'}
+              {isMobile ? 'Arena' : `Arena (${pvpValues.betAmount} créditos)`}
             </ActionButton>
             
             {!isMobile && (

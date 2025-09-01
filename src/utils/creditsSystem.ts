@@ -1,91 +1,102 @@
-// Sistema de Créditos Internos - Legalmente Seguro
+// Sistema de Créditos Internos - 3 Planos de Assinatura
 // 🎯 R$ 1,00 = 100 créditos (conversão interna, não exibida)
+// 🏆 ROI máximo: 400% anual (100% por trimestre)
 
-export interface CreditsConfig {
+export type PlanType = 'premium' | 'standard' | 'basic';
+
+export interface PlanConfig {
   // Entrada do usuário
-  initialDeposit: number; // R$ 5,00
-  platformRetention: number; // R$ 0,50
-  creditsReceived: number; // 500 créditos
+  initialDeposit: number; // Valor pago
+  platformRetention: number; // Taxa plataforma
+  creditsReceived: number; // Créditos iniciais
 
-  // PvP Arena
-  pvpBetCredits: number; // 1,5 créditos
-  pvpWinnerCredits: number; // 2 créditos
-  pvpPlatformFeeCredits: number; // 0,5 créditos
-
-  // Treinos
+  // Treinos (ROI controlado)
   trainingRewards: {
     [era: string]: {
       base: number; // créditos base
-      victory: number; // créditos vitória
+      victory: number; // créditos vitória  
       excellent: number; // créditos excelência (90%+)
     };
   };
 
-  // Bônus Misterioso
-  monthlyBonusMax: number; // 2.500 créditos máximo
-  bonusCriteria: {
-    dailyActivity: number; // peso
-    accuracyBonus: number; // peso
-    erasDiversity: number; // peso
-    platformTime: number; // peso
-  };
+  // PvP Arena
+  pvpBetCredits: number; // Aposta
+  pvpWinnerCredits: number; // Prêmio vitória
+
+  // Bônus Misterioso Mensal
+  monthlyBonusMax: number; // Máximo possível
 
   // Saque
   withdrawalFeePercent: number; // 5%
   withdrawalMinDays: number; // 30 dias
 }
 
-export const CREDITS_CONFIG: CreditsConfig = {
-  // 🔰 Entrada e Configuração Inicial
-  initialDeposit: 20.00,
-  platformRetention: 1.00,
-  creditsReceived: 2000, // R$ 19,00 = 1.900 créditos + 100 bônus entrada
+// 📊 CONFIGURAÇÕES DOS 3 PLANOS - ROI 400% ANUAL MÁXIMO
+export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
+  premium: {
+    // 💎 PLANO PREMIUM - R$ 5,00
+    initialDeposit: 5.00,
+    platformRetention: 0.50,
+    creditsReceived: 500, // R$ 4,50 + 50 bônus
 
-  // ⚔️ Sistema PvP
-  pvpBetCredits: 900, // equivale a R$ 9,00
-  pvpWinnerCredits: 1400, // equivale a R$ 14,00 
-  pvpPlatformFeeCredits: 400, // equivale a R$ 4,00
+    trainingRewards: {
+      'egito-antigo': { base: 0.3, victory: 0.7, excellent: 1.4 },
+      'mesopotamia': { base: 0.5, victory: 1.0, excellent: 2.0 },
+      'medieval': { base: 0.7, victory: 1.4, excellent: 2.8 },
+      'digital': { base: 1.0, victory: 2.0, excellent: 3.5 }
+    },
 
-  // 📚 Recompensas de Treino (Atividade)
-  trainingRewards: {
-    'egito-antigo': {
-      base: 2, // ~R$ 0,02
-      victory: 3, // ~R$ 0,03  
-      excellent: 4 // ~R$ 0,04 (com bônus 20%)
-    },
-    'mesopotamia': {
-      base: 3, // ~R$ 0,03
-      victory: 4, // ~R$ 0,04
-      excellent: 5 // ~R$ 0,05
-    },
-    'medieval': {
-      base: 4, // ~R$ 0,04
-      victory: 5, // ~R$ 0,05
-      excellent: 6 // ~R$ 0,06
-    },
-    'digital': {
-      base: 5, // ~R$ 0,05
-      victory: 6, // ~R$ 0,06
-      excellent: 7 // ~R$ 0,07
-    }
+    pvpBetCredits: 3,
+    pvpWinnerCredits: 5,
+    monthlyBonusMax: 60,
+    withdrawalFeePercent: 5,
+    withdrawalMinDays: 30
   },
 
-  // 🎁 Bônus Misterioso Mensal
-  monthlyBonusMax: 2500, // máximo possível (equivale ~R$ 25,00)
-  bonusCriteria: {
-    dailyActivity: 40, // 40% do peso
-    accuracyBonus: 25, // 25% do peso
-    erasDiversity: 20, // 20% do peso
-    platformTime: 15  // 15% do peso
+  standard: {
+    // 🥈 PLANO STANDARD - R$ 3,50
+    initialDeposit: 3.50,
+    platformRetention: 0.35,
+    creditsReceived: 350, // R$ 3,15 + 35 bônus
+
+    trainingRewards: {
+      'egito-antigo': { base: 0.2, victory: 0.5, excellent: 1.0 },
+      'mesopotamia': { base: 0.3, victory: 0.7, excellent: 1.4 },
+      'medieval': { base: 0.5, victory: 1.0, excellent: 2.0 },
+      'digital': { base: 0.7, victory: 1.4, excellent: 2.5 }
+    },
+
+    pvpBetCredits: 2,
+    pvpWinnerCredits: 3.5,
+    monthlyBonusMax: 42,
+    withdrawalFeePercent: 5,
+    withdrawalMinDays: 30
   },
 
-  // 💸 Sistema de Saque
-  withdrawalFeePercent: 5, // 5% de taxa administrativa
-  withdrawalMinDays: 30 // mínimo 30 dias para sacar
+  basic: {
+    // 🥉 PLANO BASIC - R$ 2,00
+    initialDeposit: 2.00,
+    platformRetention: 0.20,
+    creditsReceived: 200, // R$ 1,80 + 20 bônus
+
+    trainingRewards: {
+      'egito-antigo': { base: 0.1, victory: 0.3, excellent: 0.6 },
+      'mesopotamia': { base: 0.2, victory: 0.4, excellent: 0.8 },
+      'medieval': { base: 0.3, victory: 0.6, excellent: 1.2 },
+      'digital': { base: 0.4, victory: 0.8, excellent: 1.5 }
+    },
+
+    pvpBetCredits: 1,
+    pvpWinnerCredits: 2,
+    monthlyBonusMax: 24,
+    withdrawalFeePercent: 5,
+    withdrawalMinDays: 30
+  }
 };
 
-// 🎯 Funções para Cálculos de Créditos
+// 🎯 Funções para Cálculos de Créditos com Sistema de Planos
 export const calculateTrainingCredits = (
+  planType: PlanType,
   eraSlug: string, 
   questionsCorrect: number, 
   totalQuestions: number
@@ -94,48 +105,65 @@ export const calculateTrainingCredits = (
   const isVictory = accuracyPercentage >= 70;
   const isExcellent = accuracyPercentage >= 90;
   
-  const eraRewards = CREDITS_CONFIG.trainingRewards[eraSlug] || 
-                     CREDITS_CONFIG.trainingRewards['egito-antigo'];
+  const planConfig = PLAN_CONFIGS[planType];
+  const eraRewards = planConfig.trainingRewards[eraSlug] || 
+                     planConfig.trainingRewards['egito-antigo'];
   
-  let baseCredits = isVictory ? eraRewards.victory : eraRewards.base;
-  
-  // Bônus de 20% para 90%+ acerto
+  let baseCredits = 0;
   if (isExcellent) {
-    baseCredits = Math.round(baseCredits * 1.20);
+    baseCredits = eraRewards.excellent;
+  } else if (isVictory) {
+    baseCredits = eraRewards.victory;
+  } else {
+    baseCredits = eraRewards.base;
   }
   
   return {
-    creditsEarned: baseCredits,
+    creditsEarned: Math.round(baseCredits * 100) / 100, // Arredondar para 2 casas
     xpEarned: questionsCorrect * 10 + (isVictory ? 50 : 20) + (isExcellent ? 30 : 0),
     bonusApplied: isExcellent,
     accuracyPercentage: Math.round(accuracyPercentage),
+    planType: planType,
     isActivityContribution: true
   };
 };
 
-// ⚔️ Recompensas de Arena PvP
-export const calculateArenaCredits = (isVictory: boolean) => {
+// ⚔️ Recompensas de Arena PvP com Sistema de Planos
+export const calculateArenaCredits = (planType: PlanType, isVictory: boolean) => {
+  const planConfig = PLAN_CONFIGS[planType];
+  
   return {
     creditsEarned: isVictory 
-      ? (CREDITS_CONFIG.pvpWinnerCredits - CREDITS_CONFIG.pvpBetCredits) // +500 créditos
-      : -CREDITS_CONFIG.pvpBetCredits, // -900 créditos
+      ? (planConfig.pvpWinnerCredits - planConfig.pvpBetCredits) // Lucro na vitória
+      : -planConfig.pvpBetCredits, // Perda na derrota
     xpEarned: isVictory ? 200 : 50,
-    betAmount: CREDITS_CONFIG.pvpBetCredits,
-    totalPool: CREDITS_CONFIG.pvpBetCredits * 2, // 1.800 créditos
-    winnerReceives: CREDITS_CONFIG.pvpWinnerCredits,
-    platformFee: CREDITS_CONFIG.pvpPlatformFeeCredits,
+    betAmount: planConfig.pvpBetCredits,
+    totalPool: planConfig.pvpBetCredits * 2,
+    winnerReceives: planConfig.pvpWinnerCredits,
+    planType: planType,
     isPvP: true
   };
 };
 
-// 🎁 Cálculo do Bônus Misterioso Mensal
-export const calculateMonthlyBonus = (userActivity: {
-  daysActive: number;
-  totalAccuracy: number;
-  erasCompleted: number;
-  hoursInPlatform: number;
-}) => {
-  const { bonusCriteria, monthlyBonusMax } = CREDITS_CONFIG;
+// 🎁 Cálculo do Bônus Misterioso Mensal com Sistema de Planos
+export const calculateMonthlyBonus = (
+  planType: PlanType,
+  userActivity: {
+    daysActive: number;
+    totalAccuracy: number;
+    erasCompleted: number;
+    hoursInPlatform: number;
+  }
+) => {
+  const planConfig = PLAN_CONFIGS[planType];
+  
+  // Critérios de bônus (pesos fixos)
+  const bonusCriteria = {
+    dailyActivity: 40, // 40% do peso
+    accuracyBonus: 25, // 25% do peso  
+    erasDiversity: 20, // 20% do peso
+    platformTime: 15  // 15% do peso
+  };
   
   // Normalizar valores (0-1)
   const activityScore = Math.min(userActivity.daysActive / 30, 1);
@@ -151,12 +179,13 @@ export const calculateMonthlyBonus = (userActivity: {
     (timeScore * bonusCriteria.platformTime)
   ) / 100;
   
-  // Calcular bônus final
-  const bonusCredits = Math.round(monthlyBonusMax * totalScore);
+  // Calcular bônus final baseado no plano
+  const bonusCredits = Math.round(planConfig.monthlyBonusMax * totalScore);
   
   return {
     bonusCredits,
-    maxPossible: monthlyBonusMax,
+    maxPossible: planConfig.monthlyBonusMax,
+    planType: planType,
     breakdown: {
       activity: Math.round(activityScore * bonusCriteria.dailyActivity),
       accuracy: Math.round(accuracyScore * bonusCriteria.accuracyBonus),
@@ -166,27 +195,29 @@ export const calculateMonthlyBonus = (userActivity: {
   };
 };
 
-// 💸 Cálculo de Saque (Devolução do Valor Pago)
-export const calculateWithdrawal = (daysSinceDeposit: number) => {
-  const { withdrawalFeePercent, withdrawalMinDays, initialDeposit, platformRetention } = CREDITS_CONFIG;
+// 💸 Cálculo de Saque por Plano (Devolução do Valor Pago)
+export const calculateWithdrawal = (planType: PlanType, daysSinceDeposit: number) => {
+  const planConfig = PLAN_CONFIGS[planType];
   
-  if (daysSinceDeposit < withdrawalMinDays) {
+  if (daysSinceDeposit < planConfig.withdrawalMinDays) {
     return {
       canWithdraw: false,
-      daysRemaining: withdrawalMinDays - daysSinceDeposit,
-      message: `Saque disponível em ${withdrawalMinDays - daysSinceDeposit} dias`
+      daysRemaining: planConfig.withdrawalMinDays - daysSinceDeposit,
+      message: `Saque disponível em ${planConfig.withdrawalMinDays - daysSinceDeposit} dias`,
+      planType: planType
     };
   }
   
-  const withdrawableAmount = initialDeposit - platformRetention; // R$ 19,00
-  const fee = withdrawableAmount * (withdrawalFeePercent / 100); // R$ 0,95
-  const finalAmount = withdrawableAmount - fee; // R$ 18,05
+  const withdrawableAmount = planConfig.initialDeposit - planConfig.platformRetention;
+  const fee = withdrawableAmount * (planConfig.withdrawalFeePercent / 100);
+  const finalAmount = withdrawableAmount - fee;
   
   return {
     canWithdraw: true,
     withdrawableAmount,
     fee,
     finalAmount,
+    planType: planType,
     message: `Disponível para saque: R$ ${finalAmount.toFixed(2)}`
   };
 };
@@ -196,12 +227,39 @@ export const formatCredits = (credits: number): string => {
   return credits.toLocaleString('pt-BR');
 };
 
+// 🎯 Funções Auxiliares para Planos
+export const getPlanInfo = (planType: PlanType) => {
+  const planConfig = PLAN_CONFIGS[planType];
+  const planNames = {
+    premium: '💎 Premium',
+    standard: '🥈 Standard', 
+    basic: '🥉 Basic'
+  };
+  
+  return {
+    name: planNames[planType],
+    value: planConfig.initialDeposit,
+    credits: planConfig.creditsReceived,
+    monthlyBonusMax: planConfig.monthlyBonusMax,
+    pvpBet: planConfig.pvpBetCredits,
+    pvpPrize: planConfig.pvpWinnerCredits
+  };
+};
+
+export const getAllPlansInfo = () => {
+  return Object.keys(PLAN_CONFIGS).map(planType => ({
+    planType: planType as PlanType,
+    ...getPlanInfo(planType as PlanType)
+  }));
+};
+
 export const getCreditsDisplayInfo = () => {
   return {
-    systemName: "Sistema de Créditos Internos",
+    systemName: "Sistema de Créditos Internos - 3 Planos",
     disclaimer: "Créditos não possuem valor monetário fora da plataforma",
     usage: "Use seus créditos para treinos, PvP e conteúdos exclusivos",
-    withdrawal: "Devolução do valor pago disponível após 30 dias"
+    withdrawal: "Devolução do valor pago disponível após 30 dias",
+    plansAvailable: "Planos: Basic (R$ 2,00), Standard (R$ 3,50), Premium (R$ 5,00)"
   };
 };
 

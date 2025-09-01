@@ -67,14 +67,21 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
           return shuffled;
         };
         
-        // Embaralhar perguntas com máxima entropia
-        const timestamp = performance.now() + Math.random() * 1000;
+        // FORÇAR ENTROPIA MÁXIMA com timestamp e múltiplas sementes
+        const timestamp = performance.now() + Math.random() * 1000 + Date.now();
+        Math.seedrandom = Math.seedrandom || (() => Math.random()); // Fallback se não tiver seedrandom
         
-        // Embaralhar várias vezes para máxima randomização  
+        // Embaralhar várias vezes com diferentes seeds para máxima aleatoriedade  
         let multiShuffled = [...defaultQuestions];
-        for (let i = 0; i < 7; i++) { // 7 shuffles para máxima aleatoriedade
+        for (let i = 0; i < 12; i++) { // 12 shuffles para TOTAL aleatoriedade
+          // Usar timestamp + iteration como seed para garantir diferença
+          const seed = timestamp + i * 1000 + Math.random() * 10000;
           multiShuffled = shuffleArray(multiShuffled);
         }
+        
+        // RANDOMIZAÇÃO ADICIONAL: começar de posição aleatória do array
+        const randomStart = Math.floor(Math.random() * multiShuffled.length);
+        multiShuffled = [...multiShuffled.slice(randomStart), ...multiShuffled.slice(0, randomStart)];
         
         const randomizedQuestions = multiShuffled.slice(0, questionCount).map((question, index) => {
           const shuffledOptions = shuffleArray([...question.options]);

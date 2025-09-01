@@ -9,7 +9,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useFreeLimit } from '@/hooks/useFreeLimit';
-import { handleNewBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues, getFinancialSystemInfo } from '@/utils/rewardDisplay';
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
@@ -119,15 +119,17 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
           battleDurationSeconds: battleDurationSeconds,
         });
 
-        // Novo Sistema de Créditos
+        // Novo Sistema de Créditos com Planos
         const accuracyPercentage = Math.round((score / questions.length) * 100);
+        const userPlan = getUserPlan();
         const creditsResult = handleNewBattleCredits({
           battleType: 'training',
           questionsCorrect: score,
           questionsTotal: questions.length,
           accuracyPercentage: accuracyPercentage,
           eraSlug: 'egito-antigo',
-          usedExtraLife: false
+          usedExtraLife: false,
+          planType: userPlan
         });
         
         console.log(`🎯 Treino concluído! ${creditsResult.message}`);
@@ -221,10 +223,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-4'}`}>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-3'}`}>
             <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>🏺</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-2xl mb-2'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-xl mb-2'}`}>
               Treinamento: Egito Antigo
             </h2>
             
@@ -275,15 +277,15 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 <div className="grid grid-cols-3 gap-1">
                   <div className="text-center">
                     <p className="text-epic font-bold">🏆 90%+</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits('egito-antigo', 9, 10).creditsEarned} créditos</p>
+                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 9, 10).creditsEarned} créditos</p>
                   </div>
                   <div className="text-center">
                     <p className="text-victory font-bold">✅ 70%+</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits('egito-antigo', 7, 10).creditsEarned} créditos</p>
+                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 7, 10).creditsEarned} créditos</p>
                   </div>
                   <div className="text-center">
                     <p className="text-warning font-bold">📚 Base</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits('egito-antigo', 5, 10).creditsEarned} créditos</p>
+                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 5, 10).creditsEarned} créditos</p>
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
@@ -381,10 +383,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
                 <p className="text-2xl font-bold text-victory">
-                  +{calculateTrainingCredits('egito-antigo', score, questions.length).creditsEarned} créditos
+                  +{calculateTrainingCredits(getUserPlan(), 'egito-antigo', score, questions.length).creditsEarned} créditos
                 </p>
                 <p className="text-xs text-muted-foreground">Contribuição diária</p>
-                {calculateTrainingCredits('egito-antigo', score, questions.length).bonusApplied && (
+                {calculateTrainingCredits(getUserPlan(), 'egito-antigo', score, questions.length).bonusApplied && (
                   <p className="text-sm text-epic font-semibold">🏆 Bônus de Excelência!</p>
                 )}
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
@@ -403,10 +405,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               
               <ActionButton 
                 variant="epic" 
-                onClick={() => navigate('/mesopotamia')}
+                onClick={() => navigate('/labyrinth/egito-antigo')}
                 className="bg-gradient-to-r from-epic to-victory"
               >
-                🚀 Próximo Nível: Mesopotâmia
+                🏛️ Entrar no Labirinto do Egito
               </ActionButton>
               
               <ActionButton variant="battle" onClick={() => navigate('/app')}>

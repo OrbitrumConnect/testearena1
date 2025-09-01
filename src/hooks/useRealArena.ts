@@ -156,7 +156,7 @@ export const useRealArena = () => {
         .single();
 
       if (walletError || !wallet || wallet.balance < 9.00) {
-        throw new Error('Saldo insuficiente para apostar 900 créditos');
+        throw new Error('Saldo insuficiente para apostar no PvP');
       }
 
       // Adicionar à fila de matchmaking

@@ -10,13 +10,23 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Player } from '@/types/arena';
 import { RealPvPExplanation } from '@/components/arena/RealPvPExplanation';
-import { handleNewBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits, getUserPlan, getPvPValues } from '@/utils/creditsIntegration';
+import { useRealTimePvP } from '@/hooks/useRealTimePvP';
 
 const ArenaNew = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const pvpLimit = usePvPLimit();
   const { saveBattleResult } = useBattleSave();
+  
+  // Obter valores do PvP baseados no plano do usuário
+  const pvpValues = getPvPValues();
+  
+  // 🎮 NOVO: Controle de modo PvP (Real-time vs Simulado)
+  const [pvpMode, setPvpMode] = useState<'realtime' | 'simulated'>('realtime');
+  const userPlan = getUserPlan();
+  
+  // 🔥 SISTEMA SIMULADO (useArena - existente)
   const { 
     currentPlayer, 
     phase, 
@@ -28,6 +38,27 @@ const ArenaNew = () => {
     error,
     actions 
   } = useArena();
+  
+  // ⚡ SISTEMA REAL-TIME (useRealTimePvP - novo)
+  const realTimePvP = useRealTimePvP();
+  
+  // 🎯 Decidir qual sistema usar baseado no modo
+  const isRealTime = pvpMode === 'realtime';
+  const currentSystem = isRealTime ? realTimePvP : {
+    room: battleRoom,
+    timeLeft: 30,
+    totalTimeLeft: 240,
+    currentQuestion: 0,
+    gamePhase: phase,
+    confirmationTimeLeft: 30,
+    loading,
+    myAnswers: [],
+    opponentAnswers: [],
+    findMatch: () => actions.findRandomOpponent(),
+    confirmBattle: () => {},
+    answerQuestion: () => {},
+    PVP_CONFIG: { TOTAL_TIME: 240, QUESTIONS: 8, TIME_PER_QUESTION: 30 }
+  };
 
   // Salvar dados quando a batalha termina
   useEffect(() => {
@@ -50,11 +81,13 @@ const ArenaNew = () => {
         });
 
         // Novo Sistema de Créditos para PvP
+        const userPlan = getUserPlan();
         const creditsResult = handleNewBattleCredits({
           battleType: 'pvp',
           questionsCorrect: questionsCorrect,
           questionsTotal: questionsTotal,
-          accuracyPercentage: accuracyPercentage
+          accuracyPercentage: accuracyPercentage,
+          planType: userPlan
         });
         
         console.log(`⚔️ PvP Real concluído! ${creditsResult.message} (${isVictory ? 'Vitória' : 'Derrota'})`);
@@ -89,21 +122,21 @@ const ArenaNew = () => {
           </div>
           <div className="flex items-center justify-between text-xs mt-1">
             <span className="text-muted-foreground">Taxa PvP</span>
-            <span className="text-warning font-semibold">1,5 créditos</span>
+            <span className="text-warning font-semibold">{pvpValues.betAmount} créditos</span>
           </div>
         </div>
 
-        <div className="arena-card-epic p-8 text-center mb-8">
-          <div className="text-6xl mb-6">⚔️</div>
-          <h2 className="text-3xl font-montserrat font-bold text-epic mb-4">
+        <div className="arena-card-epic p-6 text-center mb-6">
+          <div className="text-4xl mb-4">⚔️</div>
+          <h2 className="text-2xl font-montserrat font-bold text-epic mb-3">
             Arena PvP - Player vs Player
           </h2>
-          <p className="text-lg text-muted-foreground mb-4">
+          <p className="text-base text-muted-foreground mb-3">
             Desafie outros guerreiros em batalhas épicas de conhecimento!
           </p>
           
           {/* Aviso sobre Limite PvP */}
-          <div className="bg-warning/10 border border-warning/30 rounded-lg p-4 mb-6 mx-auto max-w-md">
+          <div className="bg-warning/10 border border-warning/30 rounded-lg p-3 mb-4 mx-auto max-w-sm">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Clock className="w-4 h-4 text-warning" />
               <span className="text-sm font-semibold text-warning">
@@ -115,14 +148,45 @@ const ArenaNew = () => {
             </p>
           </div>
 
+          {/* Seleção de Modo PvP */}
+          <div className="arena-card p-3 mb-4 bg-warning/10 border-warning">
+            <h3 className="text-sm font-semibold mb-2">🎮 Modo de Jogo</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <ActionButton
+                variant={pvpMode === 'realtime' ? 'epic' : 'battle'}
+                onClick={() => setPvpMode('realtime')}
+                className="text-xs py-2"
+              >
+                ⚡ Real-time
+              </ActionButton>
+              <ActionButton
+                variant={pvpMode === 'simulated' ? 'epic' : 'battle'}
+                onClick={() => setPvpMode('simulated')}
+                className="text-xs py-2"
+              >
+                🤖 Simulado
+              </ActionButton>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2 text-center">
+              {pvpMode === 'realtime' ? '⏱️ 4min total • Saída automática' : '🎯 Sistema tradicional'}
+            </p>
+          </div>
+
           {/* Informações do sistema PvP */}
-          <div className="arena-card p-4 mb-6 bg-epic/10 border-epic">
+          <div className="arena-card p-3 mb-4 bg-epic/10 border-epic">
             <p className="text-epic font-semibold">
-              💰 Custo da Batalha: 900 créditos
+              💰 Custo da Batalha: {pvpValues.betAmount} créditos
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Vitória: +500 créditos | Derrota: -900 créditos | Pool: 1.800 créditos
+              Vitória: +{pvpValues.netWin} créditos | Derrota: {pvpValues.netLoss} créditos | Pool: {pvpValues.totalPool} créditos
             </p>
+            {isRealTime && (
+              <div className="mt-2 pt-2 border-t border-epic/30">
+                <p className="text-xs text-epic">
+                  ⚡ Modo Real-time: {currentSystem.PVP_CONFIG.QUESTIONS} perguntas • {currentSystem.PVP_CONFIG.TIME_PER_QUESTION}s cada
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Busca automática */}
@@ -130,12 +194,45 @@ const ArenaNew = () => {
             <ActionButton 
               variant="epic" 
               icon={<Search />}
-              onClick={actions.findRandomOpponent}
-              disabled={loading}
+              onClick={() => {
+                if (isRealTime) {
+                  currentSystem.findMatch('current-user-id', userPlan);
+                } else {
+                  actions.findRandomOpponent();
+                }
+              }}
+              disabled={currentSystem.loading}
               className="w-full mb-4"
             >
-              {loading ? 'Procurando...' : 'Buscar Adversário Automático'}
+              {currentSystem.loading ? 'Procurando...' : 
+                isRealTime ? 'Buscar Partida Real-time' : 'Buscar Adversário Automático'}
             </ActionButton>
+            
+            {isRealTime && currentSystem.gamePhase === 'confirming' && (
+              <div className="arena-card p-4 bg-warning/10 border-warning text-center">
+                <div className="text-2xl mb-2">⚡</div>
+                <h3 className="font-semibold mb-2">Oponente Encontrado!</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  ⏱️ {currentSystem.confirmationTimeLeft}s para confirmar
+                </p>
+                <div className="flex gap-2 justify-center">
+                  <ActionButton
+                    variant="victory"
+                    onClick={() => currentSystem.confirmBattle('current-user-id')}
+                    className="text-sm"
+                  >
+                    ✅ Aceitar
+                  </ActionButton>
+                  <ActionButton
+                    variant="battle"
+                    onClick={() => navigate('/')}
+                    className="text-sm"
+                  >
+                    ❌ Recusar
+                  </ActionButton>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -211,6 +308,109 @@ const ArenaNew = () => {
     </div>
   );
 
+  // 🎮 NOVO: Renderizar jogo real-time (4 minutos + saída automática)
+  const renderRealTimeGame = () => {
+    if (!currentSystem.room || !currentSystem.room.questions) return null;
+    
+    const question = currentSystem.room.questions[currentSystem.currentQuestion];
+    const isGameActive = currentSystem.gamePhase === 'playing';
+    const isFinished = currentSystem.gamePhase === 'finished';
+    
+    return (
+      <div className="min-h-screen bg-background relative overflow-hidden">
+        <ParticleBackground />
+        
+        <div className="relative z-10 p-4">
+          {/* Header com timers */}
+          <div className="arena-card p-4 mb-4">
+            <div className="flex justify-between items-center">
+              <div className="text-center">
+                <p className="text-xs text-muted-foreground">Pergunta</p>
+                <p className="text-lg font-bold">{currentSystem.currentQuestion + 1}/8</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-muted-foreground">Tempo Pergunta</p>
+                <p className="text-xl font-bold text-warning">{currentSystem.timeLeft}s</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-muted-foreground">Tempo Total</p>
+                <p className="text-lg font-bold text-epic">
+                  {Math.floor(currentSystem.totalTimeLeft / 60)}:{(currentSystem.totalTimeLeft % 60).toString().padStart(2, '0')}
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-3">
+              <Progress 
+                value={(currentSystem.totalTimeLeft / currentSystem.PVP_CONFIG.TOTAL_TIME) * 100} 
+                className="h-2"
+              />
+            </div>
+          </div>
+
+          {/* Pergunta */}
+          {isGameActive && question && (
+            <div className="arena-card p-6 mb-4">
+              <h3 className="text-lg font-semibold mb-4">{question.question}</h3>
+              
+              <div className="grid gap-3">
+                {[question.correct_answer, ...question.wrong_options].map((option, index) => (
+                  <ActionButton
+                    key={index}
+                    variant="battle"
+                    onClick={() => currentSystem.answerQuestion('current-user-id', index)}
+                    className="text-left justify-start p-4"
+                    disabled={currentSystem.myAnswers[currentSystem.currentQuestion] !== undefined}
+                  >
+                    {String.fromCharCode(65 + index)}. {option}
+                  </ActionButton>
+                ))}
+              </div>
+              
+              {currentSystem.myAnswers[currentSystem.currentQuestion] !== undefined && (
+                <div className="mt-4 text-center">
+                  <p className="text-victory">✅ Resposta enviada! Aguardando oponente...</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Resultado Final */}
+          {isFinished && (
+            <div className="arena-card-epic p-8 text-center">
+              <div className="text-6xl mb-4">
+                {currentSystem.room.winner_id === 'current-user-id' ? '🏆' : '😔'}
+              </div>
+              <h2 className="text-2xl font-bold mb-4">
+                {currentSystem.room.winner_id === 'current-user-id' ? 'Vitória!' : 
+                 currentSystem.room.winner_id ? 'Derrota!' : 'Empate!'}
+              </h2>
+              
+              <div className="arena-card p-4 bg-epic/10 border-epic mb-6">
+                <p className="text-epic font-semibold">💰 Pool Total: {pvpValues.totalPool} créditos</p>
+                <p className="text-sm text-muted-foreground">
+                  Vencedor leva {pvpValues.winnerReceives} créditos | Plataforma: {pvpValues.totalPool - pvpValues.winnerReceives} créditos
+                </p>
+              </div>
+
+              <p className="text-muted-foreground mb-4">
+                🚪 Saindo automaticamente em {currentSystem.PVP_CONFIG.AUTO_EXIT_DELAY} segundos...
+              </p>
+              
+              <ActionButton
+                variant="epic"
+                onClick={() => navigate('/')}
+                className="mt-4"
+              >
+                Voltar ao Dashboard
+              </ActionButton>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // Renderizar sala de batalha criada
   const renderRoomCreated = () => (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -249,8 +449,8 @@ const ArenaNew = () => {
           )}
 
           <div className="arena-card p-4 bg-epic/10 border-epic mb-6">
-            <p className="text-epic font-semibold">💰 Pool Total: 1.800 créditos</p>
-            <p className="text-sm text-muted-foreground">Vencedor leva 1.400 créditos | Plataforma: 400 créditos</p>
+            <p className="text-epic font-semibold">💰 Pool Total: {pvpValues.totalPool} créditos</p>
+            <p className="text-sm text-muted-foreground">Vencedor leva {pvpValues.winnerReceives} créditos | Plataforma: {pvpValues.totalPool - pvpValues.winnerReceives} créditos</p>
           </div>
 
           <p className="text-muted-foreground">
@@ -369,8 +569,8 @@ const ArenaNew = () => {
               <div className="mb-6">
                 <p className="text-xl mb-2">
                   {battleState.winner.id === currentPlayer.id 
-                    ? 'Você ganhou +500 créditos!' 
-                    : 'Você perdeu 900 créditos'}
+                    ? `Você ganhou +${pvpValues.netWin} créditos!`
+                    : `Você perdeu ${Math.abs(pvpValues.netLoss)} créditos`}
                 </p>
                 <p className="text-sm text-epic">
                   +15 créditos de percepção
@@ -397,8 +597,21 @@ const ArenaNew = () => {
     </div>
   );
 
-  // Renderizar baseado na fase atual
+  // Renderizar baseado na fase atual (Sistema Híbrido)
   const renderCurrentPhase = () => {
+    // 🎮 MODO REAL-TIME: Usar novo sistema
+    if (isRealTime) {
+      const gamePhase = currentSystem.gamePhase;
+      
+      if (gamePhase === 'playing' || gamePhase === 'finished') {
+        return renderRealTimeGame();
+      }
+      
+      // Fases de lobby/confirmação ainda usam o sistema base
+      return renderLobby();
+    }
+    
+    // 🤖 MODO SIMULADO: Usar sistema existente
     switch (phase) {
       case 'lobby':
         return renderLobby();

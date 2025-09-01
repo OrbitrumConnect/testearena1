@@ -297,6 +297,14 @@ Todas as cores em HSL para consistência */
     }
   }
 
+  /* Force Digital question card to match Medieval exactly */
+  .digital-question-card {
+    max-width: 40% !important;
+    transform-origin: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
   /* Animações de Ataque Digital */
   @keyframes travel-right {
     0% {

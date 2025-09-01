@@ -11,6 +11,8 @@ import ArenaNew from "./pages/ArenaNew";
 import Mesopotamia from "./pages/Mesopotamia";
 import Medieval from "./pages/Medieval";
 import Digital from "./pages/Digital";
+import Labyrinth from "./pages/Labyrinth";
+
 import Knowledge from "./pages/Knowledge";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -38,6 +40,9 @@ const AppWithMusic = () => {
         <Route path="/mesopotamia" element={<ProtectedRoute><Mesopotamia /></ProtectedRoute>} />
         <Route path="/medieval" element={<ProtectedRoute><Medieval /></ProtectedRoute>} />
         <Route path="/digital" element={<ProtectedRoute><Digital /></ProtectedRoute>} />
+        <Route path="/labyrinth" element={<ProtectedRoute><Labyrinth /></ProtectedRoute>} />
+        <Route path="/labyrinth/:era" element={<ProtectedRoute><Labyrinth /></ProtectedRoute>} />
+        
         <Route path="/knowledge" element={<ProtectedRoute><Knowledge /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

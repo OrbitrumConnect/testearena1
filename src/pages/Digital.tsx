@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { handleNewBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
 
@@ -126,13 +126,15 @@ const Digital = () => {
 
       // Novo Sistema de Créditos
       const accuracyPercentage = Math.round((score / questions.length) * 100);
+      const userPlan = getUserPlan();
       const creditsResult = handleNewBattleCredits({
         battleType: 'training',
         questionsCorrect: score,
         questionsTotal: questions.length,
         accuracyPercentage: accuracyPercentage,
         eraSlug: 'digital',
-        usedExtraLife: false
+        usedExtraLife: false,
+        planType: userPlan
       });
       
       console.log(`🎯 Treino Digital concluído! ${creditsResult.message}`);
@@ -356,10 +358,10 @@ const Digital = () => {
               
               <ActionButton 
                 variant="epic" 
-                onClick={() => navigate('/arena')}
+                onClick={() => navigate('/labyrinth/digital')}
                 className="bg-gradient-to-r from-epic to-victory"
               >
-                🏆 Desafio Arena
+                🏛️ Entrar no Labirinto Digital
               </ActionButton>
               
               <ActionButton variant="battle" onClick={() => navigate('/app')}>
@@ -496,7 +498,7 @@ const Digital = () => {
             const laserSize = laserSizes[index % 3];
             
             // Posições verticais diferentes com mais espaçamento
-            const verticalPositions = [40, 50, 60]; // Posições em %
+            const verticalPositions = [54, 60, 66]; // Posições em % (mais juntos 20%)
             const verticalPos = verticalPositions[index % 3];
             
             return (
@@ -523,7 +525,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -595,7 +597,7 @@ const Digital = () => {
         </div>
 
         {gamePhase === 'result' && (
-          <div className="text-center">
+          <div className="flex justify-center items-center mt-8 mb-8">
             <ActionButton 
               variant="epic" 
               onClick={nextQuestion}

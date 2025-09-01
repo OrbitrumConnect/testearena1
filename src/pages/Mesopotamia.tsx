@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { handleNewBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
 import { getRewardDisplayValues } from '@/utils/rewardDisplay';
 
@@ -112,13 +112,15 @@ const Mesopotamia = () => {
 
       // Novo Sistema de Créditos
       const accuracyPercentage = Math.round((score / questions.length) * 100);
+      const userPlan = getUserPlan();
       const creditsResult = handleNewBattleCredits({
         battleType: 'training',
         questionsCorrect: score,
         questionsTotal: questions.length,
         accuracyPercentage: accuracyPercentage,
         eraSlug: 'mesopotamia',
-        usedExtraLife: false
+        usedExtraLife: false,
+        planType: userPlan
       });
       
       console.log(`🎯 Treino Mesopotâmia concluído! ${creditsResult.message}`);
@@ -342,10 +344,10 @@ const Mesopotamia = () => {
               
               <ActionButton 
                 variant="epic" 
-                onClick={() => navigate('/medieval')}
+                onClick={() => navigate('/labyrinth/mesopotamia')}
                 className="bg-gradient-to-r from-epic to-victory"
               >
-                🚀 Próximo Nível: Medieval
+                🏛️ Entrar no Labirinto da Mesopotâmia
               </ActionButton>
               
               <ActionButton variant="battle" onClick={() => navigate('/app')}>

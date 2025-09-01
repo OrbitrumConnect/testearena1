@@ -8,7 +8,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
-import { handleNewBattleCredits } from '@/utils/creditsIntegration';
+import { handleNewBattleCredits, getUserPlan, getPvPValues } from '@/utils/creditsIntegration';
 import { Player } from '@/types/arena';
 import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
@@ -33,6 +33,9 @@ interface Battle {
 const Arena = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  // Obter valores do PvP baseados no plano do usuário
+  const pvpValues = getPvPValues();
   const [battle, setBattle] = useState<Battle>({
     player1: { name: 'Você', hp: 100, maxHp: 100, avatar: '⚔️' },
     player2: { name: 'IA Esfinge', hp: 100, maxHp: 100, avatar: '🗿' }
@@ -138,11 +141,13 @@ const Arena = () => {
 
         // Novo: Sistema de Percepção de Créditos para PvP
         const accuracyPercentage = Math.round((correctAnswers / questions.length) * 100);
+        const userPlan = getUserPlan();
         const creditsResult = handleNewBattleCredits({
           battleType: 'pvp',
           questionsCorrect: correctAnswers,
           questionsTotal: questions.length,
-          accuracyPercentage: accuracyPercentage
+          accuracyPercentage: accuracyPercentage,
+          planType: userPlan
         });
         
         console.log(`⚔️ Arena PvP concluída! ${creditsResult.message} (${isVictory ? 'Vitória' : 'Derrota'})`);
@@ -300,10 +305,10 @@ const Arena = () => {
 
             <div className="arena-card p-4 mb-8 bg-epic/10 border-epic">
               <p className="text-epic font-semibold">
-                💰 Custo da Batalha: 1,5 créditos
+                💰 Custo da Batalha: {pvpValues.betAmount} créditos
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Vitória: +2 créditos | Derrota: -1,5 créditos | App retém: 0,5 créditos
+                Vitória: +{pvpValues.netWin} créditos | Derrota: {pvpValues.netLoss} créditos | Pool: {pvpValues.totalPool} créditos
               </p>
             </div>
 

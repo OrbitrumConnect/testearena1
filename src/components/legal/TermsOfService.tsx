@@ -66,10 +66,10 @@ export const TermsOfService = () => {
           <div className="bg-warning/10 p-4 rounded-lg border border-warning/20">
             <h3 className="font-semibold mb-2">🎮 Mecânica das Batalhas</h3>
             <ul className="space-y-2">
-              <li>• Aposta: <strong>900 créditos</strong> por participante</li>
-              <li>• Pool total: <strong>1.800 créditos</strong></li>
-              <li>• Vencedor recebe: <strong>1.400 créditos</strong></li>
-              <li>• Taxa da plataforma: <strong>400 créditos</strong></li>
+              <li>• Aposta: <strong>varia por plano</strong> por participante</li>
+              <li>• Pool total: <strong>varia por plano</strong></li>
+              <li>• Vencedor recebe: <strong>baseado no plano</strong></li>
+              <li>• Sistema de 3 planos: Basic, Standard, Premium</li>
               <li>• <strong>Consentimento explícito</strong> obrigatório antes de cada batalha</li>
             </ul>
           </div>

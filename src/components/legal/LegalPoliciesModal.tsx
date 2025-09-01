@@ -159,7 +159,7 @@ export const LegalPoliciesModal: React.FC<LegalPoliciesModalProps> = ({
             <Card className="p-3 border-primary/30 bg-primary/5">
               <h5 className="font-medium text-primary mb-1">PvP (Competição)</h5>
               <ul className="text-xs space-y-1">
-                <li>• Entrada: 1,5 créditos</li>
+                <li>• Entrada: varia por plano (1-3 créditos)</li>
                 <li>• Prêmio vencedor: 2,0 créditos</li>
                 <li>• Retenção app: 0,5 créditos</li>
               </ul>

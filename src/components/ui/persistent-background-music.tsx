@@ -25,7 +25,9 @@ let globalState = {
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica3.mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica4.mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica5.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3'
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica7.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica8.mp3'
   ]
 };
 
@@ -36,7 +38,9 @@ export const PersistentBackgroundMusic = memo(({
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica3.mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica4.mp3',
     'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica5.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3'
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica6.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica7.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica8.mp3'
   ], 
   autoPlay = false,
   className = ""

@@ -258,6 +258,13 @@ const Index = () => {
                     💳
                   </ActionButton>
                   <ActionButton 
+                    variant="epic" 
+                    onClick={() => navigate('/labyrinth')}
+                    className="text-xs px-1.5 py-0.5"
+                  >
+                    🏛️
+                  </ActionButton>
+                  <ActionButton 
                     variant="battle" 
                     onClick={() => navigate('/')}
                     className="text-xs px-1.5 py-0.5"
@@ -320,6 +327,16 @@ const Index = () => {
                   💳
                 </ActionButton>
                 
+                <ActionButton 
+                  variant="epic" 
+                  onClick={() => navigate('/labyrinth')}
+                  className="text-xs px-3 py-2"
+                >
+                  🏛️
+                </ActionButton>
+
+                
+
                 <ActionButton 
                   variant="epic" 
                   onClick={() => navigate('/admin')}

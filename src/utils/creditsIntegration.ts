@@ -1,5 +1,8 @@
-// Novo sistema de créditos - Conversão 100 créditos = R$ 1,00
-// Integração com sistema de vidas e PvP
+// Novo sistema de créditos - Sistema de 3 Planos
+// 🎯 R$ 1,00 = 100 créditos (conversão interna, não exibida)
+// 🏆 ROI máximo: 400% anual (100% por trimestre)
+
+import { PlanType, calculateTrainingCredits, calculateArenaCredits, PLAN_CONFIGS } from './creditsSystem';
 
 interface NewCreditsEarnedParams {
   battleType: 'training' | 'pvp';
@@ -8,68 +11,55 @@ interface NewCreditsEarnedParams {
   accuracyPercentage: number;
   eraSlug?: string;
   usedExtraLife?: boolean;
+  planType?: PlanType; // Novo: tipo do plano do usuário
 }
 
-// Recompensas por era (sistema balanceado - ROI 200-400% para elite 3%)
-const ERA_REWARDS = {
-  'egito-antigo': { base: 1, victory: 2, excellent: 4 },
-  'mesopotamia': { base: 2, victory: 4, excellent: 8 },
-  'medieval': { base: 3, victory: 6, excellent: 12 },
-  'digital': { base: 4, victory: 8, excellent: 16 }
-};
+// 📊 Sistema agora usa PLAN_CONFIGS do creditsSystem.ts
+// Removido ERA_REWARDS antigo - agora baseado em planos
 
-// Função para calcular créditos do novo sistema
+// Função para calcular créditos com sistema de planos
 export const calculateNewCreditsEarned = (params: NewCreditsEarnedParams): {
   creditsEarned: number;
   creditsSpent: number;
   netCredits: number;
   reason: string;
+  planType: PlanType;
 } => {
-  const { battleType, questionsCorrect, questionsTotal, accuracyPercentage, eraSlug = 'egito-antigo', usedExtraLife = false } = params;
+  const { 
+    battleType, 
+    questionsCorrect, 
+    questionsTotal, 
+    accuracyPercentage, 
+    eraSlug = 'egito-antigo', 
+    usedExtraLife = false,
+    planType = 'basic' // Default para basic se não informado
+  } = params;
   
   if (battleType === 'training') {
-    // Sistema de treino com vidas
+    // Sistema de treino com vidas e planos
     const creditsSpent = usedExtraLife ? 10 : 0; // 10 créditos por vida extra
     
-    // Recompensas baseadas na era e performance
-    const eraRewards = ERA_REWARDS[eraSlug as keyof typeof ERA_REWARDS] || ERA_REWARDS['egito-antigo'];
-    let creditsEarned = 0;
-    
-    if (accuracyPercentage >= 90) {
-      creditsEarned = eraRewards.excellent;
-    } else if (accuracyPercentage >= 70) {
-      creditsEarned = eraRewards.victory;
-    } else {
-      creditsEarned = eraRewards.base;
-    }
+    // Usar sistema de planos para calcular recompensas
+    const trainingResult = calculateTrainingCredits(planType, eraSlug, questionsCorrect, questionsTotal);
     
     return {
-      creditsEarned,
+      creditsEarned: trainingResult.creditsEarned,
       creditsSpent,
-      netCredits: creditsEarned - creditsSpent,
-      reason: `${accuracyPercentage >= 90 ? 'Excelente' : accuracyPercentage >= 70 ? 'Vitória' : 'Participação'} em ${eraSlug}`
+      netCredits: trainingResult.creditsEarned - creditsSpent,
+      reason: `${trainingResult.bonusApplied ? 'Excelente' : accuracyPercentage >= 70 ? 'Vitória' : 'Participação'} em ${eraSlug} (${trainingResult.planType})`,
+      planType: planType
     };
   } else if (battleType === 'pvp') {
-    // Sistema PvP balanceado por mês
-    const PVP_CONFIG = {
-      month1: { entry: 15, prize: 25 },
-      month2: { entry: 10, prize: 17 },
-      month3: { entry: 6, prize: 12 }
-    };
-    
-    // TODO: Implementar lógica de mês atual
-    const currentMonth = 1; // Por enquanto fixo no mês 1
-    const pvpData = PVP_CONFIG[`month${currentMonth}` as keyof typeof PVP_CONFIG];
-    
-    const entryCost = pvpData.entry;
-    const victoryReward = pvpData.prize;
-    const isVictory = accuracyPercentage >= 70; // Considerando vitória com 70%+
+    // Sistema PvP baseado no plano
+    const isVictory = accuracyPercentage >= 70;
+    const arenaResult = calculateArenaCredits(planType, isVictory);
     
     return {
-      creditsEarned: isVictory ? victoryReward : 0,
-      creditsSpent: entryCost,
-      netCredits: isVictory ? (victoryReward - entryCost) : -entryCost,
-      reason: isVictory ? 'Vitória PvP' : 'Derrota PvP'
+      creditsEarned: isVictory ? arenaResult.winnerReceives : 0,
+      creditsSpent: arenaResult.betAmount,
+      netCredits: arenaResult.creditsEarned,
+      reason: `${isVictory ? 'Vitória' : 'Derrota'} PvP (${planType})`,
+      planType: planType
     };
   }
   
@@ -77,19 +67,40 @@ export const calculateNewCreditsEarned = (params: NewCreditsEarnedParams): {
     creditsEarned: 0,
     creditsSpent: 0,
     netCredits: 0,
-    reason: 'Tipo de batalha não reconhecido'
+    reason: 'Tipo de batalha não reconhecido',
+    planType: planType
   };
 };
 
-// Função para atualizar créditos na nova assinatura (localStorage demo)
+// Função para atualizar créditos na assinatura (localStorage demo)
 export const updateNewSubscriptionCredits = (
   creditsChange: number,
-  description: string
+  description: string,
+  planType?: PlanType
 ): void => {
   try {
     // Buscar assinatura demo
     const existing = localStorage.getItem('demo_new_subscription');
-    if (!existing) return;
+    if (!existing) {
+      // Criar assinatura demo padrão se não existir
+      const defaultPlan = planType || 'basic';
+      const planConfig = PLAN_CONFIGS[defaultPlan];
+      
+      const newSubscription = {
+        id: 'demo-subscription',
+        user_id: 'demo-user',
+        plan_type: defaultPlan,
+        plan_value: planConfig.initialDeposit,
+        credits_balance: planConfig.creditsReceived + creditsChange,
+        credits_initial: planConfig.creditsReceived,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      
+      localStorage.setItem('demo_new_subscription', JSON.stringify(newSubscription));
+      console.log(`💰 Assinatura criada: ${defaultPlan.toUpperCase()} - ${creditsChange} créditos!`);
+      return;
+    }
     
     const subscription = JSON.parse(existing);
     subscription.credits_balance += creditsChange;
@@ -99,24 +110,25 @@ export const updateNewSubscriptionCredits = (
     localStorage.setItem('demo_new_subscription', JSON.stringify(subscription));
     
     const action = creditsChange > 0 ? '+' : '';
-    console.log(`💰 ${action}${creditsChange} créditos - ${description}! Saldo: ${subscription.credits_balance}`);
+    console.log(`💰 ${action}${creditsChange} créditos - ${description} [${subscription.plan_type.toUpperCase()}]! Saldo: ${subscription.credits_balance}`);
     
   } catch (error) {
     console.error('Erro ao atualizar créditos da assinatura:', error);
   }
 };
 
-// Função integrada para usar nos treinos - novo sistema
+// Função integrada para usar nos treinos - sistema com planos
 export const handleNewBattleCredits = (params: NewCreditsEarnedParams): {
   creditsEarned: number;
   creditsSpent: number;
   netCredits: number;
   message: string;
+  planType: PlanType;
 } => {
   const result = calculateNewCreditsEarned(params);
   
   // Atualizar créditos na assinatura
-  updateNewSubscriptionCredits(result.netCredits, result.reason);
+  updateNewSubscriptionCredits(result.netCredits, result.reason, result.planType);
   
   return {
     ...result,
@@ -135,6 +147,35 @@ export const creditsToReais = (credits: number): string => {
 // Conversão de reais para créditos
 export const reaisToCredits = (reais: number): number => {
   return Math.round(reais * 100); // R$ 1,00 = 100 créditos
+};
+
+// Função para obter plano do usuário (localStorage demo)
+export const getUserPlan = (): PlanType => {
+  try {
+    const subscription = localStorage.getItem('demo_new_subscription');
+    if (subscription) {
+      const parsed = JSON.parse(subscription);
+      return parsed.plan_type as PlanType;
+    }
+  } catch (error) {
+    console.error('Erro ao buscar plano do usuário:', error);
+  }
+  return 'basic'; // Default
+};
+
+// Função para obter valores do PvP baseados no plano do usuário
+export const getPvPValues = (planType?: PlanType) => {
+  const userPlan = planType || getUserPlan();
+  const planConfig = PLAN_CONFIGS[userPlan];
+  
+  return {
+    betAmount: planConfig.pvpBetCredits,
+    winnerReceives: planConfig.pvpWinnerCredits,
+    totalPool: planConfig.pvpBetCredits * 2,
+    netWin: planConfig.pvpWinnerCredits - planConfig.pvpBetCredits,
+    netLoss: -planConfig.pvpBetCredits,
+    planType: userPlan
+  };
 };
 
 // Função para verificar se pode realizar ação baseada em créditos

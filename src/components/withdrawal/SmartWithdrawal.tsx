@@ -107,7 +107,7 @@ export const SmartWithdrawal: React.FC<SmartWithdrawalProps> = ({ className = ''
           💰 Saque Inteligente
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {/* Status de Resultado de Saque */}
         {withdrawalResult && (
           <div className={`p-3 rounded border ${
@@ -136,7 +136,7 @@ export const SmartWithdrawal: React.FC<SmartWithdrawalProps> = ({ className = ''
         )}
 
         {/* Cálculo Inteligente */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm font-medium">
             <Calculator className="w-4 h-4" />
             Cálculo Inteligente do Saque

@@ -130,8 +130,8 @@ const Dashboard = () => {
     battleHistory.reduce((acc, battle) => acc + battle.accuracy_percentage, 0) / battleHistory.length : 0;
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
-      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+    <div className={`${isMobile ? 'min-h-screen' : 'h-screen overflow-hidden'} relative`}>
+      <div className={isMobile ? '' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Background Temático - Castelo Medieval */}
       <div 
         className="absolute inset-0"
@@ -146,7 +146,7 @@ const Dashboard = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-2' : 'p-6'}`}>
         {/* Header Unificado */}
         <Card className={`arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2 mb-2' : 'p-6 mb-8'}`}>
           <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center justify-between'}`}>
@@ -194,11 +194,11 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-2' : 'lg:grid-cols-3 gap-8'}`}>
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-3' : 'lg:grid-cols-3 gap-8'}`}>
           {/* Coluna Principal */}
-          <div className={`${isMobile ? 'space-y-2' : 'lg:col-span-2 space-y-6'}`}>
+          <div className={`${isMobile ? 'space-y-3' : 'lg:col-span-2 space-y-6'}`}>
             {/* Perfil do Usuário */}
-            <Card className={`arena-card-epic ${isMobile ? 'p-2' : 'p-6'}`}>
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className={`flex items-center ${isMobile ? 'gap-2 mb-2' : 'gap-6 mb-6'}`}>
                 <div className={`rounded-full bg-epic/20 flex items-center justify-center border-2 border-epic ${isMobile ? 'w-10 h-10 text-lg' : 'w-20 h-20 text-3xl'}`}>
                   {profile?.avatar_url ? (
@@ -248,7 +248,7 @@ const Dashboard = () => {
             </Card>
 
             {/* Acesso Rápido às Eras */}
-            <Card className="arena-card-epic p-6">
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-4">
                 <Sword className="w-6 h-6 text-epic" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">🎮 Treinar Agora</h3>
@@ -281,7 +281,7 @@ const Dashboard = () => {
             </Card>
 
             {/* Histórico de Batalhas */}
-            <Card className="arena-card-epic p-6">
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
                 <BarChart3 className="w-6 h-6 text-epic" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">Histórico de Batalhas</h3>
@@ -342,7 +342,7 @@ const Dashboard = () => {
             </Card>
 
             {/* Conquistas */}
-            <Card className="arena-card-epic p-6">
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
                 <Award className="w-6 h-6 text-epic" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">🏆 Conquistas</h3>
@@ -393,9 +393,9 @@ const Dashboard = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className={`${isMobile ? 'space-y-3' : 'space-y-6'}`}>
             {/* Carteira, Transações e Resumo Unificados */}
-            <Card className="arena-card-epic p-6">
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
                 <Wallet className="w-6 h-6 text-epic" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">💰 Carteira & Estatísticas</h3>
@@ -496,7 +496,7 @@ const Dashboard = () => {
             </Card>
 
             {/* PIX e Status da Conta Unificado */}
-            <Card className="arena-card-epic p-6">
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
                 <DollarSign className="w-6 h-6 text-green-400" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">💰 PIX & Status da Conta</h3>
