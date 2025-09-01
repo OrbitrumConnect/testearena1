@@ -17,8 +17,8 @@ export const BackgroundMusic = ({
     '/musica4.mp3',
     '/musica5.mp3',
     '/musica6.mp3',
-    '/musica7.mp3',
-    '/Musica8.mp3'
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica7.mp3',
+    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica8.mp3'
   ], 
   autoPlay = false,
   className = ""
@@ -45,11 +45,13 @@ export const BackgroundMusic = ({
       // Adicionar logs para debug
       console.log('🎵 Carregando música:', tracks[currentTrack]);
       console.log('🎵 Track atual:', currentTrack + 1);
+      console.log('🎵 Elemento de áudio:', audioRef.current);
       
       if (isPlaying) {
         audioRef.current.play().catch(error => {
           console.error('❌ Erro ao tocar música:', error);
           console.error('🎵 Src da música:', tracks[currentTrack]);
+          console.error('🎵 Tipo de erro:', error.name, error.message);
         });
       }
     }
@@ -115,6 +117,7 @@ export const BackgroundMusic = ({
         onError={(e) => {
           console.error('❌ Erro no elemento de áudio:', e);
           console.error('🎵 Src atual:', tracks[currentTrack]);
+          console.error('🎵 Target:', e.target);
         }}
         onLoadStart={() => {
           console.log('📥 Iniciando carregamento da música:', tracks[currentTrack]);
