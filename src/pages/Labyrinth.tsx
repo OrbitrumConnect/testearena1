@@ -6,6 +6,7 @@ import { ParticleBackground } from '@/components/ui/particles';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
+import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 type Era = 'egito-antigo' | 'mesopotamia' | 'medieval' | 'digital';
 type GamePhase = 'exploring' | 'question' | 'victory' | 'defeat';
@@ -126,8 +127,36 @@ const Labyrinth = () => {
          setGameState(prev => ({
            ...prev,
            chestsOpened: prev.chestsOpened + 1,
-           score: prev.score + 100 // Ajustado para alinhar com sistema PvP
+           score: prev.score + 1 // 1 ponto por baú = máximo 8 créditos
          }));
+         
+         // CALCULAR CRÉDITOS GANHOS NO LABIRINTO
+         const userPlan = getUserPlan();
+         const labyrinthCredits = calculateTrainingCredits(
+           userPlan,
+           era,
+           1, // 1 baú aberto
+           1  // 1 baú total
+         );
+         console.log(`🎯 Labirinto: ${labyrinthCredits.creditsEarned} créditos ganhos!`);
+         
+         // SALVAR CRÉDITOS DO LABIRINTO NO LOCALSTORAGE
+         const currentCredits = parseFloat(localStorage.getItem('labyrinthCredits') || '0');
+         const newCredits = currentCredits + labyrinthCredits.creditsEarned;
+         localStorage.setItem('labyrinthCredits', newCredits.toString());
+         
+         // SALVAR NO HISTÓRICO DE ATIVIDADES
+         const activity = {
+           id: Date.now(),
+           type: 'labyrinth',
+           era: era,
+           credits: labyrinthCredits.creditsEarned,
+           timestamp: new Date().toISOString()
+         };
+         
+         const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+         activities.push(activity);
+         localStorage.setItem('userActivities', JSON.stringify(activities));
         
         return; // Não mover o jogador se tocou em um baú
       }
@@ -1628,6 +1657,18 @@ const Labyrinth = () => {
                   <p className="mb-2">Você escapou do {currentEra.name}!</p>
                   <p className="text-2xl font-bold text-victory">
                     Pontuação Final: {gameState.score}
+                  </p>
+                  <p className="text-lg font-bold text-epic">
+                    💰 Créditos Ganhos: {(() => {
+                      const userPlan = getUserPlan();
+                      const labyrinthCredits = calculateTrainingCredits(
+                        userPlan,
+                        era,
+                        gameState.chestsOpened,
+                        gameState.totalChests
+                      );
+                      return labyrinthCredits.creditsEarned.toFixed(1);
+                    })()} créditos
                   </p>
                   {era !== 'digital' && (
                     <p className="text-sm text-epic mt-2">

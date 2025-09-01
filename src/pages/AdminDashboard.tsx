@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { ParticleBackground } from '@/components/ui/particles';
 import { useAdminAuth } from '@/utils/adminAuth';
+import { getUserCredits, syncUserCredits } from '@/utils/creditsUnified';
 
 interface UserProfile {
   id: string;
@@ -71,12 +72,13 @@ const AdminDashboard = () => {
       // Buscar dados de autenticação (apenas admins podem fazer isso)
       const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
       
-      // Combinar dados de perfil com email
+      // Combinar dados de perfil com email e adicionar user_type padrão
       const usersWithEmail = (profiles || []).map(profile => {
         const authUser = authUsers?.users?.find(u => u.id === profile.user_id);
         return {
           ...profile,
-          email: authUser?.email || 'N/A'
+          email: authUser?.email || 'N/A',
+          user_type: 'free' as const // Valor padrão
         };
       });
 
@@ -206,8 +208,8 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative overflow-hidden`}>
-      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+    <div className="h-screen overflow-hidden relative overflow-hidden">
+      <div className="scale-[0.628] origin-top-left w-[159%] h-[159%]">
       {/* Background Temático Admin - Digital */}
       <div 
         className="absolute inset-0"
@@ -293,6 +295,20 @@ const AdminDashboard = () => {
             <Button onClick={fetchAdminData}>
               Atualizar
             </Button>
+            <Button 
+              onClick={async () => {
+                for (const user of users) {
+                  await syncUserCredits(user.user_id);
+                }
+                toast({
+                  title: "Sincronização",
+                  description: "Todos os usuários foram sincronizados com Supabase",
+                });
+              }}
+              variant="outline"
+            >
+              🔄 Sincronizar
+            </Button>
           </div>
         </Card>
 
@@ -334,6 +350,25 @@ const AdminDashboard = () => {
                   <div className="text-gray-300">
                     <strong>{user.total_xp}</strong> XP total
                   </div>
+                  
+                  <div className="text-gray-300">
+                    <strong>💰 Créditos Estimados:</strong>
+                    <div className="text-xs space-y-1 mt-1">
+                      <div>Treino: ~{Math.round(user.total_battles * 0.8)} créditos</div>
+                      <div>PvP: ~{Math.round(user.battles_won * 0.5)} créditos</div>
+                      <div>Total: ~{Math.round(user.total_battles * 0.8 + user.battles_won * 0.5)} créditos</div>
+                    </div>
+                  </div>
+                  
+                  {/* Chave PIX */}
+                  <div className="text-gray-300">
+                    <strong>🔑 Chave PIX:</strong>
+                    <div className="text-xs space-y-1 mt-1">
+                      <div className="break-all">
+                        {localStorage.getItem(`userPixKey_${user.user_id}`) || 'Não cadastrada'}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Ações Administrativas */}
@@ -370,13 +405,27 @@ const AdminDashboard = () => {
 
                 {/* Botão PIX (se usuário tem CPF) */}
                 {user.cpf && (
-                  <Button
-                    className="w-full mt-2"
-                    onClick={() => sendPixPayment(`req-${user.id}`, user.user_id, user.cpf, 5)}
-                  >
-                    <Send className="h-4 w-4 mr-2" />
-                    Enviar R$ 5 via PIX
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      className="w-full"
+                      onClick={() => sendPixPayment(`req-${user.id}`, user.user_id, user.cpf, 5)}
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Enviar R$ 5 via PIX
+                    </Button>
+                    
+                    {/* Sinal visual de solicitação PIX */}
+                    {pixRequests.some(req => req.userId === user.user_id && req.status === 'pending') && (
+                      <div className="p-2 bg-yellow-500/20 border border-yellow-500/30 rounded text-center">
+                        <p className="text-xs text-yellow-400 font-semibold">
+                          ⚠️ PIX SOLICITADO - Aguardando envio
+                        </p>
+                        <p className="text-xs text-yellow-300">
+                          Chave: {localStorage.getItem(`userPixKey_${user.user_id}`) || 'CPF'}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </Card>

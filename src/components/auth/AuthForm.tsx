@@ -20,6 +20,8 @@ export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps
   const [birthDate, setBirthDate] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
+  const [pixKey, setPixKey] = useState('');
+  const [pixKeyType, setPixKeyType] = useState<'email' | 'phone' | 'cpf' | 'random'>('email');
   const [isStudying, setIsStudying] = useState(false);
   const [institution, setInstitution] = useState('');
   const [parentalConsent, setParentalConsent] = useState(false);
@@ -248,6 +250,44 @@ export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps
                 maxLength={15}
                 required={!isLogin}
               />
+            </div>
+            
+            <div>
+              <Label htmlFor="pixKeyType" className="text-sm font-semibold">Tipo de Chave PIX</Label>
+              <select
+                id="pixKeyType"
+                value={pixKeyType}
+                onChange={(e) => setPixKeyType(e.target.value as any)}
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md bg-white text-gray-900"
+                required={!isLogin}
+              >
+                <option value="email">📧 E-mail</option>
+                <option value="phone">📱 Telefone</option>
+                <option value="cpf">🆔 CPF</option>
+                <option value="random">🔑 Chave Aleatória</option>
+              </select>
+            </div>
+            
+            <div>
+              <Label htmlFor="pixKey" className="text-sm font-semibold">Chave PIX</Label>
+              <Input
+                id="pixKey"
+                type="text"
+                placeholder={pixKeyType === 'email' ? 'seu@email.com' : 
+                           pixKeyType === 'phone' ? '(11) 99999-9999' :
+                           pixKeyType === 'cpf' ? '000.000.000-00' :
+                           'Chave aleatória (será gerada)'}
+                value={pixKey}
+                onChange={(e) => setPixKey(e.target.value)}
+                className="w-full mt-1"
+                required={!isLogin && pixKeyType !== 'random'}
+                disabled={pixKeyType === 'random'}
+              />
+              {pixKeyType === 'random' && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  🔑 Uma chave aleatória será gerada automaticamente para você
+                </p>
+              )}
             </div>
             
             <div className="flex items-center space-x-2">

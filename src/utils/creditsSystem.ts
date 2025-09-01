@@ -290,7 +290,8 @@ export const calculateWithdrawal = (
   isAdult: boolean = true,
   userRank?: 'top1' | 'top5' | 'top10' | 'top20' | 'regular',
   pvpEarnings: number = 0,
-  trainingEarnings: number = 0
+  trainingEarnings: number = 0,
+  labyrinthEarnings: number = 0
 ) => {
   const planConfig = PLAN_CONFIGS[planType];
   
@@ -307,7 +308,7 @@ export const calculateWithdrawal = (
   // CALCULAR TOTAL DE CRÉDITOS DISPONÍVEIS
   const baseCredits = planConfig.creditsReceived; // Créditos do plano
   const rankingBonus = userRank === 'top1' ? 45 : userRank === 'top5' ? 35 : userRank === 'top10' ? 25 : userRank === 'top20' ? 15 : 0;
-  const totalCredits = baseCredits + rankingBonus + pvpEarnings + trainingEarnings;
+  const totalCredits = baseCredits + rankingBonus + pvpEarnings + trainingEarnings + labyrinthEarnings;
   
   // APLICAR LIMITE POR IDADE
   const maxWithdrawal = isAdult ? planConfig.maxMonthlyWithdrawal : planConfig.maxWithdrawalUnder18;
@@ -332,6 +333,7 @@ export const calculateWithdrawal = (
       rankingBonus,
       pvpEarnings,
       trainingEarnings,
+      labyrinthEarnings,
       totalCredits,
       withdrawableCredits,
       fee,

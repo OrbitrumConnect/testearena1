@@ -46,6 +46,7 @@ const Payment = () => {
   const isAdult = localStorage.getItem('userAge') !== 'minor';
   const pvpEarnings = 10; // Créditos de PvP
   const trainingEarnings = 30; // Créditos de treinos
+  const labyrinthEarnings = parseFloat(localStorage.getItem('labyrinthCredits') || '0'); // Créditos do Labirinto
   
   // Usar função real do sistema
   const withdrawalInfo = calculateWithdrawal(
@@ -55,7 +56,8 @@ const Payment = () => {
     isAdult,
     userRank as any,
     pvpEarnings,
-    trainingEarnings
+    trainingEarnings,
+    labyrinthEarnings
   );
   
   const maxWithdrawal = withdrawalInfo.finalAmount;
@@ -115,7 +117,7 @@ const Payment = () => {
             </ActionButton>
 
             <ActionButton 
-              variant="secondary" 
+              variant="epic" 
               onClick={() => navigate('/dashboard')}
               className="w-full"
             >
@@ -139,7 +141,7 @@ const Payment = () => {
       {/* Header */}
       <header className="relative z-10 p-6 border-b border-card-border bg-background-soft/80 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <ActionButton variant="secondary" onClick={() => navigate('/app')}>
+          <ActionButton variant="epic" onClick={() => navigate('/app')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
           </ActionButton>

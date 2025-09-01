@@ -7,7 +7,10 @@ import { AuthForm } from '@/components/auth/AuthForm';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useResetData } from '@/hooks/useResetData';
 import { supabase } from '@/integrations/supabase/client';
-import { calculateWithdrawal } from '@/utils/creditsSystem';
+import { calculateWithdrawal, calculateTrainingCredits } from '@/utils/creditsSystem';
+import { getUserPlan } from '@/utils/creditsIntegration';
+import { getUserCredits, calculateTotalBalance, calculateWithdrawableAmount } from '@/utils/creditsUnified';
+import { initializeTestSystem, checkDataConsistency } from '@/utils/testCredits';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -267,28 +270,68 @@ const Dashboard = () => {
 
             {/* Acesso Rápido às Eras */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
-              <div className="flex items-center gap-3 mb-4">
+                          <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
                 <Sword className="w-6 h-6 text-epic" />
                 <h3 className="text-xl font-montserrat font-bold text-epic">🎮 Treinar Agora</h3>
               </div>
               
+              {/* Botão de Teste para Desenvolvedores */}
+              <ActionButton
+                variant="battle"
+                onClick={async () => {
+                  await initializeTestSystem();
+                  const consistency = await checkDataConsistency();
+                  console.log('🧪 Sistema de teste inicializado:', consistency);
+                  alert('Sistema de teste inicializado! Verifique o console.');
+                }}
+                className="text-xs p-2"
+              >
+                🧪 Teste
+              </ActionButton>
+            </div>
+              
               <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-4 gap-4'}`}>
                 {[
-                  { name: 'Egito', icon: '🏺', path: '/training', color: 'epic' },
-                  { name: 'Mesopotâmia', icon: '📜', path: '/mesopotamia', color: 'battle' },
-                  { name: 'Medieval', icon: '⚔️', path: '/medieval', color: 'victory' },
-                  { name: 'Digital', icon: '💻', path: '/digital', color: 'legendary' }
-                ].map((era) => (
-                  <ActionButton
-                    key={era.name}
-                    variant={era.color as any}
-                    onClick={() => navigate(era.path)}
-                    className={`${isMobile ? 'p-2 text-xs' : 'p-4'} w-full flex flex-col items-center space-y-2`}
-                  >
-                    <div className={`${isMobile ? 'text-lg' : 'text-2xl'}`}>{era.icon}</div>
-                    <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold`}>{era.name}</span>
-                  </ActionButton>
-                ))}
+                  { name: 'Egito', icon: '🏺', path: '/training', color: 'epic', slug: 'egito-antigo' },
+                  { name: 'Mesopotâmia', icon: '📜', path: '/mesopotamia', color: 'battle', slug: 'mesopotamia' },
+                  { name: 'Medieval', icon: '⚔️', path: '/medieval', color: 'victory', slug: 'medieval' },
+                  { name: 'Digital', icon: '💻', path: '/digital', color: 'legendary', slug: 'digital' }
+                ].map((era) => {
+                  // Calcular créditos ganhos nesta era
+                  const eraBattles = battleHistory.filter(battle => 
+                    battle.era_name.toLowerCase().includes(era.name.toLowerCase()) ||
+                    (era.name === 'Egito' && battle.era_name.includes('Egito')) ||
+                    (era.name === 'Mesopotâmia' && battle.era_name.includes('Mesopotâmia')) ||
+                    (era.name === 'Medieval' && battle.era_name.includes('Medieval')) ||
+                    (era.name === 'Digital' && battle.era_name.includes('Digital'))
+                  );
+                  
+                  const totalCredits = eraBattles.reduce((sum, battle) => {
+                    const userPlan = getUserPlan();
+                    return sum + calculateTrainingCredits(
+                      userPlan,
+                      era.slug,
+                      battle.questions_correct,
+                      battle.questions_total
+                    ).creditsEarned;
+                  }, 0);
+                  
+                  return (
+                    <ActionButton
+                      key={era.name}
+                      variant={era.color as any}
+                      onClick={() => navigate(era.path)}
+                      className={`${isMobile ? 'p-2 text-xs' : 'p-4'} w-full flex flex-col items-center space-y-2`}
+                    >
+                      <div className={`${isMobile ? 'text-lg' : 'text-2xl'}`}>{era.icon}</div>
+                      <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold`}>{era.name}</span>
+                      <span className={`text-xs text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                        +{totalCredits.toFixed(1)} créditos
+                      </span>
+                    </ActionButton>
+                  );
+                })}
               </div>
               
                                <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
@@ -330,6 +373,20 @@ const Dashboard = () => {
                           </p>
                           <p className="text-xs text-muted-foreground">
                             +{battle.xp_earned} XP
+                          </p>
+                          <p className="text-xs text-victory font-bold">
+                            +{(() => {
+                              const userPlan = getUserPlan();
+                              return calculateTrainingCredits(
+                                userPlan,
+                                battle.era_name.toLowerCase().includes('egito') ? 'egito-antigo' :
+                                battle.era_name.toLowerCase().includes('mesopotamia') ? 'mesopotamia' :
+                                battle.era_name.toLowerCase().includes('medieval') ? 'medieval' :
+                                'digital',
+                                battle.questions_correct,
+                                battle.questions_total
+                              ).creditsEarned.toFixed(1);
+                            })()} créditos
                           </p>
                         </div>
                       </div>
@@ -401,6 +458,7 @@ const Dashboard = () => {
                     const isAdult = localStorage.getItem('userAge') !== 'minor';
                     const pvpEarnings = 15;
                     const trainingEarnings = 120;
+                    const labyrinthEarnings = parseFloat(localStorage.getItem('labyrinthCredits') || '0');
                     
                     const withdrawalInfo = calculateWithdrawal(
                       userPlan as any,
@@ -409,7 +467,8 @@ const Dashboard = () => {
                       isAdult,
                       userRank as any,
                       pvpEarnings,
-                      trainingEarnings
+                      trainingEarnings,
+                      labyrinthEarnings
                     );
                     
                     return `${withdrawalInfo.finalAmount.toFixed(0)} créditos`;
@@ -458,6 +517,12 @@ const Dashboard = () => {
                     <span className="text-sm font-bold text-victory">
                       {wallet && profile?.battles_won ? 
                         `${Math.round((wallet.total_earned / profile.battles_won) * 100)}` : '0'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Créditos do Labirinto</span>
+                    <span className="text-sm font-bold text-epic">
+                      {parseFloat(localStorage.getItem('labyrinthCredits') || '0').toFixed(1)} créditos
                     </span>
                   </div>
                 </div>
@@ -716,6 +781,26 @@ const Dashboard = () => {
                     localStorage.setItem('userPhone', newPhone);
                   }}
                 />
+              </div>
+              
+              {/* Chave PIX */}
+              <div>
+                <label className="block text-sm font-medium text-epic mb-2">
+                  🔑 Chave PIX
+                </label>
+                <input
+                  type="text"
+                  defaultValue={localStorage.getItem('userPixKey') || ''}
+                  placeholder="Sua chave PIX para receber pagamentos"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white placeholder-gray-400 focus:border-epic focus:outline-none"
+                  onChange={(e) => {
+                    const newPixKey = e.target.value;
+                    localStorage.setItem('userPixKey', newPixKey);
+                  }}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  📧 E-mail, 📱 Telefone, 🆔 CPF ou 🔑 Chave Aleatória
+                </p>
               </div>
 
               {/* Instituição de Ensino */}
