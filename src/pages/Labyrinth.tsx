@@ -571,13 +571,13 @@ const Labyrinth = () => {
      ];
     setChests(newChests);
     
-               // 4 inimigos: posições em áreas livres do labirinto (evitando posição inicial do jogador)
-      const newEnemies: Enemy[] = [
-        { id: 'e1', x: 80, y: 80, direction: 0, speed: 1.0, lastUpdate: Date.now() },   // Área superior esquerda
-        { id: 'e2', x: 320, y: 80, direction: 1, speed: 1.0, lastUpdate: Date.now() },  // Área superior direita
-        { id: 'e3', x: 80, y: 320, direction: 2, speed: 1.0, lastUpdate: Date.now() },  // Área inferior esquerda (longe do jogador)
-        { id: 'e4', x: 320, y: 320, direction: 3, speed: 1.0, lastUpdate: Date.now() }  // Área inferior direita
-      ];
+                      // 4 inimigos: posições em áreas livres do labirinto (evitando posição inicial do jogador)
+       const newEnemies: Enemy[] = [
+         { id: 'e1', x: 80, y: 80, direction: 0, speed: 1.5, lastUpdate: Date.now() },   // Área superior esquerda
+         { id: 'e2', x: 320, y: 80, direction: 1, speed: 1.5, lastUpdate: Date.now() },  // Área superior direita
+         { id: 'e3', x: 80, y: 320, direction: 2, speed: 1.5, lastUpdate: Date.now() },  // Área inferior esquerda (longe do jogador)
+         { id: 'e4', x: 320, y: 320, direction: 3, speed: 1.5, lastUpdate: Date.now() }  // Área inferior direita
+       ];
     setEnemies(newEnemies);
   }, [egyptQuestions, mesopotamiaQuestions, medievalQuestions, digitalQuestions]);
 
@@ -789,8 +789,8 @@ const Labyrinth = () => {
           const now = Date.now();
           const deltaTime = now - enemy.lastUpdate;
           
-          // Movimento linear simples (não persegue o player)  
-          const speed = enemy.speed * 0.6; // Velocidade aumentada para 60% (20% mais rápido)
+                     // Movimento linear simples (não persegue o player)  
+           const speed = enemy.speed * 0.9; // Velocidade aumentada para 90% (25% mais rápido que antes)
           
           // Direções: 0=cima, 1=baixo, 2=esquerda, 3=direita
           const directions = [
@@ -1393,16 +1393,25 @@ const Labyrinth = () => {
                                  transformOrigin: 'center', 
                                  margin: '-120px auto -126px auto', // Reduzido 20% (de -158px para -126px)
                                  backgroundColor: 'rgba(0, 0, 0, 0.33)', 
-                                 width: '130%', // Aumentado 15% (de 115% para 130%)
-                                 marginLeft: isMobile ? '-35%' : '-15%', // Movido 15% para direita
+                                 width: isMobile ? '150%' : '130%', // Mobile: 150%, Web: 130%
+                                 marginLeft: isMobile ? 'auto' : '-15%', // Mobile: centralizado, Web: -15%
                                  marginRight: 'auto',
                                  boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
                                  border: '2px solid rgba(255, 215, 0, 0.6)'
                                }}>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4" style={{ 
+                justifyContent: isMobile ? 'center' : 'start', 
+                alignItems: isMobile ? 'center' : 'start' 
+              }}>
                 {/* Game Canvas */}
                 <div className="lg:col-span-2">
-                  <div style={{ position: 'relative', display: 'inline-block', width: '80%', margin: '0 auto' }}>
+                  <div style={{ 
+                    position: 'relative', 
+                    display: 'inline-block', 
+                    width: isMobile ? '90%' : '80%', 
+                    margin: '0 auto', 
+                    textAlign: isMobile ? 'center' : 'left' 
+                  }}>
                     <canvas 
                       ref={canvasRef} 
                       width={400} 
@@ -1440,7 +1449,10 @@ const Labyrinth = () => {
                 </div>
                 
                                  {/* Status Panel & Rules - Movido para dentro do card principal */}
-                <div className="space-y-4">
+                <div className="space-y-4" style={{ 
+                  textAlign: isMobile ? 'center' : 'left', 
+                  padding: isMobile ? '0 10px' : '0' 
+                }}>
                   {/* Status */}
                   <div>
                     <h3 className="font-bold mb-3 text-victory">Status</h3>

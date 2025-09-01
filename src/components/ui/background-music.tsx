@@ -17,8 +17,8 @@ export const BackgroundMusic = ({
     '/musica4.mp3',
     '/musica5.mp3',
     '/musica6.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica7.mp3',
-    'https://jidwywpecgmcqduzmvcv.supabase.co/storage/v1/object/public/tracks/musica8.mp3'
+    '/musica7_otimizada.mp3',
+    '/musica8.mp3'
   ], 
   autoPlay = false,
   className = ""
@@ -46,6 +46,18 @@ export const BackgroundMusic = ({
       console.log('🎵 Carregando música:', tracks[currentTrack]);
       console.log('🎵 Track atual:', currentTrack + 1);
       console.log('🎵 Elemento de áudio:', audioRef.current);
+      
+      // Testar se a URL é válida
+      if (tracks[currentTrack].startsWith('http')) {
+        console.log('🌐 Testando URL externa:', tracks[currentTrack]);
+        fetch(tracks[currentTrack], { method: 'HEAD' })
+          .then(response => {
+            console.log('✅ URL válida, status:', response.status);
+          })
+          .catch(error => {
+            console.error('❌ URL inválida:', error);
+          });
+      }
       
       if (isPlaying) {
         audioRef.current.play().catch(error => {
