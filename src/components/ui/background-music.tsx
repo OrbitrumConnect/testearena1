@@ -222,7 +222,7 @@ export const BackgroundMusic = ({
 
                 {/* Track Info */}
                 <div className="text-xs text-muted-foreground">
-                  {currentTrack + 1}/{tracks.length}
+                  {currentTrack + 1}/8
                 </div>
               </>
             )}
