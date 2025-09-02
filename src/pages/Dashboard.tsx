@@ -497,29 +497,17 @@ const Dashboard = () => {
               <div className="arena-card p-4 text-center bg-victory/10 border-victory/30 mb-4">
                 <p className="text-sm text-muted-foreground mb-1">Saldo Atual</p>
                 <p className="text-2xl font-bold text-victory">
-                  {(() => {
-                    // Dados reais do sistema de créditos
-                    const userPlan = 'premium';
-                    const userRank = 'top10';
-                    const isAdult = localStorage.getItem('userAge') !== 'minor';
-                    const pvpEarnings = 15;
-                    const trainingEarnings = 120;
-                    const labyrinthEarnings = parseFloat(localStorage.getItem('labyrinthCredits') || '0');
-                    
-                    const withdrawalInfo = calculateWithdrawal(
-                      userPlan as any,
-                      30,
-                      0,
-                      isAdult,
-                      userRank as any,
-                      pvpEarnings,
-                      trainingEarnings,
-                      labyrinthEarnings
-                    );
-                    
-                    return `${withdrawalInfo.finalAmount.toFixed(0)} créditos`;
-                  })()}
+                  {wallet ? (
+                    `${wallet.balance.toFixed(2)} créditos`
+                  ) : (
+                    '0.00 créditos'
+                  )}
                 </p>
+                {wallet && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Total ganho: {wallet.total_earned.toFixed(2)} • Gasto: {wallet.total_spent.toFixed(2)}
+                  </p>
+                )}
               </div>
 
               {/* Estatísticas da Carteira */}
@@ -527,13 +515,13 @@ const Dashboard = () => {
                 <div className="arena-card p-3 text-center">
                   <p className="text-xs text-muted-foreground mb-1">Total Conquistado</p>
                   <p className="text-sm font-bold text-epic">
-                    {wallet ? `${Math.round(wallet.total_earned * 100)} créditos` : '0 créditos'}
+                    {wallet ? `${wallet.total_earned.toFixed(2)} créditos` : '0.00 créditos'}
                   </p>
                 </div>
                 <div className="arena-card p-3 text-center">
                   <p className="text-xs text-muted-foreground mb-1">Total Gasto</p>
                   <p className="text-sm font-bold text-battle">
-                    {wallet ? `${Math.round(wallet.total_spent * 100)} créditos` : '0 créditos'}
+                    {wallet ? `${wallet.total_spent.toFixed(2)} créditos` : '0.00 créditos'}
                   </p>
                 </div>
               </div>
