@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos.",gues! 
+      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos.", 
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
