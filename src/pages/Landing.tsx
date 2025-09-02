@@ -42,7 +42,7 @@ const Landing = () => {
     {
       icon: <Sword className="w-8 h-8 text-battle" />,
       title: "PvP Meritocrático 1x1",
-                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos.",
+                      description: "Duelos de conhecimento contra outros usuários. Custo 1,5 créditos por partida - vencedor recebe 2,5 créditos.",gues! 
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"
@@ -127,6 +127,7 @@ const Landing = () => {
               src={egyptBg} 
               alt="Egypt Era" 
               className="w-full h-1/4 object-cover"
+              style={{ objectPosition: '-15% -6%' }}
             />
             <div className="absolute top-0 left-0 w-full h-1/4 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
           </div>
@@ -137,6 +138,7 @@ const Landing = () => {
               src={mesopotamiaBg} 
               alt="Mesopotamia Era" 
               className="w-full h-1/4 object-cover translate-y-full"
+              style={{ objectPosition: '-15% -6%' }}
             />
             <div className="absolute top-1/4 left-0 w-full h-1/4 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
           </div>
@@ -157,6 +159,7 @@ const Landing = () => {
               src={digitalBg} 
               alt="Digital Era" 
               className="w-full h-1/4 object-cover translate-y-[300%]"
+              style={{ objectPosition: '-15% -6%' }}
             />
             <div className="absolute top-3/4 left-0 w-full h-1/4 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
           </div>
