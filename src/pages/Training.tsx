@@ -443,7 +443,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         <div className="w-full h-full bg-gradient-to-b from-epic/40 to-battle-dark/60" />
         <div className="absolute inset-0 opacity-40">
           <div className="w-full h-full bg-cover bg-center" 
-               style={{ backgroundImage: `url(${egyptArena})` }}>
+               style={{ 
+                 backgroundImage: `url(${egyptArena})`,
+                 backgroundPosition: isMobile ? '-20% -10%' : 'center'
+               }}>
           </div>
         </div>
         
