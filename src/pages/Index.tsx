@@ -417,12 +417,12 @@ const Index = () => {
                 ))}
               </div>
               <CreditsBalanceCard 
-                creditsBalance={userCredits?.credits_balance || 400}
+                creditsBalance={wallet?.balance || 0}
                 xp={profile?.total_xp || 0}
                 canWithdraw={computed.daysSinceDeposit >= 30}
                 withdrawAmount={5.00}
                 nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
-                earnedCredits={userCredits?.credits_earned || 0}
+                earnedCredits={wallet?.total_earned || 0}
               />
             </>
           ) : (
@@ -430,12 +430,12 @@ const Index = () => {
             <>
               <div className="lg:col-span-1">
                 <CreditsBalanceCard 
-                  creditsBalance={userCredits?.credits_balance || 400}
+                  creditsBalance={wallet?.balance || 0}
                   xp={profile?.total_xp || 0}
                   canWithdraw={computed.daysSinceDeposit >= 30}
                   withdrawAmount={5.00}
                   nextWithdraw={`${30 - computed.daysSinceDeposit} dias restantes`}
-                  earnedCredits={userCredits?.credits_earned || 0}
+                  earnedCredits={wallet?.total_earned || 0}
                 />
               </div>
               
