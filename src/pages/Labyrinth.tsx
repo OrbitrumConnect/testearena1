@@ -1519,10 +1519,10 @@ const Labyrinth = () => {
                     </div>
                     
                     <div className="mt-4">
-                      <div className="text-xs text-muted-foreground mb-1">Progresso da Exploração</div>
-                      <div className="bg-muted rounded-full h-1">
+                      <div className={`text-muted-foreground mb-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>Progresso da Exploração</div>
+                      <div className={`bg-muted rounded-full ${isMobile ? 'h-0.5' : 'h-1'}`}>
                         <div 
-                          className="bg-victory rounded-full h-1 transition-all duration-300" 
+                          className={`bg-victory rounded-full transition-all duration-300 ${isMobile ? 'h-0.5' : 'h-1'}`}
                           style={{ width: `${(gameState.chestsOpened / gameState.totalChests) * 100}%` }}
                         />
                       </div>
