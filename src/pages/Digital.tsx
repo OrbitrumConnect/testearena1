@@ -401,7 +401,7 @@ const Digital = () => {
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
       <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Fundo Temático Digital */}
-      <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(15%, -10%) scale(1.2)'} : {}}>
+      <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
         <img 
           src="/digital-background.png" 
           alt="Digital Background" 
