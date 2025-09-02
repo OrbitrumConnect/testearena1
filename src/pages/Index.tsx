@@ -13,6 +13,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { ParticleBackground } from '@/components/ui/particles';
+import { VideoBackground } from '@/components/ui/video-background';
 import { TimelineModule } from '@/components/arena/TimelineModule';
 import { StatsCard } from '@/components/arena/StatsCard';
 import { CreditsBalanceCard } from '@/components/arena/CreditsBalanceCard';
@@ -233,17 +234,11 @@ const Index = () => {
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
       <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
-      {/* Background Temático Home - Arena Principal */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url('/egypt-arena.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
+      {/* Background Temático Home - Vídeo em Loop */}
+      <VideoBackground 
+        videoPath="/backgroundarenahome.mp4"
+        fallbackImage="/egypt-arena.png"
       />
-      <div className="absolute inset-0 bg-black/50" />
       
       <ParticleBackground />
       
