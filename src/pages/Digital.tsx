@@ -406,7 +406,7 @@ const Digital = () => {
           src="/digital-background.png" 
           alt="Digital Background" 
           className="w-full h-full object-cover opacity-80"
-          style={isMobile ? { objectPosition: '40% -20%' } : {}}
+          style={isMobile ? { objectPosition: '70% -30%' } : {}}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-300/30 to-blue-600/50" />
       </div>
