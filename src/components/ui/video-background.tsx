@@ -15,7 +15,7 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const isMobile = useIsMobile();
   
   // Scale diferente para mobile vs desktop
-  const videoScale = isMobile ? 'scale(1.5, 1.05)' : 'scale(1.75, 1.1)';
+  const videoScale = isMobile ? 'scale(1.45, 0.95)' : 'scale(1.75, 1.1)';
   
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
