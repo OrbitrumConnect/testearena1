@@ -747,9 +747,17 @@ const Labyrinth = () => {
                planType: userPlan
              });
              
-             // Forçar mudança para fase de vitória
-             console.log('🏆 Mudando para fase de vitória!');
-             return { ...prev, phase: 'victory', score: prev.score + 300 }; // Ajustado para alinhar com sistema PvP
+                         // Forçar mudança para fase de vitória
+            console.log('🏆 Mudando para fase de vitória!');
+            
+            // Auto-navegar após 3 segundos para não travar
+            setTimeout(() => {
+              const nextRoute = getNextEra(era as Era);
+              console.log('🚀 Auto-navegando para:', nextRoute);
+              navigate(nextRoute);
+            }, 3000);
+            
+            return { ...prev, phase: 'victory', score: prev.score + 300 }; // Ajustado para alinhar com sistema PvP
            }
 
           return {
