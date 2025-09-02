@@ -190,7 +190,7 @@ const Index = () => {
     },
     { 
       title: 'Saldo Total', 
-      value: `${(userCredits?.credits_balance || 400).toLocaleString()} créditos`, 
+      value: `${(wallet?.balance || 0).toLocaleString()} créditos`, 
       type: 'finance' as const, 
       percentage: Math.min(100, Math.round((wallet?.balance || 0) * 2)), // Conversão para %
       isImproving: (wallet?.balance || 0) > 0 

@@ -431,7 +431,11 @@ const Arena = () => {
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
                 <p className={`text-2xl font-bold ${battleResult === 'victory' ? 'text-victory' : 'text-epic'}`}>
-                  {battleResult === 'victory' ? '+2 créditos' : '+0 créditos'}
+                  {(() => {
+                    const userPlan = getUserPlan();
+                    const arenaResult = calculateArenaCredits(userPlan, battleResult === 'victory');
+                    return `+${arenaResult.creditsEarned} créditos`;
+                  })()}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {battleResult === 'victory' ? 'Vitória PvP!' : 'Experiência de batalha'}
