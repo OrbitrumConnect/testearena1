@@ -15,21 +15,21 @@ CREATE TABLE public.profiles (
 -- Habilitar RLS
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS para profiles
-CREATE POLICY "Users can view their own profile" 
-ON public.profiles 
-FOR SELECT 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can update their own profile" 
-ON public.profiles 
-FOR UPDATE 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can insert their own profile" 
+-- Políticas RLS para profiles - Permitir inserção e atualização para demo
+CREATE POLICY "Allow demo users to insert profiles" 
 ON public.profiles 
 FOR INSERT 
-WITH CHECK (auth.uid()::text = user_id::text);
+WITH CHECK (true);
+
+CREATE POLICY "Allow demo users to view profiles" 
+ON public.profiles 
+FOR SELECT 
+USING (true);
+
+CREATE POLICY "Allow demo users to update profiles" 
+ON public.profiles 
+FOR UPDATE 
+USING (true);
 
 -- Criar tabela de carteira do usuário
 CREATE TABLE public.user_wallet (
@@ -45,21 +45,21 @@ CREATE TABLE public.user_wallet (
 -- Habilitar RLS
 ALTER TABLE public.user_wallet ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS para wallet
-CREATE POLICY "Users can view their own wallet" 
-ON public.user_wallet 
-FOR SELECT 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can update their own wallet" 
-ON public.user_wallet 
-FOR UPDATE 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can insert their own wallet" 
+-- Políticas RLS para wallet - Permitir inserção e atualização para demo
+CREATE POLICY "Allow demo users to insert wallet" 
 ON public.user_wallet 
 FOR INSERT 
-WITH CHECK (auth.uid()::text = user_id::text);
+WITH CHECK (true);
+
+CREATE POLICY "Allow demo users to view wallet" 
+ON public.user_wallet 
+FOR SELECT 
+USING (true);
+
+CREATE POLICY "Allow demo users to update wallet" 
+ON public.user_wallet 
+FOR UPDATE 
+USING (true);
 
 -- Criar tabela de histórico de batalhas
 CREATE TABLE public.battle_history (
@@ -78,16 +78,16 @@ CREATE TABLE public.battle_history (
 -- Habilitar RLS
 ALTER TABLE public.battle_history ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS para battle_history
-CREATE POLICY "Users can view their own battle history" 
-ON public.battle_history 
-FOR SELECT 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can insert their own battle history" 
+-- Políticas RLS para battle_history - Permitir inserção para demo
+CREATE POLICY "Allow demo users to insert battle history" 
 ON public.battle_history 
 FOR INSERT 
-WITH CHECK (auth.uid()::text = user_id::text);
+WITH CHECK (true);
+
+CREATE POLICY "Allow demo users to view battle history" 
+ON public.battle_history 
+FOR SELECT 
+USING (true);
 
 -- Criar tabela de transações da carteira
 CREATE TABLE public.wallet_transactions (
@@ -103,16 +103,16 @@ CREATE TABLE public.wallet_transactions (
 -- Habilitar RLS
 ALTER TABLE public.wallet_transactions ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS para transactions
-CREATE POLICY "Users can view their own transactions" 
-ON public.wallet_transactions 
-FOR SELECT 
-USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can insert their own transactions" 
+-- Políticas RLS para transactions - Permitir inserção para demo
+CREATE POLICY "Allow demo users to insert transactions" 
 ON public.wallet_transactions 
 FOR INSERT 
-WITH CHECK (auth.uid()::text = user_id::text);
+WITH CHECK (true);
+
+CREATE POLICY "Allow demo users to view transactions" 
+ON public.wallet_transactions 
+FOR SELECT 
+USING (true);
 
 -- Criar triggers para atualizar updated_at
 CREATE TRIGGER update_profiles_updated_at
