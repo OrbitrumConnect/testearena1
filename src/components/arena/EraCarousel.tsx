@@ -224,26 +224,24 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
               {isMobile ? 'Arena' : `Arena (${pvpValues.betAmount} créditos)`}
             </ActionButton>
             
+            <ActionButton 
+              variant="battle" 
+              icon={<Users />}
+              onClick={() => navigate(currentEra.routes.ranking)}
+              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300`}
+            >
+              {isMobile ? 'Ranking' : 'Ranking Global'}
+            </ActionButton>
+            
             {!isMobile && (
-              <>
-                <ActionButton 
-                  variant="battle" 
-                  icon={<Users />}
-                  onClick={() => navigate(currentEra.routes.ranking)}
-                  className="text-sm py-3 w-full transition-all duration-300"
-                >
-                  Ranking Global
-                </ActionButton>
-                
-                <ActionButton 
-                  variant="legendary" 
-                  icon={<BookOpen />}
-                  onClick={() => navigate(currentEra.routes.knowledge)}
-                  className="text-sm py-3 w-full transition-all duration-300"
-                >
-                  Base Conhecimento
-                </ActionButton>
-              </>
+              <ActionButton 
+                variant="legendary" 
+                icon={<BookOpen />}
+                onClick={() => navigate(currentEra.routes.knowledge)}
+                className="text-sm py-3 w-full transition-all duration-300"
+              >
+                Base Conhecimento
+              </ActionButton>
             )}
           </div>
         </div>
