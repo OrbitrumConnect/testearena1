@@ -96,6 +96,45 @@ const Labyrinth = () => {
       const canvasX = (x / rect.width) * 400;
       const canvasY = (y / rect.height) * 400;
       
+      // Verificar se tocou no portal (PRIORIDADE)
+      const portalRange = 40; // Raio do portal para touch
+      const portalDistance = Math.sqrt(
+        Math.pow(canvasX - portalPosition.x, 2) + Math.pow(canvasY - portalPosition.y, 2)
+      );
+      
+      if (portalDistance < portalRange && gameState.keysCollected >= 3) {
+        console.log('🚪 Portal tocado no mobile! Chaves:', gameState.keysCollected);
+        
+        // Calcular créditos baseado nas chaves coletadas
+        const questionsCorrect = gameState.keysCollected; // 4 máximo
+        const totalQuestions = 4; // 4 baús total
+        const accuracyPercentage = (questionsCorrect / totalQuestions) * 100;
+        
+        // Obter plano do usuário e integrar com sistema de créditos
+        const userPlan = getUserPlan();
+        handleNewBattleCredits({
+          battleType: 'training',
+          questionsCorrect,
+          questionsTotal: totalQuestions,
+          accuracyPercentage,
+          eraSlug: 'digital',
+          usedExtraLife: false,
+          planType: userPlan
+        });
+        
+        // Mudar para vitória e auto-navegar
+        setGameState(prev => ({ ...prev, phase: 'victory', score: prev.score + 300 }));
+        
+        // Auto-navegar após 2 segundos no mobile (mais rápido)
+        setTimeout(() => {
+          const nextRoute = getNextEra(era as Era);
+          console.log('🚀 Mobile: Auto-navegando para:', nextRoute);
+          navigate(nextRoute);
+        }, 2000);
+        
+        return;
+      }
+      
       // Verificar se tocou em um baú (distância maior para facilitar)
       const touchedChest = chests.find(chest => {
         const distance = Math.sqrt(
