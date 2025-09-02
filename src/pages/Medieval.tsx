@@ -458,8 +458,6 @@ const Medieval = () => {
               </div>
             </div>
 
-
-
             {/* Inimigo - Posição Direita */}
             <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
