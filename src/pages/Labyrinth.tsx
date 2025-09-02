@@ -127,7 +127,7 @@ const Labyrinth = () => {
          setGameState(prev => ({
            ...prev,
            chestsOpened: prev.chestsOpened + 1,
-           score: prev.score + 1 // 1 ponto por baú = máximo 8 créditos
+           score: prev.score + 50 // 50 pontos por baú = alinhado com sistema web
          }));
          
          // CALCULAR CRÉDITOS GANHOS NO LABIRINTO
@@ -280,25 +280,25 @@ const Labyrinth = () => {
       name: 'Labirinto do Faraó',
       background: '/egypt-arena.png',
       primaryColor: '#ecc94b',
-      maxTime: 300
+      maxTime: 180
     },
     'mesopotamia': {
       name: 'Zigurate dos Mistérios',
       background: '/mesopotamia-background.png',
       primaryColor: '#ed8936',
-      maxTime: 350
+      maxTime: 180
     },
     'medieval': {
       name: 'Castelo das Sombras',
       background: '/medieval-background.png',
       primaryColor: '#9f7aea',
-      maxTime: 400
+      maxTime: 180
     },
     'digital': {
       name: 'Labirinto Cibernético',
       background: '/digital-background.png',
       primaryColor: '#06b6d4',
-      maxTime: 450
+      maxTime: 180
     }
   };
 
@@ -555,7 +555,7 @@ const Labyrinth = () => {
      setPortalPosition(randomPortal);
      
      // Filtrar posições que não colidem com o portal
-     const portalRange = 30; // Distância mínima do portal
+     const portalRange = 35; // Distância mínima do portal aumentada
      const validPositions = shuffledPositions.filter(pos => {
        const distance = Math.sqrt(
          Math.pow(pos.x - randomPortal.x, 2) + Math.pow(pos.y - randomPortal.y, 2)
@@ -721,13 +721,14 @@ const Labyrinth = () => {
 
           if (isCollision(newX, newY)) return prev;
 
-                     // Verificar se chegou no portal de saída (área 30x30 centrada na posição do portal)
-           const portalRange = 15; // Raio do portal
-           if (newX >= portalPosition.x - portalRange && newX <= portalPosition.x + portalRange && 
-               newY >= portalPosition.y - portalRange && newY <= portalPosition.y + portalRange && 
-               prev.keysCollected >= 3) {
+                     // Verificar se chegou no portal de saída (área 40x40 centrada na posição do portal)
+           const portalRange = 25; // Raio do portal aumentado para facilitar ainda mais
+           const isNearPortal = newX >= portalPosition.x - portalRange && newX <= portalPosition.x + portalRange && 
+                               newY >= portalPosition.y - portalRange && newY <= portalPosition.y + portalRange;
+           
+           if (isNearPortal && prev.keysCollected >= 3) {
              
-             console.log('🚪 Portal alcançado! Chaves:', prev.keysCollected, 'Fase:', prev.phase);
+             console.log('🚪 Portal alcançado! Chaves:', prev.keysCollected, 'Fase:', prev.phase, 'Posição jogador:', newX, newY, 'Portal:', portalPosition.x, portalPosition.y);
              
              // Calcular créditos baseado nas chaves coletadas (performance)
              const questionsCorrect = prev.keysCollected; // 4 máximo
@@ -969,11 +970,11 @@ const Labyrinth = () => {
       
       if (collidesWithOtherChest) continue;
       
-      // Verificar se não colide com o portal
-      const portalRange = 30;
-      const collidesWithPortal = 
-        x >= portalPosition.x - portalRange && x <= portalPosition.x + portalRange &&
-        y >= portalPosition.y - portalRange && y <= portalPosition.y + portalRange;
+                      // Verificar se não colide com o portal
+                const portalRange = 35;
+                const collidesWithPortal =
+                  x >= portalPosition.x - portalRange && x <= portalPosition.y - portalRange &&
+                  y >= portalPosition.y - portalRange && y <= portalPosition.y + portalRange;
       
       if (collidesWithPortal) continue;
       
@@ -1519,9 +1520,9 @@ const Labyrinth = () => {
                     
                     <div className="mt-4">
                       <div className="text-xs text-muted-foreground mb-1">Progresso da Exploração</div>
-                      <div className="bg-muted rounded-full h-2">
+                      <div className="bg-muted rounded-full h-1">
                         <div 
-                          className="bg-victory rounded-full h-2 transition-all duration-300" 
+                          className="bg-victory rounded-full h-1 transition-all duration-300" 
                           style={{ width: `${(gameState.chestsOpened / gameState.totalChests) * 100}%` }}
                         />
                       </div>

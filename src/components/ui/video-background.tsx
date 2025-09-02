@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VideoBackgroundProps {
   videoPath: string;
@@ -11,6 +12,11 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   fallbackImage,
   className = "" 
 }) => {
+  const isMobile = useIsMobile();
+  
+  // Scale diferente para mobile vs desktop
+  const videoScale = isMobile ? 'scale(1.5, 1.05)' : 'scale(1.75, 1.1)';
+  
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       {/* Vídeo de Background */}
@@ -22,7 +28,7 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
         className="absolute inset-0 w-full h-full object-cover"
         poster={fallbackImage}
         style={{
-          transform: 'scale(1.75, 1.1)',
+          transform: videoScale,
           transformOrigin: 'center center'
         }}
       >
@@ -34,7 +40,7 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
             alt="Background" 
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              transform: 'scale(1.75, 1.1)',
+              transform: videoScale,
               transformOrigin: 'center center'
             }}
           />
