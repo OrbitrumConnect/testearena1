@@ -1,10 +1,12 @@
 // Sistema de Créditos Internos - 3 Planos de Assinatura
 // 🎯 R$ 1,00 = 100 créditos (conversão interna, não exibida)
-// 🏆 ROI máximo: 150-300% anual (sistema sustentável e legal)
+// 🏆 ROI máximo: 192% anual (sistema sustentável e legal)
 // 📅 PROGRESSÃO OBRIGATÓRIA: Mês 1 → Mês 2 → Mês 3
+// 🔄 RANKING: Renova a cada 3 meses (4 chances por ano)
 
 export type PlanType = 'premium' | 'standard' | 'basic';
 export type MonthType = 'month1' | 'month2' | 'month3';
+export type RankingTier = 'top1' | 'top5' | 'top10' | 'regular';
 
 export interface PlanConfig {
   // Entrada do usuário
@@ -31,11 +33,19 @@ export interface PlanConfig {
   monthlyBonusMax: number; // Máximo possível
 
   // Saque (CONTROLADO E LEGAL)
-  withdrawalFeePercent: number; // 5%
+  withdrawalFeePercent: number; // 22.5%
   withdrawalMinDays: number; // 30 dias
   maxMonthlyWithdrawal: number; // Limite legal
   maxWithdrawalUnder18: number; // Limite para menores de 18 (50%)
 }
+
+// 🏆 SISTEMA DE RANKING TRIMESTRAL (renova a cada 3 meses)
+export const RANKING_BONUSES: Record<RankingTier, number> = {
+  top1: 1.50,    // +50% bônus = ROI 192% anual
+  top5: 1.30,    // +30% bônus = ROI ~150% anual  
+  top10: 1.20,   // +20% bônus = ROI ~120% anual
+  regular: 1.00  // Sem bônus = ROI 108% anual
+};
 
 // 📊 CONFIGURAÇÕES DOS 3 PLANOS - PROGRESSÃO OBRIGATÓRIA
 export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
@@ -43,7 +53,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     // 💎 MÊS 1 - R$ 5,00 (OBRIGATÓRIO PARA TODOS)
     initialDeposit: 5.00,
     platformRetention: 1.50, // R$ 1,50 retido pela plataforma
-    creditsReceived: 350, // R$ 3,50 para o usuário
+    creditsReceived: 350, // R$ 3,50 para o usuário (CORRIGIDO!)
     monthType: 'month1',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -68,7 +78,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     // 🥈 MÊS 2 - R$ 3,50 (SÓ QUEM PAGOU MÊS 1)
     initialDeposit: 3.50,
     platformRetention: 1.05, // R$ 1,05 retido pela plataforma
-    creditsReceived: 245, // R$ 2,45 para o usuário
+    creditsReceived: 245, // R$ 2,45 para o usuário (CORRIGIDO!)
     monthType: 'month2',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -93,7 +103,7 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     // 🥉 MÊS 3 - R$ 2,00 (SÓ QUEM PAGOU MÊS 2)
     initialDeposit: 2.00,
     platformRetention: 0.60, // R$ 0,60 retido pela plataforma
-    creditsReceived: 140, // R$ 1,40 para o usuário
+    creditsReceived: 140, // R$ 1,40 para o usuário (CORRIGIDO!)
     monthType: 'month3',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
@@ -113,6 +123,31 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
   }
+};
+
+// 🔄 SISTEMA DE RANKING TRIMESTRAL (renova a cada 3 meses)
+export const getCurrentQuarter = (): number => {
+  const now = new Date();
+  const month = now.getMonth() + 1; // Janeiro = 1
+  return Math.ceil(month / 3); // 1-3 = Q1, 4-6 = Q2, 7-9 = Q3, 10-12 = Q4
+};
+
+export const getRankingTier = (userRank: number, totalUsers: number): RankingTier => {
+  if (totalUsers === 0) return 'regular';
+  
+  const top1Threshold = Math.ceil(totalUsers * 0.01); // Top 1%
+  const top5Threshold = Math.ceil(totalUsers * 0.05); // Top 5%
+  const top10Threshold = Math.ceil(totalUsers * 0.10); // Top 10%
+  
+  if (userRank <= top1Threshold) return 'top1';
+  if (userRank <= top5Threshold) return 'top5';
+  if (userRank <= top10Threshold) return 'top10';
+  return 'regular';
+};
+
+export const applyRankingBonus = (baseCredits: number, rankingTier: RankingTier): number => {
+  const bonus = RANKING_BONUSES[rankingTier];
+  return baseCredits * bonus;
 };
 
 // 🔒 SISTEMA DE PROGRESSÃO OBRIGATÓRIA

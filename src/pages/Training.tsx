@@ -416,7 +416,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <ActionButton 
                 variant="epic" 
                 onClick={() => navigate('/labyrinth/egito-antigo')}
-                className="bg-gradient-to-r from-epic to-victory"
+                className={`bg-gradient-to-r from-epic to-victory ${isMobile ? 'transform -translate-y-[30%]' : ''}`}
               >
                 🏛️ Entrar no Labirinto do Egito
               </ActionButton>

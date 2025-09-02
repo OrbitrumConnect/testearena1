@@ -58,7 +58,7 @@ const Landing = () => {
     {
       icon: <Crown className="w-8 h-8 text-legendary" />,
       title: "Top 10% Elite + Bônus",
-      description: "Apenas os melhores recebem +20% de bônus. Acumulação 90% + saques inteligentes até 80% via PIX.",
+      description: "Apenas os melhores recebem bônus especiais. Sistema meritocrático com recompensas por performance.",
       color: "legendary",
       bgGradient: "from-legendary/20 via-legendary/10 to-transparent",
       borderColor: "border-legendary/30"
@@ -66,9 +66,9 @@ const Landing = () => {
   ];
 
   const stats = [
-    { value: "88%", label: "Margem Sustentável", icon: <Shield className="w-6 h-6 text-epic" /> },
-                    { value: "Sistema 3 Meses", label: "Progressão Meritocrática", icon: <Trophy className="w-6 h-6 text-gray-400" /> },
-          { value: "Top 10%", label: "Bônus Especiais", icon: <Crown className="w-6 h-6 text-gray-400" /> },
+    { value: "Sustentável", label: "Modelo Econômico", icon: <Shield className="w-6 h-6 text-epic" /> },
+    { value: "Sistema 3 Meses", label: "Progressão Meritocrática", icon: <Trophy className="w-6 h-6 text-gray-400" /> },
+    { value: "Top 10%", label: "Bônus Especiais", icon: <Crown className="w-6 h-6 text-gray-400" /> },
     { value: "100%", label: "Transparência", icon: <Target className="w-6 h-6 text-epic" /> }
   ];
 
@@ -369,11 +369,11 @@ const Landing = () => {
             </Card>
           </div>
 
-          {/* Exemplos de Ganho */}
+          {/* Exemplos de Créditos */}
           <div className={`text-center ${isMobile ? 'mt-4 px-1' : 'mt-8 px-6'}`}>
             <Card className={`arena-card-epic max-w-4xl mx-auto ${isMobile ? 'p-3' : 'p-6'}`}>
               <h3 className={`font-bold text-epic ${isMobile ? 'text-sm mb-3' : 'text-2xl mb-4'}`}>
-                💰 Exemplos de Ganho Mensal
+                💰 Exemplos de Créditos Mensais
               </h3>
               <div className={`grid gap-2 ${isMobile ? 'grid-cols-2 text-xs' : 'md:grid-cols-4'}`}>
                 <div className="text-center">
@@ -394,7 +394,7 @@ const Landing = () => {
                 <div className="text-center">
                   <div className={`font-bold text-purple-500 ${isMobile ? 'text-lg' : 'text-2xl'}`}>👑</div>
                   <div className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>Elite 10%</div>
-                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>200-400 créditos/mês</div>
+                  <div className={`text-legendary font-bold ${isMobile ? 'text-xs' : 'text-xl'}`}>200+ créditos/mês</div>
                 </div>
               </div>
               <p className={`text-muted-foreground ${isMobile ? 'mt-2 text-xs' : 'mt-4 text-sm'}`}>
@@ -539,7 +539,7 @@ const Landing = () => {
             </button>
             <span className="text-muted-foreground">•</span>
             <span className="text-muted-foreground">
-                              💎 5 créditos/mês (PIX)
+              💎 Plano Premium
             </span>
           </div>
           <p className="text-muted-foreground text-xs">

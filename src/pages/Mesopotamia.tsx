@@ -356,7 +356,7 @@ const Mesopotamia = () => {
               <ActionButton 
                 variant="epic" 
                 onClick={() => navigate('/labyrinth/mesopotamia')}
-                className="bg-gradient-to-r from-epic to-victory"
+                className={`bg-gradient-to-r from-epic to-victory ${isMobile ? 'transform -translate-y-[30%]' : ''}`}
               >
                 🏛️ Entrar no Labirinto da Mesopotâmia
               </ActionButton>

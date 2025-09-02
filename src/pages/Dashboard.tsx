@@ -7,7 +7,7 @@ import { AuthForm } from '@/components/auth/AuthForm';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useResetData } from '@/hooks/useResetData';
 import { supabase } from '@/integrations/supabase/client';
-import { calculateWithdrawal, calculateTrainingCredits } from '@/utils/creditsSystem';
+import { calculateWithdrawal, calculateTrainingCredits, getCurrentQuarter, getRankingTier, applyRankingBonus, RANKING_BONUSES, PlanType } from '@/utils/creditsSystem';
 import { getUserPlan } from '@/utils/creditsIntegration';
 import { getUserCredits, calculateTotalBalance, calculateWithdrawableAmount } from '@/utils/creditsUnified';
 import { initializeTestSystem, checkDataConsistency } from '@/utils/testCredits';
@@ -134,6 +134,48 @@ const Dashboard = () => {
   const avgAccuracy = battleHistory.length ? 
     battleHistory.reduce((acc, battle) => acc + battle.accuracy_percentage, 0) / battleHistory.length : 0;
 
+  // Calcular créditos com bônus de ranking
+  const calculateCreditsWithBonus = (baseCredits: number) => {
+    // Simular ranking (em produção viria do Supabase)
+    const userRank = 1; // Exemplo: TOP 1
+    const totalUsers = 100; // Exemplo: 100 usuários
+    const rankingTier = getRankingTier(userRank, totalUsers);
+    const creditsWithBonus = applyRankingBonus(baseCredits, rankingTier);
+    
+    return {
+      baseCredits,
+      bonusCredits: creditsWithBonus - baseCredits,
+      totalCredits: creditsWithBonus,
+      rankingTier,
+      rankingBonus: RANKING_BONUSES[rankingTier]
+    };
+  };
+
+  // Calcular créditos por era com bônus
+  const getEraCreditsWithBonus = (eraName: string) => {
+    const eraBattles = battleHistory.filter(battle => 
+      battle.era_name.toLowerCase().includes(eraName.toLowerCase()) ||
+      (eraName === 'egypt' && battle.era_name.includes('Egito')) ||
+      (eraName === 'mesopotamia' && battle.era_name.includes('Mesopotâmia')) ||
+      (eraName === 'medieval' && battle.era_name.includes('Medieval')) ||
+      (eraName === 'digital' && battle.era_name.includes('Digital'))
+    );
+    
+    if (eraBattles.length === 0) return { baseCredits: 0, bonusCredits: 0, totalCredits: 0 };
+    
+    const totalCredits = eraBattles.reduce((sum, battle) => {
+      const trainingCredits = calculateTrainingCredits(
+        'premium' as PlanType,
+        battle.era_name.toLowerCase().replace(' ', '-'),
+        battle.questions_correct || 0,
+        battle.questions_total || 10
+      );
+      return sum + trainingCredits.creditsEarned;
+    }, 0);
+    
+    return calculateCreditsWithBonus(totalCredits);
+  };
+
   return (
     <div className={`${isMobile ? 'min-h-screen' : 'h-screen overflow-hidden'} relative`}>
       <div className={isMobile ? '' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
@@ -199,6 +241,23 @@ const Dashboard = () => {
           </div>
         </Card>
 
+        {/* Upgrade VIP - Movido para cima para ficar visível */}
+        <Card className={`arena-card-epic ${isMobile ? 'p-3 mb-3' : 'p-4 mb-6'}`}>
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+            <h4 className="text-blue-400 font-semibold mb-2">🚀 Upgrade para VIP</h4>
+            <p className="text-sm text-gray-300 mb-3">
+              Treinos ilimitados + 50 créditos/mês + Suporte prioritário
+            </p>
+            <ActionButton 
+              variant="epic" 
+              onClick={() => navigate('/payment')}
+              className="w-full"
+            >
+              Upgrade Agora
+            </ActionButton>
+          </div>
+        </Card>
+
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-3' : 'lg:grid-cols-3 gap-8'}`}>
           {/* Coluna Principal */}
           <div className={`${isMobile ? 'space-y-3' : 'lg:col-span-2 space-y-6'}`}>
@@ -245,201 +304,188 @@ const Dashboard = () => {
 
               {/* Estatísticas Principais */}
               <div className={`grid grid-cols-2 ${isMobile ? 'gap-2' : 'md:grid-cols-4 gap-4'}`}>
-                <div className={`arena-card text-center ${isMobile ? 'p-2' : 'p-4'}`}>
-                  <Trophy className={`text-victory mx-auto ${isMobile ? 'w-5 h-5 mb-1' : 'w-8 h-8 mb-2'}`} />
+                <div className="text-center">
                   <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-2xl'}`}>{profile?.total_xp || 0}</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>XP Total</p>
+                  <p className="text-xs text-muted-foreground">XP Total</p>
                 </div>
-                <div className={`arena-card text-center ${isMobile ? 'p-2' : 'p-4'}`}>
-                  <Target className={`text-epic mx-auto ${isMobile ? 'w-5 h-5 mb-1' : 'w-8 h-8 mb-2'}`} />
+                <div className="text-center">
                   <p className={`font-bold text-epic ${isMobile ? 'text-lg' : 'text-2xl'}`}>{profile?.total_battles || 0}</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Batalhas</p>
+                  <p className="text-xs text-muted-foreground">Batalhas</p>
                 </div>
-                <div className={`arena-card text-center ${isMobile ? 'p-2' : 'p-4'}`}>
-                  <Award className={`text-battle mx-auto ${isMobile ? 'w-5 h-5 mb-1' : 'w-8 h-8 mb-2'}`} />
+                <div className="text-center">
                   <p className={`font-bold text-battle ${isMobile ? 'text-lg' : 'text-2xl'}`}>{profile?.battles_won || 0}</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>Vitórias</p>
+                  <p className="text-xs text-muted-foreground">Vitórias</p>
                 </div>
-                <div className={`arena-card text-center ${isMobile ? 'p-2' : 'p-4'}`}>
-                  <TrendingUp className={`text-victory mx-auto ${isMobile ? 'w-5 h-5 mb-1' : 'w-8 h-8 mb-2'}`} />
-                  <p className={`font-bold text-victory ${isMobile ? 'text-lg' : 'text-2xl'}`}>{winRate.toFixed(1)}%</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'Taxa' : 'Taxa de Vitória'}</p>
+                <div className="text-center">
+                  <p className={`font-bold text-legendary ${isMobile ? 'text-lg' : 'text-2xl'}`}>{winRate.toFixed(1)}%</p>
+                  <p className="text-xs text-muted-foreground">Taxa de Vitória</p>
                 </div>
               </div>
             </Card>
 
             {/* Acesso Rápido às Eras */}
-            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
-                          <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <Sword className="w-6 h-6 text-epic" />
-                <h3 className="text-xl font-montserrat font-bold text-epic">🎮 Treinar Agora</h3>
+            <section className="mb-6">
+              <h3 className="text-lg font-bold text-epic mb-4">🚀 Acesso Rápido às Eras</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* Egito */}
+                <div className="arena-card text-center p-4 cursor-pointer hover-scale" onClick={() => navigate('/training')}>
+                  <div className="text-3xl mb-2">🏺</div>
+                  <h4 className="font-bold text-sm mb-2">Egito Antigo</h4>
+                  {(() => {
+                    const credits = getEraCreditsWithBonus('egypt');
+                    return (
+                      <div className="text-xs">
+                        <p className="text-victory">+{credits.totalCredits.toFixed(1)} créditos</p>
+                        {credits.bonusCredits > 0 && (
+                          <p className="text-epic text-xs">+{credits.bonusCredits.toFixed(1)} bônus</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Mesopotâmia */}
+                <div className="arena-card text-center p-4 cursor-pointer hover-scale" onClick={() => navigate('/mesopotamia')}>
+                  <div className="text-3xl mb-2">📜</div>
+                  <h4 className="font-bold text-sm mb-2">Mesopotâmia</h4>
+                  {(() => {
+                    const credits = getEraCreditsWithBonus('mesopotamia');
+                    return (
+                      <div className="text-xs">
+                        <p className="text-victory">+{credits.totalCredits.toFixed(1)} créditos</p>
+                        {credits.bonusCredits > 0 && (
+                          <p className="text-epic text-xs">+{credits.bonusCredits.toFixed(1)} bônus</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Medieval */}
+                <div className="arena-card text-center p-4 cursor-pointer hover-scale" onClick={() => navigate('/medieval')}>
+                  <div className="text-3xl mb-2">⚔️</div>
+                  <h4 className="font-bold text-sm mb-2">Era Medieval</h4>
+                  {(() => {
+                    const credits = getEraCreditsWithBonus('medieval');
+                    return (
+                      <div className="text-xs">
+                        <p className="text-victory">+{credits.totalCredits.toFixed(1)} créditos</p>
+                        {credits.bonusCredits > 0 && (
+                          <p className="text-epic text-xs">+{credits.bonusCredits.toFixed(1)} bônus</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Digital */}
+                <div className="arena-card text-center p-4 cursor-pointer hover-scale" onClick={() => navigate('/digital')}>
+                  <div className="text-3xl mb-2">💻</div>
+                  <h4 className="font-bold text-sm mb-2">Era Digital</h4>
+                  {(() => {
+                    const credits = getEraCreditsWithBonus('digital');
+                    return (
+                      <div className="text-xs">
+                        <p className="text-victory">+{credits.totalCredits.toFixed(1)} créditos</p>
+                        {credits.bonusCredits > 0 && (
+                          <p className="text-epic text-xs">+{credits.bonusCredits.toFixed(1)} bônus</p>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
-              
-              {/* Botão de Teste para Desenvolvedores */}
-              <ActionButton
-                variant="battle"
-                onClick={async () => {
-                  await initializeTestSystem();
-                  const consistency = await checkDataConsistency();
-                  console.log('🧪 Sistema de teste inicializado:', consistency);
-                  alert('Sistema de teste inicializado! Verifique o console.');
-                }}
-                className="text-xs p-2"
-              >
-                🧪 Teste
-              </ActionButton>
-            </div>
-              
-              <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-4 gap-4'}`}>
-                {[
-                  { name: 'Egito', icon: '🏺', path: '/training', color: 'epic', slug: 'egito-antigo' },
-                  { name: 'Mesopotâmia', icon: '📜', path: '/mesopotamia', color: 'battle', slug: 'mesopotamia' },
-                  { name: 'Medieval', icon: '⚔️', path: '/medieval', color: 'victory', slug: 'medieval' },
-                  { name: 'Digital', icon: '💻', path: '/digital', color: 'legendary', slug: 'digital' }
-                ].map((era) => {
-                  // Calcular créditos ganhos nesta era
-                  const eraBattles = battleHistory.filter(battle => 
-                    battle.era_name.toLowerCase().includes(era.name.toLowerCase()) ||
-                    (era.name === 'Egito' && battle.era_name.includes('Egito')) ||
-                    (era.name === 'Mesopotâmia' && battle.era_name.includes('Mesopotâmia')) ||
-                    (era.name === 'Medieval' && battle.era_name.includes('Medieval')) ||
-                    (era.name === 'Digital' && battle.era_name.includes('Digital'))
-                  );
-                  
-                  const totalCredits = eraBattles.reduce((sum, battle) => {
-                    const userPlan = getUserPlan();
-                    return sum + calculateTrainingCredits(
-                      userPlan,
-                      era.slug,
-                      battle.questions_correct,
-                      battle.questions_total
-                    ).creditsEarned;
-                  }, 0);
-                  
-                  return (
-                    <ActionButton
-                      key={era.name}
-                      variant={era.color as any}
-                      onClick={() => navigate(era.path)}
-                      className={`${isMobile ? 'p-2 text-xs' : 'p-4'} w-full flex flex-col items-center space-y-2`}
-                    >
-                      <div className={`${isMobile ? 'text-lg' : 'text-2xl'}`}>{era.icon}</div>
-                      <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold`}>{era.name}</span>
-                      <span className={`text-xs text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                        +{totalCredits.toFixed(1)} créditos
-                      </span>
-                    </ActionButton>
-                  );
-                })}
-              </div>
-              
-                               <div className="mt-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
-                   <p className="text-green-400 font-semibold text-center">
-                     ✨ Limite diário: 10 vidas gratuitas por era!
-                   </p>
-                 </div>
-            </Card>
+            </section>
 
             {/* Histórico de Batalhas (Compacto) */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-4'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <BarChart3 className="w-5 h-5 text-epic" />
-                <h3 className="text-lg font-montserrat font-bold text-epic">Últimas Batalhas</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-semibold text-epic flex items-center gap-2">
+                  <Sword className="w-4 h-4" />
+                  Últimas Batalhas
+                </h4>
+                <Badge variant="secondary" className="text-xs">
+                  {battleHistory.length} batalhas
+                </Badge>
               </div>
-
-              {battleHistory.length === 0 ? (
-                <div className="text-center py-4">
-                  <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-2 opacity-50" />
-                  <p className="text-sm text-muted-foreground">Nenhuma batalha ainda</p>
-                </div>
-              ) : (
-                <div className="space-y-2 max-h-40 overflow-y-auto">
-                  {battleHistory.slice(0, 3).map((battle) => (
-                    <div key={battle.id} className="arena-card p-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="text-lg">{getEraEmoji(battle.era_name)}</div>
-                          <div>
-                            <h4 className="text-sm font-semibold">{battle.era_name}</h4>
-                            <p className="text-xs text-muted-foreground">
-                              {battle.questions_correct}/{battle.questions_total}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className={`text-sm font-bold ${getAccuracyColor(battle.accuracy_percentage)}`}>
-                            {battle.accuracy_percentage}%
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            +{battle.xp_earned} XP
-                          </p>
-                          <p className="text-xs text-victory font-bold">
-                            +{(() => {
-                              const userPlan = getUserPlan();
-                              return calculateTrainingCredits(
-                                userPlan,
-                                battle.era_name.toLowerCase().includes('egito') ? 'egito-antigo' :
-                                battle.era_name.toLowerCase().includes('mesopotamia') ? 'mesopotamia' :
-                                battle.era_name.toLowerCase().includes('medieval') ? 'medieval' :
-                                'digital',
-                                battle.questions_correct,
-                                battle.questions_total
-                              ).creditsEarned.toFixed(1);
-                            })()} créditos
-                          </p>
-                        </div>
-                      </div>
+              
+              <div className="space-y-2">
+                {battleHistory.slice(0, 3).map((battle, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 bg-gray-800/50 rounded text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${battle.accuracy_percentage >= 70 ? 'bg-victory' : 'bg-battle'}`} />
+                      <span className="text-muted-foreground">{battle.era_name}</span>
                     </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-
-            {/* Conquistas (Compacto) */}
-            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-4'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <Award className="w-5 h-5 text-epic" />
-                <h3 className="text-lg font-montserrat font-bold text-epic">🏆 Conquistas</h3>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { 
-                    icon: '🏆', 
-                    name: 'Primeira Vitória', 
-                    achieved: (profile?.battles_won || 0) > 0
-                  },
-                  { 
-                    icon: '🔥', 
-                    name: 'Guerreiro Ativo', 
-                    achieved: (profile?.total_battles || 0) >= 10
-                  },
-                  { 
-                    icon: '⚡', 
-                    name: 'Especialista', 
-                    achieved: (profile?.total_xp || 0) >= 1000
-                  },
-                  { 
-                    icon: '👑', 
-                    name: 'Mestre', 
-                    achieved: false
-                  }
-                ].map((achievement) => (
-                  <div key={achievement.name} className={`arena-card p-2 text-center ${achievement.achieved ? 'bg-victory/10 border-victory/30' : 'opacity-50'}`}>
-                    <div className="text-lg mb-1">{achievement.icon}</div>
-                    <p className="text-xs font-semibold">{achievement.name}</p>
-                    {achievement.achieved && (
-                      <CheckCircle className="w-3 h-3 text-victory mx-auto mt-1" />
-                    )}
+                    <div className="flex items-center gap-2">
+                      <span className="text-victory">+{(() => {
+                        const trainingCredits = calculateTrainingCredits(
+                          'premium' as PlanType,
+                          battle.era_name.toLowerCase().replace(' ', '-'),
+                          battle.questions_correct || 0,
+                          battle.questions_total || 10
+                        );
+                        return trainingCredits.creditsEarned.toFixed(1);
+                      })()} créditos</span>
+                      <span className="text-muted-foreground">{battle.accuracy_percentage.toFixed(1)}%</span>
+                    </div>
                   </div>
                 ))}
               </div>
             </Card>
+
+            {/* Conquistas */}
+            <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-4'}`}>
+              <h4 className="text-sm font-semibold text-epic flex items-center gap-2 mb-3">
+                <Trophy className="w-4 h-4" />
+                Conquistas
+              </h4>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="text-center p-2 bg-victory/10 rounded border border-victory/20">
+                  <div className="text-lg font-bold text-victory">
+                    {profile?.battles_won ? '🏆' : '🔒'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Primeira Vitória</div>
+                  <div className="text-xs font-semibold text-victory">
+                    {profile?.battles_won ? 'Conquistada!' : 'Bloqueada'}
+                  </div>
+                </div>
+                
+                <div className="text-center p-2 bg-epic/10 rounded border border-epic/20">
+                  <div className="text-lg font-bold text-epic">
+                    {profile?.total_battles >= 10 ? '⚔️' : '🔒'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Veterano</div>
+                  <div className="text-xs font-semibold text-epic">
+                    {profile?.total_battles >= 10 ? 'Conquistada!' : 'Bloqueada'}
+                  </div>
+                </div>
+                
+                <div className="text-center p-2 bg-legendary/10 rounded border border-legendary/20">
+                  <div className="text-lg font-bold text-legendary">
+                    {profile?.total_xp >= 1000 ? '🌟' : '🔒'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Mestre</div>
+                  <div className="text-xs font-semibold text-legendary">
+                    {profile?.total_xp >= 1000 ? 'Conquistada!' : 'Bloqueada'}
+                  </div>
+                </div>
+                
+                <div className="text-center p-2 bg-battle/10 rounded border border-battle/20">
+                  <div className="text-lg font-bold text-battle">
+                    {profile?.total_battles >= 50 ? '👑' : '🔒'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Lendário</div>
+                  <div className="text-xs font-semibold text-battle">
+                    {profile?.total_xp >= 1000 ? 'Conquistada!' : 'Bloqueada'}
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
 
-          {/* Sidebar */}
-          <div className={`${isMobile ? 'space-y-3' : 'space-y-6'}`}>
+          {/* Coluna Lateral Direita */}
+          <div className={`${isMobile ? 'space-y-3' : 'space-y-6'} max-h-[calc(100vh-200px)] overflow-y-auto pr-2`}>
             {/* Carteira, Transações e Resumo Unificados */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
@@ -493,7 +539,7 @@ const Dashboard = () => {
               </div>
 
               {/* Resumo de Performance */}
-              <div className="mb-6">
+              <section className="mb-4">
                 <h4 className="text-sm font-semibold text-epic flex items-center gap-2 mb-3">
                   <Star className="w-4 h-4" />
                   Resumo de Performance
@@ -503,7 +549,7 @@ const Dashboard = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Precisão Média</span>
                     <span className={`text-sm font-bold ${getAccuracyColor(avgAccuracy)}`}>
-                      {avgAccuracy.toFixed(1)}%
+                      {avgAccuracy.toFixed(1)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -526,7 +572,7 @@ const Dashboard = () => {
                     </span>
                   </div>
                 </div>
-              </div>
+              </section>
 
               {/* Transações Recentes (Compacto) */}
               <div>
@@ -659,20 +705,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                {/* Upgrade VIP */}
-                <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
-                  <h4 className="text-blue-400 font-semibold mb-2">🚀 Upgrade para VIP</h4>
-                  <p className="text-sm text-gray-300 mb-3">
-                    Treinos ilimitados + 50 créditos/mês + Suporte prioritário
-                  </p>
-                  <ActionButton 
-                    variant="epic" 
-                    onClick={() => navigate('/payment')}
-                    className="w-full"
-                  >
-                    Upgrade Agora
-                  </ActionButton>
-                </div>
+
               </div>
             </Card>
 

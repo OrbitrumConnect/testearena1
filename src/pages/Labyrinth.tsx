@@ -1430,10 +1430,10 @@ const Labyrinth = () => {
                                                                                                                                                                                                                                                                   <div className="arena-card p-4" style={{ 
                                  transform: 'scale(0.6) translateY(40px)', 
                                  transformOrigin: 'center', 
-                                                                   margin: '-138px auto -126px auto', // Mobile: subir 15% (de -120px para -138px)
+                                 margin: isMobile ? '-165px auto -126px auto' : '-138px auto -126px auto', // Mobile: subir 20% (de -138px para -165px)
                                  backgroundColor: 'rgba(0, 0, 0, 0.33)', 
                                  width: isMobile ? '150%' : '130%', // Mobile: 150%, Web: 130%
-                                                                   marginLeft: isMobile ? '-30%' : '-15%', // Mobile: -30% (15% mais à esquerda), Web: -15%
+                                 marginLeft: isMobile ? '-30%' : '-15%', // Mobile: -30% (15% mais à esquerda), Web: -15%
                                  marginRight: 'auto',
                                  boxShadow: '0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 0, 0, 0.1)',
                                  border: '2px solid rgba(255, 215, 0, 0.6)'

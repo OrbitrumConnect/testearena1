@@ -370,7 +370,7 @@ const Digital = () => {
               <ActionButton 
                 variant="epic" 
                 onClick={() => navigate('/labyrinth/digital')}
-                className="bg-gradient-to-r from-epic to-victory"
+                className={`bg-gradient-to-r from-epic to-victory ${isMobile ? 'transform -translate-y-[30%]' : ''}`}
               >
                 🏛️ Entrar no Labirinto Digital
               </ActionButton>
