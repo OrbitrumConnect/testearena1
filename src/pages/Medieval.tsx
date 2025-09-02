@@ -374,7 +374,7 @@ const Medieval = () => {
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
       <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Fundo Temático Medieval */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-12.5%, -10%)'} : {}}>
         <img 
           src="/medieval-background.png" 
           alt="Medieval Background" 
@@ -385,7 +385,7 @@ const Medieval = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`} style={isMobile ? {transform: 'translate(-9%, -4%)'} : {}}>
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`}>
         {/* Header com navegação */}
         <div className={`${isMobile ? 'flex justify-between items-center mb-2 px-1' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
