@@ -628,27 +628,23 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Créditos Disponíveis</span>
                   <span className="font-bold text-green-400">
-                    {(() => {
-                      // Simular dados do usuário (em produção viria do contexto/estado)
-                      const userPlan = 'premium';
-                      const userRank = 'top10';
-                      const isAdult = localStorage.getItem('userAge') !== 'minor';
-                      const pvpEarnings = 15; // Créditos de PvP
-                      const trainingEarnings = 120; // Créditos de treinos
-                      
-                      // Usar função real do sistema
-                      const withdrawalInfo = calculateWithdrawal(
-                        userPlan as any,
-                        30, // daysSinceDeposit
-                        0, // monthlyEarnings
-                        isAdult,
-                        userRank as any,
-                        pvpEarnings,
-                        trainingEarnings
-                      );
-                      
-                      return `${withdrawalInfo.finalAmount.toFixed(0)} créditos`;
-                    })()}
+                    {wallet ? (
+                      `${Math.max(0, wallet.balance).toFixed(0)} créditos`
+                    ) : (
+                      '0 créditos'
+                    )}
+                  </span>
+                </div>
+                
+                {/* Status de Saque */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Status Saque</span>
+                  <span className={`font-bold ${(wallet?.balance || 0) >= 200 ? 'text-green-400' : 'text-orange-400'}`}>
+                    {(wallet?.balance || 0) >= 200 ? (
+                      '✅ Disponível'
+                    ) : (
+                      `⏳ ${200 - (wallet?.balance || 0)} restantes`
+                    )}
                   </span>
                 </div>
               </div>
@@ -657,7 +653,13 @@ const Dashboard = () => {
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
                   <h4 className="text-green-400 font-semibold mb-2">
-                    💰 Solicitar PIX - {localStorage.getItem('userAge') === 'minor' ? '2.5 créditos (50%)' : '5 créditos'}
+                    💰 Solicitar PIX - {(() => {
+                      const isMinor = localStorage.getItem('userAge') === 'minor';
+                      const balance = wallet?.balance || 0;
+                      const maxSaque = isMinor ? Math.floor(balance * 0.5) : Math.min(balance, 400);
+                      const valorReais = (maxSaque / 100).toFixed(2);
+                      return `${maxSaque} créditos (R$ ${valorReais})`;
+                    })()}
                   </h4>
                   <p className="text-sm text-gray-300 mb-3">
                     {localStorage.getItem('userAge') === 'minor' 
