@@ -195,7 +195,7 @@ const Dashboard = () => {
       
       <div className={`relative z-10 max-w-7xl mx-auto ${isMobile ? 'p-2' : 'p-6'}`}>
         {/* Header Unificado */}
-        <Card className={`arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'p-2 mb-2' : 'p-6 mb-8'}`}>
+        <Card className={`arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'p-3 mb-2' : 'p-6 mb-8'}`}>
           <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center justify-between'}`}>
             {/* Botão Voltar e Título */}
             <div className="flex items-center gap-2">
@@ -220,12 +220,12 @@ const Dashboard = () => {
             </div>
             
             {/* Botões de Ação */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-3">
               <ActionButton 
                 variant="battle" 
                 onClick={resetAllData}
                 disabled={resetting}
-                className={`backdrop-blur-sm ${isMobile ? 'text-xs px-1.5 py-0.5' : 'text-sm px-3 py-2'}`}
+                className={`backdrop-blur-sm ${isMobile ? 'text-xs px-1 py-0.5' : 'text-sm px-3 py-2'}`}
               >
                 <span className="text-xs">{resetting ? '⏳' : '🗑️'}</span> {!isMobile && 'Reset'}
               </ActionButton>
@@ -233,7 +233,7 @@ const Dashboard = () => {
               <ActionButton 
                 variant="epic" 
                 onClick={forceReset}
-                className={`backdrop-blur-sm ${isMobile ? 'text-xs px-1.5 py-0.5' : 'text-sm px-3 py-2'}`}
+                className={`backdrop-blur-sm ${isMobile ? 'text-xs px-1 py-0.5' : 'text-sm px-3 py-2'}`}
               >
                 <span className="text-xs">🔄</span> {!isMobile && 'Forçar'}
               </ActionButton>
@@ -258,9 +258,9 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-3' : 'lg:grid-cols-3 gap-8'}`}>
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-3 gap-8'}`}>
           {/* Coluna Principal */}
-          <div className={`${isMobile ? 'space-y-3' : 'lg:col-span-2 space-y-6'}`}>
+          <div className={`${isMobile ? 'space-y-6' : 'lg:col-span-2 space-y-6'}`}>
             {/* Perfil do Usuário */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className={`flex items-center justify-between ${isMobile ? 'gap-2 mb-2' : 'gap-6 mb-6'}`}>
@@ -485,7 +485,7 @@ const Dashboard = () => {
           </div>
 
           {/* Coluna Lateral Direita */}
-          <div className={`${isMobile ? 'space-y-3' : 'space-y-6'} max-h-[calc(100vh-200px)] overflow-y-auto pr-2`}>
+          <div className={`${isMobile ? 'space-y-6' : 'space-y-6'} max-h-[calc(100vh-200px)] overflow-y-auto pr-2`}>
             {/* Carteira, Transações e Resumo Unificados */}
             <Card className={`arena-card-epic ${isMobile ? 'p-3' : 'p-6'}`}>
               <div className="flex items-center gap-3 mb-6">
