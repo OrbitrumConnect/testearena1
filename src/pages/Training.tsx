@@ -445,7 +445,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
           <div className="w-full h-full bg-cover bg-center" 
                style={{ 
                  backgroundImage: `url(${egyptArena})`,
-                 backgroundPosition: isMobile ? '-20% -10%' : 'center'
+                 backgroundPosition: isMobile ? '20% -10%' : 'center'
                }}>
           </div>
         </div>
