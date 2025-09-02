@@ -519,7 +519,7 @@ const Digital = () => {
             const laserSize = laserSizes[index % 3];
             
             // Posições verticais diferentes com mais espaçamento
-            const verticalPositions = [54, 60, 66]; // Posições em % (mais juntos 20%)
+            const verticalPositions = isMobile ? [35, 40, 45] : [54, 60, 66]; // Mobile: nível dos heróis
             const verticalPos = verticalPositions[index % 3];
             
             return (
@@ -527,8 +527,8 @@ const Digital = () => {
                 key={shot.id}
                 className={`absolute pointer-events-none ${isMobile ? 'text-xs' : 'text-lg'}`}
                 style={{
-                  left: shot.type === 'player' ? '16%' : 'auto',
-                  right: shot.type === 'enemy' ? '16%' : 'auto',
+                  left: shot.type === 'player' ? (isMobile ? '12%' : '16%') : 'auto',
+                  right: shot.type === 'enemy' ? (isMobile ? '12%' : '16%') : 'auto',
                   top: `${verticalPos}%`,
                   transform: 'translateY(-50%)',
                   animation: `${shot.type === 'player' ? 'laser-travel-right' : 'laser-travel-left'} 1s ease-out forwards`,
@@ -546,7 +546,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-2 mb-2 mx-1' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '-108%', width: '140%', marginLeft: '-20%', transform: 'scaleY(1.1)'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-2 mb-2 mx-auto' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {width: '140%', marginLeft: '-20%', transform: 'scaleY(1.1)'} : {}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
