@@ -546,7 +546,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '-80%', width: '200%', marginLeft: '-50%', marginRight: '-50%'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-2 mb-2 mx-auto' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '-80%', width: '300%', marginLeft: '-100%'} : {}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -567,7 +567,7 @@ const Digital = () => {
                 key={index}
                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
                 disabled={gamePhase !== 'question'}
-                                 className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-0.5 text-xs' : 'p-4 border-2 rounded-lg'} ${
+                                 className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-2 text-xs min-h-[44px]' : 'p-4 border-2 rounded-lg'} ${
                   gamePhase === 'question' 
                     ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
                     : selectedAnswer === index
