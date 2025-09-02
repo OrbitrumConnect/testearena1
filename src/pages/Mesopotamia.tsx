@@ -377,12 +377,11 @@ const Mesopotamia = () => {
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
       <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Fundo Temático Mesopotâmia */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
         <img 
           src="/mesopotamia-background.png" 
           alt="Mesopotamia Background" 
           className="w-full h-full object-cover opacity-80"
-          style={isMobile ? { objectPosition: '70% -30%' } : {}}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-amber-900/30 to-orange-900/50" />
       </div>

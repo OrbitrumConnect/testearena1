@@ -441,11 +441,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       {/* Fundo Temático Egípcio Continuado */}
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full bg-gradient-to-b from-epic/40 to-battle-dark/60" />
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 opacity-40" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
           <div className="w-full h-full bg-cover bg-center" 
                style={{ 
-                 backgroundImage: `url(${egyptArena})`,
-                 backgroundPosition: isMobile ? '70% -30%' : 'center'
+                 backgroundImage: `url(${egyptArena})`
                }}>
           </div>
         </div>
