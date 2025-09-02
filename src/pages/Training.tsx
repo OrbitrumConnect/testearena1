@@ -471,7 +471,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
       </div>
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`}>
+      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`} style={isMobile ? {transform: 'translate(-4.5%, -5%)'} : {}}>
         {/* Header com navegação */}
         <div className={`${isMobile ? 'flex justify-between items-center mb-2 px-1' : 'flex items-center justify-between mb-8'}`}>
           <ActionButton 
