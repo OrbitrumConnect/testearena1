@@ -568,27 +568,27 @@ const Arena = () => {
         </div>
 
         {/* Question */}
-        <div className="arena-card-epic p-8">
-          <div className="text-center mb-6">
-            <div className="inline-block px-4 py-2 bg-epic/20 rounded-full mb-4">
-              <span className="text-epic font-semibold">{question.category}</span>
+        <div className={`arena-card-epic ${isMobile ? 'p-2 mx-2 mt-4' : 'p-8'}`} style={isMobile ? {width: '120%', marginLeft: '-10%', transform: 'translateY(-50%)'} : {}}>
+          <div className={`text-center ${isMobile ? 'mb-2' : 'mb-6'}`}>
+            <div className={`inline-block bg-epic/20 rounded-full ${isMobile ? 'px-2 py-1 mb-2' : 'px-4 py-2 mb-4'}`}>
+              <span className={`text-epic font-semibold ${isMobile ? 'text-xs' : ''}`}>{question.category}</span>
             </div>
-            <h2 className="text-2xl font-montserrat font-bold">{question.question}</h2>
+            <h2 className={`font-montserrat font-bold ${isMobile ? 'text-sm' : 'text-2xl'}`}>{question.question}</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-2' : 'gap-4'}`}>
             {question.options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleAnswer(index)}
                 disabled={selectedAnswer !== null}
-                className="p-6 rounded-lg border-2 border-border hover:border-epic hover:bg-epic/10 transition-all text-left disabled:opacity-50"
+                className={`${isMobile ? 'p-2 text-xs' : 'p-6'} rounded-lg border-2 border-border hover:border-epic hover:bg-epic/10 transition-all text-left disabled:opacity-50`}
               >
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold">
+                <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-3'}`}>
+                  <div className={`rounded-full bg-muted flex items-center justify-center font-bold ${isMobile ? 'w-4 h-4 text-xs' : 'w-8 h-8'}`}>
                     {String.fromCharCode(65 + index)}
                   </div>
-                  <span className="font-semibold">{option}</span>
+                  <span className={`font-semibold ${isMobile ? 'text-xs' : ''}`}>{option}</span>
                 </div>
               </button>
             ))}
