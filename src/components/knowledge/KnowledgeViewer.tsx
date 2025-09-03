@@ -269,101 +269,81 @@ const handleRandomQuestion = () => {
           </div>
         </div>
 
-        {/* ABAS PRINCIPAIS - REORGANIZADAS */}
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-4 gap-3'} justify-center`}>
-          {/* Filtros */}
-          <Select value={selectedEra} onValueChange={(value) => {
-            setSelectedEra(value);
-            resetPaginationAndFilter();
-          }}>
-            <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
-              <SelectValue placeholder="Todas as eras" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas as eras</SelectItem>
-              {eras.map(era => (
-                <SelectItem key={era.id} value={era.id}>
-                  {era.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                 {/* ABAS PRINCIPAIS - REORGANIZADAS EM 6 COLUNAS */}
+         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-3'} justify-center`}>
+           {/* Filtros */}
+           <Select value={selectedCategory} onValueChange={(value) => {
+             setSelectedCategory(value);
+             resetPaginationAndFilter();
+           }}>
+             <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
+               <SelectValue placeholder="Todas categorias" />
+             </SelectTrigger>
+             <SelectContent>
+               <SelectItem value="all">Todas categorias</SelectItem>
+               <SelectItem value="history">História</SelectItem>
+               <SelectItem value="finance">Finanças</SelectItem>
+               <SelectItem value="technology">Tecnologia</SelectItem>
+               <SelectItem value="future">Futuro</SelectItem>
+             </SelectContent>
+           </Select>
 
-          <Select value={selectedCategory} onValueChange={(value) => {
-            setSelectedCategory(value);
-            resetPaginationAndFilter();
-          }}>
-            <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
-              <SelectValue placeholder="Todas categorias" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas categorias</SelectItem>
-              <SelectItem value="history">História</SelectItem>
-              <SelectItem value="finance">Finanças</SelectItem>
-              <SelectItem value="technology">Tecnologia</SelectItem>
-              <SelectItem value="future">Futuro</SelectItem>
-            </SelectContent>
-          </Select>
+           {/* Botões de Ação */}
+           <Button 
+             onClick={handleRandomQuestion} 
+             variant="outline" 
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
+           >
+             🎲 Nova Pergunta
+           </Button>
 
-          {/* Botões de Ação */}
-          <Button 
-            onClick={handleRandomQuestion} 
-            variant="outline" 
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
-          >
-            🎲 Nova Pergunta
-          </Button>
+           <Button 
+             onClick={() => setShowConnections(!showConnections)} 
+             variant={showConnections ? "default" : "outline"}
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+           >
+             {showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas'}
+           </Button>
 
-          <Button 
-            onClick={() => setShowConnections(!showConnections)} 
-            variant={showConnections ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
-          >
-            {showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas'}
-          </Button>
-        </div>
+           <Button 
+             onClick={() => {
+               setShowChatbot(!showChatbot);
+               if (!showChatbot && chatMessages.length === 0) {
+                 setChatMessages([
+                   { role: 'assistant', content: '🧙‍♂️ **Bem-vindo, explorador!**\n\nSou o **Mestre do Conhecimento** da Arena! ✨\n\nPosso te ajudar com dicas de estudo, estratégias de PvP, curiosidades históricas e muito mais!\n\n💫 **Como posso te auxiliar hoje?**' }
+                 ]);
+               }
+             }} 
+             variant={showChatbot ? "default" : "outline"}
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+           >
+             {showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento'}
+           </Button>
 
-        {/* ABAS SECUNDÁRIAS - FUNCIONALIDADES */}
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-3 gap-3'} justify-center`}>
-          <Button 
-            onClick={() => {
-              setShowChatbot(!showChatbot);
-              if (!showChatbot && chatMessages.length === 0) {
-                setChatMessages([
-                  { role: 'assistant', content: '🧙‍♂️ **Bem-vindo, explorador!**\n\nSou o **Mestre do Conhecimento** da Arena! ✨\n\nPosso te ajudar com dicas de estudo, estratégias de PvP, curiosidades históricas e muito mais!\n\n💫 **Como posso te auxiliar hoje?**' }
-                ]);
-              }
-            }} 
-            variant={showChatbot ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
-          >
-            {showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento'}
-          </Button>
+           <Button 
+             onClick={() => setShowCommunityChat(!showCommunityChat)} 
+             variant={showCommunityChat ? "default" : "outline"}
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+           >
+             💬 Chat da Comunidade
+           </Button>
 
-          <Button 
-            onClick={() => setShowCommunityChat(!showCommunityChat)} 
-            variant={showCommunityChat ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
-          >
-            💬 Chat da Comunidade
-          </Button>
+           <Button 
+             onClick={() => setShowContributions(!showContributions)} 
+             variant={showContributions ? "default" : "outline"}
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
+           >
+             ✍️ Minhas Contribuições
+           </Button>
 
-          <Button 
-            onClick={() => setShowContributions(!showContributions)} 
-            variant={showContributions ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
-          >
-            ✍️ Minhas Contribuições
-          </Button>
-
-          <Button 
-            onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
-            variant={showAutoQuizzes ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
-          >
-            📊 Provas Automáticas
-          </Button>
-        </div>
+           <Button 
+             onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
+             variant={showAutoQuizzes ? "default" : "outline"}
+             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
+           >
+             📊 Provas Automáticas
+           </Button>
+         </div>
       </div>
 
       {/* Random Question Display */}
