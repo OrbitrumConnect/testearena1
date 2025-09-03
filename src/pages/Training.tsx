@@ -31,6 +31,7 @@ const Training = () => {
   const [battleStartTime] = useState(Date.now());
   const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
+  const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
 
   // Usar o hook para buscar 5 perguntas aleatórias do Egito Antigo
   const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('egito-antigo', 5);
