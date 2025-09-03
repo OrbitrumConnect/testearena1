@@ -18,6 +18,7 @@ const calculateHpDamage = (totalQuestions: number): number => {
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 const Digital = () => {
+  // Vercel update trigger - Era Digital mobile layout fix
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [currentQuestion, setCurrentQuestion] = useState(0);
