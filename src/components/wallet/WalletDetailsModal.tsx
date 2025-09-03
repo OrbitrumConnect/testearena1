@@ -228,7 +228,7 @@ export const WalletDetailsModal = ({
                   <li>• TOP 10%: Até {WITHDRAWAL_LIMITS.topTenPercent} créditos/mês</li>
                   <li>• Saque liberado: Dia 1° de cada mês</li>
                   <li>• Prazo: 1 dia (regular) / 3 dias (TOP 10%)</li>
-                  <li>• Taxa administrativa: 22.5%</li>
+                  <li>• Taxa administrativa: 15%</li>
                   <li>• Processamento: 24-48h úteis</li>
                   <li>• Créditos expiram se não sacados no prazo</li>
                 </ul>

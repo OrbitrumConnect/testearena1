@@ -235,7 +235,7 @@ const Payment = () => {
                     </div>
                   </div>
                   <div className="text-xs text-muted-foreground mt-2 space-y-1">
-                    <p>• Saque disponível dia 1° do mês • Taxa administrativa 22.5%</p>
+                    <p>• Saque disponível dia 1° do mês • Taxa administrativa 15%</p>
                     <p>• Usuários regulares: 1 dia para sacar (até 400)</p>
                     <p>• TOP RANKED: 3 dias para sacar (ilimitado)</p>
                     <p>• Após prazo: créditos expiram (não acumulam)</p>
@@ -268,9 +268,9 @@ const Payment = () => {
               <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 mb-4">
                 <h4 className="font-semibold text-blue-600 mb-2">📊 Como Funciona o Sistema:</h4>
                 <div className="text-xs text-blue-500 space-y-1">
-                  <p>• <strong>Mês 1:</strong> R$ 5,00 → 350 créditos → 306 sacáveis (taxa 22.5%)</p>
-                                      <p>• <strong>Mês 2:</strong> R$ 3,50 → 245 créditos → 190 sacáveis (taxa 22.5%)</p>
-                    <p>• <strong>Mês 3:</strong> R$ 2,00 → 140 créditos → 108 sacáveis (taxa 22.5%)</p>
+                  <p>• <strong>Mês 1:</strong> R$ 5,00 → 350 créditos → 297,5 sacáveis (taxa 15%)</p>
+<p>• <strong>Mês 2:</strong> R$ 3,50 → 245 créditos → 208,25 sacáveis (taxa 15%)</p>
+<p>• <strong>Mês 3:</strong> R$ 2,00 → 140 créditos → 119 sacáveis (taxa 15%)</p>
                   <p>• <strong>Bônus:</strong> Top 1 (+45), Top 5 (+35), Top 10 (+25), Top 20 (+15)</p>
                   <p>• <strong>Menores de 18:</strong> Limite 50% dos valores acima</p>
                 </div>

@@ -105,7 +105,7 @@ export const NewWallet: React.FC<NewWalletProps> = ({ className = '' }) => {
           </div>
           <div className="text-center p-3 rounded border">
                       <div className="text-xs text-muted-foreground">Taxa de Saque</div>
-          <div className="text-sm font-semibold">22.5%</div>
+          <div className="text-sm font-semibold">15%</div>
           <div className="text-xs text-muted-foreground">sobre o valor</div>
           </div>
         </div>

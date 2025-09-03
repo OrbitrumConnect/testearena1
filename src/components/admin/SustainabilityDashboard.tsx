@@ -58,7 +58,7 @@ const fetchRealMetrics = async () => {
       avgPvPsPerUser: totalUsers ? (totalBattles || 0) / totalUsers : 0,
       totalCreditsInCirculation: totalCredits,
       monthlyRevenue: (totalEarned || 0) * 0.01, // Converter créditos para reais (1% = R$0,01)
-      platformRetention: (totalEarned || 0) * 0.225 * 0.01 // 22,5% de retenção
+      platformRetention: (totalEarned || 0) * 0.15 * 0.01 // 15% de retenção
     };
   } catch (error) {
     console.error('Erro ao buscar métricas reais:', error);

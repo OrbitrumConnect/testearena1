@@ -676,8 +676,8 @@ const Dashboard = () => {
                   </h4>
                   <p className="text-sm text-gray-300 mb-3">
                     {localStorage.getItem('userAge') === 'minor' 
-                      ? 'Saque limitado a 50% dos créditos (proteção para menores). Mínimo: 200 créditos (R$ 2,00). Taxa: 22,5%.'
-                      : 'Saque disponível dia 1° do mês • Mínimo 200 créditos (R$ 2,00) • Taxa administrativa 22,5%'
+                      ? 'Saque limitado a 50% dos créditos (proteção para menores). Mínimo: 200 créditos (R$ 2,00). Taxa: 15%.'
+: 'Saque disponível dia 1° do mês • Mínimo 200 créditos (R$ 2,00) • Taxa administrativa 15%'
                     }
                   </p>
                   
@@ -718,9 +718,9 @@ const Dashboard = () => {
                         
                         const isMinor = localStorage.getItem('userAge') === 'minor';
                         if (isMinor) {
-                          alert('⚠️ Menores de 18 anos têm saque limitado a 50% dos créditos. Taxa: 22,5%');
+                          alert('⚠️ Menores de 18 anos têm saque limitado a 50% dos créditos. Taxa: 15%');
                         } else {
-                          alert('🎉 Solicitação PIX enviada! Processamento em até 24h úteis. Taxa: 22,5%');
+                          alert('🎉 Solicitação PIX enviada! Processamento em até 24h úteis. Taxa: 15%');
                         }
                       }}
                     >

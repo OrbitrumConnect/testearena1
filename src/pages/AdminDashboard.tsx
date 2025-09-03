@@ -499,7 +499,7 @@ const AdminDashboard = () => {
                 onClick={() => {
                   toast({
                     title: "Sistema PIX",
-                    description: `Disponível dia 1° • Taxa 22,5% • Min. 200 créditos`,
+                    description: `Disponível dia 1° • Taxa 15% • Min. 200 créditos`,
                   });
                 }}
                 variant="outline"

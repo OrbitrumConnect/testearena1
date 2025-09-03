@@ -8,6 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useDailyCreditsLimit } from '@/hooks/useDailyCreditsLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 // Função para calcular dano HP baseado no número de perguntas
 const calculateHpDamage = (totalQuestions: number): number => {
@@ -30,6 +31,7 @@ const Digital = () => {
   const [attackEffect, setAttackEffect] = useState<'player' | 'enemy' | null>(null);
   const [laserShots, setLaserShots] = useState<Array<{id: number, type: 'player' | 'enemy'}>>([]);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
+  const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
 
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
   const { questions, loading, refetch } = useEraQuestions('digital', 25);
@@ -39,6 +41,9 @@ const Digital = () => {
   
   // Hook para controlar limite de treinamentos
   const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+  
+  // Hook para controlar limite diário de créditos
+  const { creditsEarned, canEarnCredits, remainingCredits } = useDailyCreditsLimit();
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
@@ -133,18 +138,19 @@ const Digital = () => {
         score,
         questions.length
       );
-      const rewards = {
+      const newRewards = {
         xpEarned: trainingCredits.xpEarned,
         moneyEarned: trainingCredits.creditsEarned / 100, // Converter para reais
         bonusApplied: trainingCredits.bonusApplied
       };
+      setRewards(newRewards);
       
       await saveBattleResult({
         eraName: 'Era Digital',
         questionsTotal: questions.length,
         questionsCorrect: score,
-        xpEarned: rewards.xpEarned,
-        moneyEarned: rewards.moneyEarned,
+        xpEarned: newRewards.xpEarned,
+        moneyEarned: newRewards.moneyEarned,
         battleDurationSeconds: battleDurationSeconds,
       });
 
@@ -281,6 +287,24 @@ const Digital = () => {
                   <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
               </div>
+            </div>
+
+            {/* Informações do limite diário de créditos */}
+            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🎯 Limite Diário de Créditos</h3>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Hoje: <span className="font-bold text-epic">{creditsEarned.toFixed(1)}/22,5</span>
+              </p>
+              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                Restantes: <span className={`font-bold ${canEarnCredits ? 'text-victory' : 'text-destructive'}`}>
+                  {remainingCredits.toFixed(1)} créditos
+                </span>
+              </p>
+              {!canEarnCredits && (
+                <p className="text-xs text-destructive font-medium mt-1">
+                  ⚠️ Limite diário de créditos atingido!
+                </p>
+              )}
             </div>
 
             {/* Alerta de limite atingido */}

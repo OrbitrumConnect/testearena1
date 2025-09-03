@@ -94,7 +94,7 @@ const Landing = () => {
     {
       icon: <Calendar className="w-8 h-8 text-battle" />,
       title: "💰 Sistema PIX Inteligente",
-      description: "Saques disponíveis dia 1° do mês, mínimo 200 créditos. Taxa administrativa de 22,5% transparente.",
+      description: "Saques disponíveis dia 1° do mês, mínimo 200 créditos. Taxa administrativa de 15% transparente.",
       color: "battle",
       bgGradient: "from-battle/20 via-battle/10 to-transparent",
       borderColor: "border-battle/30"

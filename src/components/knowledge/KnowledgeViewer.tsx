@@ -174,7 +174,7 @@ export const KnowledgeViewer = () => {
 
     // Respostas baseadas no conhecimento da plataforma
     if (message.includes('pvp') || message.includes('arena') || message.includes('batalha')) {
-      response = `⚔️ **Dicas para PvP/Arena:**\n\n🎯 **Estratégias:**\n• Estude primeiro no Treino Gratuito\n• Foque nas eras que você domina\n• Custo: 7 créditos, ganho: 9,5 créditos na vitória\n• Taxa de retenção da plataforma: 22,5%\n\n💡 **Pro Tip:** Domine uma era específica para ter vantagem!`;
+      response = `⚔️ **Dicas para PvP/Arena:**\n\n🎯 **Estratégias:**\n• Estude primeiro no Treino Gratuito\n• Foque nas eras que você domina\n• Custo: 7 créditos, ganho: 9,5 créditos na vitória\n• Taxa de retenção da plataforma: 15%\n\n💡 **Pro Tip:** Domine uma era específica para ter vantagem!`;
     } else if (message.includes('egito') || message.includes('faraó') || message.includes('pirâmide')) {
       response = `🏺 **Egito Antigo - Dicas de Estudo:**\n\n📚 **Temas principais:**\n• Faraós: Rá (deus sol), Hatshepsut (rainha faraó)\n• Geografia: Rio Nilo (inundações anuais)\n• Construções: Pirâmides de Giza (2630 a.C.)\n• Religião: Gatos sagrados, mumificação\n\n🎯 **Curiosidade:** O Egito influenciou a arquitetura moderna!`;
     } else if (message.includes('medieval') || message.includes('templários') || message.includes('idade média')) {
