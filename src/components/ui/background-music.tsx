@@ -19,7 +19,8 @@ export const BackgroundMusic = ({
     '/musica6.mp3',
                       '/musica7.mp3',
     '/musica8.mp3',
-    '/musica9.mp3'
+    '/musica9.mp3',
+    '/musica10.mp3'
   ], 
   autoPlay = false,
   className = ""
