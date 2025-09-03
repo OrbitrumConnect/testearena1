@@ -11,42 +11,56 @@ interface FreeTrainingData {
 }
 
 export const useFreeTrainingLimit = (eraSlug: string) => {
+  // Proteção robusta para eraSlug undefined
+  const safeEraSlug = eraSlug || 'egito-antigo';
+  
+  // Debug: Log do eraSlug recebido
+  console.log('🔍 useFreeTrainingLimit chamado com eraSlug:', eraSlug, 'safeEraSlug:', safeEraSlug);
+
   const [canTrain, setCanTrain] = useState<boolean>(true);
   const [trainingCount, setTrainingCount] = useState<number>(0);
   const [maxTrainings] = useState<number>(4); // 4 eras = 4 treinos/dia para FREE
 
   useEffect(() => {
     checkDailyLimit();
-  }, [eraSlug]);
+  }, [safeEraSlug]);
 
   const checkDailyLimit = () => {
-    // Verificação de segurança para eraSlug
-    if (!eraSlug || typeof eraSlug !== 'string') {
-      console.error('❌ Era slug inválido no checkDailyLimit:', eraSlug);
-      return; // Sair da função se eraSlug for inválido
-    }
-
-    const today = new Date().toDateString();
-    const storedData = localStorage.getItem('free_training_limit');
-    
-    if (storedData) {
-      const trainingData: FreeTrainingData = JSON.parse(storedData);
+    try {
+      // PROTEÇÃO EXTRA - Garantir que safeEraSlug é válido
+      if (!safeEraSlug || typeof safeEraSlug !== 'string') {
+        console.error('❌ safeEraSlug inválido, usando fallback:', safeEraSlug);
+        return;
+      }
       
-      if (trainingData.date === today) {
-        // Mesmo dia - verificar se já treinou nesta era
-        const alreadyTrainedInEra = trainingData.eras[eraSlug as keyof typeof trainingData.eras];
-        setCanTrain(!alreadyTrainedInEra);
+      // Debug: Log do eraSlug na função
+      console.log('🔍 checkDailyLimit executado com safeEraSlug:', safeEraSlug);
+      
+      const today = new Date().toDateString();
+      const storedData = localStorage.getItem('free_training_limit');
+      
+      if (storedData) {
+        const trainingData: FreeTrainingData = JSON.parse(storedData);
         
-        // Contar quantas eras já treinou hoje
-        const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
-        setTrainingCount(trainedEras);
+        if (trainingData.date === today) {
+          // Mesmo dia - verificar se já treinou nesta era
+          const alreadyTrainedInEra = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras];
+          setCanTrain(!alreadyTrainedInEra);
+          
+          // Contar quantas eras já treinou hoje
+          const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
+          setTrainingCount(trainedEras);
+        } else {
+          // Novo dia - resetar contador
+          resetDailyCount();
+        }
       } else {
-        // Novo dia - resetar contador
+        // Primeira vez - inicializar
         resetDailyCount();
       }
-    } else {
-      // Primeira vez - inicializar
-      resetDailyCount();
+    } catch (error) {
+      console.error('Erro inesperado na função checkDailyLimit:', error);
+      resetDailyCount(); // Fallback para garantir que não quebre
     }
   };
 
@@ -76,7 +90,7 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
       
       if (trainingData.date === today) {
         // Marcar esta era como treinada hoje
-        trainingData.eras[eraSlug as keyof typeof trainingData.eras] = true;
+        trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] = true;
         
         // Contar quantas eras já treinou hoje
         const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
@@ -85,7 +99,7 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
         setTrainingCount(trainedEras);
         setCanTrain(false); // Não pode treinar novamente nesta era hoje
         
-        console.log(`🎯 FREE: Treino ${eraSlug} realizado! ${trainedEras}/4 eras treinadas hoje`);
+        console.log(`🎯 FREE: Treino ${safeEraSlug} realizado! ${trainedEras}/4 eras treinadas hoje`);
       }
     }
   };
