@@ -17,6 +17,22 @@ const calculateHpDamage = (totalQuestions: number): number => {
 };
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
+// CSS customizado para remover scroll no web
+const digitalStyles = `
+  @media (min-width: 768px) {
+    .digital-container {
+      overflow: hidden !important;
+    }
+    .digital-question-card {
+      margin-top: 2% !important;
+      width: 80% !important;
+      margin-left: 10% !important;
+      margin-right: 10% !important;
+      transform: none !important;
+    }
+  }
+`;
+
 const Digital = () => {
   // Vercel update trigger - Era Digital mobile layout fix
   const navigate = useNavigate();
@@ -492,9 +508,10 @@ const Digital = () => {
      loading
    });
 
-  return (
-    <div className="h-screen overflow-hidden bg-background relative">
-      <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-[0.628] md:w-[159%] md:h-[159%]">
+     return (
+     <div className="h-screen overflow-hidden bg-background relative">
+       <style>{digitalStyles}</style>
+       <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-100 md:w-full md:h-full">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
@@ -507,7 +524,7 @@ const Digital = () => {
       
       <ParticleBackground />
       
-      <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6" style={{transform: 'translate(-4.5%, -5%)'}}>
+             <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6 md:overflow-hidden digital-container" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
         <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
           <ActionButton 
@@ -641,7 +658,7 @@ const Digital = () => {
         </div>
 
                  {/* Pergunta */}
-         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-6 md:mb-6 md:mt-10 md:border-2 md:glow-epic md:scale-100 md:w-auto md:mx-auto md:transform-none md:mt-5 md:w-4/5 md:mx-auto" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
+         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-6 md:mb-6 md:mt-5 md:border-2 md:glow-epic md:scale-100 md:w-4/5 md:mx-auto" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
            <div className="flex items-center justify-center mb-0.5 md:mb-6">
              <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-6 md:py-2">
                <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
