@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Brain, Trophy, TrendingUp, Target, Calendar, Tag, BookOpen, Search, Filter, GitBranch, ArrowRight } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-
 export const KnowledgeViewer = () => {
   const { eras, knowledgeItems, loading, error, getRandomQuestion } = useKnowledge();
   const [selectedEra, setSelectedEra] = useState<string>('all');
@@ -19,7 +17,7 @@ export const KnowledgeViewer = () => {
   const [showChatbot, setShowChatbot] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const [chatInput, setChatInput] = useState<string>('');
-  
+   
   // NOVOS ESTADOS DO SISTEMA COLABORATIVO
   const [showCommunityChat, setShowCommunityChat] = useState<boolean>(false);
   const [showContributions, setShowContributions] = useState<boolean>(false);
@@ -29,8 +27,6 @@ export const KnowledgeViewer = () => {
   const [contributionContent, setContributionContent] = useState<string>('');
   const [contributionCategory, setContributionCategory] = useState<string>('resumo');
   const [contributionEra, setContributionEra] = useState<string>('digital');
-  
-  const isMobile = useIsMobile();
   
   const ITEMS_PER_PAGE = 12;
 
@@ -221,62 +217,62 @@ const handleRandomQuestion = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header Principal */}
-      <div className={`text-center space-y-4 ${isMobile ? 'px-4' : ''}`}>
-        <h1 className={`font-bold font-montserrat ${isMobile ? 'text-2xl' : 'text-3xl'}`}>
-          📚 Base de Conhecimento
-        </h1>
-        <p className={`text-muted-foreground ${isMobile ? 'text-sm' : ''}`}>
-          {filteredItems.length} {searchTerm ? 'resultados encontrados' : `itens de conhecimento em ${eras.length} eras históricas`}
-          {totalPages > 1 && (
-            <span className="block mt-1">
-              📄 Página {currentPage} de {totalPages} • Mostrando {currentItems.length} de {filteredItems.length} itens
-            </span>
-          )}
-        </p>
-        {searchTerm && (
-          <p className={`text-epic font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
-            🔍 Buscando por: "{searchTerm}"
-          </p>
-        )}
-      </div>
+             {/* Header Principal */}
+       <div className="text-center space-y-4 px-4 md:px-0">
+         <h1 className="font-bold font-montserrat text-2xl md:text-3xl">
+           📚 Base de Conhecimento
+         </h1>
+         <p className="text-muted-foreground text-sm md:text-base">
+           {filteredItems.length} {searchTerm ? 'resultados encontrados' : `itens de conhecimento em ${eras.length} eras históricas`}
+           {totalPages > 1 && (
+             <span className="block mt-1">
+               📄 Página {currentPage} de {totalPages} • Mostrando {currentItems.length} de {filteredItems.length} itens
+             </span>
+           )}
+         </p>
+         {searchTerm && (
+           <p className="text-epic font-medium text-xs md:text-sm">
+             🔍 Buscando por: "{searchTerm}"
+           </p>
+         )}
+       </div>
 
-      {/* CABEÇALHO PRINCIPAL - ABAS ORGANIZADAS */}
-      <div className={`space-y-4 ${isMobile ? 'px-4' : ''}`}>
-        {/* Search Bar */}
-        <div className="flex justify-center">
-          <div className="relative max-w-md w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              placeholder="🔍 Buscar por tema, pergunta ou resposta..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                resetPaginationAndFilter();
-              }}
-              className={`pl-10 pr-4 ${isMobile ? 'text-sm' : ''}`}
-            />
-            {searchTerm && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSearchTerm('')}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-              >
-                ✕
-              </Button>
-            )}
-          </div>
-        </div>
+             {/* CABEÇALHO PRINCIPAL - ABAS ORGANIZADAS */}
+       <div className="space-y-4 px-4 md:px-0">
+         {/* Search Bar */}
+         <div className="flex justify-center">
+           <div className="relative max-w-md w-full">
+             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+             <Input
+               placeholder="🔍 Buscar por tema, pergunta ou resposta..."
+               value={searchTerm}
+               onChange={(e) => {
+                 setSearchTerm(e.target.value);
+                 resetPaginationAndFilter();
+               }}
+               className="pl-10 pr-4 text-sm md:text-base"
+             />
+             {searchTerm && (
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setSearchTerm('')}
+                 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
+               >
+                 ✕
+               </Button>
+             )}
+           </div>
+         </div>
 
-                 {/* ABAS PRINCIPAIS - REORGANIZADAS EM 6 COLUNAS */}
-         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-3'} justify-center`}>
+         {/* ABAS PRINCIPAIS - MOBILE FIRST */}
+         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 justify-center">
            {/* Filtros */}
            <Select value={selectedCategory} onValueChange={(value) => {
              setSelectedCategory(value);
              resetPaginationAndFilter();
            }}>
-             <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
+             <SelectTrigger className="w-full text-xs md:text-sm">
                <SelectValue placeholder="Todas categorias" />
              </SelectTrigger>
              <SelectContent>
@@ -292,7 +288,7 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={handleRandomQuestion} 
              variant="outline" 
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
+             className="gap-2 text-xs md:text-sm bg-epic/10 border-epic/30 text-epic hover:bg-epic/20"
            >
              🎲 Nova Pergunta
            </Button>
@@ -300,7 +296,7 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={() => setShowConnections(!showConnections)} 
              variant={showConnections ? "default" : "outline"}
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
            >
              {showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas'}
            </Button>
@@ -315,7 +311,7 @@ const handleRandomQuestion = () => {
                }
              }} 
              variant={showChatbot ? "default" : "outline"}
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
            >
              {showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento'}
            </Button>
@@ -323,7 +319,7 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={() => setShowCommunityChat(!showCommunityChat)} 
              variant={showCommunityChat ? "default" : "outline"}
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
            >
              💬 Chat da Comunidade
            </Button>
@@ -331,7 +327,7 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={() => setShowContributions(!showContributions)} 
              variant={showContributions ? "default" : "outline"}
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
            >
              ✍️ Minhas Contribuições
            </Button>
@@ -339,72 +335,72 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
              variant={showAutoQuizzes ? "default" : "outline"}
-             className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
            >
              📊 Provas Automáticas
            </Button>
          </div>
-      </div>
+       </div>
 
-      {/* Random Question Display */}
-      {randomQuestion && (
-        <Card className={`border-epic/30 bg-epic/5 ${isMobile ? 'mx-4' : ''}`}>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Brain className="w-5 h-5 text-epic" />
-                <span className={isMobile ? 'text-base' : ''}>🎯 Pergunta Aleatória</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setRandomQuestion(null)}
-                className="h-6 w-6 p-0 text-muted-foreground hover:text-epic"
-              >
-                ✕
-              </Button>
-            </CardTitle>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-              💡 Clique em "🎲 Nova Pergunta" para gerar outra questão aleatória
-            </p>
-          </CardHeader>
-          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
-            <p className={`font-medium ${isMobile ? 'text-base' : 'text-lg'}`}>{randomQuestion.question}</p>
-            <div className="space-y-2">
-              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>✅ Resposta correta:</p>
-              <Badge variant="default" className={`bg-victory/20 text-victory ${isMobile ? 'text-sm' : ''}`}>
-                {randomQuestion.correct_answer}
-              </Badge>
-            </div>
-            {randomQuestion.wrong_options.length > 0 && (
-              <div className="space-y-2">
-                <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>❌ Alternativas incorretas:</p>
-                <div className="flex flex-wrap gap-2">
-                  {randomQuestion.wrong_options.map((option, index) => (
-                    <Badge key={index} variant="outline" className={isMobile ? 'text-xs' : ''}>
-                      {option}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-            {randomQuestion.content && (
-              <div className={`bg-background/50 rounded-lg ${isMobile ? 'p-3' : 'p-4'}`}>
-                <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>{randomQuestion.content}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
+             {/* Random Question Display */}
+       {randomQuestion && (
+         <Card className="border-epic/30 bg-epic/5 mx-4 md:mx-0">
+           <CardHeader>
+             <CardTitle className="flex items-center justify-between">
+               <div className="flex items-center gap-2">
+                 <Brain className="w-5 h-5 text-epic" />
+                 <span className="text-base md:text-lg">🎯 Pergunta Aleatória</span>
+               </div>
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setRandomQuestion(null)}
+                 className="h-6 w-6 p-0 text-muted-foreground hover:text-epic"
+               >
+                 ✕
+               </Button>
+             </CardTitle>
+             <p className="text-muted-foreground text-xs md:text-sm">
+               💡 Clique em "🎲 Nova Pergunta" para gerar outra questão aleatória
+             </p>
+           </CardHeader>
+           <CardContent className="space-y-4 p-4 md:p-6">
+             <p className="font-medium text-base md:text-lg">{randomQuestion.question}</p>
+             <div className="space-y-2">
+               <p className="text-muted-foreground text-xs md:text-sm">✅ Resposta correta:</p>
+               <Badge variant="default" className="bg-victory/20 text-victory text-sm md:text-base">
+                 {randomQuestion.correct_answer}
+               </Badge>
+             </div>
+             {randomQuestion.wrong_options.length > 0 && (
+               <div className="space-y-2">
+                 <p className="text-muted-foreground text-xs md:text-sm">❌ Alternativas incorretas:</p>
+                 <div className="flex flex-wrap gap-2">
+                   {randomQuestion.wrong_options.map((option, index) => (
+                     <Badge key={index} variant="outline" className="text-xs md:text-sm">
+                       {option}
+                     </Badge>
+                   ))}
+                 </div>
+               </div>
+             )}
+             {randomQuestion.content && (
+               <div className="bg-background/50 rounded-lg p-3 md:p-4">
+                 <p className="text-xs md:text-sm">{randomQuestion.content}</p>
+               </div>
+             )}
+           </CardContent>
+         </Card>
+       )}
 
       {/* Chatbot Mestre do Conhecimento */}
       {showChatbot && (
-        <Card className={`border-victory/30 bg-victory/5 ${isMobile ? 'mx-4' : ''}`}>
+        <Card className="border-victory/30 bg-victory/5 mx-4 md:mx-0">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Brain className="w-5 h-5 text-victory" />
-                <span className={isMobile ? 'text-base' : ''}>🤖 Mestre do Conhecimento</span>
+                <span className="text-base md:text-lg">🤖 Mestre do Conhecimento</span>
               </div>
               <Button
                 variant="ghost"
@@ -415,13 +411,13 @@ const handleRandomQuestion = () => {
                 ✕
               </Button>
             </CardTitle>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            <p className="text-muted-foreground text-xs md:text-sm">
               💫 Seu guia inteligente através das eras históricas
             </p>
           </CardHeader>
-          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
+          <CardContent className="space-y-4 p-4 md:p-6">
             {/* Chat Messages */}
-            <div className={`max-h-64 overflow-y-auto space-y-3 ${isMobile ? 'text-sm' : ''}`}>
+            <div className="max-h-64 overflow-y-auto space-y-3 text-sm md:text-base">
               {chatMessages.map((msg, index) => (
                 <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-3 rounded-lg ${
@@ -429,7 +425,7 @@ const handleRandomQuestion = () => {
                       ? 'bg-epic/20 border border-epic/30 text-epic' 
                       : 'bg-victory/10 border border-victory/30 text-victory'
                   }`}>
-                    <div className={`whitespace-pre-line ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    <div className="whitespace-pre-line text-xs md:text-sm">
                       {msg.content}
                     </div>
                   </div>
@@ -449,7 +445,7 @@ const handleRandomQuestion = () => {
                     setChatInput('');
                   }
                 }}
-                className={`${isMobile ? 'text-sm' : ''}`}
+                className="text-sm md:text-base"
               />
               <Button
                 onClick={() => {
@@ -479,7 +475,7 @@ const handleRandomQuestion = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => handleChatbotResponse(action)}
-                  className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm'} hover:bg-victory/10`}
+                  className="text-xs md:text-sm px-2 py-1 hover:bg-victory/10"
                 >
                   {action}
                 </Button>
