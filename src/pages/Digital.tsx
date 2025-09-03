@@ -22,12 +22,13 @@ const digitalStyles = `
   @media (min-width: 768px) {
     .digital-container {
       overflow: hidden !important;
+      transform: translate(-2%, -2%) !important;
     }
     .digital-question-card {
-      margin-top: 2% !important;
-      width: 80% !important;
-      margin-left: 10% !important;
-      margin-right: 10% !important;
+      margin-top: 5% !important;
+      width: 85% !important;
+      margin-left: 7.5% !important;
+      margin-right: 7.5% !important;
       transform: none !important;
     }
   }
@@ -511,7 +512,7 @@ const Digital = () => {
      return (
      <div className="h-screen overflow-hidden bg-background relative">
        <style>{digitalStyles}</style>
-       <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-100 md:w-full md:h-full">
+       <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-75 md:w-[133%] md:h-[133%]">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
@@ -570,8 +571,8 @@ const Digital = () => {
                  {/* Arena de Combate */}
          <div className="relative mb-1 mx-1 md:mb-4">
            <div className="relative w-full flex items-center justify-between h-20 mb-1 md:h-40 md:mb-6">
-             {/* Jogador - Posição Esquerda */}
-             <div className="absolute left-1 text-center top-5 md:left-[-15%] md:top-[60%]">
+                           {/* Jogador - Posição Esquerda */}
+              <div className="absolute left-1 text-center top-5 md:left-[-10%] md:top-[50%]">
              <div className="animate-bounce mb-0 flex justify-center md:mb-0.5" style={{animationDuration: '3s'}}>
                <img 
                  src="/guerreirodigital.png" 
@@ -596,8 +597,8 @@ const Digital = () => {
              </div>
              </div>
 
-             {/* Inimigo - Posição Direita */}
-             <div className="absolute right-2 text-center top-5 md:right-[-15%] md:top-[45%]">
+                           {/* Inimigo - Posição Direita */}
+              <div className="absolute right-2 text-center top-5 md:right-[-10%] md:top-[45%]">
              <div className="mb-0 flex justify-center md:mb-0.5">
                <img 
                  src="/bossdigital.png" 
