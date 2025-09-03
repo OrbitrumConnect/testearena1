@@ -69,7 +69,6 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
         
         // FORÇAR ENTROPIA MÁXIMA com timestamp e múltiplas sementes
         const timestamp = performance.now() + Math.random() * 1000 + Date.now();
-        Math.seedrandom = Math.seedrandom || (() => Math.random()); // Fallback se não tiver seedrandom
         
         // Embaralhar várias vezes com diferentes seeds para máxima aleatoriedade  
         let multiShuffled = [...defaultQuestions];
@@ -207,6 +206,12 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
 
 // Perguntas padrão como fallback
 const getDefaultQuestions = (eraSlug: string): Question[] => {
+  // Verificação de segurança para eraSlug
+  if (!eraSlug || typeof eraSlug !== 'string') {
+    console.error('❌ Era slug inválido:', eraSlug);
+    eraSlug = 'egito-antigo'; // Fallback para era padrão
+  }
+
   const defaultSets = {
     'egito-antigo': [
       {
