@@ -243,18 +243,18 @@ const Landing = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <div 
                   key={index} 
-                  className="arena-card p-4 text-center bg-gradient-to-br from-background/50 to-background/20 backdrop-blur-sm border border-border/50 hover:border-epic/30 transition-all duration-300 hover:scale-105"
+                  className="arena-card p-3 text-center bg-gradient-to-br from-background/50 to-background/20 backdrop-blur-sm border border-border/50 hover:border-epic/30 transition-all duration-300 hover:scale-105"
                 >
                   <div className="mb-3 flex justify-center">
                     <div className="p-2 rounded-full bg-background/30 backdrop-blur-sm">
                       {stat.icon}
                     </div>
                   </div>
-                  <p className="text-3xl font-bold font-montserrat text-epic mb-1">{stat.value}</p>
+                  <p className="text-2xl font-bold font-montserrat text-epic mb-1">{stat.value}</p>
                   <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
                 </div>
               ))}
@@ -273,7 +273,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${isMobile ? 'gap-3' : 'gap-6'}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ${isMobile ? 'gap-2' : 'gap-4'}`}>
             {features.map((feature, index) => (
               <Card 
                 key={index} 
@@ -282,7 +282,7 @@ const Landing = () => {
                   bg-gradient-to-br ${feature.bgGradient} 
                   border ${feature.borderColor}
                   hover:shadow-lg hover:scale-105
-                  ${isMobile ? 'p-2' : 'p-4'}
+                  ${isMobile ? 'p-2' : 'p-3'}
                 `}
               >
                 <div className="relative z-10">
@@ -318,9 +318,9 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className={`grid gap-4 max-w-6xl mx-auto ${isMobile ? 'grid-cols-2' : 'md:grid-cols-4'}`}>
+          <div className={`grid gap-3 max-w-6xl mx-auto ${isMobile ? 'grid-cols-2' : 'md:grid-cols-4'}`}>
             {/* Passo 1 */}
-            <Card className={`arena-card text-center bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+            <Card className={`arena-card text-center bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30 ${isMobile ? 'p-2' : 'p-3'}`}>
               <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
                 <div className={`rounded-full bg-primary/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
                   <BookOpen className={`text-primary ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
@@ -333,7 +333,7 @@ const Landing = () => {
             </Card>
 
             {/* Passo 2 */}
-            <Card className={`arena-card text-center bg-gradient-to-br from-battle/20 to-battle/5 border-battle/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+            <Card className={`arena-card text-center bg-gradient-to-br from-battle/20 to-battle/5 border-battle/30 ${isMobile ? 'p-2' : 'p-3'}`}>
               <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
                 <div className={`rounded-full bg-battle/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
                   <Sword className={`text-battle ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
@@ -346,7 +346,7 @@ const Landing = () => {
             </Card>
 
             {/* Passo 3 */}
-            <Card className={`arena-card text-center bg-gradient-to-br from-epic/20 to-epic/5 border-epic/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+            <Card className={`arena-card text-center bg-gradient-to-br from-epic/20 to-epic/5 border-epic/30 ${isMobile ? 'p-2' : 'p-3'}`}>
               <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
                 <div className={`rounded-full bg-epic/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
                   <Trophy className={`text-epic ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
@@ -359,7 +359,7 @@ const Landing = () => {
             </Card>
 
             {/* Passo 4 */}
-            <Card className={`arena-card text-center bg-gradient-to-br from-legendary/20 to-legendary/5 border-legendary/30 ${isMobile ? 'p-2' : 'p-4'}`}>
+            <Card className={`arena-card text-center bg-gradient-to-br from-legendary/20 to-legendary/5 border-legendary/30 ${isMobile ? 'p-2' : 'p-3'}`}>
               <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
                 <div className={`rounded-full bg-legendary/20 mx-auto flex items-center justify-center ${isMobile ? 'w-8 h-8' : 'w-12 h-12'}`}>
                   <Target className={`text-legendary ${isMobile ? 'w-4 h-4' : 'w-6 h-6'}`} />
@@ -422,7 +422,7 @@ const Landing = () => {
             </p>
           </div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-3' : 'gap-6'}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-2' : 'gap-4'}`}>
             {eras.map((era) => (
               <Card 
                 key={era.id} 
@@ -431,7 +431,7 @@ const Landing = () => {
                   bg-gradient-to-br ${era.bgGradient} 
                   border ${era.borderColor}
                   hover:shadow-xl hover:scale-[1.02] hover:border-${era.color}/50
-                  ${isMobile ? 'p-3' : 'p-6'}
+                  ${isMobile ? 'p-2' : 'p-4'}
                 `}
               >
                 <div className="relative z-10">
@@ -474,7 +474,7 @@ const Landing = () => {
 
         {/* CTA Section */}
         <section className="py-12 px-6">
-          <Card className="arena-card-epic p-12 text-center max-w-4xl mx-auto">
+          <Card className="arena-card-epic p-8 text-center max-w-4xl mx-auto">
             <Zap className="w-16 h-16 text-epic mx-auto mb-6" />
             <h2 className="text-4xl font-montserrat font-bold text-epic mb-4">
               🏛️ Comece a Aprender e Competir Agora!
