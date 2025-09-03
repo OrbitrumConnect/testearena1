@@ -221,10 +221,10 @@ const handleRandomQuestion = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header Principal */}
       <div className={`text-center space-y-4 ${isMobile ? 'px-4' : ''}`}>
         <h1 className={`font-bold font-montserrat ${isMobile ? 'text-2xl' : 'text-3xl'}`}>
-          Base de Conhecimento
+          📚 Base de Conhecimento
         </h1>
         <p className={`text-muted-foreground ${isMobile ? 'text-sm' : ''}`}>
           {filteredItems.length} {searchTerm ? 'resultados encontrados' : `itens de conhecimento em ${eras.length} eras históricas`}
@@ -241,7 +241,7 @@ const handleRandomQuestion = () => {
         )}
       </div>
 
-      {/* Search and Filters */}
+      {/* CABEÇALHO PRINCIPAL - ABAS ORGANIZADAS */}
       <div className={`space-y-4 ${isMobile ? 'px-4' : ''}`}>
         {/* Search Bar */}
         <div className="flex justify-center">
@@ -269,14 +269,15 @@ const handleRandomQuestion = () => {
           </div>
         </div>
 
-        {/* Filters */}
-        <div className={`flex ${isMobile ? 'flex-col gap-2' : 'flex-wrap gap-4'} justify-center`}>
+        {/* ABAS PRINCIPAIS - REORGANIZADAS */}
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-4 gap-3'} justify-center`}>
+          {/* Filtros */}
           <Select value={selectedEra} onValueChange={(value) => {
             setSelectedEra(value);
             resetPaginationAndFilter();
           }}>
-            <SelectTrigger className={isMobile ? 'w-full' : 'w-48'}>
-              <SelectValue placeholder="Selecione uma era" />
+            <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
+              <SelectValue placeholder="Todas as eras" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todas as eras</SelectItem>
@@ -292,8 +293,8 @@ const handleRandomQuestion = () => {
             setSelectedCategory(value);
             resetPaginationAndFilter();
           }}>
-            <SelectTrigger className={isMobile ? 'w-full' : 'w-48'}>
-              <SelectValue placeholder="Categoria" />
+            <SelectTrigger className={`${isMobile ? 'w-full text-xs' : 'w-full'}`}>
+              <SelectValue placeholder="Todas categorias" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todas categorias</SelectItem>
@@ -304,30 +305,26 @@ const handleRandomQuestion = () => {
             </SelectContent>
           </Select>
 
+          {/* Botões de Ação */}
           <Button 
             onClick={handleRandomQuestion} 
             variant="outline" 
-            className={`gap-2 ${isMobile ? 'w-full' : ''}`}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
           >
-            <Brain className="w-4 h-4" />
-            {randomQuestion ? 
-              (isMobile ? '🎲 Nova' : '🎲 Nova Pergunta') : 
-              (isMobile ? '🎯 Aleatória' : '🎯 Pergunta Aleatória')
-            }
+            🎲 Nova Pergunta
           </Button>
 
           <Button 
             onClick={() => setShowConnections(!showConnections)} 
             variant={showConnections ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'w-full' : ''} ${showConnections ? 'bg-epic text-white' : ''}`}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
           >
-            <GitBranch className="w-4 h-4" />
-            {isMobile ? 
-              (showConnections ? '📚 Itens' : '🌍 Conexões') : 
-              (showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas')
-            }
+            {showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas'}
           </Button>
+        </div>
 
+        {/* ABAS SECUNDÁRIAS - FUNCIONALIDADES */}
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-3 gap-3'} justify-center`}>
           <Button 
             onClick={() => {
               setShowChatbot(!showChatbot);
@@ -338,36 +335,31 @@ const handleRandomQuestion = () => {
               }
             }} 
             variant={showChatbot ? "default" : "outline"}
-            className={`gap-2 ${isMobile ? 'w-full' : ''} ${showChatbot ? 'bg-victory text-white' : ''}`}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
           >
-            <Brain className="w-4 h-4" />
-            {isMobile ? 
-              (showChatbot ? '❌ Chat' : '🤖 Mestre') : 
-              (showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento')
-            }
+            {showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento'}
           </Button>
 
-          {/* NOVAS ABAS DO SISTEMA COLABORATIVO */}
           <Button 
             onClick={() => setShowCommunityChat(!showCommunityChat)} 
-            variant="outline" 
-            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-victory/10 border-victory/30 text-victory hover:bg-victory/20`}
+            variant={showCommunityChat ? "default" : "outline"}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
           >
             💬 Chat da Comunidade
           </Button>
 
           <Button 
             onClick={() => setShowContributions(!showContributions)} 
-            variant="outline" 
-            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
+            variant={showContributions ? "default" : "outline"}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
           >
             ✍️ Minhas Contribuições
           </Button>
 
           <Button 
             onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
-            variant="outline" 
-            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20`}
+            variant={showAutoQuizzes ? "default" : "outline"}
+            className={`gap-2 ${isMobile ? 'text-xs' : 'text-sm'} ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
           >
             📊 Provas Automáticas
           </Button>
@@ -626,24 +618,25 @@ const handleRandomQuestion = () => {
             </p>
           </CardHeader>
           <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
-            {/* Formulário de Contribuição */}
-            <div className="space-y-3">
-              <div className="flex flex-wrap gap-2">
+            {/* Formulário de Contribuição - MELHORADO */}
+            <div className="space-y-4">
+              {/* Seletores em linha */}
+              <div className="flex flex-wrap gap-3">
                 <Select value={contributionEra} onValueChange={setContributionEra}>
-                  <SelectTrigger className={isMobile ? 'w-full' : 'w-32'}>
-                    <SelectValue placeholder="Era" />
+                  <SelectTrigger className={isMobile ? 'w-full' : 'w-40'}>
+                    <SelectValue placeholder="🌍 Selecionar Era" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="digital">💻 Digital</SelectItem>
-                    <SelectItem value="medieval">⚔️ Medieval</SelectItem>
-                    <SelectItem value="egito-antigo">🏺 Egito</SelectItem>
+                    <SelectItem value="digital">💻 Era Digital</SelectItem>
+                    <SelectItem value="medieval">⚔️ Era Medieval</SelectItem>
+                    <SelectItem value="egito-antigo">🏺 Egito Antigo</SelectItem>
                     <SelectItem value="mesopotamia">🏛️ Mesopotâmia</SelectItem>
                   </SelectContent>
                 </Select>
 
                 <Select value={contributionCategory} onValueChange={setContributionCategory}>
-                  <SelectTrigger className={isMobile ? 'w-full' : 'w-32'}>
-                    <SelectValue placeholder="Tipo" />
+                  <SelectTrigger className={isMobile ? 'w-full' : 'w-40'}>
+                    <SelectValue placeholder="📝 Tipo de Contribuição" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="resumo">📝 Resumo</SelectItem>
@@ -654,17 +647,27 @@ const handleRandomQuestion = () => {
                 </Select>
               </div>
 
-              <Input
-                placeholder="✍️ Digite sua contribuição..."
-                value={contributionContent}
-                onChange={(e) => setContributionContent(e.target.value)}
-                className={`${isMobile ? 'text-sm' : ''}`}
-              />
+              {/* Área de texto MAIOR para contribuições */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-epic">
+                  ✍️ Sua Contribuição:
+                </label>
+                <textarea
+                  placeholder="📝 Digite aqui sua contribuição... (resumo, questão, curiosidade ou anotação)"
+                  value={contributionContent}
+                  onChange={(e) => setContributionContent(e.target.value)}
+                  className={`w-full min-h-32 p-3 rounded-lg border border-epic/30 bg-background/50 text-foreground placeholder:text-muted-foreground resize-y focus:border-epic focus:ring-2 focus:ring-epic/20 transition-all ${isMobile ? 'text-sm' : 'text-base'}`}
+                />
+                <div className="text-xs text-muted-foreground text-right">
+                  {contributionContent.length}/1000 caracteres
+                </div>
+              </div>
 
+              {/* Botão de envio melhorado */}
               <Button
                 variant="outline"
                 disabled={!contributionContent.trim()}
-                className="w-full bg-epic/10 border-epic/30 text-epic hover:bg-epic/20"
+                className="w-full bg-epic/10 border-epic/30 text-epic hover:bg-epic/20 hover:bg-epic/20 transition-all py-3"
               >
                 📤 Enviar Contribuição
               </Button>
@@ -823,61 +826,71 @@ const handleRandomQuestion = () => {
         </div>
       ) : (
         <>
-          {/* Knowledge Items Grid - Paginado */}
-      <div className={`grid gap-3 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
-        {currentItems.map(item => (
-                          <Card key={item.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-90' : 'transform scale-75'}`}>
-            <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
-              <div className={`flex items-start ${isMobile ? 'flex-col gap-2' : 'justify-between'}`}>
-                <CardTitle className={`font-montserrat ${isMobile ? 'text-sm' : 'text-base'}`}>
-                  {item.title}
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  <Badge className={getCategoryColor(item.category)}>
-                    {getCategoryIcon(item.category)}
-                    <span className={`ml-1 capitalize ${isMobile ? 'text-xs' : ''}`}>
-                      {isMobile ? item.category.substring(0, 4) : item.category}
-                    </span>
-                  </Badge>
-                </div>
-              </div>
-            </CardHeader>
-            
-            <CardContent className={`space-y-3 ${isMobile ? 'p-3' : ''}`}>
-              {item.item_type === 'qa' && item.question && (
-                <div className="space-y-2">
-                  <p className={`font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{item.question}</p>
-                  <Badge variant="default" className={`bg-victory/20 text-victory ${isMobile ? 'text-xs' : ''}`}>
-                    {item.correct_answer}
-                  </Badge>
-                </div>
-              )}
-              
-              {item.content && (
-                <p className={`text-muted-foreground line-clamp-3 ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                  {item.content}
-                </p>
-              )}
-              
-              <div className={`flex flex-wrap gap-2 ${isMobile ? 'text-xs' : 'text-xs'}`}>
-                {item.year_start && (
-                  <Badge variant="outline" className={`gap-1 ${isMobile ? 'text-xs px-1 py-0' : ''}`}>
-                    <Calendar className={`${isMobile ? 'w-2 h-2' : 'w-3 h-3'}`} />
-                    {item.year_start > 0 ? `${item.year_start} d.C.` : `${Math.abs(item.year_start)} a.C.`}
-                  </Badge>
-                )}
-                
-                {item.tags.slice(0, isMobile ? 1 : 2).map(tag => (
-                  <Badge key={tag} variant="outline" className={`gap-1 ${isMobile ? 'text-xs px-1 py-0' : ''}`}>
-                    <Tag className={`${isMobile ? 'w-2 h-2' : 'w-3 h-3'}`} />
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                     {/* Knowledge Items Grid - MELHORADO e ORGANIZADO */}
+           <div className={`grid gap-4 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+             {currentItems.map(item => (
+               <Card key={item.id} className={`arena-card hover-scale border-epic/20 hover:border-epic/40 transition-all duration-300 ${isMobile ? 'transform scale-95' : 'transform scale-90'}`}>
+                 <CardHeader className={`${isMobile ? 'pb-3' : 'pb-4'} bg-gradient-to-br from-epic/5 to-transparent`}>
+                   <div className={`flex items-start ${isMobile ? 'flex-col gap-3' : 'justify-between'}`}>
+                     <CardTitle className={`font-montserrat font-bold ${isMobile ? 'text-base' : 'text-lg'} text-epic leading-tight`}>
+                       {item.title}
+                     </CardTitle>
+                     <div className="flex items-center gap-2">
+                       <Badge className={`${getCategoryColor(item.category)} font-medium shadow-sm`}>
+                         {getCategoryIcon(item.category)}
+                         <span className={`ml-1 capitalize ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                           {isMobile ? item.category.substring(0, 4) : item.category}
+                         </span>
+                       </Badge>
+                     </div>
+                   </div>
+                 </CardHeader>
+                 
+                 <CardContent className={`space-y-4 ${isMobile ? 'p-4' : 'p-5'}`}>
+                   {/* Questão e Resposta */}
+                   {item.item_type === 'qa' && item.question && (
+                     <div className="space-y-3 bg-victory/5 rounded-lg p-3 border border-victory/20">
+                       <p className={`font-medium text-victory ${isMobile ? 'text-sm' : 'text-base'}`}>
+                         ❓ {item.question}
+                       </p>
+                       <div className="flex items-center gap-2">
+                         <span className="text-xs text-muted-foreground">✅ Resposta:</span>
+                         <Badge variant="default" className={`bg-victory/20 text-victory font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                           {item.correct_answer}
+                         </Badge>
+                       </div>
+                     </div>
+                   )}
+                   
+                   {/* Conteúdo Principal */}
+                   {item.content && (
+                     <div className="bg-background/30 rounded-lg p-3 border border-muted/30">
+                       <p className={`text-muted-foreground leading-relaxed ${isMobile ? 'text-sm' : 'text-base'}`}>
+                         📚 {item.content}
+                       </p>
+                     </div>
+                   )}
+                   
+                   {/* Metadados e Tags */}
+                   <div className={`flex flex-wrap gap-2 pt-2 border-t border-muted/20`}>
+                     {item.year_start && (
+                       <Badge variant="outline" className={`gap-1 bg-epic/10 border-epic/30 text-epic ${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-3 py-1'}`}>
+                         <Calendar className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                         {item.year_start > 0 ? `${item.year_start} d.C.` : `${Math.abs(item.year_start)} a.C.`}
+                       </Badge>
+                     )}
+                     
+                     {item.tags.slice(0, isMobile ? 2 : 3).map(tag => (
+                       <Badge key={tag} variant="outline" className={`gap-1 bg-muted/20 border-muted/30 text-muted-foreground ${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-3 py-1'}`}>
+                         <Tag className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                         {tag}
+                       </Badge>
+                     ))}
+                   </div>
+                 </CardContent>
+               </Card>
+             ))}
+           </div>
 
       {/* Paginação */}
       {totalPages > 1 && (
