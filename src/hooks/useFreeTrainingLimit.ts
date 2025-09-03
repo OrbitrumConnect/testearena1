@@ -11,6 +11,12 @@ interface FreeTrainingData {
 }
 
 export const useFreeTrainingLimit = (eraSlug: string) => {
+  // Verificação de segurança para eraSlug
+  if (!eraSlug || typeof eraSlug !== 'string') {
+    console.error('❌ Era slug inválido no useFreeTrainingLimit:', eraSlug);
+    eraSlug = 'egito-antigo'; // Fallback para era padrão
+  }
+
   const [canTrain, setCanTrain] = useState<boolean>(true);
   const [trainingCount, setTrainingCount] = useState<number>(0);
   const [maxTrainings] = useState<number>(4); // 4 eras = 4 treinos/dia para FREE
