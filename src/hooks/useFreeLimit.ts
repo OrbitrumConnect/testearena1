@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const FREE_TRAINING_LIMIT = 6; // 9 vidas grátis por dia
+const FREE_TRAINING_LIMIT = 8; // Sistema Arena de Créditos - 8 treinos por dia
 
 export const useFreeLimit = (userType: 'free' | 'paid' | 'vip' | 'banned' = 'free') => {
   const [freeTrainingCount, setFreeTrainingCount] = useState(0);

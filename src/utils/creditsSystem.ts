@@ -33,7 +33,7 @@ export interface PlanConfig {
   monthlyBonusMax: number; // Máximo possível
 
   // Saque (CONTROLADO E LEGAL)
-  withdrawalFeePercent: number; // 22.5%
+  withdrawalFeePercent: number; // 15%
   withdrawalMinDays: number; // 30 dias
   maxMonthlyWithdrawal: number; // Limite legal
   maxWithdrawalUnder18: number; // Limite para menores de 18 (50%)
@@ -41,10 +41,10 @@ export interface PlanConfig {
 
 // 🏆 SISTEMA DE RANKING TRIMESTRAL (renova a cada 3 meses)
 export const RANKING_BONUSES: Record<RankingTier, number> = {
-  top1: 1.50,    // +50% bônus = ROI 192% anual
-  top5: 1.30,    // +30% bônus = ROI ~150% anual  
-  top10: 1.20,   // +20% bônus = ROI ~120% anual
-  regular: 1.00  // Sem bônus = ROI 108% anual
+  top1: 1.20,    // +20% bônus = ROI 125% anual
+  top5: 1.10,    // +10% bônus = ROI 110% anual  
+  top10: 1.05,   // +5% bônus = ROI 105% anual
+  regular: 1.00  // Sem bônus = ROI 83% anual
 };
 
 // 📊 CONFIGURAÇÕES DOS 3 PLANOS - PROGRESSÃO OBRIGATÓRIA
@@ -52,24 +52,24 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   premium: {
     // 💎 MÊS 1 - R$ 5,00 (OBRIGATÓRIO PARA TODOS)
     initialDeposit: 5.00,
-    platformRetention: 1.50, // R$ 1,50 retido pela plataforma
+    platformRetention: 1.00, // R$ 1,00 retido pela plataforma
     creditsReceived: 350, // R$ 3,50 para o usuário (CORRIGIDO!)
     monthType: 'month1',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
-      'egito-antigo': { base: 0.3, victory: 0.7, excellent: 1.4 },
-      'mesopotamia': { base: 0.5, victory: 1.0, excellent: 2.0 },
-      'medieval': { base: 0.7, victory: 1.4, excellent: 2.8 },
-      'digital': { base: 1.0, victory: 2.0, excellent: 3.5 },
-      'labirinto': { base: 1.2, victory: 2.5, excellent: 4.0 }
+      'egito-antigo': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'mesopotamia': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'medieval': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'digital': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'labirinto': { base: 0.5, victory: 0.5, excellent: 0.5 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 7.0, // R$ 0,070 por partida
     pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 60,
-    withdrawalFeePercent: 22.5,
+    withdrawalFeePercent: 15,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
@@ -78,24 +78,24 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   standard: {
     // 🥈 MÊS 2 - R$ 3,50 (SÓ QUEM PAGOU MÊS 1)
     initialDeposit: 3.50,
-    platformRetention: 1.05, // R$ 1,05 retido pela plataforma
+    platformRetention: 1.00, // R$ 1,00 retido pela plataforma
     creditsReceived: 245, // R$ 2,45 para o usuário (CORRIGIDO!)
     monthType: 'month2',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
-      'egito-antigo': { base: 0.2, victory: 0.5, excellent: 1.0 },
-      'mesopotamia': { base: 0.3, victory: 0.7, excellent: 1.4 },
-      'medieval': { base: 0.5, victory: 1.0, excellent: 2.0 },
-      'digital': { base: 0.7, victory: 1.4, excellent: 2.5 },
-      'labirinto': { base: 0.8, victory: 1.7, excellent: 2.8 }
+      'egito-antigo': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'mesopotamia': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'medieval': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'digital': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'labirinto': { base: 0.5, victory: 0.5, excellent: 0.5 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 7.0, // R$ 0,070 por partida
     pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 42,
-    withdrawalFeePercent: 22.5,
+    withdrawalFeePercent: 15,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
@@ -104,24 +104,24 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
   basic: {
     // 🥉 MÊS 3 - R$ 2,00 (SÓ QUEM PAGOU MÊS 2)
     initialDeposit: 2.00,
-    platformRetention: 0.60, // R$ 0,60 retido pela plataforma
+    platformRetention: 1.00, // R$ 1,00 retido pela plataforma
     creditsReceived: 140, // R$ 1,40 para o usuário (CORRIGIDO!)
     monthType: 'month3',
     isAdultOnly: true, // Apenas maiores de 18 anos
 
     trainingRewards: {
-      'egito-antigo': { base: 0.1, victory: 0.3, excellent: 0.6 },
-      'mesopotamia': { base: 0.2, victory: 0.4, excellent: 0.8 },
-      'medieval': { base: 0.3, victory: 0.6, excellent: 1.2 },
-      'digital': { base: 0.4, victory: 0.8, excellent: 1.5 },
-      'labirinto': { base: 0.5, victory: 1.0, excellent: 1.8 }
+      'egito-antigo': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'mesopotamia': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'medieval': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'digital': { base: 0.5, victory: 0.5, excellent: 0.5 },
+      'labirinto': { base: 0.5, victory: 0.5, excellent: 0.5 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
     pvpBetCredits: 7.0, // R$ 0,070 por partida
     pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 24,
-    withdrawalFeePercent: 22.5,
+    withdrawalFeePercent: 15,
     withdrawalMinDays: 30,
     maxMonthlyWithdrawal: 100, // R$ 1,00/mês (limite legal)
     maxWithdrawalUnder18: 50 // 50% para menores de 18
