@@ -22,7 +22,7 @@ import { useDashboard } from '@/hooks/useDashboard';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useResetData } from '@/hooks/useResetData';
 import { useCredits } from '@/hooks/useCredits';
-import { useSubscription } from '@/hooks/useSubscription';
+
 import { calculateWithdrawal } from '@/utils/creditsSystem';
 import { SystemInfoCard } from '@/components/subscription/SystemInfoCard';
 import { PersistentBackgroundMusic } from '@/components/ui/persistent-background-music';
@@ -51,7 +51,7 @@ const Index = () => {
   // Buscar dados reais do usuário
   const { profile, wallet, battleHistory, loading } = useDashboard();
   const { userCredits, loading: creditsLoading, computed } = useCredits();
-  const { userSubscription, computed: subscriptionInfo } = useSubscription();
+
   const { resetAllData, resetting } = useResetData();
 
   const handleVerificationComplete = (isAdult: boolean) => {
