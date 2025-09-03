@@ -61,7 +61,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'egito-antigo': { base: 0.3, victory: 0.7, excellent: 1.4 },
       'mesopotamia': { base: 0.5, victory: 1.0, excellent: 2.0 },
       'medieval': { base: 0.7, victory: 1.4, excellent: 2.8 },
-      'digital': { base: 1.0, victory: 2.0, excellent: 3.5 }
+      'digital': { base: 1.0, victory: 2.0, excellent: 3.5 },
+      'labirinto': { base: 1.2, victory: 2.5, excellent: 4.0 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
@@ -86,7 +87,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'egito-antigo': { base: 0.2, victory: 0.5, excellent: 1.0 },
       'mesopotamia': { base: 0.3, victory: 0.7, excellent: 1.4 },
       'medieval': { base: 0.5, victory: 1.0, excellent: 2.0 },
-      'digital': { base: 0.7, victory: 1.4, excellent: 2.5 }
+      'digital': { base: 0.7, victory: 1.4, excellent: 2.5 },
+      'labirinto': { base: 0.8, victory: 1.7, excellent: 2.8 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
@@ -111,7 +113,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
       'egito-antigo': { base: 0.1, victory: 0.3, excellent: 0.6 },
       'mesopotamia': { base: 0.2, victory: 0.4, excellent: 0.8 },
       'medieval': { base: 0.3, victory: 0.6, excellent: 1.2 },
-      'digital': { base: 0.4, victory: 0.8, excellent: 1.5 }
+      'digital': { base: 0.4, victory: 0.8, excellent: 1.5 },
+      'labirinto': { base: 0.5, victory: 1.0, excellent: 1.8 }
     },
 
     // PvP SUSTENTÁVEL - Equilibrado

@@ -409,7 +409,7 @@ const Medieval = () => {
         </div>
         
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'}>
+        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {} : {marginTop: '5%'}}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70 w-3/5 mx-auto' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -432,12 +432,12 @@ const Medieval = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute ${isMobile ? 'left-1' : 'left-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[60%]'}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/hero-medieval.png" 
                   alt="Herói Medieval" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-56 h-56'} object-contain`}
                   style={{ 
                     transform: 'scaleX(-1)', 
                     filter: hitEffect === 'player' 
@@ -459,12 +459,12 @@ const Medieval = () => {
             </div>
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute ${isMobile ? 'right-2' : 'right-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[45%]'}`}>
               <div className={`${isMobile ? 'mb-0.5' : 'mb-0.5'} flex justify-center`}>
                 <img 
                   src="/dragon-medieval.png" 
                   alt="Dragão Medieval" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-64 h-64'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'enemy' 
                       ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
@@ -494,12 +494,14 @@ const Medieval = () => {
 
           {/* Fogo Viajando - ACERTO: Você → Dragão */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute ${isMobile ? 'left-2 top-1/2' : 'left-[-15%] top-[97%]'} transform -translate-y-1/2 pointer-events-none z-[9999]`}>
               <div 
-                className="text-2xl text-orange-500"
+                className={`${isMobile ? 'text-2xl' : 'text-3xl'} text-orange-500`}
                 style={{
-                  animation: 'fireFromPlayerToEnemy 3s ease-out forwards',
-                  zIndex: 9999
+                  animation: 'fireFromPlayerToEnemy 2s ease-out forwards',
+                  zIndex: 9999,
+                  textShadow: '0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35',
+                  filter: 'drop-shadow(0 0 8px #ff6b35) drop-shadow(2px 2px 4px rgba(255, 107, 53, 0.3))'
                 }}
               >
                 🔥
@@ -509,12 +511,14 @@ const Medieval = () => {
 
           {/* Fogo Viajando - ERRO: Dragão → Você */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute ${isMobile ? 'right-2 top-1/2' : 'right-[-15%] top-[82%]'} transform -translate-y-1/2 pointer-events-none z-[9999]`}>
               <div 
-                className="text-2xl text-red-500"
+                className={`${isMobile ? 'text-2xl' : 'text-3xl'} text-red-500`}
                 style={{
-                  animation: 'fireFromEnemyToPlayer 3s ease-out forwards',
-                  zIndex: 9999
+                  animation: 'fireFromEnemyToPlayer 2s ease-out forwards',
+                  zIndex: 9999,
+                  textShadow: '0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444',
+                  filter: 'drop-shadow(0 0 8px #ef4444) drop-shadow(2px 2px 4px rgba(239, 68, 68, 0.3))'
                 }}
               >
                 🔥
@@ -531,22 +535,22 @@ const Medieval = () => {
                 scale: 1;
               }
               25% {
-                transform: translateX(195px);
+                transform: translateX(250px);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(390px);
+                transform: translateX(500px);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(585px);
+                transform: translateX(750px);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(780px);
+                transform: translateX(1000px);
                 opacity: 0;
                 scale: 0.8;
               }
@@ -559,22 +563,22 @@ const Medieval = () => {
                 scale: 1;
               }
               25% {
-                transform: translateX(-195px);
+                transform: translateX(-250px);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(-390px);
+                transform: translateX(-500px);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(-585px);
+                transform: translateX(-750px);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(-780px);
+                transform: translateX(-1000px);
                 opacity: 0;
                 scale: 0.8;
               }
@@ -583,7 +587,7 @@ const Medieval = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-purple-500/10 border border-purple-500 ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-38'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {marginTop: '33%', width: '140%', marginLeft: '-20%', marginRight: '-20%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-purple-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

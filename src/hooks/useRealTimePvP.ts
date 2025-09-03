@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { getPvPValues, updateNewSubscriptionCredits } from '@/utils/creditsIntegration';
+import { NEW_PVP_CONFIG, calculateNewPvPResult } from '@/utils/pvpConfig';
 
 export interface PvPRoom {
   id: string;

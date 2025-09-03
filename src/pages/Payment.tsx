@@ -220,13 +220,26 @@ const Payment = () => {
                 </h3>
                 
                 <div className="bg-muted/20 rounded-lg p-3">
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>Limite de saque deste mês:</span>
-                    <span className="font-bold text-epic">{maxWithdrawal.toFixed(0)} créditos</span>
+                  <div className="text-sm space-y-2">
+                    <div className="flex justify-between">
+                      <span>Limite mínimo para saque:</span>
+                      <span className="font-bold text-epic">200 créditos</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Limite máximo (usuários regulares):</span>
+                      <span className="font-bold text-victory">400 créditos</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>TOP RANKED:</span>
+                      <span className="font-bold text-legendary">Ilimitado</span>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Valor disponível para saque após taxas administrativas (12.5%)
-                  </p>
+                  <div className="text-xs text-muted-foreground mt-2 space-y-1">
+                    <p>• Saque disponível dia 1° do mês • Taxa administrativa 22.5%</p>
+                    <p>• Usuários regulares: 1 dia para sacar (até 400)</p>
+                    <p>• TOP RANKED: 3 dias para sacar (ilimitado)</p>
+                    <p>• Após prazo: créditos expiram (não acumulam)</p>
+                  </div>
                 </div>
 
                 <div className="space-y-2 text-sm">

@@ -497,7 +497,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'}>
+        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {} : {marginTop: '5%'}}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70 w-3/5 mx-auto' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -520,12 +520,12 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
-              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+            <div className={`absolute text-center ${isMobile ? 'left-1 top-5' : 'left-[-15%] top-[60%]'}`}>
+              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={isMobile ? {} : {animationDuration: '3s'}}>
                 <img 
                   src="/hero-egypt.png" 
                   alt="Herói Egípcio" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-56 h-56'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'player' 
                       ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
@@ -548,12 +548,12 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
-              <div className={`animate-pulse ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+            <div className={`absolute text-center ${isMobile ? 'right-2 top-5' : 'right-[-15%] top-[37%]'}`}>
+              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={isMobile ? {} : {animationDuration: '3s'}}>
                 <img 
                   src="/enemy-egypt.png" 
                   alt="Inimigo Egípcio" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-64 h-64'} object-contain`}
                   style={{ 
                     transform: 'scaleX(-1)',
                     filter: hitEffect === 'enemy' 
@@ -584,12 +584,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ACERTO: Você → Inimigo */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'left-2 top-1/2 transform -translate-y-1/2' : 'left-[-15%] top-[95%]'}`}>
               <div 
-                className="text-2xl text-orange-500"
+                className={`text-orange-500 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
                 style={{
                   animation: 'fireFromPlayerToEnemy 3s ease-out forwards',
-                  zIndex: 9999
+                  zIndex: 9999,
+                  textShadow: isMobile ? 'none' : '0 0 10px #f97316, 0 0 20px #dc2626, 0 0 30px #fbbf24',
+                  filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(249, 115, 22, 0.8)) drop-shadow(0 0 15px rgba(220, 38, 38, 0.6))'
                 }}
               >
                 🔥💥
@@ -599,12 +601,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
           {/* Fogo Viajando - ERRO: Inimigo → Você */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'right-2 top-1/2 transform -translate-y-1/2' : 'right-[-15%] top-[80%]'}`}>
               <div 
-                className="text-2xl text-red-500"
+                className={`text-red-500 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
                 style={{
                   animation: 'fireFromEnemyToPlayer 3s ease-out forwards',
-                  zIndex: 9999
+                  zIndex: 9999,
+                  textShadow: isMobile ? 'none' : '0 0 10px #dc2626, 0 0 20px #b91c1c, 0 0 30px #fbbf24',
+                  filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(220, 38, 38, 0.8)) drop-shadow(0 0 15px rgba(185, 28, 28, 0.6))'
                 }}
               >
                 🔥💥
@@ -621,22 +625,22 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 scale: 1;
               }
               25% {
-                transform: translateX(200px);
+                transform: translateX(220px);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(400px);
+                transform: translateX(440px);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(600px);
+                transform: translateX(660px);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(800px);
+                transform: translateX(880px);
                 opacity: 0.5;
                 scale: 0.8;
               }
@@ -649,22 +653,22 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 scale: 1;
               }
               25% {
-                transform: translateX(-200px);
+                transform: translateX(-220px);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(-400px);
+                transform: translateX(-440px);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(-600px);
+                transform: translateX(-660px);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(-800px);
+                transform: translateX(-880px);
                 opacity: 0.5;
                 scale: 0.8;
               }
@@ -673,7 +677,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-epic/10 border border-epic ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-epic/10 border border-epic ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-38'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {marginTop: '33%', width: '140%', marginLeft: '-20%', marginRight: '-20%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-epic/30 rounded-full backdrop-blur-sm border border-epic ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-epic font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

@@ -412,7 +412,7 @@ const Mesopotamia = () => {
         </div>
         
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'}>
+        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {} : {marginTop: '5%'}}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70 w-3/5 mx-auto' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -435,12 +435,12 @@ const Mesopotamia = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
-              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+            <div className={`absolute text-center ${isMobile ? 'left-1 top-5' : 'left-[-15%] top-[60%]'}`}>
+              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={isMobile ? {} : {animationDuration: '3s'}}>
                 <img 
                   src="/hero-mesopotamia.png" 
                   alt="Herói Mesopotâmia" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-56 h-56'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'player' 
                       ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
@@ -463,12 +463,12 @@ const Mesopotamia = () => {
 
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
-              <div className={`animate-pulse ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+            <div className={`absolute text-center ${isMobile ? 'right-2 top-5' : 'right-[-15%] top-[45%]'}`}>
+              <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={isMobile ? {} : {animationDuration: '3s'}}>
                 <img 
                   src="/enkidu-mesopotamia.png" 
                   alt="Enkidu Mesopotâmia" 
-                  className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
+                  className={`${isMobile ? 'w-14 h-14' : 'w-64 h-64'} object-contain`}
                   style={{ 
                     filter: hitEffect === 'enemy' 
                       ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
@@ -491,12 +491,14 @@ const Mesopotamia = () => {
 
           {/* Lança Viajando - ACERTO: Herói → Enkidu */}
           {attackEffect === 'player-attack' && (
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'left-2 top-1/2 transform -translate-y-1/2' : 'left-[-15%] top-[77%]'}`}>
               <div 
-                className="text-2xl text-yellow-600"
+                className={`text-yellow-600 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
                 style={{
-                  animation: 'spearFromPlayerToEnemy 3s ease-out forwards',
-                  zIndex: 9999
+                  animation: 'spearFromPlayerToEnemy 2s ease-out forwards',
+                  zIndex: 9999,
+                  textShadow: isMobile ? 'none' : '0 0 10px #10b981, 0 0 20px #8b5cf6, 0 0 30px #a855f7',
+                  filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.8)) drop-shadow(0 0 15px rgba(139, 92, 246, 0.6))'
                 }}
               >
                 🏹
@@ -506,12 +508,14 @@ const Mesopotamia = () => {
 
           {/* Lança Viajando - ERRO: Enkidu → Herói */}
           {attackEffect === 'enemy-attack' && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none z-[9999]">
+            <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'right-2 top-1/2 transform -translate-y-1/2' : 'right-[-15%] top-[62%]'}`}>
               <div 
-                className="text-2xl text-amber-700"
+                className={`text-amber-700 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
                 style={{
-                  animation: 'spearFromEnemyToPlayer 3s ease-out forwards',
-                  zIndex: 9999
+                  animation: 'spearFromEnemyToPlayer 2s ease-out forwards',
+                  zIndex: 9999,
+                  textShadow: isMobile ? 'none' : '0 0 10px #10b981, 0 0 20px #8b5cf6, 0 0 30px #a855f7',
+                  filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.8)) drop-shadow(0 0 15px rgba(139, 92, 246, 0.6))'
                 }}
               >
                 🏹
@@ -528,22 +532,22 @@ const Mesopotamia = () => {
                 scale: 1;
               }
               25% {
-                transform: translateX(195px) rotate(15deg);
+                transform: translateX(224px) rotate(15deg);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(390px) rotate(30deg);
+                transform: translateX(449px) rotate(30deg);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(585px) rotate(45deg);
+                transform: translateX(673px) rotate(45deg);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(780px) rotate(60deg);
+                transform: translateX(897px) rotate(60deg);
                 opacity: 0;
                 scale: 0.8;
               }
@@ -556,22 +560,22 @@ const Mesopotamia = () => {
                 scale: 1;
               }
               25% {
-                transform: translateX(-195px) rotate(165deg);
+                transform: translateX(-224px) rotate(165deg);
                 opacity: 0.9;
                 scale: 1.1;
               }
               50% {
-                transform: translateX(-390px) rotate(150deg);
+                transform: translateX(-449px) rotate(150deg);
                 opacity: 0.8;
                 scale: 1.2;
               }
               75% {
-                transform: translateX(-585px) rotate(135deg);
+                transform: translateX(-673px) rotate(135deg);
                 opacity: 0.7;
                 scale: 1.1;
               }
               100% {
-                transform: translateX(-780px) rotate(120deg);
+                transform: translateX(-897px) rotate(120deg);
                 opacity: 0;
                 scale: 0.8;
               }
@@ -580,7 +584,7 @@ const Mesopotamia = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-amber-500/10 border border-amber-500 ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-amber-500/10 border border-amber-500 ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-38'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {marginTop: '33%', width: '140%', marginLeft: '-20%', marginRight: '-20%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-amber-500/30 rounded-full backdrop-blur-sm border border-amber-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-amber-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

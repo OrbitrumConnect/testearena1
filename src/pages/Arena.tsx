@@ -35,13 +35,14 @@ const Arena = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   
-  // Valores do PvP atualizados (sistema sustentável)
+  // Valores do PvP atualizados (sistema otimizado)
   const pvpValues = {
-    betAmount: 1.5, // 1.5 créditos entrada
-    netWin: 2.5, // 2.5 créditos vitória
-    netLoss: -1.5, // -1.5 créditos derrota
-    totalPool: 3.0, // Pool total
-    profit: 1.0 // Lucro por vitória
+    betAmount: 7.0, // 7 créditos entrada
+    netWin: 2.5, // 2.5 créditos lucro líquido
+    netLoss: -7.0, // -7 créditos derrota
+    totalPool: 14.0, // Pool total (7+7)
+    winnerReceives: 9.5, // Ganhador recebe 9.5
+    platformFee: 4.5 // Plataforma fica com 4.5
   };
   const [battle, setBattle] = useState<Battle>({
     player1: { name: 'Você', hp: 100, maxHp: 100, avatar: '⚔️' },
@@ -319,7 +320,7 @@ const Arena = () => {
                 💰 Custo da Batalha: {pvpValues.betAmount} créditos
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Vitória: +{pvpValues.netWin} créditos (lucro {pvpValues.profit}) | Derrota: {pvpValues.netLoss} créditos
+                Vitória: +{pvpValues.netWin} créditos | Derrota: {pvpValues.netLoss} créditos | Pool: {pvpValues.totalPool} créditos
               </p>
               <p className="text-xs text-muted-foreground mt-2">
                 🏆 Sistema sustentável: Recompensas por mérito para jogadores ativos

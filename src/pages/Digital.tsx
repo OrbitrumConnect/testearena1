@@ -436,7 +436,7 @@ const Digital = () => {
         </div>
         
         {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'}>
+        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {} : {marginTop: '5%'}}>
           <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70 w-3/5 mx-auto' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
@@ -459,12 +459,12 @@ const Digital = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute left-1 text-center ${isMobile ? 'top-5' : ''}`}>
-            <div className={`animate-pulse ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
+            <div className={`absolute ${isMobile ? 'left-1' : 'left-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[65%]'}`}>
+            <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={{animationDuration: '3s'}}>
               <img 
                 src="/guerreirodigital.png" 
                 alt="Guerreiro Digital" 
-                className={`${isMobile ? 'w-14 h-14' : 'w-24 h-24'} object-contain`}
+                className={`${isMobile ? 'w-14 h-14' : 'w-56 h-56'} object-contain`}
                 style={{ 
                   filter: hitEffect === 'player' 
                     ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
@@ -485,12 +485,12 @@ const Digital = () => {
             </div>
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute right-2 text-center ${isMobile ? 'top-5' : ''}`}>
+            <div className={`absolute ${isMobile ? 'right-2' : 'right-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[50%]'}`}>
             <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
               <img 
                 src="/bossdigital.png" 
                 alt="Boss Digital" 
-                className={`${isMobile ? 'w-14 h-14' : 'w-28 h-28'} object-contain`}
+                className={`${isMobile ? 'w-14 h-14' : 'w-64 h-64'} object-contain`}
                 style={{ 
                   filter: hitEffect === 'enemy' 
                     ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
@@ -519,7 +519,7 @@ const Digital = () => {
             const laserSize = laserSizes[index % 3];
             
             // Posições verticais diferentes com mais espaçamento
-            const verticalPositions = isMobile ? [35, 40, 45] : [54, 60, 66]; // Mobile: nível dos heróis
+            const verticalPositions = isMobile ? [35, 40, 45] : [94, 100, 106]; // Web: nível dos heróis descidos 40%
             const verticalPos = verticalPositions[index % 3];
             
             return (
@@ -546,7 +546,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-2 mb-2 mt-10 border-2 glow-epic scale-56'}`} style={isMobile ? {marginTop: '32%', width: '90%', marginLeft: 'auto', marginRight: 'auto'} : {}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-38'}`} style={isMobile ? {marginTop: '47%', width: '160%', marginLeft: '-30%', marginRight: '-30%'} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
