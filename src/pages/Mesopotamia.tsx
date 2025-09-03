@@ -9,8 +9,10 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
-import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
-import { getRewardDisplayValues } from '@/utils/rewardDisplay';
+// Função para calcular dano HP baseado no número de perguntas
+const calculateHpDamage = (totalQuestions: number): number => {
+  return Math.max(5, Math.floor(totalQuestions * 0.8));
+};
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
 const Mesopotamia = () => {
@@ -110,7 +112,18 @@ const Mesopotamia = () => {
       const battleDurationSeconds = Math.round((Date.now() - battleStartTime) / 1000);
       
       // Calcular recompensas usando novo sistema
-      const rewards = getTrainingRewards('mesopotamia', score, questions.length);
+      const userPlan = getUserPlan();
+      const trainingCredits = calculateTrainingCredits(
+        userPlan,
+        'mesopotamia',
+        score,
+        questions.length
+      );
+      const rewards = {
+        xpEarned: trainingCredits.xpEarned,
+        moneyEarned: trainingCredits.creditsEarned / 100, // Converter para reais
+        bonusApplied: trainingCredits.bonusApplied
+      };
       
       await saveBattleResult({
         eraName: 'Mesopotâmia',
@@ -123,7 +136,6 @@ const Mesopotamia = () => {
 
       // Novo Sistema de Créditos
       const accuracyPercentage = Math.round((score / questions.length) * 100);
-      const userPlan = getUserPlan();
       const creditsResult = handleNewBattleCredits({
         battleType: 'training',
         questionsCorrect: score,
@@ -244,15 +256,15 @@ const Mesopotamia = () => {
               <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
                 <div className="text-center">
                   <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>6 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
                 <div className="text-center">
                   <p className={`text-victory font-bold ${isMobile ? 'text-xs' : ''}`}>✅ 70%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>5 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
                 <div className="text-center">
                   <p className={`text-warning font-bold ${isMobile ? 'text-xs' : ''}`}>📚 Base</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>3 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
               </div>
             </div>
@@ -326,7 +338,7 @@ const Mesopotamia = () => {
               
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">XP Ganho</h3>
-                <p className="text-2xl font-bold text-battle">+{getTrainingRewards('mesopotamia', score, questions.length).xpEarned}</p>
+                <p className="text-2xl font-bold text-battle">+{rewards.xpEarned}</p>
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
                 {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
               </div>
@@ -334,9 +346,9 @@ const Mesopotamia = () => {
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
                 <p className="text-2xl font-bold text-victory">
-                  +{Math.round((getTrainingRewards('mesopotamia', score, questions.length).moneyEarned || 0) * 100)} créditos
+                  +{Math.round((rewards.moneyEarned || 0) * 100)} créditos
                 </p>
-                {getTrainingRewards('mesopotamia', score, questions.length).bonusApplied && (
+                {rewards.bonusApplied && (
                   <p className="text-sm text-epic font-semibold">🏆 Bônus de Excelência +20%!</p>
                 )}
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}

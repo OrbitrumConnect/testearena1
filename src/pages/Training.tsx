@@ -10,8 +10,10 @@ import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useFreeLimit } from '@/hooks/useFreeLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
-import { calculateHpDamage, getTrainingRewards } from '@/utils/gameBalance';
-import { getRewardDisplayValues, getFinancialSystemInfo } from '@/utils/rewardDisplay';
+// Função para calcular dano HP baseado no número de perguntas
+const calculateHpDamage = (totalQuestions: number): number => {
+  return Math.max(5, Math.floor(totalQuestions * 0.8));
+};
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
 import egyptArena from '@/assets/egypt-arena.png';
 
@@ -118,7 +120,18 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
         console.log('🆓 Usuário FREE: Treino concluído mas sem ganhos (apenas experiência)');
       } else {
         // Calcular recompensas usando novo sistema (apenas para usuários pagos)
-        const rewards = getTrainingRewards('egito-antigo', score, questions.length);
+        const userPlan = getUserPlan();
+        const trainingCredits = calculateTrainingCredits(
+          userPlan,
+          'egito-antigo',
+          score,
+          questions.length
+        );
+        const rewards = {
+          xpEarned: trainingCredits.xpEarned,
+          moneyEarned: trainingCredits.creditsEarned / 100, // Converter para reais
+          bonusApplied: trainingCredits.bonusApplied
+        };
         
         await saveBattleResult({
           eraName: 'Egito Antigo',
@@ -131,7 +144,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
         // Novo Sistema de Créditos com Planos
         const accuracyPercentage = Math.round((score / questions.length) * 100);
-        const userPlan = getUserPlan();
         const creditsResult = handleNewBattleCredits({
           battleType: 'training',
           questionsCorrect: score,
@@ -283,15 +295,15 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
                 <div className="text-center">
                   <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>5 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
                 <div className="text-center">
                   <p className={`text-victory font-bold ${isMobile ? 'text-xs' : ''}`}>✅ 70%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>4 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
                 <div className="text-center">
                   <p className={`text-warning font-bold ${isMobile ? 'text-xs' : ''}`}>📚 Base</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>2 créditos</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
                 </div>
               </div>
             </div>
@@ -377,7 +389,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">XP Ganho</h3>
-                <p className="text-2xl font-bold text-battle">+{getTrainingRewards('egito-antigo', score, questions.length).xpEarned}</p>
+                <p className="text-2xl font-bold text-battle">+{rewards.xpEarned}</p>
                 {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
                 {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
               </div>
