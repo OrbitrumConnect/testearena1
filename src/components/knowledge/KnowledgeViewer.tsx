@@ -19,6 +19,17 @@ export const KnowledgeViewer = () => {
   const [showChatbot, setShowChatbot] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const [chatInput, setChatInput] = useState<string>('');
+  
+  // NOVOS ESTADOS DO SISTEMA COLABORATIVO
+  const [showCommunityChat, setShowCommunityChat] = useState<boolean>(false);
+  const [showContributions, setShowContributions] = useState<boolean>(false);
+  const [showAutoQuizzes, setShowAutoQuizzes] = useState<boolean>(false);
+  const [communityChatInput, setCommunityChatInput] = useState<string>('');
+  const [selectedChatEra, setSelectedChatEra] = useState<string>('geral');
+  const [contributionContent, setContributionContent] = useState<string>('');
+  const [contributionCategory, setContributionCategory] = useState<string>('resumo');
+  const [contributionEra, setContributionEra] = useState<string>('digital');
+  
   const isMobile = useIsMobile();
   
   const ITEMS_PER_PAGE = 12;
@@ -335,6 +346,31 @@ const handleRandomQuestion = () => {
               (showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento')
             }
           </Button>
+
+          {/* NOVAS ABAS DO SISTEMA COLABORATIVO */}
+          <Button 
+            onClick={() => setShowCommunityChat(!showCommunityChat)} 
+            variant="outline" 
+            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-victory/10 border-victory/30 text-victory hover:bg-victory/20`}
+          >
+            💬 Chat da Comunidade
+          </Button>
+
+          <Button 
+            onClick={() => setShowContributions(!showContributions)} 
+            variant="outline" 
+            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-epic/10 border-epic/30 text-epic hover:bg-epic/20`}
+          >
+            ✍️ Minhas Contribuições
+          </Button>
+
+          <Button 
+            onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
+            variant="outline" 
+            className={`gap-2 ${isMobile ? 'w-full' : ''} bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20`}
+          >
+            📊 Provas Automáticas
+          </Button>
         </div>
       </div>
 
@@ -476,6 +512,254 @@ const handleRandomQuestion = () => {
                   {action}
                 </Button>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 💬 Chat da Comunidade */}
+      {showCommunityChat && (
+        <Card className={`arena-card hover-scale border-victory/30 ${isMobile ? 'mx-4' : ''}`}>
+          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
+            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
+              <div className="flex items-center gap-2">
+                💬 Chat da Comunidade
+                <Badge variant="outline" className="bg-victory/20 text-victory text-xs">
+                  {selectedChatEra === 'geral' ? 'Chat Geral' : `Era ${selectedChatEra}`}
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowCommunityChat(false)}
+                className="h-6 w-6 p-0 text-muted-foreground hover:text-victory"
+              >
+                ✕
+              </Button>
+            </CardTitle>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              Converse com outros usuários sobre conhecimento e estudos
+            </p>
+          </CardHeader>
+          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
+            {/* Seleção de Chat */}
+            <div className="flex flex-wrap gap-2">
+              {['geral', 'digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
+                <Button
+                  key={era}
+                  variant={selectedChatEra === era ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedChatEra(era)}
+                  className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm'} ${
+                    selectedChatEra === era ? 'bg-victory text-white' : 'hover:bg-victory/10'
+                  }`}
+                >
+                  {era === 'geral' ? '🌍 Geral' : 
+                   era === 'digital' ? '💻 Digital' :
+                   era === 'medieval' ? '⚔️ Medieval' :
+                   era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
+                </Button>
+              ))}
+            </div>
+
+            {/* Chat Messages (placeholder) */}
+            <div className={`max-h-64 overflow-y-auto space-y-3 ${isMobile ? 'text-sm' : ''} bg-muted/20 rounded-lg p-4`}>
+              <div className="text-center text-muted-foreground text-sm">
+                💬 Chat da comunidade em desenvolvimento...
+                <br />
+                <span className="text-xs">Em breve: conversas em tempo real entre usuários!</span>
+              </div>
+            </div>
+            
+            {/* Chat Input */}
+            <div className="flex gap-2">
+              <Input
+                placeholder="💬 Digite sua mensagem..."
+                value={communityChatInput}
+                onChange={(e) => setCommunityChatInput(e.target.value)}
+                className={`${isMobile ? 'text-sm' : ''}`}
+              />
+              <Button
+                variant="outline"
+                disabled={!communityChatInput.trim()}
+                className="px-3 bg-victory/10 border-victory/30 text-victory hover:bg-victory/20"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            {/* Regras do Chat */}
+            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+              <strong>📋 Regras do Chat:</strong>
+              <br />• Respeite outros usuários
+              <br />• Mantenha foco no conhecimento
+              <br />• 1ª advertencia → Aviso
+              <br />• 2ª advertencia → Ban 15 min
+              <br />• 3ª advertencia → Ban 1 dia
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ✍️ Sistema de Contribuições */}
+      {showContributions && (
+        <Card className={`arena-card hover-scale border-epic/30 ${isMobile ? 'mx-4' : ''}`}>
+          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
+            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
+              <div className="flex items-center gap-2">
+                ✍️ Sistema de Contribuições
+                <Badge variant="outline" className="bg-epic/20 text-epic text-xs">
+                  Limite: 3x por dia
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowContributions(false)}
+                className="h-6 w-6 p-0 text-muted-foreground hover:text-epic"
+              >
+                ✕
+              </Button>
+            </CardTitle>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              Adicione resumos e contribuições para ganhar créditos e XP
+            </p>
+          </CardHeader>
+          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
+            {/* Formulário de Contribuição */}
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                <Select value={contributionEra} onValueChange={setContributionEra}>
+                  <SelectTrigger className={isMobile ? 'w-full' : 'w-32'}>
+                    <SelectValue placeholder="Era" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="digital">💻 Digital</SelectItem>
+                    <SelectItem value="medieval">⚔️ Medieval</SelectItem>
+                    <SelectItem value="egito-antigo">🏺 Egito</SelectItem>
+                    <SelectItem value="mesopotamia">🏛️ Mesopotâmia</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={contributionCategory} onValueChange={setContributionCategory}>
+                  <SelectTrigger className={isMobile ? 'w-full' : 'w-32'}>
+                    <SelectValue placeholder="Tipo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="resumo">📝 Resumo</SelectItem>
+                    <SelectItem value="questao">❓ Questão</SelectItem>
+                    <SelectItem value="curiosidade">💡 Curiosidade</SelectItem>
+                    <SelectItem value="anotacao">📌 Anotação</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Input
+                placeholder="✍️ Digite sua contribuição..."
+                value={contributionContent}
+                onChange={(e) => setContributionContent(e.target.value)}
+                className={`${isMobile ? 'text-sm' : ''}`}
+              />
+
+              <Button
+                variant="outline"
+                disabled={!contributionContent.trim()}
+                className="w-full bg-epic/10 border-epic/30 text-epic hover:bg-epic/20"
+              >
+                📤 Enviar Contribuição
+              </Button>
+            </div>
+
+            {/* Informações do Sistema */}
+            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+              <strong>💰 Sistema de Recompensas:</strong>
+              <br />• 3+ votos positivos = +0,25 créditos + 10 XP
+              <br />• Limite: 3 contribuições validadas por dia
+              <br />• Total máximo: 0,75 créditos + 30 XP por dia
+              <br />• Mestre IA analisa e sugere melhorias
+            </div>
+
+            {/* Minhas Contribuições (placeholder) */}
+            <div className="bg-muted/20 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">📚 Minhas Contribuições</h4>
+              <div className="text-center text-muted-foreground text-sm">
+                ✍️ Sistema de contribuições em desenvolvimento...
+                <br />
+                <span className="text-xs">Em breve: suas contribuições e histórico!</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 📊 Provas Automáticas */}
+      {showAutoQuizzes && (
+        <Card className={`arena-card hover-scale border-primary-glow/30 ${isMobile ? 'mx-4' : ''}`}>
+          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
+            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
+              <div className="flex items-center gap-2">
+                📊 Provas Automáticas
+                <Badge variant="outline" className="bg-primary-glow/20 text-primary-glow text-xs">
+                  IA Personalizada
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAutoQuizzes(false)}
+                className="h-6 w-6 p-0 text-muted-foreground hover:text-primary-glow"
+              >
+                ✕
+              </Button>
+            </CardTitle>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              Provas personalizadas criadas pela IA baseadas no seu desempenho
+            </p>
+          </CardHeader>
+          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
+            {/* Seleção de Era para Prova */}
+            <div className="flex flex-wrap gap-2">
+              {['digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
+                <Button
+                  key={era}
+                  variant="outline"
+                  size="sm"
+                  className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm'} hover:bg-primary-glow/10`}
+                >
+                  {era === 'digital' ? '💻 Digital' :
+                   era === 'medieval' ? '⚔️ Medieval' :
+                   era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
+                </Button>
+              ))}
+            </div>
+
+            {/* Prova Atual (placeholder) */}
+            <div className="bg-muted/20 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">🎯 Prova Atual</h4>
+              <div className="text-center text-muted-foreground text-sm">
+                📊 Sistema de provas automáticas em desenvolvimento...
+                <br />
+                <span className="text-xs">Em breve: provas personalizadas pela IA!</span>
+              </div>
+            </div>
+
+            {/* Análise de Desempenho (placeholder) */}
+            <div className="bg-muted/20 rounded-lg p-4">
+              <h4 className="font-medium text-sm mb-2">📈 Análise de Desempenho</h4>
+              <div className="text-center text-muted-foreground text-sm">
+                🧠 Análise IA em desenvolvimento...
+                <br />
+                <span className="text-xs">Em breve: insights personalizados sobre seu estudo!</span>
+              </div>
+            </div>
+
+            {/* Informações do Sistema */}
+            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+              <strong>🤖 Funcionalidades da IA:</strong>
+              <br />• Cria provas baseadas no seu histórico
+              <br />• Identifica pontos fortes e fracos
+              <br />• Sugere melhorias de estudo
+              <br />• Recomendações personalizadas
             </div>
           </CardContent>
         </Card>
