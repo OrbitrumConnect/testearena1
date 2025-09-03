@@ -130,51 +130,14 @@ export const useRanking = () => {
     }
   };
 
-  const generateMockRanking = () => {
-    // Generate mock data for demonstration
-    const mockUsers: RankingUser[] = [
-      { id: '1', display_name: 'Faraó Supremo', total_xp: 15000, total_battles: 150, battles_won: 120, win_rate: 80, favorite_era: 'Egito Antigo', position: 1 },
-      { id: '2', display_name: 'Guerreiro Digital', total_xp: 12500, total_battles: 120, battles_won: 90, win_rate: 75, favorite_era: 'Era Digital', position: 2 },
-      { id: '3', display_name: 'Cavaleiro Medieval', total_xp: 11000, total_battles: 100, battles_won: 75, win_rate: 75, favorite_era: 'Era Medieval', position: 3 },
-      { id: '4', display_name: 'Escriba Mesopotâmico', total_xp: 9500, total_battles: 90, battles_won: 65, win_rate: 72, favorite_era: 'Mesopotâmia', position: 4 },
-      { id: '5', display_name: 'Mestre das Eras', total_xp: 8800, total_battles: 80, battles_won: 60, win_rate: 75, favorite_era: 'Egito Antigo', position: 5 },
-    ];
+  // Remover dados fictícios - usar apenas dados reais do Supabase
+  const generateMockRanking = async () => {
+    console.log('🚫 Mock ranking desabilitado - usando apenas dados reais do Supabase');
+    // Chamar fetchGlobalRanking para buscar dados reais
+    await fetchGlobalRanking();
 
-    setGlobalRanking(mockUsers);
-
-    // Mock era rankings
-    const mockEraRankings: EraRanking[] = [
-      {
-        era_name: 'Egito Antigo',
-        era_slug: 'egito-antigo',
-        background_theme: 'bg-gradient-to-br from-yellow-600 via-orange-500 to-amber-700',
-        icon: '🏺',
-        top_users: mockUsers.slice(0, 3)
-      },
-      {
-        era_name: 'Mesopotâmia',
-        era_slug: 'mesopotamia', 
-        background_theme: 'bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-700',
-        icon: '🏛️',
-        top_users: mockUsers.slice(1, 4)
-      },
-      {
-        era_name: 'Era Medieval',
-        era_slug: 'medieval',
-        background_theme: 'bg-gradient-to-br from-gray-600 via-stone-500 to-slate-700',
-        icon: '⚔️',
-        top_users: mockUsers.slice(2, 5)
-      },
-      {
-        era_name: 'Era Digital',
-        era_slug: 'digital',
-        background_theme: 'bg-gradient-to-br from-green-600 via-cyan-500 to-blue-700',
-        icon: '💻',
-        top_users: mockUsers.slice(0, 3)
-      }
-    ];
-
-    setEraRankings(mockEraRankings);
+    // Chamar fetchEraRankings para buscar dados reais por era
+    await fetchEraRankings();
   };
 
   useEffect(() => {

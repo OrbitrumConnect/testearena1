@@ -639,12 +639,25 @@ const Dashboard = () => {
                 {/* Status de Saque */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Status Saque</span>
-                  <span className={`font-bold ${(wallet?.balance || 0) >= 200 ? 'text-green-400' : 'text-orange-400'}`}>
-                    {(wallet?.balance || 0) >= 200 ? (
-                      '✅ Disponível'
-                    ) : (
-                      `⏳ ${200 - (wallet?.balance || 0)} restantes`
-                    )}
+                  <span className={`font-bold ${(() => {
+                    const today = new Date();
+                    const isDay1 = today.getDate() === 1;
+                    const hasMinCredits = (wallet?.balance || 0) >= 200;
+                    
+                    if (isDay1 && hasMinCredits) return 'text-green-400';
+                    if (!isDay1) return 'text-blue-400';
+                    return 'text-orange-400';
+                  })()}`}>
+                    {(() => {
+                      const today = new Date();
+                      const isDay1 = today.getDate() === 1;
+                      const hasMinCredits = (wallet?.balance || 0) >= 200;
+                      
+                      if (isDay1 && hasMinCredits) return '✅ Disponível hoje';
+                      if (isDay1 && !hasMinCredits) return '⏳ Mín. 200 créditos';
+                      if (!isDay1) return `🗓️ Próximo dia 1°`;
+                      return '⏳ Aguardando';
+                    })()}
                   </span>
                 </div>
               </div>
@@ -656,15 +669,15 @@ const Dashboard = () => {
                     💰 Solicitar PIX - {(() => {
                       const isMinor = localStorage.getItem('userAge') === 'minor';
                       const balance = wallet?.balance || 0;
-                      const maxSaque = isMinor ? Math.floor(balance * 0.5) : Math.min(balance, 400);
+                      const maxSaque = isMinor ? Math.floor(balance * 0.5) : Math.min(balance, balance); // Usar saldo disponível
                       const valorReais = (maxSaque / 100).toFixed(2);
                       return `${maxSaque} créditos (R$ ${valorReais})`;
                     })()}
                   </h4>
                   <p className="text-sm text-gray-300 mb-3">
                     {localStorage.getItem('userAge') === 'minor' 
-                      ? 'Saque limitado a 50% dos créditos (proteção para menores). Processamento em até 24 horas úteis.'
-                      : 'Solicitação mensal disponível para usuários ativos. Processamento em até 24 horas úteis.'
+                      ? 'Saque limitado a 50% dos créditos (proteção para menores). Mínimo: 200 créditos (R$ 2,00). Taxa: 22,5%.'
+                      : 'Saque disponível dia 1° do mês • Mínimo 200 créditos (R$ 2,00) • Taxa administrativa 22,5%'
                     }
                   </p>
                   
@@ -682,15 +695,45 @@ const Dashboard = () => {
                     <ActionButton 
                       variant="victory" 
                       className="w-full"
+                      disabled={(() => {
+                        const today = new Date();
+                        const isDay1 = today.getDate() === 1;
+                        const hasMinCredits = (wallet?.balance || 0) >= 200;
+                        return !isDay1 || !hasMinCredits;
+                      })()}
                       onClick={() => {
-                        // Verificar se é menor e mostrar verificação APENAS se tentar sacar
-                        if (localStorage.getItem('userAge') === 'minor') {
-                          alert('⚠️ Menores de 18 anos têm saque limitado a 50% dos créditos por segurança.');
+                        const today = new Date();
+                        const isDay1 = today.getDate() === 1;
+                        const hasMinCredits = (wallet?.balance || 0) >= 200;
+                        
+                        if (!isDay1) {
+                          alert('⏰ Saques só estão disponíveis no dia 1° de cada mês!');
+                          return;
+                        }
+                        
+                        if (!hasMinCredits) {
+                          alert('⚠️ Mínimo de 200 créditos necessário para saque (R$ 2,00)');
+                          return;
+                        }
+                        
+                        const isMinor = localStorage.getItem('userAge') === 'minor';
+                        if (isMinor) {
+                          alert('⚠️ Menores de 18 anos têm saque limitado a 50% dos créditos. Taxa: 22,5%');
+                        } else {
+                          alert('🎉 Solicitação PIX enviada! Processamento em até 24h úteis. Taxa: 22,5%');
                         }
                       }}
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Solicitar {localStorage.getItem('userAge') === 'minor' ? '2.5' : '5'} créditos via PIX
+                      {(() => {
+                        const today = new Date();
+                        const isDay1 = today.getDate() === 1;
+                        const hasMinCredits = (wallet?.balance || 0) >= 200;
+                        
+                        if (!isDay1) return 'Disponível dia 1°';
+                        if (!hasMinCredits) return 'Mínimo 200 créditos';
+                        return 'Solicitar PIX';
+                      })()}
                     </ActionButton>
                   </div>
                 </div>

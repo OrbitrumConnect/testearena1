@@ -376,13 +376,30 @@ const Mesopotamia = () => {
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
       <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
-      {/* Fundo Temático Mesopotâmia */}
+      {/* Fundo Temático Mesopotâmia - Vídeo Animado */}
       <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
-        <img 
-          src="/mesopotamia-background.png" 
-          alt="Mesopotamia Background" 
+        <video 
+          autoPlay
+          muted
+          loop
+          playsInline
           className="w-full h-full object-cover opacity-80"
-        />
+          poster="/mesopotamia-background.png"
+          style={{ playbackRate: 0.5 }}
+          ref={(video) => {
+            if (video) {
+              video.playbackRate = 0.5;
+            }
+          }}
+        >
+          <source src="/Vídeo_Animado_de_Cenário_Egípcio.mp4" type="video/mp4" />
+          {/* Fallback para navegadores que não suportam vídeo */}
+          <img 
+            src="/mesopotamia-background.png" 
+            alt="Mesopotamia Background" 
+            className="w-full h-full object-cover opacity-80"
+          />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-amber-900/30 to-orange-900/50" />
       </div>
       

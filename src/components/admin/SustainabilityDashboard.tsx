@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { simulateSustainability, projectMonthlyRevenue, PVP_ECONOMICS_CONFIG } from '@/utils/pvpEconomics';
+import { supabase } from '@/integrations/supabase/client';
 import { generateMeritReport } from '@/utils/meritSystem';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,22 +23,74 @@ interface SustainabilityDashboardProps {
   className?: string;
 }
 
-// Mock data - em produção viria do backend real
-const MOCK_CURRENT_METRICS = {
-  totalUsers: 1247,
-  activeUsers: 1089,
-  avgPvPsPerUser: 8.3,
-  totalCreditsInCirculation: 1_678_450,
-  monthlyRevenue: 6847.50,
-  platformRetention: 1247.80
+// Dados reais dinâmicos - buscar do Supabase em tempo real
+const fetchRealMetrics = async () => {
+  try {
+    // Buscar total de usuários
+    const { count: totalUsers } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true });
+
+    // Buscar usuários ativos (últimos 7 dias)
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const { count: activeUsers } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .gte('updated_at', sevenDaysAgo.toISOString());
+
+    // Buscar total de batalhas para calcular média
+    const { count: totalBattles } = await supabase
+      .from('battle_history')
+      .select('*', { count: 'exact', head: true });
+
+    // Buscar créditos em circulação (soma de todos os wallets)
+    const { data: wallets } = await supabase
+      .from('user_wallet')
+      .select('balance, total_earned');
+
+    const totalCredits = wallets?.reduce((sum, wallet) => sum + (wallet.balance || 0), 0) || 0;
+    const totalEarned = wallets?.reduce((sum, wallet) => sum + (wallet.total_earned || 0), 0) || 0;
+
+    return {
+      totalUsers: totalUsers || 0,
+      activeUsers: activeUsers || 0,
+      avgPvPsPerUser: totalUsers ? (totalBattles || 0) / totalUsers : 0,
+      totalCreditsInCirculation: totalCredits,
+      monthlyRevenue: (totalEarned || 0) * 0.01, // Converter créditos para reais (1% = R$0,01)
+      platformRetention: (totalEarned || 0) * 0.225 * 0.01 // 22,5% de retenção
+    };
+  } catch (error) {
+    console.error('Erro ao buscar métricas reais:', error);
+    return {
+      totalUsers: 0,
+      activeUsers: 0,
+      avgPvPsPerUser: 0,
+      totalCreditsInCirculation: 0,
+      monthlyRevenue: 0,
+      platformRetention: 0
+    };
+  }
 };
 
 export const SustainabilityDashboard: React.FC<SustainabilityDashboardProps> = ({ 
   className = '' 
 }) => {
-  const [currentMetrics, setCurrentMetrics] = useState(MOCK_CURRENT_METRICS);
+  const [currentMetrics, setCurrentMetrics] = useState({
+    totalUsers: 0,
+    activeUsers: 0,
+    avgPvPsPerUser: 0,
+    totalCreditsInCirculation: 0,
+    monthlyRevenue: 0,
+    platformRetention: 0
+  });
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedScenario, setSelectedScenario] = useState<'conservative' | 'realistic' | 'optimistic'>('realistic');
+
+  // Carregar dados reais ao iniciar
+  useEffect(() => {
+    handleRefreshMetrics();
+  }, []);
 
   // Cálculos de sustentabilidade em tempo real
   const sustainabilityAnalysis = simulateSustainability(
@@ -55,19 +108,16 @@ export const SustainabilityDashboard: React.FC<SustainabilityDashboardProps> = (
   const handleRefreshMetrics = async () => {
     setIsRefreshing(true);
     
-    // Simular carregamento de dados reais
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Em produção, isso viria de uma API real
-    const updatedMetrics = {
-      ...currentMetrics,
-      totalUsers: currentMetrics.totalUsers + Math.floor(Math.random() * 50 - 25),
-      avgPvPsPerUser: Math.max(5, currentMetrics.avgPvPsPerUser + (Math.random() * 2 - 1)),
-      monthlyRevenue: currentMetrics.monthlyRevenue * (1 + (Math.random() * 0.2 - 0.1))
-    };
-    
-    setCurrentMetrics(updatedMetrics);
-    setIsRefreshing(false);
+    try {
+      console.log('🔄 Atualizando métricas reais do admin...');
+      const realMetrics = await fetchRealMetrics();
+      setCurrentMetrics(realMetrics);
+      console.log('✅ Métricas reais carregadas:', realMetrics);
+    } catch (error) {
+      console.error('❌ Erro ao carregar métricas:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const getRiskLevelColor = (level: string) => {

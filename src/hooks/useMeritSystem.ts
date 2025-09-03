@@ -242,12 +242,8 @@ export const useMeritSystem = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user || user.id === 'demo-user') {
-        // Gerar ranking demo (simulado)
-        const demoRanking = generateDemoRanking();
-        setGlobalRanking(demoRanking);
-        return;
-      }
+      // Sempre buscar dados reais, remover dependência de autenticação
+      console.log('🔄 Buscando ranking real do Supabase...');
 
       // Buscar ranking real
       const { data: allMerits, error } = await supabase
@@ -264,48 +260,64 @@ export const useMeritSystem = () => {
 
     } catch (err) {
       console.error('❌ Erro ao carregar ranking:', err);
-      // Fallback para ranking demo
-      const demoRanking = generateDemoRanking();
-      setGlobalRanking(demoRanking);
+      // Fallback para dados reais de profiles ao invés de dados fictícios
+      try {
+        const realRanking = await fetchRealRanking();
+        setGlobalRanking(realRanking);
+      } catch (fallbackError) {
+        console.error('❌ Erro no fallback também:', fallbackError);
+        setGlobalRanking([]); // Vazio ao invés de dados fictícios
+      }
     }
   }, []);
 
-  // 📊 Gerar ranking demo (para desenvolvimento)
-  const generateDemoRanking = (): UserMerit[] => {
-    const demoUsers: UserMerit[] = [];
-    
-    for (let i = 0; i < 50; i++) {
-      const winRate = Math.random() * 100;
-      const accuracy = 60 + Math.random() * 40;
-      const totalPvP = 10 + Math.floor(Math.random() * 90);
-      const pvpWins = Math.floor((winRate / 100) * totalPvP);
-      
-      demoUsers.push({
-        userId: `demo-${i}`,
-        displayName: `Guerreiro ${i + 1}`,
-        totalPvP,
-        pvpWins,
-        winRate,
-        averageAccuracy: accuracy,
-        currentStreak: Math.floor(Math.random() * 10),
-        maxStreak: Math.floor(Math.random() * 15),
-        daysActive: 15 + Math.floor(Math.random() * 15),
-        totalQuestions: totalPvP * 5,
-        totalCorrect: Math.floor((totalPvP * 5) * (accuracy / 100)),
-        meritScore: (winRate * 0.3 + accuracy * 0.25 + 70 * 0.45),
-        rankPosition: i + 1,
-        isTopPerformer: i < 3, // Top 3 para demo
-        meritTier: i < 3 ? 'elite' : i < 8 ? 'gold' : i < 20 ? 'silver' : 'bronze',
-        bonusMultiplier: i < 3 ? 1.2 : i < 8 ? 1.1 : i < 20 ? 1.05 : 1.0,
-        monthlyCreditsEarned: 200 + Math.floor(Math.random() * 800),
-        meritBonus: i < 3 ? 50 + Math.floor(Math.random() * 100) : 0,
-        maxWithdrawal: 200 + Math.floor(Math.random() * 300),
-        lastUpdated: new Date().toISOString(),
-        cycleMonth: new Date().toISOString().substring(0, 7)
+  // 📊 Buscar ranking real do Supabase
+  const fetchRealRanking = async (): Promise<UserMerit[]> => {
+    try {
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('total_xp', { ascending: false })
+        .limit(50);
+
+      if (error) throw error;
+
+      const realUsers: UserMerit[] = (profiles || []).map((profile, index) => {
+        const winRate = profile.total_battles > 0 
+          ? (profile.battles_won / profile.total_battles) * 100 
+          : 0;
+        const accuracy = 75; // Valor padrão - em produção seria calculado
+        
+        return {
+          userId: profile.user_id || profile.id,
+          displayName: profile.display_name || `Guerreiro ${index + 1}`,
+          totalPvP: profile.total_battles || 0,
+          pvpWins: profile.battles_won || 0,
+          winRate,
+          averageAccuracy: accuracy,
+          currentStreak: profile.current_streak || 0,
+          maxStreak: profile.max_streak || 0,
+          daysActive: 15, // Calculado baseado em created_at em produção
+          totalQuestions: (profile.total_battles || 0) * 5,
+          totalCorrect: Math.floor(((profile.total_battles || 0) * 5) * (accuracy / 100)),
+          meritScore: (winRate * 0.3 + accuracy * 0.25 + 70 * 0.45),
+          rankPosition: index + 1,
+          isTopPerformer: index < 3,
+          meritTier: index < 3 ? 'elite' : index < 8 ? 'gold' : index < 20 ? 'silver' : 'bronze',
+          bonusMultiplier: index < 3 ? 1.2 : index < 8 ? 1.1 : index < 20 ? 1.05 : 1.0,
+          monthlyCreditsEarned: profile.total_xp || 0,
+          meritBonus: index < 3 ? 50 : 0,
+          maxWithdrawal: 200 + (profile.total_xp || 0) / 100,
+          lastUpdated: profile.updated_at || new Date().toISOString(),
+          cycleMonth: new Date().toISOString().substring(0, 7)
+        };
       });
+      
+      return identifyTopPerformers(realUsers);
+    } catch (error) {
+      console.error('Erro ao buscar ranking real:', error);
+      return []; // Retorna vazio ao invés de dados fictícios
     }
-    
-    return identifyTopPerformers(demoUsers);
   };
 
   // 📈 Obter estatísticas do usuário
