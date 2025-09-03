@@ -531,82 +531,82 @@ const Digital = () => {
           </div>
         </div>
         
-        {/* Barra de Progresso Épica */}
-        <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {marginTop: '20%'} : {marginTop: '5%'}}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75 w-3/5 mx-auto' : 'p-4'}`}>
-            <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
-              <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
-              <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
-            </div>
-            <div className="progress-epic relative">
-              <div 
-                className="progress-epic-fill" 
-                style={{ width: `${((currentQuestion) / questions.length) * 100}%` }}
-              />
-              {/* Pontos DENTRO da barra */}
-              <div className={`absolute inset-0 flex items-center justify-center ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                <span className="text-white font-bold drop-shadow-lg">{score}/{currentQuestion + 1} pontos</span>
-              </div>
-            </div>
-          </div>
-        </div>
+                 {/* Barra de Progresso Épica */}
+         <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '20%'}}>
+           <div className="arena-card backdrop-blur-sm bg-card/80 p-1 scale-75 w-3/5 mx-auto md:p-4 md:scale-100 md:w-auto">
+             <div className="flex items-center justify-between mb-1 md:mb-2">
+               <span className="font-semibold text-epic text-xs md:text-sm">Progresso</span>
+               <span className="text-muted-foreground text-xs md:text-sm">{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
+             </div>
+             <div className="progress-epic relative">
+               <div 
+                 className="progress-epic-fill" 
+                 style={{ width: `${((currentQuestion) / questions.length) * 100}%` }}
+               />
+               {/* Pontos DENTRO da barra */}
+               <div className="absolute inset-0 flex items-center justify-center text-xs md:text-sm">
+                 <span className="text-white font-bold drop-shadow-lg">{score}/{currentQuestion + 1} pontos</span>
+               </div>
+             </div>
+           </div>
+         </div>
 
-        {/* Arena de Combate */}
-        <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
-          <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
-            {/* Jogador - Posição Esquerda */}
-            <div className={`absolute ${isMobile ? 'left-1' : 'left-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[60%]'}`}>
-            <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={{animationDuration: '3s'}}>
-              <img 
-                src="/guerreirodigital.png" 
-                alt="Guerreiro Digital" 
-                className={`${isMobile ? 'w-14 h-14' : 'w-56 h-56'} object-contain`}
-                style={{ 
-                  filter: hitEffect === 'player' 
-                    ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
-                    : 'drop-shadow(0 0 12px rgba(14, 165, 233, 1))'
-                }}
-              />
-            </div>
-            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
-              <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
-              <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
-                <div 
-                  className={`bg-victory rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
-                  style={{ width: `${playerHp}%` }}
-                />
-              </div>
-              <p className={`font-semibold text-victory ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{playerHp}</p>
-            </div>
-            </div>
+                 {/* Arena de Combate */}
+         <div className="relative mb-1 mx-1 md:mb-4">
+           <div className="relative w-full flex items-center justify-between h-20 mb-1 md:h-40 md:mb-6">
+             {/* Jogador - Posição Esquerda */}
+             <div className="absolute left-1 text-center top-5 md:left-[-15%] md:top-[60%]">
+             <div className="animate-bounce mb-0 flex justify-center md:mb-0.5" style={{animationDuration: '3s'}}>
+               <img 
+                 src="/guerreirodigital.png" 
+                 alt="Guerreiro Digital" 
+                 className="w-14 h-14 object-contain md:w-56 md:h-56"
+                 style={{ 
+                   filter: hitEffect === 'player' 
+                     ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
+                     : 'drop-shadow(0 0 12px rgba(14, 165, 233, 1))'
+                 }}
+               />
+             </div>
+             <div className="arena-card backdrop-blur-sm bg-victory/20 p-0.5 min-w-12 scale-75 md:p-2 md:min-w-28 md:scale-100">
+               <h3 className="font-montserrat font-bold text-victory text-xs md:text-sm">VOCÊ</h3>
+               <div className="progress-epic mt-0.5 md:mt-2">
+                 <div 
+                   className="bg-victory rounded-full transition-all duration-1000 h-1 md:h-2"
+                   style={{ width: `${playerHp}%` }}
+                 />
+               </div>
+               <p className="font-semibold text-victory text-xs mt-0 md:text-xs md:mt-1">{playerHp}</p>
+             </div>
+             </div>
 
-            {/* Inimigo - Posição Direita */}
-            <div className={`absolute ${isMobile ? 'right-2' : 'right-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[45%]'}`}>
-            <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
-              <img 
-                src="/bossdigital.png" 
-                alt="Boss Digital" 
-                className={`${isMobile ? 'w-14 h-14' : 'w-64 h-64'} object-contain`}
-                style={{ 
-                  filter: hitEffect === 'enemy' 
-                    ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
-                    : 'drop-shadow(0 0 12px rgba(239, 68, 68, 1))'
-                }}
-              />
-            </div>
-            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
-              <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
-              <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
-                <div 
-                  className={`bg-destructive rounded-full transition-all duration-1000 ${isMobile ? 'h-1' : 'h-2'}`}
-                  style={{ width: `${enemyHp}%` }}
-                />
-              </div>
-              <p className={`font-semibold text-destructive ${isMobile ? 'text-xs mt-0' : 'text-xs mt-1'}`}>{enemyHp}</p>
-            </div>
-            </div>
-          </div>
-        </div>
+             {/* Inimigo - Posição Direita */}
+             <div className="absolute right-2 text-center top-5 md:right-[-15%] md:top-[45%]">
+             <div className="mb-0 flex justify-center md:mb-0.5">
+               <img 
+                 src="/bossdigital.png" 
+                 alt="Boss Digital" 
+                 className="w-14 h-14 object-contain md:w-64 md:h-64"
+                 style={{ 
+                   filter: hitEffect === 'enemy' 
+                     ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
+                     : 'drop-shadow(0 0 12px rgba(239, 68, 68, 1))'
+                 }}
+               />
+             </div>
+             <div className="arena-card backdrop-blur-sm bg-destructive/20 p-0.5 min-w-12 scale-75 md:p-2 md:min-w-28 md:scale-100">
+               <h3 className="font-montserrat font-bold text-destructive text-xs md:text-sm">IA</h3>
+               <div className="progress-epic mt-0.5 md:mt-2">
+                 <div 
+                   className="bg-destructive rounded-full transition-all duration-1000 h-1 md:h-2"
+                   style={{ width: `${enemyHp}%` }}
+                 />
+               </div>
+               <p className="font-semibold text-destructive text-xs mt-0 md:text-xs md:mt-1">{enemyHp}</p>
+             </div>
+             </div>
+           </div>
+         </div>
 
           {/* Efeito de 3 Tiros de Laser Neon Laranja */}
           {laserShots.map((shot, index) => {
