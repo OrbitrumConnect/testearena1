@@ -11,12 +11,6 @@ interface FreeTrainingData {
 }
 
 export const useFreeTrainingLimit = (eraSlug: string) => {
-  // Verificação de segurança para eraSlug
-  if (!eraSlug || typeof eraSlug !== 'string') {
-    console.error('❌ Era slug inválido no useFreeTrainingLimit:', eraSlug);
-    eraSlug = 'egito-antigo'; // Fallback para era padrão
-  }
-
   const [canTrain, setCanTrain] = useState<boolean>(true);
   const [trainingCount, setTrainingCount] = useState<number>(0);
   const [maxTrainings] = useState<number>(4); // 4 eras = 4 treinos/dia para FREE
@@ -26,6 +20,12 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
   }, [eraSlug]);
 
   const checkDailyLimit = () => {
+    // Verificação de segurança para eraSlug
+    if (!eraSlug || typeof eraSlug !== 'string') {
+      console.error('❌ Era slug inválido no checkDailyLimit:', eraSlug);
+      return; // Sair da função se eraSlug for inválido
+    }
+
     const today = new Date().toDateString();
     const storedData = localStorage.getItem('free_training_limit');
     
