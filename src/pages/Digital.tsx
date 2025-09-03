@@ -8,6 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { useDailyCreditsLimit } from '@/hooks/useDailyCreditsLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
@@ -37,6 +38,7 @@ const digitalStyles = `
 const Digital = () => {
   // Vercel update trigger - Era Digital mobile layout fix
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -46,7 +48,7 @@ const Digital = () => {
   const [playerHp, setPlayerHp] = useState(100);
   const [enemyHp, setEnemyHp] = useState(100);
   const [battleStartTime] = useState(Date.now());
-  const [attackEffect, setAttackEffect] = useState<'player' | 'enemy' | null>(null);
+  const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
   const [laserShots, setLaserShots] = useState<Array<{id: number, type: 'player' | 'enemy'}>>([]);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
   const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
