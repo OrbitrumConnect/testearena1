@@ -14,7 +14,10 @@ export const KnowledgeViewer = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [randomQuestion, setRandomQuestion] = useState<KnowledgeItem | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const isMobile = useIsMobile();
+  
+  const ITEMS_PER_PAGE = 12;
 
   if (loading) {
     return (
@@ -77,9 +80,22 @@ export const KnowledgeViewer = () => {
     }
     
     return true;
-  });
+    });
 
-  const handleRandomQuestion = () => {
+  // 📄 Cálculos da paginação
+  const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentItems = filteredItems.slice(startIndex, endIndex);
+
+  // Reset da página quando filtros mudam
+  const resetPaginationAndFilter = (resetPage = true) => {
+    if (resetPage) {
+      setCurrentPage(1);
+    }
+  };
+
+const handleRandomQuestion = () => {
     const eraSlug = selectedEra === 'all' ? undefined : eras.find(e => e.id === selectedEra)?.slug;
     const category = selectedCategory === 'all' ? undefined : selectedCategory;
     const question = getRandomQuestion(eraSlug, category as any);
@@ -95,6 +111,11 @@ export const KnowledgeViewer = () => {
         </h1>
         <p className={`text-muted-foreground ${isMobile ? 'text-sm' : ''}`}>
           {filteredItems.length} {searchTerm ? 'resultados encontrados' : `itens de conhecimento em ${eras.length} eras históricas`}
+          {totalPages > 1 && (
+            <span className="block mt-1">
+              📄 Página {currentPage} de {totalPages} • Mostrando {currentItems.length} de {filteredItems.length} itens
+            </span>
+          )}
         </p>
         {searchTerm && (
           <p className={`text-epic font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -112,7 +133,10 @@ export const KnowledgeViewer = () => {
             <Input
               placeholder="🔍 Buscar por tema, pergunta ou resposta..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                resetPaginationAndFilter();
+              }}
               className={`pl-10 pr-4 ${isMobile ? 'text-sm' : ''}`}
             />
             {searchTerm && (
@@ -130,7 +154,10 @@ export const KnowledgeViewer = () => {
 
         {/* Filters */}
         <div className={`flex ${isMobile ? 'flex-col gap-2' : 'flex-wrap gap-4'} justify-center`}>
-          <Select value={selectedEra} onValueChange={setSelectedEra}>
+          <Select value={selectedEra} onValueChange={(value) => {
+            setSelectedEra(value);
+            resetPaginationAndFilter();
+          }}>
             <SelectTrigger className={isMobile ? 'w-full' : 'w-48'}>
               <SelectValue placeholder="Selecione uma era" />
             </SelectTrigger>
@@ -144,7 +171,10 @@ export const KnowledgeViewer = () => {
             </SelectContent>
           </Select>
 
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <Select value={selectedCategory} onValueChange={(value) => {
+            setSelectedCategory(value);
+            resetPaginationAndFilter();
+          }}>
             <SelectTrigger className={isMobile ? 'w-full' : 'w-48'}>
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
@@ -222,9 +252,9 @@ export const KnowledgeViewer = () => {
         </Card>
       )}
 
-      {/* Knowledge Items Grid */}
+      {/* Knowledge Items Grid - Paginado */}
       <div className={`grid gap-4 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
-        {filteredItems.map(item => (
+        {currentItems.map(item => (
           <Card key={item.id} className="arena-card hover-scale">
             <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
               <div className={`flex items-start ${isMobile ? 'flex-col gap-2' : 'justify-between'}`}>
@@ -277,6 +307,57 @@ export const KnowledgeViewer = () => {
           </Card>
         ))}
       </div>
+
+      {/* Paginação */}
+      {totalPages > 1 && (
+        <div className={`flex items-center justify-center gap-2 mt-8 ${isMobile ? 'px-4' : ''}`}>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={isMobile ? 'text-xs px-2' : ''}
+          >
+            ← Anterior
+          </Button>
+          
+          <div className={`flex items-center gap-1 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+              
+              return (
+                <Button
+                  key={pageNum}
+                  variant={currentPage === pageNum ? "default" : "outline"}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`${isMobile ? 'h-8 w-8 text-xs' : 'h-10 w-10'} ${
+                    currentPage === pageNum ? 'bg-epic text-white' : ''
+                  }`}
+                >
+                  {pageNum}
+                </Button>
+              );
+            })}
+          </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className={isMobile ? 'text-xs px-2' : ''}
+          >
+            Avançar →
+          </Button>
+        </div>
+      )}
 
       {filteredItems.length === 0 && (
         <div className="text-center p-8">

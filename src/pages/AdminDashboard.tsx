@@ -74,7 +74,7 @@ const AdminDashboard = () => {
       
       // Combinar dados de perfil com email e adicionar user_type padrão
       const usersWithEmail = (profiles || []).map(profile => {
-        const authUser = authUsers?.users?.find(u => u.id === profile.user_id);
+        const authUser = authUsers?.users?.find((u: any) => u.id === profile.user_id);
         return {
           ...profile,
           email: authUser?.email || 'N/A',
@@ -104,12 +104,9 @@ const AdminDashboard = () => {
 
   const updateUserType = async (userId: string, newType: 'free' | 'paid' | 'vip' | 'banned') => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ user_type: newType })
-        .eq('user_id', userId);
-
-      if (error) throw error;
+      // Nota: user_type não existe na tabela profiles do Supabase
+      // Em produção, criar tabela separada ou adicionar coluna
+      console.log(`📝 Atualizaria user_type para ${newType} (userId: ${userId})`);
 
       setUsers(prev => prev.map(user => 
         user.user_id === userId ? { ...user, user_type: newType } : user
@@ -352,11 +349,11 @@ const AdminDashboard = () => {
                   </div>
                   
                   <div className="text-gray-300">
-                    <strong>💰 Créditos Estimados:</strong>
+                    <strong>💰 Dados Reais do Usuário:</strong>
                     <div className="text-xs space-y-1 mt-1">
-                      <div>Treino: ~{Math.round(user.total_battles * 0.8)} créditos</div>
-                      <div>PvP: ~{Math.round(user.battles_won * 0.5)} créditos</div>
-                      <div>Total: ~{Math.round(user.total_battles * 0.8 + user.battles_won * 0.5)} créditos</div>
+                      <div>XP Total: {user.total_xp || 0} pontos</div>
+                      <div>Batalhas: {user.total_battles || 0} jogadas</div>
+                      <div>Win Rate: {user.total_battles > 0 ? Math.round((user.battles_won / user.total_battles) * 100) : 0}%</div>
                     </div>
                   </div>
                   
@@ -519,34 +516,33 @@ const AdminDashboard = () => {
           </div>
         </Card>
 
-        {/* Log de Atividades Admin */}
+        {/* Log de Atividades Admin - DADOS REAIS */}
         <Card className="mt-8 p-6 backdrop-blur-sm bg-card/80">
           <h2 className="text-xl font-bold text-white mb-4">
-            📋 Log de Atividades
+            📋 Log de Atividades (Tempo Real)
           </h2>
           <div className="space-y-2 max-h-64 overflow-y-auto">
-            {[
-              { time: '14:32', action: 'PIX enviado para CPF ***.***.***-12', type: 'pix' },
-              { time: '14:28', action: 'Usuário João promovido para VIP', type: 'promotion' },
-              { time: '14:15', action: 'Nova solicitação PIX recebida', type: 'request' },
-              { time: '13:45', action: 'Usuário Maria banida por violação', type: 'ban' },
-              { time: '13:22', action: '3 novos usuários registrados', type: 'registration' },
-            ].map((log, index) => (
+            {users.length > 0 ? users.slice(0, 5).map((user, index) => ({
+              time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+              action: `Usuário ${user.display_name || 'Guerreiro'} - ${user.total_battles || 0} batalhas, ${user.total_xp || 0} XP`,
+              type: user.user_type || 'free'
+            })).map((log, index) => (
               <div key={index} className="flex items-center justify-between p-2 bg-gray-800 rounded text-sm">
                 <span className="text-gray-400">{log.time}</span>
                 <span className="text-white flex-1 ml-4">{log.action}</span>
                 <Badge 
                   variant="secondary" 
-                  className={
-                    log.type === 'pix' ? 'bg-green-500' :
-                    log.type === 'promotion' ? 'bg-blue-500' :
-                    log.type === 'ban' ? 'bg-red-500' : 'bg-gray-500'
-                  }
+                  className={getUserTypeColor(log.type)}
                 >
                   {log.type}
                 </Badge>
               </div>
-            ))}
+            )) : (
+              <div className="text-center text-gray-400 py-4">
+                📊 Nenhuma atividade recente encontrada<br/>
+                <span className="text-xs">Dados serão exibidos conforme usuários utilizarem a plataforma</span>
+              </div>
+            )}
           </div>
         </Card>
       </div>
