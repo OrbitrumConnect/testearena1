@@ -726,6 +726,7 @@ const Digital = () => {
         )}
       </div>
     </div>
+  </div>
   );
 };
 
