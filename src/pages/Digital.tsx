@@ -511,7 +511,7 @@ const Digital = () => {
       
              <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6 md:overflow-hidden" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
-        <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
+        <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8" style={{marginTop: '5%'}}>
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
@@ -533,7 +533,7 @@ const Digital = () => {
         </div>
         
                  {/* Barra de Progresso Épica */}
-         <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '20%'}}>
+         <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '8%'}}>
            <div className="arena-card backdrop-blur-sm bg-card/80 p-1 scale-75 w-3/5 mx-auto md:p-4 md:scale-100 md:w-auto">
              <div className="flex items-center justify-between mb-1 md:mb-2">
                <span className="font-semibold text-epic text-xs md:text-sm">Progresso</span>
@@ -552,42 +552,42 @@ const Digital = () => {
            </div>
          </div>
 
-                 {/* Arena de Combate */}
-         <div className="relative mb-1 mx-1 md:mb-4">
-           <div className="relative w-full flex items-center justify-between h-20 mb-1 md:h-40 md:mb-6">
-                           {/* Jogador - Posição Esquerda */}
-              <div className="absolute left-1 text-center top-5 md:left-[-10%] md:top-[50%]">
-             <div className="animate-bounce mb-0 flex justify-center md:mb-0.5" style={{animationDuration: '3s'}}>
-               <img 
-                 src="/guerreirodigital.png" 
-                 alt="Guerreiro Digital" 
-                 className="w-14 h-14 object-contain md:w-56 md:h-56"
-                 style={{ 
-                   filter: hitEffect === 'player' 
-                     ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
-                     : 'drop-shadow(0 0 12px rgba(14, 165, 233, 1))'
-                 }}
-               />
-             </div>
-             <div className="arena-card backdrop-blur-sm bg-victory/20 p-0.5 min-w-12 scale-75 md:p-2 md:min-w-28 md:scale-100">
-               <h3 className="font-montserrat font-bold text-victory text-xs md:text-sm">VOCÊ</h3>
-               <div className="progress-epic mt-0.5 md:mt-2">
-                 <div 
-                   className="bg-victory rounded-full transition-all duration-1000 h-1 md:h-2"
-                   style={{ width: `${playerHp}%` }}
-                 />
-               </div>
-               <p className="font-semibold text-victory text-xs mt-0 md:text-xs md:mt-1">{playerHp}</p>
-             </div>
-             </div>
+        {/* Arena de Combate */}
+        <div className="relative mb-1 mx-1 md:mb-3">
+          <div className="relative w-full flex items-center justify-between h-20 mb-1 md:h-32 md:mb-4">
+            {/* Jogador - Posição Esquerda */}
+            <div className="absolute left-1 text-center top-5 md:left-[-2%] md:top-[60%]">
+              <div className="animate-bounce mb-0 flex justify-center md:mb-0.5" style={{animationDuration: '3s'}}>
+                <img 
+                  src="/guerreirodigital.png" 
+                  alt="Guerreiro Digital" 
+                  className="w-14 h-14 object-contain md:w-36 md:h-36"
+                  style={{ 
+                    filter: hitEffect === 'player' 
+                      ? 'drop-shadow(0 0 20px rgba(255, 0, 0, 1)) drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))' 
+                      : 'drop-shadow(0 0 12px rgba(14, 165, 233, 1))'
+                  }}
+                />
+              </div>
+              <div className="arena-card backdrop-blur-sm bg-victory/20 p-0.5 min-w-12 scale-75 md:p-1.5 md:min-w-20 md:scale-100">
+                <h3 className="font-montserrat font-bold text-victory text-xs md:text-sm">VOCÊ</h3>
+                <div className="progress-epic mt-0.5 md:mt-1.5">
+                  <div 
+                    className="bg-victory rounded-full transition-all duration-1000 h-1 md:h-1.5"
+                    style={{ width: `${playerHp}%` }}
+                  />
+                </div>
+                <p className="font-semibold text-victory text-xs mt-0 md:text-xs md:mt-1">{playerHp}</p>
+              </div>
+            </div>
 
-                           {/* Inimigo - Posição Direita */}
-              <div className="absolute right-2 text-center top-5 md:right-[-10%] md:top-[45%]">
+            {/* Inimigo - Posição Direita */}
+            <div className="absolute right-2 text-center top-5 md:right-[-2%] md:top-[35%]">
              <div className="mb-0 flex justify-center md:mb-0.5">
                <img 
                  src="/bossdigital.png" 
                  alt="Boss Digital" 
-                 className="w-14 h-14 object-contain md:w-64 md:h-64"
+                 className="w-14 h-14 object-contain md:w-52 md:h-52"
                  style={{ 
                    filter: hitEffect === 'enemy' 
                      ? 'drop-shadow(0 0 20px rgba(255, 255, 0, 1)) drop-shadow(0 0 30px rgba(255, 255, 0, 0.8))' 
@@ -643,7 +643,7 @@ const Digital = () => {
         </div>
 
                  {/* Pergunta */}
-         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-6 md:mb-6 md:mt-5 md:border-2 md:glow-epic md:scale-100 md:w-4/5 md:mx-auto" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
+        <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-5%', width: '18%', marginLeft: 'auto', marginRight: 'auto'}}>
            <div className="flex items-center justify-center mb-0.5 md:mb-6">
              <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-6 md:py-2">
                <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
@@ -715,11 +715,11 @@ const Digital = () => {
         </div>
 
         {gamePhase === 'result' && (
-          <div className="flex justify-center items-center mt-8 mb-8">
+          <div className="flex justify-center items-center mt-6 mb-6">
             <ActionButton 
               variant="epic" 
               onClick={nextQuestion}
-              className="text-xl px-8 py-4 backdrop-blur-sm"
+              className="text-lg px-6 py-3 backdrop-blur-sm"
             >
               {currentQuestion < questions.length - 1 ? '⚡ Próxima Pergunta' : '🚀 Ver Resultado Final'}
             </ActionButton>
