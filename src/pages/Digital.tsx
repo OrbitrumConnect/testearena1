@@ -483,15 +483,14 @@ const Digital = () => {
 
   const question = questions[currentQuestion];
 
-  // DEBUG: Log do estado atual
-  console.log('🔍 DEBUG Digital.tsx:', {
-    gamePhase,
-    currentQuestion,
-    questionsLength: questions.length,
-    question: question,
-    isMobile,
-    loading
-  });
+     // DEBUG: Log do estado atual
+   console.log('🔍 DEBUG Digital.tsx:', {
+     gamePhase,
+     currentQuestion,
+     questionsLength: questions.length,
+     question: question,
+     loading
+   });
 
   return (
     <div className="h-screen overflow-hidden bg-background relative">
@@ -608,90 +607,90 @@ const Digital = () => {
            </div>
          </div>
 
-          {/* Efeito de 3 Tiros de Laser Neon Laranja */}
-          {laserShots.map((shot, index) => {
-            // Tamanhos diferentes para cada laser (30% menores)
-            const laserSizes = ['━━━', '━━', '━━━━'];
-            const laserSize = laserSizes[index % 3];
-            
-            // Posições verticais diferentes com mais espaçamento
-            const verticalPositions = isMobile ? [35, 40, 45] : [94, 100, 106]; // Web: nível dos heróis descidos 40%
-            const verticalPos = verticalPositions[index % 3];
-            
-            return (
-              <div 
-                key={shot.id}
-                className={`absolute pointer-events-none ${isMobile ? 'text-xs' : 'text-lg'}`}
-                style={{
-                  left: shot.type === 'player' ? (isMobile ? '12%' : '16%') : 'auto',
-                  right: shot.type === 'enemy' ? (isMobile ? '12%' : '16%') : 'auto',
-                  top: `${verticalPos}%`,
-                  transform: 'translateY(-50%)',
-                  animation: `${shot.type === 'player' ? 'laser-travel-right' : 'laser-travel-left'} 1s ease-out forwards`,
-                  animationDelay: `${index * 0.2}s`,
-                  color: '#ff6b35',
-                  textShadow: '0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35',
-                  filter: 'drop-shadow(0 0 8px #ff6b35)',
-                  fontSize: index === 1 ? '0.85em' : index === 2 ? '0.65em' : '0.7em'
-                }}
-              >
-                {laserSize}
-              </div>
-            );
-          })}
+                     {/* Efeito de 3 Tiros de Laser Neon Laranja */}
+           {laserShots.map((shot, index) => {
+             // Tamanhos diferentes para cada laser (30% menores)
+             const laserSizes = ['━━━', '━━', '━━━━'];
+             const laserSize = laserSizes[index % 3];
+             
+             // Posições verticais diferentes com mais espaçamento
+             const verticalPositions = [35, 40, 45]; // Mobile: nível dos heróis
+             const verticalPos = verticalPositions[index % 3];
+             
+             return (
+               <div 
+                 key={shot.id}
+                 className="absolute pointer-events-none text-xs md:text-lg"
+                 style={{
+                   left: shot.type === 'player' ? '12%' : 'auto',
+                   right: shot.type === 'enemy' ? '12%' : 'auto',
+                   top: `${verticalPos}%`,
+                   transform: 'translateY(-50%)',
+                   animation: `${shot.type === 'player' ? 'laser-travel-right' : 'laser-travel-left'} 1s ease-out forwards`,
+                   animationDelay: `${index * 0.2}s`,
+                   color: '#ff6b35',
+                   textShadow: '0 0 10px #ff6b35, 0 0 20px #ff6b35, 0 0 30px #ff6b35',
+                   filter: 'drop-shadow(0 0 8px #ff6b35)',
+                   fontSize: index === 1 ? '0.85em' : index === 2 ? '0.65em' : '0.7em'
+                 }}
+               >
+                 {laserSize}
+               </div>
+             );
+           })}
         </div>
 
-        {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-75'}`} style={isMobile ? {marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
-          <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
-            <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
-              <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                🤖 {question.category === 'history' ? 'História Digital' : 
-                 question.category === 'finance' ? 'Fintech' : 
-                 question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
-              </span>
-            </div>
-          </div>
+                 {/* Pergunta */}
+         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-1 md:mb-2 md:mt-10 md:border-2 md:glow-epic md:scale-75" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
+           <div className="flex items-center justify-center mb-0.5 md:mb-6">
+             <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-6 md:py-2">
+               <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
+                 🤖 {question.category === 'history' ? 'História Digital' : 
+                  question.category === 'finance' ? 'Fintech' : 
+                  question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
+               </span>
+             </div>
+           </div>
 
-          <h2 className={`font-montserrat font-bold text-center text-foreground ${isMobile ? 'text-xs mb-0.5' : 'text-2xl mb-8'}`}>
-            {question.question}
-          </h2>
+           <h2 className="font-montserrat font-bold text-center text-foreground text-xs mb-0.5 md:text-2xl md:mb-8">
+             {question.question}
+           </h2>
 
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-1' : 'gap-4'}`}>
-            {question.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
-                disabled={gamePhase !== 'question'}
-                                 className={`rounded border transition-all text-left backdrop-blur-sm ${isMobile ? 'p-2 text-xs min-h-[44px]' : 'p-4 border-2 rounded-lg'} ${
-                  gamePhase === 'question' 
-                    ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
-                    : selectedAnswer === index
-                      ? index === question.correct
-                        ? 'border-victory bg-victory/30 text-victory scale-105'
-                        : 'border-destructive bg-destructive/30 text-destructive'
-                      : index === question.correct
-                        ? 'border-victory bg-victory/30 text-victory scale-105'
-                        : 'border-border bg-card/50 opacity-50'
-                }`}
-              >
-                                 <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-4'}`}>
-                   <div className={`rounded-full flex items-center justify-center font-bold ${isMobile ? 'w-4 h-4 text-xs' : 'w-10 h-10 text-lg'} ${
-                    gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
-                    index === question.correct ? 'bg-victory text-victory-foreground' :
-                    selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
-                    'bg-muted text-muted-foreground'
-                  }`}>
-                    {gamePhase === 'result' && index === question.correct ? 
-                      <CheckCircle className="w-6 h-6" /> : 
-                      String.fromCharCode(65 + index)
-                    }
-                  </div>
-                  <span className={`font-semibold ${isMobile ? 'text-xs' : 'text-lg'}`}>{option}</span>
-                </div>
-              </button>
-            ))}
-          </div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4">
+             {question.options.map((option, index) => (
+               <button
+                 key={index}
+                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
+                 disabled={gamePhase !== 'question'}
+                 className={`rounded border transition-all text-left backdrop-blur-sm p-2 text-xs min-h-[44px] md:p-4 md:border-2 md:rounded-lg ${
+                   gamePhase === 'question' 
+                     ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
+                     : selectedAnswer === index
+                       ? index === question.correct
+                         ? 'border-victory bg-victory/30 text-victory scale-105'
+                         : 'border-destructive bg-destructive/30 text-destructive'
+                       : index === question.correct
+                         ? 'border-victory bg-victory/30 text-victory scale-105'
+                         : 'border-border bg-card/50 opacity-50'
+                 }`}
+               >
+                 <div className="flex items-center space-x-1 md:space-x-4">
+                    <div className={`rounded-full flex items-center justify-center font-bold w-4 h-4 text-xs md:w-10 md:h-10 md:text-lg ${
+                     gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
+                     index === question.correct ? 'bg-victory text-victory-foreground' :
+                     selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
+                     'bg-muted text-muted-foreground'
+                   }`}>
+                     {gamePhase === 'result' && index === question.correct ? 
+                       <CheckCircle className="w-6 h-6" /> : 
+                       String.fromCharCode(65 + index)
+                     }
+                   </div>
+                   <span className="font-semibold text-xs md:text-lg">{option}</span>
+                 </div>
+               </button>
+             ))}
+           </div>
 
           {showExplanation && (
             <div className="mt-8 p-6 bg-background-soft/80 backdrop-blur-sm rounded-lg border border-card-border">
