@@ -233,14 +233,14 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-3' : 'p-4'}`}>
-            <div className={`${isMobile ? 'text-3xl mb-2' : 'text-4xl mb-3'}`}>🏺</div>
+          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-4'}`}>
+            <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>🏺</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-2' : 'text-xl mb-2'}`}>
+            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-2xl mb-2'}`}>
               Treinamento: Egito Antigo
             </h2>
             
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-3' : 'text-base mb-4'}`}>
+            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-2' : 'text-base mb-4'}`}>
               Teste seus conhecimentos sobre a civilização egípcia e ganhe recompensas!
             </p>
 
@@ -278,29 +278,21 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
             )}
 
             {/* Recompensas */}
-            <div className="arena-card p-3 mb-3">
-              <h3 className="font-semibold mb-1 text-sm">💰 Recompensas</h3>
-              <div className="text-xs space-y-2">
-                <div className="bg-muted/50 p-2 rounded">
-                  <p className="text-muted-foreground">Saque mín {getFinancialSystemInfo().minWithdrawal} • Taxa {getFinancialSystemInfo().withdrawalFee}</p>
+            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>💰 Recompensas</h3>
+              <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
+                <div className="text-center">
+                  <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>5 créditos</p>
                 </div>
-                <div className="grid grid-cols-3 gap-1">
-                  <div className="text-center">
-                    <p className="text-epic font-bold">🏆 90%+</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 9, 10).creditsEarned} créditos</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-victory font-bold">✅ 70%+</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 7, 10).creditsEarned} créditos</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-warning font-bold">📚 Base</p>
-                    <p className="text-muted-foreground">{calculateTrainingCredits(getUserPlan(), 'egito-antigo', 5, 10).creditsEarned} créditos</p>
-                  </div>
+                <div className="text-center">
+                  <p className={`text-victory font-bold ${isMobile ? 'text-xs' : ''}`}>✅ 70%+</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>4 créditos</p>
                 </div>
-                <p className="text-xs text-muted-foreground text-center">
-                  ⭐ Sistema: {getFinancialSystemInfo().subscriptionCycle}
-                </p>
+                <div className="text-center">
+                  <p className={`text-warning font-bold ${isMobile ? 'text-xs' : ''}`}>📚 Base</p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>2 créditos</p>
+                </div>
               </div>
             </div>
 

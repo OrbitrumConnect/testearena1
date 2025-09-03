@@ -11,7 +11,11 @@ import {
   Play,
   Zap,
   Shield,
-  Crown
+  Crown,
+  Brain,
+  Database,
+  GitBranch,
+  Calendar
 } from 'lucide-react';
 import { ParticleBackground } from '@/components/ui/particles';
 import { ActionButton } from '@/components/arena/ActionButton';
@@ -62,6 +66,38 @@ const Landing = () => {
       color: "legendary",
       bgGradient: "from-legendary/20 via-legendary/10 to-transparent",
       borderColor: "border-legendary/30"
+    },
+    {
+      icon: <Brain className="w-8 h-8 text-victory" />,
+      title: "🤖 Mestre do Conhecimento",
+      description: "IA educativa que sabe tudo sobre as eras históricas. Dicas de estudo, estratégias de PvP e curiosidades!",
+      color: "victory",
+      bgGradient: "from-victory/20 via-victory/10 to-transparent",
+      borderColor: "border-victory/30"
+    },
+    {
+      icon: <Database className="w-8 h-8 text-primary" />,
+      title: "📚 Base de Conhecimento",
+      description: "138 itens históricos verificados, paginados e organizados por eras. Aprenda sobre civilizações antigas!",
+      color: "primary",
+      bgGradient: "from-primary/20 via-primary/10 to-transparent",
+      borderColor: "border-primary/30"
+    },
+    {
+      icon: <GitBranch className="w-8 h-8 text-epic" />,
+      title: "🌍 Conexões Históricas",
+      description: "Descubra como o Egito, Mesopotâmia e Era Medieval influenciaram o mundo digital de hoje!",
+      color: "epic",
+      bgGradient: "from-epic/20 via-epic/10 to-transparent",
+      borderColor: "border-epic/30"
+    },
+    {
+      icon: <Calendar className="w-8 h-8 text-battle" />,
+      title: "💰 Sistema PIX Inteligente",
+      description: "Saques disponíveis dia 1° do mês, mínimo 200 créditos. Taxa administrativa de 22,5% transparente.",
+      color: "battle",
+      bgGradient: "from-battle/20 via-battle/10 to-transparent",
+      borderColor: "border-battle/30"
     }
   ];
 
