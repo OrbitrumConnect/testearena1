@@ -34,7 +34,7 @@ const Digital = () => {
   const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
 
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
-  const { questions, loading, refetch } = useEraQuestions('digital', 25);
+  const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('digital', 25);
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
@@ -177,6 +177,9 @@ const Digital = () => {
       return; // Não permitir iniciar se atingiu o limite
     }
     
+    // 🎲 RANDOMIZAÇÃO EXTRA: Cada treino terá perguntas diferentes!
+    getCompletelyRandomQuestions();
+    
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
@@ -195,6 +198,9 @@ const Digital = () => {
       return; // Não permitir restart se atingiu o limite
     }
     
+    // 🎲 RANDOMIZAÇÃO EXTRA: Cada restart terá perguntas diferentes!
+    getCompletelyRandomQuestions();
+    
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
@@ -203,8 +209,6 @@ const Digital = () => {
     setShowExplanation(false);
     setPlayerHp(100);
     setEnemyHp(100);
-    // Buscar novas perguntas aleatórias
-    refetch();
     
     // Incrementar contador de treinamentos
     incrementTrainingCount();
@@ -435,7 +439,7 @@ const Digital = () => {
 
   return (
     <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
-      <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
         <img 
@@ -495,7 +499,7 @@ const Digital = () => {
         <div className={`relative ${isMobile ? 'mb-1 mx-1' : 'mb-4'}`}>
           <div className={`relative w-full flex items-center justify-between ${isMobile ? 'h-20 mb-1' : 'h-40 mb-6'}`}>
             {/* Jogador - Posição Esquerda */}
-            <div className={`absolute ${isMobile ? 'left-1' : 'left-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[65%]'}`}>
+            <div className={`absolute ${isMobile ? 'left-1' : 'left-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[60%]'}`}>
             <div className={`animate-bounce ${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`} style={{animationDuration: '3s'}}>
               <img 
                 src="/guerreirodigital.png" 
@@ -521,7 +525,7 @@ const Digital = () => {
             </div>
 
             {/* Inimigo - Posição Direita */}
-            <div className={`absolute ${isMobile ? 'right-2' : 'right-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[50%]'}`}>
+            <div className={`absolute ${isMobile ? 'right-2' : 'right-[-15%]'} text-center ${isMobile ? 'top-5' : 'top-[45%]'}`}>
             <div className={`${isMobile ? 'mb-0' : 'mb-0.5'} flex justify-center`}>
               <img 
                 src="/bossdigital.png" 
@@ -582,7 +586,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-75'}`} style={isMobile ? {marginTop: '47%', width: '160%', marginLeft: '-30%', marginRight: '-30%', transform: 'scale(0.6)'} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-75'}`} style={isMobile ? {} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

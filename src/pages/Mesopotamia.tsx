@@ -31,7 +31,7 @@ const Mesopotamia = () => {
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
 
   // Usar o hook para buscar 10 perguntas aleatórias da Mesopotâmia
-  const { questions, loading, refetch } = useEraQuestions('mesopotamia', 10);
+  const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('mesopotamia', 10);
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();

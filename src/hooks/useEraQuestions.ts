@@ -185,7 +185,24 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
     setRefreshKey(performance.now() + Math.random() * 1000000); // Nova chave força re-fetch
   };
 
-  return { questions, loading, error, refetch: getRandomQuestions, forceNewQuestions };
+  // NOVA FUNÇÃO: Randomização extra para cada treino
+  const getCompletelyRandomQuestions = () => {
+    console.log(`🎲 RANDOMIZAÇÃO EXTRA para ${eraSlug} - Cada treino será único!`);
+    
+    // Forçar nova busca com timestamp único
+    const uniqueKey = Date.now() + Math.random() * 1000000 + Math.random() * 1000000;
+    setRefreshKey(uniqueKey);
+    
+    // Limpar perguntas atuais para forçar re-render
+    setQuestions([]);
+    
+    // Pequeno delay para garantir que o estado seja limpo
+    setTimeout(() => {
+      getRandomQuestions();
+    }, 100);
+  };
+
+  return { questions, loading, error, refetch: getRandomQuestions, forceNewQuestions, getCompletelyRandomQuestions };
 };
 
 // Perguntas padrão como fallback

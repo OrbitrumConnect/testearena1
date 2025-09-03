@@ -33,7 +33,7 @@ const Training = () => {
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
 
   // Usar o hook para buscar 5 perguntas aleatórias do Egito Antigo
-  const { questions, loading, refetch } = useEraQuestions('egito-antigo', 5);
+  const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('egito-antigo', 5);
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();

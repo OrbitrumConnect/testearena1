@@ -31,7 +31,7 @@ const Medieval = () => {
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
 
   // Usar o hook para buscar 15 perguntas aleatórias da Era Medieval
-  const { questions, loading, refetch } = useEraQuestions('medieval', 15);
+  const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('medieval', 15);
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
@@ -154,6 +154,9 @@ const Medieval = () => {
       return; // Não permitir iniciar se atingiu o limite
     }
     
+    // 🎲 RANDOMIZAÇÃO EXTRA: Cada treino terá perguntas diferentes!
+    getCompletelyRandomQuestions();
+    
     setGamePhase('question');
     setCurrentQuestion(0);
     setScore(0);
@@ -172,6 +175,9 @@ const Medieval = () => {
       return; // Não permitir restart se atingiu o limite
     }
     
+    // 🎲 RANDOMIZAÇÃO EXTRA: Cada restart terá perguntas diferentes!
+    getCompletelyRandomQuestions();
+    
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
@@ -180,8 +186,6 @@ const Medieval = () => {
     setShowExplanation(false);
     setPlayerHp(100);
     setEnemyHp(100);
-    // Buscar novas perguntas aleatórias
-    refetch();
     
     // Incrementar contador de treinamentos
     incrementTrainingCount();
