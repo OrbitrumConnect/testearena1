@@ -7,6 +7,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
+import { useBattleSave } from '@/hooks/useBattleSave';
 
 type Era = 'egito-antigo' | 'mesopotamia' | 'medieval' | 'digital';
 type GamePhase = 'exploring' | 'question' | 'victory' | 'defeat';
@@ -64,6 +65,9 @@ const Labyrinth = () => {
   const { era = 'egito-antigo' } = useParams<{ era: Era }>();
   const isMobile = useIsMobile();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  // Hook para salvar dados da batalha
+  const { saveBattleResult, saving } = useBattleSave();
 
   // Função para determinar a próxima era
   const getNextEra = (currentEra: Era): string => {
@@ -82,7 +86,7 @@ const Labyrinth = () => {
   };
 
         // Funções de touch para mobile
-         const handleTouchStart = (e: React.TouchEvent) => {
+         const handleTouchStart = async (e: React.TouchEvent) => {
        if (!isMobile || gameState.phase !== 'exploring') return;
        e.preventDefault(); // Prevenir movimento da página
        e.stopPropagation(); // Parar propagação do evento
@@ -110,17 +114,32 @@ const Labyrinth = () => {
         const totalQuestions = 4; // 4 baús total
         const accuracyPercentage = (questionsCorrect / totalQuestions) * 100;
         
-        // Obter plano do usuário e integrar com sistema de créditos
+        // SALVAR DADOS COMPLETOS DA BATALHA (como outras eras)
+        const battleDurationSeconds = Math.round((Date.now() - Date.now()) / 1000) || 180; // ~3 min padrão
         const userPlan = getUserPlan();
+        const rewards = calculateTrainingCredits(userPlan, era, questionsCorrect, totalQuestions);
+        
+        await saveBattleResult({
+          eraName: `Labirinto ${era === 'egito-antigo' ? 'Egito' : era === 'mesopotamia' ? 'Mesopotâmia' : era === 'medieval' ? 'Medieval' : 'Digital'}`,
+          questionsTotal: totalQuestions,
+          questionsCorrect: questionsCorrect,
+          xpEarned: rewards.xpEarned,
+          moneyEarned: rewards.creditsEarned,
+          battleDurationSeconds: battleDurationSeconds,
+        });
+        
+        // Sistema de créditos
         handleNewBattleCredits({
           battleType: 'training',
           questionsCorrect,
           questionsTotal: totalQuestions,
           accuracyPercentage,
-          eraSlug: 'digital',
+          eraSlug: era,
           usedExtraLife: false,
           planType: userPlan
         });
+        
+        console.log(`🏛️ Labirinto ${era}: ${rewards.creditsEarned} créditos salvos na carteira!`);
         
         // Mudar para vitória e auto-navegar
         setGameState(prev => ({ ...prev, phase: 'victory', score: prev.score + 300 }));
@@ -169,33 +188,8 @@ const Labyrinth = () => {
            score: prev.score + 50 // 50 pontos por baú = alinhado com sistema web
          }));
          
-         // CALCULAR CRÉDITOS GANHOS NO LABIRINTO
-         const userPlan = getUserPlan();
-         const labyrinthCredits = calculateTrainingCredits(
-           userPlan,
-           era,
-           1, // 1 baú aberto
-           1  // 1 baú total
-         );
-         console.log(`🎯 Labirinto: ${labyrinthCredits.creditsEarned} créditos ganhos!`);
-         
-         // SALVAR CRÉDITOS DO LABIRINTO NO LOCALSTORAGE
-         const currentCredits = parseFloat(localStorage.getItem('labyrinthCredits') || '0');
-         const newCredits = currentCredits + labyrinthCredits.creditsEarned;
-         localStorage.setItem('labyrinthCredits', newCredits.toString());
-         
-         // SALVAR NO HISTÓRICO DE ATIVIDADES
-         const activity = {
-           id: Date.now(),
-           type: 'labyrinth',
-           era: era,
-           credits: labyrinthCredits.creditsEarned,
-           timestamp: new Date().toISOString()
-         };
-         
-         const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
-         activities.push(activity);
-         localStorage.setItem('userActivities', JSON.stringify(activities));
+         // Apenas atualizar estatísticas locais (créditos salvos apenas no final)
+         console.log(`📦 Baú aberto: +50 pontos de exploração`);
         
         return; // Não mover o jogador se tocou em um baú
       }
