@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
+import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyCreditsLimit } from '@/hooks/useDailyCreditsLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
@@ -32,6 +33,7 @@ const Digital = () => {
   const [laserShots, setLaserShots] = useState<Array<{id: number, type: 'player' | 'enemy'}>>([]);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
   const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
+  const [userHasSubscription, setUserHasSubscription] = useState(false);
 
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
   const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('digital', 25);
@@ -39,11 +41,22 @@ const Digital = () => {
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
   
-  // Hook para controlar limite de treinamentos
-  const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+  // Hook para controlar limite de treinamentos (diferente para FREE e assinantes)
+  const paidTrainingLimit = useTrainingLimit();
+  const freeTrainingLimit = useFreeTrainingLimit('digital');
   
-  // Hook para controlar limite diário de créditos
+  // Usar o hook correto baseado no tipo de usuário
+  const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = 
+    userHasSubscription ? paidTrainingLimit : freeTrainingLimit;
+  
+  // Hook para controlar limite diário de créditos (apenas para assinantes)
   const { creditsEarned, canEarnCredits, remainingCredits } = useDailyCreditsLimit();
+
+  // Verificar se o usuário tem assinatura
+  useEffect(() => {
+    const subscription = localStorage.getItem('demo_new_subscription');
+    setUserHasSubscription(!!subscription);
+  }, []);
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
@@ -130,43 +143,57 @@ const Digital = () => {
       // Jogo terminou - salvar dados
       const battleDurationSeconds = Math.round((Date.now() - battleStartTime) / 1000);
       
-      // Calcular recompensas usando novo sistema
-      const userPlan = getUserPlan();
-      const trainingCredits = calculateTrainingCredits(
-        userPlan,
-        'digital',
-        score,
-        questions.length
-      );
-      const newRewards = {
-        xpEarned: trainingCredits.xpEarned,
-        moneyEarned: trainingCredits.creditsEarned / 100, // Converter para reais
-        bonusApplied: trainingCredits.bonusApplied
-      };
-      setRewards(newRewards);
-      
-      await saveBattleResult({
-        eraName: 'Era Digital',
-        questionsTotal: questions.length,
-        questionsCorrect: score,
-        xpEarned: newRewards.xpEarned,
-        moneyEarned: newRewards.moneyEarned,
-        battleDurationSeconds: battleDurationSeconds,
-      });
+      // Verificar se o usuário tem assinatura
+      if (userHasSubscription) {
+        // Usuário com assinatura - calcular recompensas usando novo sistema
+        const userPlan = getUserPlan();
+        const trainingCredits = calculateTrainingCredits(
+          userPlan,
+          'digital',
+          score,
+          questions.length
+        );
+        const newRewards = {
+          xpEarned: trainingCredits.xpEarned,
+          moneyEarned: trainingCredits.creditsEarned / 100, // Converter para reais
+          bonusApplied: trainingCredits.bonusApplied
+        };
+        setRewards(newRewards);
+        
+        await saveBattleResult({
+          eraName: 'Era Digital',
+          questionsTotal: questions.length,
+          questionsCorrect: score,
+          xpEarned: newRewards.xpEarned,
+          moneyEarned: newRewards.moneyEarned,
+          battleDurationSeconds: battleDurationSeconds,
+        });
 
-      // Novo Sistema de Créditos
-      const accuracyPercentage = Math.round((score / questions.length) * 100);
-      const creditsResult = handleNewBattleCredits({
-        battleType: 'training',
-        questionsCorrect: score,
-        questionsTotal: questions.length,
-        accuracyPercentage: accuracyPercentage,
-        eraSlug: 'digital',
-        usedExtraLife: false,
-        planType: userPlan
-      });
-      
-      console.log(`🎯 Treino Digital concluído! ${creditsResult.message}`);
+        // Novo Sistema de Créditos
+        const accuracyPercentage = Math.round((score / questions.length) * 100);
+        const creditsResult = handleNewBattleCredits({
+          battleType: 'training',
+          questionsCorrect: score,
+          questionsTotal: questions.length,
+          accuracyPercentage: accuracyPercentage,
+          eraSlug: 'digital',
+          usedExtraLife: false,
+          planType: userPlan
+        });
+        
+        console.log(`🎯 Treino Digital concluído! ${creditsResult.message}`);
+      } else {
+        // Usuário FREE - apenas visualização, sem recompensas
+        const newRewards = {
+          xpEarned: 0, // FREE não ganha XP
+          moneyEarned: 0, // FREE não ganha créditos
+          bonusApplied: false
+        };
+        setRewards(newRewards);
+        
+        // FREE não salva dados de batalha (apenas visualiza)
+        console.log(`🎯 Treino Digital FREE concluído! Apenas visualização.`);
+      }
       
       setGamePhase('finished');
     }
@@ -316,8 +343,11 @@ const Digital = () => {
               <Alert className={isMobile ? 'mb-3 p-2' : 'mb-6'}>
                 <AlertTriangle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
                 <AlertDescription className={isMobile ? 'text-xs' : ''}>
-                  ⚠️ Você atingiu o limite diário de {maxTrainings} treinamentos. 
-                  Volte amanhã para continuar treinando!
+                  {userHasSubscription ? (
+                    `⚠️ Você atingiu o limite diário de ${maxTrainings} treinamentos. Volte amanhã para continuar treinando!`
+                  ) : (
+                    `⚠️ Você já treinou na Era Digital hoje! Volte amanhã ou treine em outra era.`
+                  )}
                 </AlertDescription>
               </Alert>
             )}
@@ -380,21 +410,47 @@ const Digital = () => {
               
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">XP Ganho</h3>
-                <p className="text-2xl font-bold text-battle">+{rewards.xpEarned}</p>
-                {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
-                {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
+                {userHasSubscription ? (
+                  <>
+                    <p className="text-2xl font-bold text-battle">+{rewards.xpEarned}</p>
+                    {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
+                    {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold text-muted-foreground">0 XP</p>
+                    <p className="text-sm text-muted-foreground">Modo FREE</p>
+                  </>
+                )}
               </div>
 
               <div className="arena-card p-4">
                 <h3 className="font-semibold mb-2">Recompensa</h3>
-                <p className="text-2xl font-bold text-victory">
-                  +{Math.round((rewards.moneyEarned || 0) * 100)} créditos
-                </p>
-                {rewards.bonusApplied && (
-                  <p className="text-sm text-epic font-semibold">🏆 Bônus de Excelência +20%!</p>
+                {userHasSubscription ? (
+                  <>
+                    <div className="text-2xl font-bold text-victory">
+                      +{Math.round((rewards.moneyEarned || 0) * 100)} créditos
+                    </div>
+                    {rewards.bonusApplied && (
+                      <p className="text-sm text-epic font-semibold">🏆 Bônus de Excelência +20%!</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="text-2xl font-bold text-muted-foreground">
+                      Modo FREE
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      💰 Apenas visualização - Assine para ganhar!
+                    </p>
+                  </>
                 )}
-                {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
-                {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
+                {userHasSubscription && (
+                  <>
+                    {saving && <p className="text-sm text-epic animate-pulse">Salvando...</p>}
+                    {!saving && <p className="text-sm text-victory">✅ Salvo!</p>}
+                  </>
+                )}
               </div>
             </div>
 

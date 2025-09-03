@@ -29,6 +29,8 @@ const Medieval = () => {
   const [battleStartTime] = useState(Date.now());
   const [attackEffect, setAttackEffect] = useState<'player-attack' | 'enemy-attack' | null>(null);
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
+  const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
+  const [userHasSubscription, setUserHasSubscription] = useState(false);
 
   // Usar o hook para buscar 15 perguntas aleatórias da Era Medieval
   const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('medieval', 15);
@@ -38,6 +40,12 @@ const Medieval = () => {
   
   // Hook para controlar limite de treinamentos
   const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+
+  // Verificar se o usuário tem assinatura
+  useEffect(() => {
+    const subscription = localStorage.getItem('demo_new_subscription');
+    setUserHasSubscription(!!subscription);
+  }, []);
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
