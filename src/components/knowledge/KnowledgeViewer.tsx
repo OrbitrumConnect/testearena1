@@ -485,402 +485,402 @@ const handleRandomQuestion = () => {
         </Card>
       )}
 
-      {/* 💬 Chat da Comunidade */}
-      {showCommunityChat && (
-        <Card className={`arena-card hover-scale border-victory/30 ${isMobile ? 'mx-4' : ''}`}>
-          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
-            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
-              <div className="flex items-center gap-2">
-                💬 Chat da Comunidade
-                <Badge variant="outline" className="bg-victory/20 text-victory text-xs">
-                  {selectedChatEra === 'geral' ? 'Chat Geral' : `Era ${selectedChatEra}`}
-                </Badge>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowCommunityChat(false)}
-                className="h-6 w-6 p-0 text-muted-foreground hover:text-victory"
-              >
-                ✕
-              </Button>
-            </CardTitle>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-              Converse com outros usuários sobre conhecimento e estudos
-            </p>
-          </CardHeader>
-          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
-            {/* Seleção de Chat */}
-            <div className="flex flex-wrap gap-2">
-              {['geral', 'digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
-                <Button
-                  key={era}
-                  variant={selectedChatEra === era ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedChatEra(era)}
-                  className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm'} ${
-                    selectedChatEra === era ? 'bg-victory text-white' : 'hover:bg-victory/10'
-                  }`}
-                >
-                  {era === 'geral' ? '🌍 Geral' : 
-                   era === 'digital' ? '💻 Digital' :
-                   era === 'medieval' ? '⚔️ Medieval' :
-                   era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
-                </Button>
-              ))}
-            </div>
+             {/* 💬 Chat da Comunidade */}
+       {showCommunityChat && (
+         <Card className="arena-card hover-scale border-victory/30 mx-4 md:mx-0">
+           <CardHeader className="p-4 md:p-6">
+             <CardTitle className="flex items-center justify-between text-lg md:text-xl">
+               <div className="flex items-center gap-2">
+                 💬 Chat da Comunidade
+                 <Badge variant="outline" className="bg-victory/20 text-victory text-xs">
+                   {selectedChatEra === 'geral' ? 'Chat Geral' : `Era ${selectedChatEra}`}
+                 </Badge>
+               </div>
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setShowCommunityChat(false)}
+                 className="h-6 w-6 p-0 text-muted-foreground hover:text-victory"
+               >
+                 ✕
+               </Button>
+             </CardTitle>
+             <p className="text-muted-foreground text-xs md:text-sm">
+               Converse com outros usuários sobre conhecimento e estudos
+             </p>
+           </CardHeader>
+           <CardContent className="space-y-4 p-4 md:p-6">
+             {/* Seleção de Chat */}
+             <div className="flex flex-wrap gap-2">
+               {['geral', 'digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
+                 <Button
+                   key={era}
+                   variant={selectedChatEra === era ? "default" : "outline"}
+                   size="sm"
+                   onClick={() => setSelectedChatEra(era)}
+                   className={`text-xs px-2 py-1 md:text-sm md:px-3 md:py-2 ${
+                     selectedChatEra === era ? 'bg-victory text-white' : 'hover:bg-victory/10'
+                   }`}
+                 >
+                   {era === 'geral' ? '🌍 Geral' : 
+                    era === 'digital' ? '💻 Digital' :
+                    era === 'medieval' ? '⚔️ Medieval' :
+                    era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
+                 </Button>
+               ))}
+             </div>
 
-            {/* Chat Messages (placeholder) */}
-            <div className={`max-h-64 overflow-y-auto space-y-3 ${isMobile ? 'text-sm' : ''} bg-muted/20 rounded-lg p-4`}>
-              <div className="text-center text-muted-foreground text-sm">
-                💬 Chat da comunidade em desenvolvimento...
-                <br />
-                <span className="text-xs">Em breve: conversas em tempo real entre usuários!</span>
-              </div>
-            </div>
-            
-            {/* Chat Input */}
-            <div className="flex gap-2">
-              <Input
-                placeholder="💬 Digite sua mensagem..."
-                value={communityChatInput}
-                onChange={(e) => setCommunityChatInput(e.target.value)}
-                className={`${isMobile ? 'text-sm' : ''}`}
-              />
-              <Button
-                variant="outline"
-                disabled={!communityChatInput.trim()}
-                className="px-3 bg-victory/10 border-victory/30 text-victory hover:bg-victory/20"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            {/* Regras do Chat */}
-            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
-              <strong>📋 Regras do Chat:</strong>
-              <br />• Respeite outros usuários
-              <br />• Mantenha foco no conhecimento
-              <br />• 1ª advertencia → Aviso
-              <br />• 2ª advertencia → Ban 15 min
-              <br />• 3ª advertencia → Ban 1 dia
-            </div>
-          </CardContent>
-        </Card>
-      )}
+             {/* Chat Messages (placeholder) */}
+             <div className="max-h-64 overflow-y-auto space-y-3 text-sm bg-muted/20 rounded-lg p-4">
+               <div className="text-center text-muted-foreground text-sm">
+                 💬 Chat da comunidade em desenvolvimento...
+                 <br />
+                 <span className="text-xs">Em breve: conversas em tempo real entre usuários!</span>
+               </div>
+             </div>
+             
+             {/* Chat Input */}
+             <div className="flex gap-2">
+               <Input
+                 placeholder="💬 Digite sua mensagem..."
+                 value={communityChatInput}
+                 onChange={(e) => setCommunityChatInput(e.target.value)}
+                 className="text-sm md:text-base"
+               />
+               <Button
+                 variant="outline"
+                 disabled={!communityChatInput.trim()}
+                 className="px-3 bg-victory/10 border-victory/30 text-victory hover:bg-victory/20"
+               >
+                 <ArrowRight className="w-4 h-4" />
+               </Button>
+             </div>
+             
+             {/* Regras do Chat */}
+             <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+               <strong>📋 Regras do Chat:</strong>
+               <br />• Respeite outros usuários
+               <br />• Mantenha foco no conhecimento
+               <br />• 1ª advertencia → Aviso
+               <br />• 2ª advertencia → Ban 15 min
+               <br />• 3ª advertencia → Ban 1 dia
+             </div>
+           </CardContent>
+         </Card>
+       )}
 
-      {/* ✍️ Sistema de Contribuições */}
-      {showContributions && (
-        <Card className={`arena-card hover-scale border-epic/30 ${isMobile ? 'mx-4' : ''}`}>
-          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
-            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
-              <div className="flex items-center gap-2">
-                ✍️ Sistema de Contribuições
-                <Badge variant="outline" className="bg-epic/20 text-epic text-xs">
-                  Limite: 3x por dia
-                </Badge>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowContributions(false)}
-                className="h-6 w-6 p-0 text-muted-foreground hover:text-epic"
-              >
-                ✕
-              </Button>
-            </CardTitle>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-              Adicione resumos e contribuições para ganhar créditos e XP
-            </p>
-          </CardHeader>
-          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
-            {/* Formulário de Contribuição - MELHORADO */}
-            <div className="space-y-4">
-              {/* Seletores em linha */}
-              <div className="flex flex-wrap gap-3">
-                <Select value={contributionEra} onValueChange={setContributionEra}>
-                  <SelectTrigger className={isMobile ? 'w-full' : 'w-40'}>
-                    <SelectValue placeholder="🌍 Selecionar Era" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="digital">💻 Era Digital</SelectItem>
-                    <SelectItem value="medieval">⚔️ Era Medieval</SelectItem>
-                    <SelectItem value="egito-antigo">🏺 Egito Antigo</SelectItem>
-                    <SelectItem value="mesopotamia">🏛️ Mesopotâmia</SelectItem>
-                  </SelectContent>
-                </Select>
+             {/* ✍️ Sistema de Contribuições */}
+       {showContributions && (
+         <Card className="arena-card hover-scale border-epic/30 mx-4 md:mx-0">
+           <CardHeader className="p-4 md:p-6">
+             <CardTitle className="flex items-center justify-between text-lg md:text-xl">
+               <div className="flex items-center gap-2">
+                 ✍️ Sistema de Contribuições
+                 <Badge variant="outline" className="bg-epic/20 text-epic text-xs">
+                   Limite: 3x por dia
+                 </Badge>
+               </div>
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setShowContributions(false)}
+                 className="h-6 w-6 p-0 text-muted-foreground hover:text-epic"
+               >
+                 ✕
+               </Button>
+             </CardTitle>
+             <p className="text-muted-foreground text-xs md:text-sm">
+               Adicione resumos e contribuições para ganhar créditos e XP
+             </p>
+           </CardHeader>
+           <CardContent className="space-y-4 p-4 md:p-6">
+             {/* Formulário de Contribuição - MELHORADO */}
+             <div className="space-y-4">
+               {/* Seletores em linha */}
+               <div className="flex flex-wrap gap-3">
+                 <Select value={contributionEra} onValueChange={setContributionEra}>
+                   <SelectTrigger className="w-full md:w-40">
+                     <SelectValue placeholder="🌍 Selecionar Era" />
+                   </SelectTrigger>
+                   <SelectContent>
+                     <SelectItem value="digital">💻 Era Digital</SelectItem>
+                     <SelectItem value="medieval">⚔️ Era Medieval</SelectItem>
+                     <SelectItem value="egito-antigo">🏺 Egito Antigo</SelectItem>
+                     <SelectItem value="mesopotamia">🏛️ Mesopotâmia</SelectItem>
+                   </SelectContent>
+                 </Select>
 
-                <Select value={contributionCategory} onValueChange={setContributionCategory}>
-                  <SelectTrigger className={isMobile ? 'w-full' : 'w-40'}>
-                    <SelectValue placeholder="📝 Tipo de Contribuição" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="resumo">📝 Resumo</SelectItem>
-                    <SelectItem value="questao">❓ Questão</SelectItem>
-                    <SelectItem value="curiosidade">💡 Curiosidade</SelectItem>
-                    <SelectItem value="anotacao">📌 Anotação</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                 <Select value={contributionCategory} onValueChange={setContributionCategory}>
+                   <SelectTrigger className="w-full md:w-40">
+                     <SelectValue placeholder="📝 Tipo de Contribuição" />
+                   </SelectTrigger>
+                   <SelectContent>
+                     <SelectItem value="resumo">📝 Resumo</SelectItem>
+                     <SelectItem value="questao">❓ Questão</SelectItem>
+                     <SelectItem value="curiosidade">💡 Curiosidade</SelectItem>
+                     <SelectItem value="anotacao">📌 Anotação</SelectItem>
+                   </SelectContent>
+                 </Select>
+               </div>
 
-              {/* Área de texto MAIOR para contribuições */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-epic">
-                  ✍️ Sua Contribuição:
-                </label>
-                <textarea
-                  placeholder="📝 Digite aqui sua contribuição... (resumo, questão, curiosidade ou anotação)"
-                  value={contributionContent}
-                  onChange={(e) => setContributionContent(e.target.value)}
-                  className={`w-full min-h-32 p-3 rounded-lg border border-epic/30 bg-background/50 text-foreground placeholder:text-muted-foreground resize-y focus:border-epic focus:ring-2 focus:ring-epic/20 transition-all ${isMobile ? 'text-sm' : 'text-base'}`}
-                />
-                <div className="text-xs text-muted-foreground text-right">
-                  {contributionContent.length}/1000 caracteres
-                </div>
-              </div>
+               {/* Área de texto MAIOR para contribuições */}
+               <div className="space-y-2">
+                 <label className="text-sm font-medium text-epic">
+                   ✍️ Sua Contribuição:
+                 </label>
+                 <textarea
+                   placeholder="📝 Digite aqui sua contribuição... (resumo, questão, curiosidade ou anotação)"
+                   value={contributionContent}
+                   onChange={(e) => setContributionContent(e.target.value)}
+                   className="w-full min-h-32 p-3 rounded-lg border border-epic/30 bg-background/50 text-foreground placeholder:text-muted-foreground resize-y focus:border-epic focus:ring-2 focus:ring-epic/20 transition-all text-sm md:text-base"
+                 />
+                 <div className="text-xs text-muted-foreground text-right">
+                   {contributionContent.length}/1000 caracteres
+                 </div>
+               </div>
 
-              {/* Botão de envio melhorado */}
-              <Button
-                variant="outline"
-                disabled={!contributionContent.trim()}
-                className="w-full bg-epic/10 border-epic/30 text-epic hover:bg-epic/20 hover:bg-epic/20 transition-all py-3"
-              >
-                📤 Enviar Contribuição
-              </Button>
-            </div>
+               {/* Botão de envio melhorado */}
+               <Button
+                 variant="outline"
+                 disabled={!contributionContent.trim()}
+                 className="w-full bg-epic/10 border-epic/30 text-epic hover:bg-epic/20 hover:bg-epic/20 transition-all py-3"
+               >
+                 📤 Enviar Contribuição
+               </Button>
+             </div>
 
-            {/* Informações do Sistema */}
-            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
-              <strong>💰 Sistema de Recompensas:</strong>
-              <br />• 3+ votos positivos = +0,25 créditos + 10 XP
-              <br />• Limite: 3 contribuições validadas por dia
-              <br />• Total máximo: 0,75 créditos + 30 XP por dia
-              <br />• Mestre IA analisa e sugere melhorias
-            </div>
+             {/* Informações do Sistema */}
+             <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+               <strong>💰 Sistema de Recompensas:</strong>
+               <br />• 3+ votos positivos = +0,25 créditos + 10 XP
+               <br />• Limite: 3 contribuições validadas por dia
+               <br />• Total máximo: 0,75 créditos + 30 XP por dia
+               <br />• Mestre IA analisa e sugere melhorias
+             </div>
 
-            {/* Minhas Contribuições (placeholder) */}
-            <div className="bg-muted/20 rounded-lg p-4">
-              <h4 className="font-medium text-sm mb-2">📚 Minhas Contribuições</h4>
-              <div className="text-center text-muted-foreground text-sm">
-                ✍️ Sistema de contribuições em desenvolvimento...
-                <br />
-                <span className="text-xs">Em breve: suas contribuições e histórico!</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+             {/* Minhas Contribuições (placeholder) */}
+             <div className="bg-muted/20 rounded-lg p-4">
+               <h4 className="font-medium text-sm mb-2">📚 Minhas Contribuições</h4>
+               <div className="text-center text-muted-foreground text-sm">
+                 ✍️ Sistema de contribuições em desenvolvimento...
+                 <br />
+                 <span className="text-xs">Em breve: suas contribuições e histórico!</span>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+       )}
 
-      {/* 📊 Provas Automáticas */}
-      {showAutoQuizzes && (
-        <Card className={`arena-card hover-scale border-primary-glow/30 ${isMobile ? 'mx-4' : ''}`}>
-          <CardHeader className={`${isMobile ? 'p-4' : ''}`}>
-            <CardTitle className={`flex items-center justify-between ${isMobile ? 'text-lg' : 'text-xl'}`}>
-              <div className="flex items-center gap-2">
-                📊 Provas Automáticas
-                <Badge variant="outline" className="bg-primary-glow/20 text-primary-glow text-xs">
-                  IA Personalizada
-                </Badge>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowAutoQuizzes(false)}
-                className="h-6 w-6 p-0 text-muted-foreground hover:text-primary-glow"
-              >
-                ✕
-              </Button>
-            </CardTitle>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-              Provas personalizadas criadas pela IA baseadas no seu desempenho
-            </p>
-          </CardHeader>
-          <CardContent className={`space-y-4 ${isMobile ? 'p-4' : ''}`}>
-            {/* Seleção de Era para Prova */}
-            <div className="flex flex-wrap gap-2">
-              {['digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
-                <Button
-                  key={era}
-                  variant="outline"
-                  size="sm"
-                  className={`${isMobile ? 'text-xs px-2 py-1' : 'text-sm'} hover:bg-primary-glow/10`}
-                >
-                  {era === 'digital' ? '💻 Digital' :
-                   era === 'medieval' ? '⚔️ Medieval' :
-                   era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
-                </Button>
-              ))}
-            </div>
+             {/* 📊 Provas Automáticas */}
+       {showAutoQuizzes && (
+         <Card className="arena-card hover-scale border-primary-glow/30 mx-4 md:mx-0">
+           <CardHeader className="p-4 md:p-6">
+             <CardTitle className="flex items-center justify-between text-lg md:text-xl">
+               <div className="flex items-center gap-2">
+                 📊 Provas Automáticas
+                 <Badge variant="outline" className="bg-primary-glow/20 text-primary-glow text-xs">
+                   IA Personalizada
+                 </Badge>
+               </div>
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setShowAutoQuizzes(false)}
+                 className="h-6 w-6 p-0 text-muted-foreground hover:text-primary-glow"
+               >
+                 ✕
+               </Button>
+             </CardTitle>
+             <p className="text-muted-foreground text-xs md:text-sm">
+               Provas personalizadas criadas pela IA baseadas no seu desempenho
+             </p>
+           </CardHeader>
+           <CardContent className="space-y-4 p-4 md:p-6">
+             {/* Seleção de Era para Prova */}
+             <div className="flex flex-wrap gap-2">
+               {['digital', 'medieval', 'egito-antigo', 'mesopotamia'].map((era) => (
+                 <Button
+                   key={era}
+                   variant="outline"
+                   size="sm"
+                   className="text-xs px-2 py-1 md:text-sm md:px-3 md:py-2 hover:bg-primary-glow/10"
+                 >
+                   {era === 'digital' ? '💻 Digital' :
+                    era === 'medieval' ? '⚔️ Medieval' :
+                    era === 'egito-antigo' ? '🏺 Egito' : '🏛️ Mesopotâmia'}
+                 </Button>
+               ))}
+             </div>
 
-            {/* Prova Atual (placeholder) */}
-            <div className="bg-muted/20 rounded-lg p-4">
-              <h4 className="font-medium text-sm mb-2">🎯 Prova Atual</h4>
-              <div className="text-center text-muted-foreground text-sm">
-                📊 Sistema de provas automáticas em desenvolvimento...
-                <br />
-                <span className="text-xs">Em breve: provas personalizadas pela IA!</span>
-              </div>
-            </div>
+             {/* Prova Atual (placeholder) */}
+             <div className="bg-muted/20 rounded-lg p-4">
+               <h4 className="font-medium text-sm mb-2">🎯 Prova Atual</h4>
+               <div className="text-center text-muted-foreground text-sm">
+                 📊 Sistema de provas automáticas em desenvolvimento...
+                 <br />
+                 <span className="text-xs">Em breve: provas personalizadas pela IA!</span>
+               </div>
+             </div>
 
-            {/* Análise de Desempenho (placeholder) */}
-            <div className="bg-muted/20 rounded-lg p-4">
-              <h4 className="font-medium text-sm mb-2">📈 Análise de Desempenho</h4>
-              <div className="text-center text-muted-foreground text-sm">
-                🧠 Análise IA em desenvolvimento...
-                <br />
-                <span className="text-xs">Em breve: insights personalizados sobre seu estudo!</span>
-              </div>
-            </div>
+             {/* Análise de Desempenho (placeholder) */}
+             <div className="bg-muted/20 rounded-lg p-4">
+               <h4 className="font-medium text-sm mb-2">📈 Análise de Desempenho</h4>
+               <div className="text-center text-muted-foreground text-sm">
+                 🧠 Análise IA em desenvolvimento...
+                 <br />
+                 <span className="text-xs">Em breve: insights personalizados sobre seu estudo!</span>
+               </div>
+             </div>
 
-            {/* Informações do Sistema */}
-            <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
-              <strong>🤖 Funcionalidades da IA:</strong>
-              <br />• Cria provas baseadas no seu histórico
-              <br />• Identifica pontos fortes e fracos
-              <br />• Sugere melhorias de estudo
-              <br />• Recomendações personalizadas
-            </div>
-          </CardContent>
-        </Card>
-      )}
+             {/* Informações do Sistema */}
+             <div className="text-xs text-muted-foreground bg-muted/20 rounded-lg p-3">
+               <strong>🤖 Funcionalidades da IA:</strong>
+               <br />• Cria provas baseadas no seu histórico
+               <br />• Identifica pontos fortes e fracos
+               <br />• Sugere melhorias de estudo
+               <br />• Recomendações personalizadas
+             </div>
+           </CardContent>
+         </Card>
+       )}
 
-      {/* Conexões Históricas */}
-      {showConnections ? (
-        <div className={`space-y-6 ${isMobile ? 'px-4' : ''}`}>
-          <div className="text-center">
-            <h2 className={`font-bold font-montserrat ${isMobile ? 'text-xl' : 'text-2xl'} text-epic mb-2`}>
-              🌍 Conexões Históricas
-            </h2>
-            <p className={`text-muted-foreground ${isMobile ? 'text-sm' : ''}`}>
-              Descubra como as civilizações antigas influenciaram o mundo digital de hoje
-            </p>
-          </div>
+             {/* Conexões Históricas */}
+       {showConnections ? (
+         <div className="space-y-6 px-4 md:px-0">
+           <div className="text-center">
+             <h2 className="font-bold font-montserrat text-xl md:text-2xl text-epic mb-2">
+               🌍 Conexões Históricas
+             </h2>
+             <p className="text-muted-foreground text-sm md:text-base">
+               Descubra como as civilizações antigas influenciaram o mundo digital de hoje
+             </p>
+           </div>
 
-          <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-2'}`}>
-            {historicalConnections
-              .filter(connection => selectedCategory === 'all' || connection.category === selectedCategory)
-              .map(connection => (
-                              <Card key={connection.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-90' : 'transform scale-75'} border-epic/30`}>
-                <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
-                  <CardTitle className={`font-montserrat ${isMobile ? 'text-sm' : 'text-base'} flex items-center gap-2`}>
-                    {connection.title}
-                  </CardTitle>
-                  <div className="flex items-center gap-2 text-epic font-medium">
-                    <ArrowRight className="w-4 h-4" />
-                    <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-mono`}>
-                      {connection.origin}
-                    </span>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className={`space-y-3 ${isMobile ? 'p-3' : ''}`}>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                    {connection.description}
-                  </p>
-                  
-                  <div className={`bg-victory/10 border border-victory/30 rounded-lg ${isMobile ? 'p-2' : 'p-3'}`}>
-                    <p className={`text-victory font-medium ${isMobile ? 'text-xs' : 'text-sm'} mb-1`}>
-                      💡 Exemplos Modernos:
-                    </p>
-                    <p className={`text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                      {connection.modernExample}
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Badge className={getCategoryColor(connection.category)}>
-                      {getCategoryIcon(connection.category)}
-                      <span className={`ml-1 capitalize ${isMobile ? 'text-xs' : ''}`}>
-                        {isMobile ? connection.category.substring(0, 4) : connection.category}
-                      </span>
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <>
-                     {/* Knowledge Items Grid - MELHORADO e ORGANIZADO */}
-           <div className={`grid gap-4 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
-             {currentItems.map(item => (
-               <Card key={item.id} className={`arena-card hover-scale border-epic/20 hover:border-epic/40 transition-all duration-300 ${isMobile ? 'transform scale-95' : 'transform scale-90'}`}>
-                 <CardHeader className={`${isMobile ? 'pb-3' : 'pb-4'} bg-gradient-to-br from-epic/5 to-transparent`}>
-                   <div className={`flex items-start ${isMobile ? 'flex-col gap-3' : 'justify-between'}`}>
-                     <CardTitle className={`font-montserrat font-bold ${isMobile ? 'text-base' : 'text-lg'} text-epic leading-tight`}>
-                       {item.title}
-                     </CardTitle>
-                     <div className="flex items-center gap-2">
-                       <Badge className={`${getCategoryColor(item.category)} font-medium shadow-sm`}>
-                         {getCategoryIcon(item.category)}
-                         <span className={`ml-1 capitalize ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                           {isMobile ? item.category.substring(0, 4) : item.category}
-                         </span>
-                       </Badge>
-                     </div>
+           <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+             {historicalConnections
+               .filter(connection => selectedCategory === 'all' || connection.category === selectedCategory)
+               .map(connection => (
+                               <Card key={connection.id} className="arena-card hover-scale transform scale-90 md:scale-75 border-epic/30">
+                 <CardHeader className="pb-2 md:pb-3">
+                   <CardTitle className="font-montserrat text-sm md:text-base flex items-center gap-2">
+                     {connection.title}
+                   </CardTitle>
+                   <div className="flex items-center gap-2 text-epic font-medium">
+                     <ArrowRight className="w-4 h-4" />
+                     <span className="text-xs md:text-sm font-mono">
+                       {connection.origin}
+                     </span>
                    </div>
                  </CardHeader>
                  
-                 <CardContent className={`space-y-4 ${isMobile ? 'p-4' : 'p-5'}`}>
-                   {/* Questão e Resposta */}
-                   {item.item_type === 'qa' && item.question && (
-                     <div className="space-y-3 bg-victory/5 rounded-lg p-3 border border-victory/20">
-                       <p className={`font-medium text-victory ${isMobile ? 'text-sm' : 'text-base'}`}>
-                         ❓ {item.question}
-                       </p>
-                       <div className="flex items-center gap-2">
-                         <span className="text-xs text-muted-foreground">✅ Resposta:</span>
-                         <Badge variant="default" className={`bg-victory/20 text-victory font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                           {item.correct_answer}
-                         </Badge>
-                       </div>
-                     </div>
-                   )}
+                 <CardContent className="space-y-3 p-3 md:p-4">
+                   <p className="text-muted-foreground text-xs md:text-sm">
+                     {connection.description}
+                   </p>
                    
-                   {/* Conteúdo Principal */}
-                   {item.content && (
-                     <div className="bg-background/30 rounded-lg p-3 border border-muted/30">
-                       <p className={`text-muted-foreground leading-relaxed ${isMobile ? 'text-sm' : 'text-base'}`}>
-                         📚 {item.content}
-                       </p>
-                     </div>
-                   )}
+                   <div className="bg-victory/10 border border-victory/30 rounded-lg p-2 md:p-3">
+                     <p className="text-victory font-medium text-xs md:text-sm mb-1">
+                       💡 Exemplos Modernos:
+                     </p>
+                     <p className="text-victory text-xs md:text-sm">
+                       {connection.modernExample}
+                     </p>
+                   </div>
                    
-                   {/* Metadados e Tags */}
-                   <div className={`flex flex-wrap gap-2 pt-2 border-t border-muted/20`}>
-                     {item.year_start && (
-                       <Badge variant="outline" className={`gap-1 bg-epic/10 border-epic/30 text-epic ${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-3 py-1'}`}>
-                         <Calendar className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
-                         {item.year_start > 0 ? `${item.year_start} d.C.` : `${Math.abs(item.year_start)} a.C.`}
-                       </Badge>
-                     )}
-                     
-                     {item.tags.slice(0, isMobile ? 2 : 3).map(tag => (
-                       <Badge key={tag} variant="outline" className={`gap-1 bg-muted/20 border-muted/30 text-muted-foreground ${isMobile ? 'text-xs px-2 py-1' : 'text-sm px-3 py-1'}`}>
-                         <Tag className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
-                         {tag}
-                       </Badge>
-                     ))}
+                   <div className="flex items-center gap-2">
+                     <Badge className={getCategoryColor(connection.category)}>
+                       {getCategoryIcon(connection.category)}
+                       <span className="ml-1 capitalize text-xs md:text-sm">
+                         {connection.category.substring(0, 4)}
+                       </span>
+                     </Badge>
                    </div>
                  </CardContent>
                </Card>
              ))}
            </div>
+         </div>
+       ) : (
+        <>
+                                          {/* Knowledge Items Grid - MELHORADO e ORGANIZADO */}
+            <div className="grid gap-4 grid-cols-1 px-4 md:grid-cols-2 md:px-0 lg:grid-cols-3">
+              {currentItems.map(item => (
+                <Card key={item.id} className="arena-card hover-scale border-epic/20 hover:border-epic/40 transition-all duration-300 transform scale-95 md:scale-90">
+                  <CardHeader className="pb-3 md:pb-4 bg-gradient-to-br from-epic/5 to-transparent">
+                    <div className="flex items-start flex-col gap-3 md:justify-between">
+                      <CardTitle className="font-montserrat font-bold text-base md:text-lg text-epic leading-tight">
+                        {item.title}
+                      </CardTitle>
+                      <div className="flex items-center gap-2">
+                        <Badge className={`${getCategoryColor(item.category)} font-medium shadow-sm`}>
+                          {getCategoryIcon(item.category)}
+                          <span className="ml-1 capitalize text-xs md:text-sm">
+                            {item.category.substring(0, 4)}
+                          </span>
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4 p-4 md:p-5">
+                    {/* Questão e Resposta */}
+                    {item.item_type === 'qa' && item.question && (
+                      <div className="space-y-3 bg-victory/5 rounded-lg p-3 border border-victory/20">
+                        <p className="font-medium text-victory text-sm md:text-base">
+                          ❓ {item.question}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-muted-foreground">✅ Resposta:</span>
+                          <Badge variant="default" className="bg-victory/20 text-victory font-medium text-xs md:text-sm">
+                            {item.correct_answer}
+                          </Badge>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Conteúdo Principal */}
+                    {item.content && (
+                      <div className="bg-background/30 rounded-lg p-3 border border-muted/30">
+                        <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                          📚 {item.content}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {/* Metadados e Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-muted/20">
+                      {item.year_start && (
+                        <Badge variant="outline" className="gap-1 bg-epic/10 border-epic/30 text-epic text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
+                          <Calendar className="w-3 h-3 md:w-4 md:h-4" />
+                          {item.year_start > 0 ? `${item.year_start} d.C.` : `${Math.abs(item.year_start)} a.C.`}
+                        </Badge>
+                      )}
+                      
+                      {item.tags.slice(0, 2).map(tag => (
+                        <Badge key={tag} variant="outline" className="gap-1 bg-muted/20 border-muted/30 text-muted-foreground text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
+                          <Tag className="w-3 h-3 md:w-4 md:h-4" />
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
       {/* Paginação */}
       {totalPages > 1 && (
-        <div className={`flex items-center justify-center gap-2 mt-8 ${isMobile ? 'px-4' : ''}`}>
+        <div className="flex items-center justify-center gap-2 mt-8 px-4 md:px-0">
           <Button
             variant="outline"
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className={isMobile ? 'text-xs px-2' : ''}
+            className="text-xs px-2 md:text-sm md:px-3"
           >
             ← Anterior
           </Button>
           
-          <div className={`flex items-center gap-1 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+          <div className="flex items-center gap-1 text-xs md:text-sm">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               let pageNum;
               if (totalPages <= 5) {
@@ -898,7 +898,7 @@ const handleRandomQuestion = () => {
                   key={pageNum}
                   variant={currentPage === pageNum ? "default" : "outline"}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`${isMobile ? 'h-8 w-8 text-xs' : 'h-10 w-10'} ${
+                  className={`h-8 w-8 text-xs md:h-10 md:w-10 md:text-sm ${
                     currentPage === pageNum ? 'bg-epic text-white' : ''
                   }`}
                 >
@@ -912,7 +912,7 @@ const handleRandomQuestion = () => {
             variant="outline"
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={isMobile ? 'text-xs px-2' : ''}
+            className="text-xs px-2 md:text-sm md:px-3"
           >
             Avançar →
           </Button>
