@@ -66,8 +66,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
-    pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
+    pvpBetCredits: 7.0, // R$ 0,070 por partida
+    pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 60,
     withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
@@ -92,8 +92,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
-    pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
+    pvpBetCredits: 7.0, // R$ 0,070 por partida
+    pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 42,
     withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
@@ -118,8 +118,8 @@ export const PLAN_CONFIGS: Record<PlanType, PlanConfig> = {
     },
 
     // PvP SUSTENTÁVEL - Equilibrado
-    pvpBetCredits: 1.5, // R$ 0,015 por partida
-    pvpWinnerCredits: 1.0, // R$ 0,010 para vencedor (plataforma retém 0,5)
+    pvpBetCredits: 7.0, // R$ 0,070 por partida
+    pvpWinnerCredits: 9.5, // R$ 0,095 para vencedor (plataforma retém 4,5)
     monthlyBonusMax: 24,
     withdrawalFeePercent: 22.5,
     withdrawalMinDays: 30,
@@ -235,8 +235,8 @@ export const calculateArenaCredits = (planType: PlanType, isVictory: boolean) =>
   
   return {
     creditsEarned: isVictory 
-      ? (planConfig.pvpWinnerCredits - planConfig.pvpBetCredits) // Lucro na vitória (1.0 crédito)
-      : -planConfig.pvpBetCredits, // Perda na derrota (1.5 créditos)
+      ? (planConfig.pvpWinnerCredits - planConfig.pvpBetCredits) // Lucro na vitória (2.5 créditos)
+      : -planConfig.pvpBetCredits, // Perda na derrota (7.0 créditos)
     xpEarned: isVictory ? 200 : 50,
     betAmount: planConfig.pvpBetCredits,
     totalPool: planConfig.pvpBetCredits * 2,
