@@ -505,7 +505,7 @@ const Index = () => {
         </section>
 
         {/* Era Carousel - Fundo animado que muda automaticamente */}
-        <EraCarousel isMobile={isMobile} />
+        <EraCarousel />
 
         {/* Controle de Música Mobile - Rodapé */}
         {isMobile && (

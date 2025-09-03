@@ -88,11 +88,7 @@ const eraData = [
   }
 ];
 
-interface EraCarouselProps {
-  isMobile?: boolean;
-}
-
-export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
+export const EraCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
@@ -123,9 +119,9 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
   const isBlocked = userType === 'free' && isWorldQuiz;
 
   return (
-    <section className={isMobile ? 'mb-3' : 'mb-6'}>
+    <section className="mb-3 md:mb-6">
       <div 
-        className={`arena-card ${isMobile ? 'p-3' : 'p-6'} relative overflow-hidden transition-all duration-500 ${isTransitioning ? 'opacity-90' : 'opacity-100'}`}
+        className="arena-card p-3 md:p-6 relative overflow-hidden transition-all duration-500 opacity-100"
       >
         {/* Background animado */}
         <div 
@@ -141,77 +137,75 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
         
         {/* Conteúdo */}
         <div className="relative z-10">
-          {isMobile ? (
-            // Mobile: Layout compacto
-            <div className="text-center mb-3">
-              <div className="flex items-center justify-center space-x-2 mb-2">
-                <span className="text-2xl">{currentEra.emoji}</span>
-                <div>
-                  <h3 className={`text-base font-montserrat font-bold text-${currentEra.color} transition-colors duration-500`}>
-                    {currentEra.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">{currentEra.period}</p>
-                </div>
+          {/* Mobile: Layout compacto */}
+          <div className="text-center mb-3 md:hidden">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-2xl">{currentEra.emoji}</span>
+              <div>
+                <h3 className={`text-base font-montserrat font-bold text-${currentEra.color} transition-colors duration-500`}>
+                  {currentEra.title}
+                </h3>
+                <p className="text-xs text-muted-foreground">{currentEra.period}</p>
               </div>
+            </div>
+            
+            {/* Indicadores de era */}
+            <div className="flex justify-center space-x-1 mb-3">
+              {eraData.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentIndex ? `bg-${currentEra.color}` : 'bg-muted/40'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Desktop: Layout original com animação */}
+          <div className="hidden md:flex items-center justify-between mb-8">
+            <div className="max-w-2xl">
+              <h3 className={`text-4xl font-montserrat font-bold text-${currentEra.color} mb-3 transition-all duration-500`}>
+                {currentEra.title} - {currentEra.subtitle}
+              </h3>
+              <p className="text-lg text-muted-foreground mb-2 transition-all duration-500">
+                {currentEra.description}
+              </p>
+              <p className="text-sm text-muted-foreground/80">
+                {currentEra.period}
+              </p>
               
-              {/* Indicadores de era */}
-              <div className="flex justify-center space-x-1 mb-3">
+              {/* Indicadores discretos */}
+              <div className="flex space-x-2 mt-4">
                 {eraData.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-110 ${
                       index === currentIndex ? `bg-${currentEra.color}` : 'bg-muted/40'
                     }`}
+                    onClick={() => setCurrentIndex(index)}
                   />
                 ))}
               </div>
             </div>
-          ) : (
-            // Desktop: Layout original com animação
-            <div className="flex items-center justify-between mb-8">
-              <div className="max-w-2xl">
-                <h3 className={`text-4xl font-montserrat font-bold text-${currentEra.color} mb-3 transition-all duration-500`}>
-                  {currentEra.title} - {currentEra.subtitle}
-                </h3>
-                <p className="text-lg text-muted-foreground mb-2 transition-all duration-500">
-                  {currentEra.description}
-                </p>
-                <p className="text-sm text-muted-foreground/80">
-                  {currentEra.period}
-                </p>
-                
-                {/* Indicadores discretos */}
-                <div className="flex space-x-2 mt-4">
-                  {eraData.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer hover:scale-110 ${
-                        index === currentIndex ? `bg-${currentEra.color}` : 'bg-muted/40'
-                      }`}
-                      onClick={() => setCurrentIndex(index)}
-                    />
-                  ))}
-                </div>
-              </div>
-              
-              <div className={`text-7xl opacity-80 transition-all duration-500 ${isTransitioning ? 'scale-90' : 'scale-100'}`}>
-                {currentEra.emoji}
-              </div>
+            
+            <div className={`text-7xl opacity-80 transition-all duration-500 ${isTransitioning ? 'scale-90' : 'scale-100'}`}>
+              {currentEra.emoji}
             </div>
-          )}
+          </div>
           
           {/* Botões de ação - SEMPRE na mesma posição */}
-          <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-2 lg:grid-cols-4 gap-3'} w-full`} style={isMobile ? {transform: 'scale(1.05) scaleY(1.05)'} : {}}>
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-2 lg:grid-cols-4 md:gap-3 w-full" style={{transform: 'scale(1.05) scaleY(1.05)'}}>
             <ActionButton 
-              variant={isBlocked ? 'secondary' : 'victory'} 
+              variant={isBlocked ? 'victory' : 'victory'} 
               icon={<Play />}
               onClick={() => isBlocked ? null : navigate(currentEra.routes.training)}
               disabled={isBlocked}
-              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300 ${isBlocked ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className="text-xs py-2 md:text-sm md:py-3 w-full transition-all duration-300 opacity-100 cursor-pointer"
             >
               {isBlocked ? 
-                (isMobile ? '🔒 Pago' : '🔒 Quiz Pago') : 
-                (isMobile ? 'Treinar' : 'Treinar Gratuito')
+                '🔒 Pago' : 
+                'Treinar'
               }
             </ActionButton>
             
@@ -219,30 +213,30 @@ export const EraCarousel = ({ isMobile = false }: EraCarouselProps) => {
               variant="epic" 
               icon={<Trophy />}
               onClick={() => navigate(currentEra.routes.arena)}
-              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300`}
+              className="text-xs py-2 md:text-sm md:py-3 w-full transition-all duration-300"
             >
-              {isMobile ? 'Arena' : `Arena (${pvpValues.betAmount} créditos)`}
+              Arena
             </ActionButton>
             
             <ActionButton 
               variant="battle" 
               icon={<Users />}
               onClick={() => navigate(currentEra.routes.ranking)}
-              className={`${isMobile ? 'text-xs py-2' : 'text-sm py-3'} w-full transition-all duration-300`}
+              className="text-xs py-2 md:text-sm md:py-3 w-full transition-all duration-300"
             >
-              {isMobile ? 'Ranking' : 'Ranking Global'}
+              Ranking
             </ActionButton>
             
-            {!isMobile && (
+            <div className="hidden lg:block">
               <ActionButton 
-                variant="legendary" 
+                variant="epic" 
                 icon={<BookOpen />}
                 onClick={() => navigate(currentEra.routes.knowledge)}
                 className="text-sm py-3 w-full transition-all duration-300"
               >
                 Base Conhecimento
               </ActionButton>
-            )}
+            </div>
           </div>
         </div>
       </div>
