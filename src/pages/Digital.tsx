@@ -641,7 +641,7 @@ const Digital = () => {
         </div>
 
                  {/* Pergunta */}
-         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-1 md:mb-2 md:mt-10 md:border-2 md:glow-epic md:scale-75" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
+         <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card p-1 mb-2 mx-1 w-9/10 md:p-6 md:mb-6 md:mt-10 md:border-2 md:glow-epic md:scale-100 md:w-auto md:mx-auto md:transform-none md:mt-5 md:w-4/5 md:mx-auto" style={{marginTop: '8%', width: '110%', marginLeft: '-5%', marginRight: '-5%', transform: 'scale(0.6)'}}>
            <div className="flex items-center justify-center mb-0.5 md:mb-6">
              <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-6 md:py-2">
                <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
