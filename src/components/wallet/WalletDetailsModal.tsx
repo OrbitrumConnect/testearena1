@@ -16,6 +16,8 @@ import {
   Download
 } from 'lucide-react';
 import { useMonthlyDecay } from '@/hooks/useMonthlyDecay';
+import { useMeritSystem } from '@/hooks/useMeritSystem';
+import { useCredits } from '@/hooks/useCredits';
 
 interface WalletDetailsModalProps {
   isOpen: boolean;
@@ -25,26 +27,48 @@ interface WalletDetailsModalProps {
   withdrawAmount: number;
 }
 
-export const WalletDetailsModal = ({ 
-  isOpen, 
-  onClose, 
-  creditsBalance, 
-  canWithdraw, 
-  withdrawAmount 
+export const WalletDetailsModal = ({
+  isOpen,
+  onClose,
+  creditsBalance,
+  canWithdraw,
+  withdrawAmount
 }: WalletDetailsModalProps) => {
   const [requestingWithdraw, setRequestingWithdraw] = useState(false);
   const { getDecayInfo } = useMonthlyDecay();
+  const { userMerit } = useMeritSystem();
+  const { userCredits } = useCredits();
   const decayInfo = getDecayInfo();
 
-  // Simular dados do Sistema de 3
+  // Sistema 200-400 créditos REAL
+  const WITHDRAWAL_LIMITS = {
+    minimum: 200,
+    regularMax: 400,
+    topTenPercent: 1000 // Limite alto para TOP 10%
+  };
+
+  // Verificar se é TOP 10%
+  const isTopTenPercent = userMerit?.isTopPerformer || false;
+  const currentLimit = isTopTenPercent ? WITHDRAWAL_LIMITS.topTenPercent : WITHDRAWAL_LIMITS.regularMax;
+  
+  // Calcular progresso mensal (créditos/limite)
+  const monthlyProgress = Math.min(100, (creditsBalance / currentLimit) * 100);
+  const canWithdrawNow = creditsBalance >= WITHDRAWAL_LIMITS.minimum;
+  
+  // Calcular próximo dia 1°
+  const now = new Date();
+  const nextFirst = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const daysUntilNext = Math.ceil((nextFirst.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  
+  // Sistema de 3 meses REAL
   const systemData = {
     currentMonth: 1,
     totalMonths: 3,
-    currentPayment: 5.00,
-    maxWithdrawal: 5.00,
-    nextPayment: 3.50,
-    daysUntilNext: 30,
-    daysSinceDeposit: 15
+    currentPayment: 350, // 350 créditos (Mês 1)
+    maxWithdrawal: Math.min(creditsBalance, currentLimit),
+    nextPayment: 245, // 245 créditos (Mês 2)
+    daysUntilNext: daysUntilNext,
+    daysSinceDeposit: userCredits ? Math.floor((Date.now() - new Date(userCredits.created_at).getTime()) / (1000 * 60 * 60 * 24)) : 0
   };
 
   const handleWithdrawRequest = () => {
@@ -69,20 +93,44 @@ export const WalletDetailsModal = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Balance Overview */}
+          {/* Balance Overview - Sistema 200-400 */}
           <Card className="arena-card p-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-epic mb-1">
                   {Math.round(creditsBalance)} créditos
                 </div>
-                <p className="text-sm text-muted-foreground">Saldo Interno</p>
+                <p className="text-sm text-muted-foreground">Saldo Atual</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-victory mb-1">
-                  {withdrawAmount.toFixed(0)} créditos
+                  {currentLimit} créditos
                 </div>
-                <p className="text-sm text-muted-foreground">Valor Sacável</p>
+                <p className="text-sm text-muted-foreground">
+                  {isTopTenPercent ? 'Limite TOP 10%' : 'Limite Regular'}
+                </p>
+              </div>
+            </div>
+            
+            {/* Barra de Progresso Mensal */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>Progresso Mensal:</span>
+                <span className={`font-bold ${canWithdrawNow ? 'text-victory' : 'text-battle'}`}>
+                  {Math.round(creditsBalance)}/{currentLimit} créditos
+                </span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full transition-all ${canWithdrawNow ? 'bg-victory' : 'bg-battle'}`}
+                  style={{ width: `${Math.min(monthlyProgress, 100)}%` }}
+                />
+              </div>
+              <div className="text-xs text-center">
+                {canWithdrawNow ? 
+                  `✅ Pode sacar! (Mín: ${WITHDRAWAL_LIMITS.minimum})` : 
+                  `❌ Faltam ${WITHDRAWAL_LIMITS.minimum - creditsBalance} créditos para sacar`
+                }
               </div>
             </div>
           </Card>
@@ -138,30 +186,35 @@ export const WalletDetailsModal = ({
             </h3>
 
             <div className="space-y-4">
-              {/* Status */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-muted/10">
-                <div className="flex items-center space-x-3">
-                  {canWithdraw ? (
-                    <CheckCircle className="w-5 h-5 text-victory" />
-                  ) : (
-                    <Clock className="w-5 h-5 text-epic" />
+                          {/* Status - Sistema 200-400 */}
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/10">
+              <div className="flex items-center space-x-3">
+                {canWithdrawNow ? (
+                  <CheckCircle className="w-5 h-5 text-victory" />
+                ) : (
+                  <Clock className="w-5 h-5 text-epic" />
+                )}
+                <div>
+                  <p className="font-medium">
+                    {canWithdrawNow ? 'Saque Liberado' : 'Aguardando Créditos'}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {canWithdrawNow
+                      ? `Saque disponível dia 1° (em ${daysUntilNext} dias)`
+                      : `Precisa de ${WITHDRAWAL_LIMITS.minimum - creditsBalance}+ créditos para sacar`
+                    }
+                  </p>
+                  {isTopTenPercent && (
+                    <p className="text-xs text-legendary font-medium">
+                      🏆 TOP 10% - Limite estendido: {WITHDRAWAL_LIMITS.topTenPercent} créditos
+                    </p>
                   )}
-                  <div>
-                    <p className="font-medium">
-                      {canWithdraw ? 'Saque Liberado' : 'Aguardando Período'}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {canWithdraw 
-                        ? 'Você pode solicitar o saque do valor depositado'
-                        : `Aguarde mais ${30 - systemData.daysSinceDeposit} dias para liberar saque`
-                      }
-                    </p>
-                  </div>
                 </div>
-                <Badge variant={canWithdraw ? 'default' : 'secondary'}>
-                  {canWithdraw ? 'Disponível' : 'Bloqueado'}
-                </Badge>
               </div>
+              <Badge variant={canWithdrawNow ? 'default' : 'secondary'}>
+                {canWithdrawNow ? 'Disponível' : 'Bloqueado'}
+              </Badge>
+            </div>
 
               {/* Withdrawal Rules */}
               <div className="space-y-2">
@@ -170,20 +223,23 @@ export const WalletDetailsModal = ({
                   Regras de Saque
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-6">
-                  <li>• Valor depositado + créditos ganhos são sacáveis</li>
-                  <li>• Período mínimo: 30 dias após depósito</li>
+                  <li>• Mínimo: {WITHDRAWAL_LIMITS.minimum} créditos para sacar</li>
+                  <li>• Máximo regular: {WITHDRAWAL_LIMITS.regularMax} créditos/mês</li>
+                  <li>• TOP 10%: Até {WITHDRAWAL_LIMITS.topTenPercent} créditos/mês</li>
+                  <li>• Saque liberado: Dia 1° de cada mês</li>
+                  <li>• Prazo: 1 dia (regular) / 3 dias (TOP 10%)</li>
                   <li>• Taxa administrativa: 22.5%</li>
-                  <li>• Créditos de PvP e treinos acumulam</li>
                   <li>• Processamento: 24-48h úteis</li>
+                  <li>• Créditos expiram se não sacados no prazo</li>
                 </ul>
               </div>
 
               {/* Withdraw Button */}
               <div className="pt-4 border-t">
                 <ActionButton
-                  variant={canWithdraw ? 'victory' : 'secondary'}
+                  variant={canWithdrawNow ? 'victory' : 'secondary'}
                   className="w-full"
-                  disabled={!canWithdraw || requestingWithdraw}
+                  disabled={!canWithdrawNow || requestingWithdraw}
                   onClick={handleWithdrawRequest}
                 >
                   {requestingWithdraw ? (
@@ -191,15 +247,16 @@ export const WalletDetailsModal = ({
                       <Clock className="w-4 h-4 mr-2 animate-spin" />
                       Processando...
                     </>
-                  ) : canWithdraw ? (
+                  ) : canWithdrawNow ? (
                     <>
                       <DollarSign className="w-4 h-4 mr-2" />
-                      Solicitar Saque de R$ {withdrawAmount.toFixed(2)}
+                      Solicitar Saque de {Math.min(creditsBalance, currentLimit)} créditos
+                      {isTopTenPercent && <span className="text-legendary"> (TOP 10%)</span>}
                     </>
                   ) : (
                     <>
                       <XCircle className="w-4 h-4 mr-2" />
-                      Saque Bloqueado (Aguarde {30 - systemData.daysSinceDeposit} dias)
+                      Mínimo {WITHDRAWAL_LIMITS.minimum} créditos (Faltam {WITHDRAWAL_LIMITS.minimum - creditsBalance})
                     </>
                   )}
                 </ActionButton>
