@@ -227,16 +227,15 @@ export const EraCarousel = () => {
               Ranking
             </ActionButton>
             
-            <div className="hidden lg:block">
-              <ActionButton 
-                variant="epic" 
-                icon={<BookOpen />}
-                onClick={() => navigate(currentEra.routes.knowledge)}
-                className="text-sm py-3 w-full transition-all duration-300"
-              >
-                Base Conhecimento
-              </ActionButton>
-            </div>
+            <ActionButton 
+              variant="epic" 
+              icon={<BookOpen />}
+              onClick={() => navigate(currentEra.routes.knowledge)}
+              className="text-xs py-2 md:text-sm md:py-3 w-full transition-all duration-300"
+            >
+              <span className="hidden md:inline">Base Conhecimento</span>
+              <span className="md:hidden">📚</span>
+            </ActionButton>
           </div>
         </div>
       </div>
