@@ -493,7 +493,7 @@ const handleRandomQuestion = () => {
             </p>
           </div>
 
-          <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-2'}`}>
+          <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-2'}`}>
             {historicalConnections
               .filter(connection => selectedCategory === 'all' || connection.category === selectedCategory)
               .map(connection => (
@@ -540,9 +540,9 @@ const handleRandomQuestion = () => {
       ) : (
         <>
           {/* Knowledge Items Grid - Paginado */}
-      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+      <div className={`grid gap-3 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
         {currentItems.map(item => (
-                          <Card key={item.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-75' : 'transform scale-50'}`}>
+                          <Card key={item.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-90' : 'transform scale-75'}`}>
             <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
               <div className={`flex items-start ${isMobile ? 'flex-col gap-2' : 'justify-between'}`}>
                 <CardTitle className={`font-montserrat ${isMobile ? 'text-sm' : 'text-base'}`}>
