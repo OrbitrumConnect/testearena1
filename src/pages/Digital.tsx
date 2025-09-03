@@ -18,23 +18,6 @@ const calculateHpDamage = (totalQuestions: number): number => {
 };
 import { calculateTrainingCredits } from '@/utils/creditsSystem';
 
-// CSS customizado para remover scroll no web
-const digitalStyles = `
-  @media (min-width: 768px) {
-    .digital-container {
-      overflow: hidden !important;
-      transform: translate(-2%, -2%) !important;
-    }
-    .digital-question-card {
-      margin-top: 5% !important;
-      width: 85% !important;
-      margin-left: 7.5% !important;
-      margin-right: 7.5% !important;
-      transform: none !important;
-    }
-  }
-`;
-
 const Digital = () => {
   // Vercel update trigger - Era Digital mobile layout fix
   const navigate = useNavigate();
@@ -513,7 +496,6 @@ const Digital = () => {
 
      return (
      <div className="h-screen overflow-hidden bg-background relative">
-       <style>{digitalStyles}</style>
        <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-75 md:w-[133%] md:h-[133%]">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
@@ -527,7 +509,7 @@ const Digital = () => {
       
       <ParticleBackground />
       
-             <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6 md:overflow-hidden digital-container" style={{transform: 'translate(-4.5%, -5%)'}}>
+             <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6 md:overflow-hidden" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
         <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
           <ActionButton 
