@@ -437,7 +437,7 @@ const Digital = () => {
         
         {/* Barra de Progresso Épica */}
         <div className={isMobile ? 'mb-1 mx-1' : 'mb-8'} style={isMobile ? {} : {marginTop: '5%'}}>
-          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-70 w-3/5 mx-auto' : 'p-4'}`}>
+          <div className={`arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'p-1 scale-75 w-3/5 mx-auto' : 'p-4'}`}>
             <div className={`flex items-center justify-between ${isMobile ? 'mb-1' : 'mb-2'}`}>
               <span className={`font-semibold text-epic ${isMobile ? 'text-xs' : 'text-sm'}`}>Progresso</span>
               <span className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>{Math.round(((currentQuestion) / questions.length) * 100)}%</span>
@@ -472,7 +472,7 @@ const Digital = () => {
                 }}
               />
             </div>
-            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-80' : 'p-2 min-w-28'}`}>
+            <div className={`arena-card backdrop-blur-sm bg-victory/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
               <h3 className={`font-montserrat font-bold text-victory ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'VOCÊ' : 'VOCÊ'}</h3>
               <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                 <div 
@@ -498,7 +498,7 @@ const Digital = () => {
                 }}
               />
             </div>
-            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-80' : 'p-2 min-w-28'}`}>
+            <div className={`arena-card backdrop-blur-sm bg-destructive/20 ${isMobile ? 'p-0.5 min-w-12 scale-75' : 'p-2 min-w-28'}`}>
               <h3 className={`font-montserrat font-bold text-destructive ${isMobile ? 'text-xs' : 'text-sm'}`}>{isMobile ? 'IA' : 'IA SUPREMA'}</h3>
               <div className={`progress-epic ${isMobile ? 'mt-0.5' : 'mt-2'}`}>
                 <div 
@@ -546,7 +546,7 @@ const Digital = () => {
         </div>
 
         {/* Pergunta */}
-        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 scale-60 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-38'}`} style={isMobile ? {marginTop: '47%', width: '160%', marginLeft: '-30%', marginRight: '-30%'} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
+        <div className={`arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 digital-question-card ${isMobile ? 'p-1 mb-2 mx-1 w-9/10' : 'p-1 mb-2 mt-10 border-2 glow-epic scale-75'}`} style={isMobile ? {marginTop: '47%', width: '160%', marginLeft: '-30%', marginRight: '-30%', transform: 'scale(0.6)'} : {marginTop: '8%', width: '80%', marginLeft: '10%', marginRight: '10%'}}>
           <div className={`flex items-center justify-center ${isMobile ? 'mb-0.5' : 'mb-6'}`}>
             <div className={`inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 ${isMobile ? 'px-1 py-0.5' : 'px-6 py-2'}`}>
               <span className={`text-cyan-400 font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-sm'}`}>

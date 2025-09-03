@@ -497,7 +497,7 @@ const handleRandomQuestion = () => {
             {historicalConnections
               .filter(connection => selectedCategory === 'all' || connection.category === selectedCategory)
               .map(connection => (
-              <Card key={connection.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-90' : 'transform scale-60'} border-epic/30`}>
+                              <Card key={connection.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-90' : 'transform scale-75'} border-epic/30`}>
                 <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
                   <CardTitle className={`font-montserrat ${isMobile ? 'text-sm' : 'text-base'} flex items-center gap-2`}>
                     {connection.title}
@@ -542,7 +542,7 @@ const handleRandomQuestion = () => {
           {/* Knowledge Items Grid - Paginado */}
       <div className={`grid gap-6 ${isMobile ? 'grid-cols-1 px-4' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
         {currentItems.map(item => (
-          <Card key={item.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-75' : 'transform scale-55'}`}>
+                          <Card key={item.id} className={`arena-card hover-scale ${isMobile ? 'transform scale-75' : 'transform scale-50'}`}>
             <CardHeader className={isMobile ? 'pb-2' : 'pb-3'}>
               <div className={`flex items-start ${isMobile ? 'flex-col gap-2' : 'justify-between'}`}>
                 <CardTitle className={`font-montserrat ${isMobile ? 'text-sm' : 'text-base'}`}>

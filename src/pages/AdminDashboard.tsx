@@ -321,7 +321,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Estatísticas Administrativas */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-1 transform scale-75">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-1">
           <Card className="p-2 backdrop-blur-sm bg-card/80 text-center">
             <User className="h-4 w-4 text-blue-400 mx-auto mb-1" />
             <p className="text-lg font-bold text-white">{users.length}</p>
@@ -358,13 +358,13 @@ const AdminDashboard = () => {
         </div>
 
         {/* Analytics em Tempo Real */}
-        <Card className="mb-1 p-3 backdrop-blur-sm bg-card/80 transform scale-90">
+        <Card className="mb-1 p-3 backdrop-blur-sm bg-card/80">
           <h2 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
             <BarChart3 className="h-4 w-4 text-epic" />
             📊 Analytics em Tempo Real
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1 transform scale-100">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1">
             {/* Métricas de Uso */}
             <Card className="p-4 bg-gradient-to-r from-blue-900/20 to-blue-800/20 border-blue-500/30">
               <div className="flex items-center justify-between">
@@ -401,7 +401,7 @@ const AdminDashboard = () => {
         </div>
 
           {/* Era Mais Popular */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 transform scale-75">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <Card className="p-2 bg-gradient-to-r from-epic/20 to-epic/10 border-epic/30">
               <h3 className="text-epic text-sm font-semibold mb-1 flex items-center gap-1">
                 <Trophy className="h-3 w-3" />
@@ -436,7 +436,7 @@ const AdminDashboard = () => {
         </Card>
 
         {/* Painel de Controle Unificado */}
-        <Card className="mb-1 p-2 backdrop-blur-sm bg-card/80 transform scale-77">
+                  <Card className="mb-1 p-2 backdrop-blur-sm bg-card/80">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Target className="h-5 w-5 text-epic" />
             🎛️ Painel de Controle
@@ -548,7 +548,7 @@ const AdminDashboard = () => {
         </Card>
 
         {/* Header dos Usuários com Info de Paginação */}
-        <Card className="mb-1 p-2 backdrop-blur-sm bg-card/80 transform scale-77" data-users-section>
+        <Card className="mb-1 p-2 backdrop-blur-sm bg-card/80" data-users-section>
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <User className="h-5 w-5 text-epic" />
@@ -562,7 +562,7 @@ const AdminDashboard = () => {
 
         {/* Grid de Usuários */}
         <div className="max-h-96 overflow-y-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 transform scale-77">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {currentUsers.map((user) => (
             <Card key={user.id} className="p-2 backdrop-blur-sm bg-card/80 hover:bg-card/90 transition-all">
               <div className="space-y-2">
@@ -684,7 +684,7 @@ const AdminDashboard = () => {
 
         {/* Navegação de Paginação */}
         {totalPages > 1 && (
-          <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80 transform scale-77">
+          <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80">
             <div className="flex items-center justify-center space-x-2">
               <Button 
                 variant="outline" 
@@ -723,7 +723,7 @@ const AdminDashboard = () => {
 
         {/* Solicitações PIX */}
         {pixRequests.length > 0 && (
-          <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80 transform scale-77">
+          <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80">
             <h2 className="text-xl font-bold text-white mb-4">
               <DollarSign className="inline h-6 w-6 mr-2" />
               Solicitações PIX Pendentes
@@ -749,7 +749,7 @@ const AdminDashboard = () => {
         )}
 
         {/* Log de Atividades Admin - DADOS REAIS */}
-        <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80 transform scale-77">
+        <Card className="mt-2 p-2 backdrop-blur-sm bg-card/80 transform scale-75">
           <h2 className="text-xl font-bold text-white mb-4">
             📋 Log de Atividades (Tempo Real)
           </h2>

@@ -185,7 +185,7 @@ export const PersistentBackgroundMusic = memo(({
 
       {/* Music Controls */}
       <div className={`${className.includes('relative') ? 'relative' : 'fixed bottom-6 right-6'} z-[9999]`}>
-        <Card className={`arena-card p-2 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-auto'} ${isMobile ? 'scale-60' : ''}`}>
+        <Card className={`arena-card p-2 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-auto'} ${isMobile ? 'transform scale-75' : ''}`}>
           <div className="flex items-center gap-2">
             {/* Play/Pause Button */}
             <Button
