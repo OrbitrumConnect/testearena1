@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
-import { useIsMobile } from '@/hooks/use-mobile';
+
 import { useDailyCreditsLimit } from '@/hooks/useDailyCreditsLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 // Função para calcular dano HP baseado no número de perguntas
@@ -20,7 +20,6 @@ import { calculateTrainingCredits } from '@/utils/creditsSystem';
 const Digital = () => {
   // Vercel update trigger - Era Digital mobile layout fix
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -268,66 +267,66 @@ const Digital = () => {
       <div className="min-h-screen bg-background relative overflow-hidden">
         <ParticleBackground />
         
-        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-full overflow-y-auto' : 'p-6'}`}>
-          <div className={`text-center ${isMobile ? 'mb-2' : 'mb-8'}`}>
+        <div className="relative z-10 max-w-4xl mx-auto p-1 h-full overflow-y-auto md:p-6">
+          <div className="text-center mb-2 md:mb-8">
             <ActionButton 
               variant="battle" 
               icon={<ArrowLeft />}
               onClick={() => navigate('/app')}
-              className={isMobile ? 'mb-2 text-sm px-3 py-1' : 'mb-6'}
+              className="mb-2 text-sm px-3 py-1 md:mb-6"
             >
               Voltar ao Menu
             </ActionButton>
           </div>
 
-          <div className={`arena-card-epic text-center ${isMobile ? 'p-2' : 'p-4'}`}>
-            <div className={`${isMobile ? 'text-2xl mb-1' : 'text-4xl mb-3'}`}>💻</div>
+          <div className="arena-card-epic text-center p-2 md:p-4">
+            <div className="text-2xl mb-1 md:text-4xl md:mb-3">💻</div>
             
-            <h2 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-base mb-1' : 'text-2xl mb-2'}`}>
+            <h2 className="font-montserrat font-bold text-epic text-base mb-1 md:text-2xl md:mb-2">
               Treinamento: Era Digital
             </h2>
             
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs mb-2' : 'text-base mb-4'}`}>
+            <p className="text-muted-foreground text-xs mb-2 md:text-base md:mb-4">
               Domine os conhecimentos da era digital e tecnológica!
             </p>
 
             {/* Informações do limite de treinamento */}
-            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
-              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>📊 Limite Diário</h3>
-              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            <div className="arena-card p-1.5 mb-2 md:p-3 md:mb-3">
+              <h3 className="font-semibold text-xs mb-0.5 md:text-sm md:mb-1">📊 Limite Diário</h3>
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
               </p>
-              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
               </p>
             </div>
 
             {/* Informações de recompensas */}
-            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
-              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>💰 Recompensas</h3>
-              <div className={`grid grid-cols-3 gap-1 ${isMobile ? 'text-xs' : 'text-xs'}`}>
+            <div className="arena-card p-1.5 mb-2 md:p-3 md:mb-3">
+              <h3 className="font-semibold text-xs mb-0.5 md:text-sm md:mb-1">💰 Recompensas</h3>
+              <div className="grid grid-cols-3 gap-1 text-xs">
                 <div className="text-center">
-                  <p className={`text-epic font-bold ${isMobile ? 'text-xs' : ''}`}>🏆 90%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
+                  <p className="text-epic font-bold text-xs">🏆 90%+</p>
+                  <p className="text-muted-foreground text-xs">0,5 créditos</p>
                 </div>
                 <div className="text-center">
-                  <p className={`text-victory font-bold ${isMobile ? 'text-xs' : ''}`}>✅ 70%+</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
+                  <p className="text-victory font-bold text-xs">✅ 70%+</p>
+                  <p className="text-muted-foreground text-xs">0,5 créditos</p>
                 </div>
                 <div className="text-center">
-                  <p className={`text-warning font-bold ${isMobile ? 'text-xs' : ''}`}>📚 Base</p>
-                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : ''}`}>0,5 créditos</p>
+                  <p className="text-warning font-bold text-xs">📚 Base</p>
+                  <p className="text-muted-foreground text-xs">0,5 créditos</p>
                 </div>
               </div>
             </div>
 
             {/* Informações do limite diário de créditos */}
-            <div className={`arena-card ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
-              <h3 className={`font-semibold ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🎯 Limite Diário de Créditos</h3>
-              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            <div className="arena-card p-1.5 mb-2 md:p-3 md:mb-3">
+              <h3 className="font-semibold text-xs mb-0.5 md:text-sm md:mb-1">🎯 Limite Diário de Créditos</h3>
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Hoje: <span className="font-bold text-epic">{creditsEarned.toFixed(1)}/22,5</span>
               </p>
-              <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Restantes: <span className={`font-bold ${canEarnCredits ? 'text-victory' : 'text-destructive'}`}>
                   {remainingCredits.toFixed(1)} créditos
                 </span>
@@ -341,9 +340,9 @@ const Digital = () => {
 
             {/* Alerta de limite atingido */}
             {!canTrain && (
-              <Alert className={isMobile ? 'mb-3 p-2' : 'mb-6'}>
-                <AlertTriangle className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
-                <AlertDescription className={isMobile ? 'text-xs' : ''}>
+              <Alert className="mb-3 p-2 md:mb-6">
+                <AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />
+                <AlertDescription className="text-xs">
                   {userHasSubscription ? (
                     `⚠️ Você atingiu o limite diário de ${maxTrainings} treinamentos. Volte amanhã para continuar treinando!`
                   ) : (
@@ -353,13 +352,13 @@ const Digital = () => {
               </Alert>
             )}
 
-            <div className={`flex flex-col ${isMobile ? 'gap-2' : 'gap-4'}`}>
+            <div className="flex flex-col gap-2 md:gap-4">
               <ActionButton 
                 variant="victory" 
                 icon={<Play />}
                 onClick={startTraining}
                 disabled={!canTrain}
-                className={`w-full ${isMobile ? 'text-sm py-2' : ''}`}
+                className="w-full text-sm py-2"
               >
                 {canTrain ? 'Iniciar Treinamento' : 'Limite Atingido'}
               </ActionButton>
@@ -377,7 +376,7 @@ const Digital = () => {
       <div className="min-h-screen bg-background relative overflow-hidden">
         <ParticleBackground />
         
-        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`}>
+        <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6">
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -467,7 +466,7 @@ const Digital = () => {
               <ActionButton 
                 variant="epic" 
                 onClick={() => navigate('/labyrinth/digital')}
-                className={`bg-gradient-to-r from-epic to-victory ${isMobile ? 'transform -translate-y-[30%]' : ''}`}
+                className="bg-gradient-to-r from-epic to-victory transform -translate-y-[30%] md:transform-none"
               >
                 🏛️ Entrar no Labirinto Digital
               </ActionButton>
@@ -495,10 +494,10 @@ const Digital = () => {
   });
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative`}>
-      <div className={isMobile ? 'scale-[0.75] origin-top-left w-[133%] h-[133%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+    <div className="h-screen overflow-hidden bg-background relative">
+      <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-[0.628] md:w-[159%] md:h-[159%]">
       {/* Fundo Temático Digital */}
-      <div className="absolute inset-0 z-0" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
+      <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
           src="/digital-background.png" 
           alt="Digital Background" 
@@ -509,26 +508,26 @@ const Digital = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-1 h-screen overflow-y-auto w-full' : 'p-6'}`} style={isMobile ? {transform: 'translate(-4.5%, -5%)'} : {}}>
+      <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
-        <div className={`${isMobile ? 'flex justify-between items-center mb-2 px-1' : 'flex items-center justify-between mb-8'}`}>
+        <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
             onClick={() => navigate('/app')}
-            className={`backdrop-blur-sm bg-battle-dark/80 ${isMobile ? 'text-xs px-0.5 py-0.5 w-1/4' : ''}`}
+            className="backdrop-blur-sm bg-battle-dark/80 text-xs px-0.5 py-0.5 w-1/4 md:text-base md:px-3 md:py-2 md:w-auto"
           >
-            {isMobile ? '←' : 'Voltar'}
+            ←
           </ActionButton>
           
-          <div className={`text-center arena-card-epic backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1.5 py-0.5 flex-1 mx-1 w-4/5' : 'px-6 py-3'}`}>
-            <h1 className={`font-montserrat font-bold text-epic ${isMobile ? 'text-xs' : 'text-2xl'}`}>💻 BATALHA</h1>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs leading-none' : ''}`}>{currentQuestion + 1}/{questions.length}</p>
+          <div className="text-center arena-card-epic backdrop-blur-sm bg-card/80 px-1.5 py-0.5 flex-1 mx-1 w-4/5 md:px-6 md:py-3">
+            <h1 className="font-montserrat font-bold text-epic text-xs md:text-2xl">💻 BATALHA</h1>
+            <p className="text-muted-foreground text-xs leading-none md:text-base">{currentQuestion + 1}/{questions.length}</p>
           </div>
 
-          <div className={`text-right arena-card backdrop-blur-sm bg-card/80 ${isMobile ? 'px-1.5 py-0.5' : 'px-4 py-3'}`}>
-            <p className={`text-muted-foreground ${isMobile ? 'text-xs leading-none' : 'text-sm'}`}>Timer</p>
-            <p className={`font-bold text-cyan-400 ${isMobile ? 'text-xs' : 'text-xl'}`}>{timeLeft}s</p>
+          <div className="text-right arena-card backdrop-blur-sm bg-card/80 px-1.5 py-0.5 md:px-4 md:py-3">
+            <p className="text-muted-foreground text-xs leading-none md:text-sm">Timer</p>
+            <p className="font-bold text-cyan-400 text-xs md:text-xl">{timeLeft}s</p>
           </div>
         </div>
         
