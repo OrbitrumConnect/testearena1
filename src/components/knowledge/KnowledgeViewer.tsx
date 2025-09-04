@@ -238,7 +238,7 @@ const handleRandomQuestion = () => {
              <img 
                src="/Mestredoconhecimento.png" 
                alt="Mestre do Conhecimento" 
-               className="relative w-18 h-18 md:w-28 md:h-28 object-contain drop-shadow-[0_0_15px_rgba(139,69,19,0.8)]"
+               className="relative w-20 h-20 md:w-32 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(139,69,19,0.8)]"
              />
              
              {/* Chamas de neon que sobem */}
