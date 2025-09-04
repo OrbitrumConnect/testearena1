@@ -40,6 +40,8 @@ const Digital = () => {
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
   const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('digital', 25);
   
+
+  
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
   
@@ -533,7 +535,7 @@ const Digital = () => {
         </div>
         
                  {/* Barra de Progresso Épica */}
-         <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '8%'}}>
+                   <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '-2%'}}>
            <div className="arena-card backdrop-blur-sm bg-card/80 p-1 scale-75 w-3/5 mx-auto md:p-4 md:scale-100 md:w-auto">
              <div className="flex items-center justify-between mb-1 md:mb-2">
                <span className="font-semibold text-epic text-xs md:text-sm">Progresso</span>
@@ -581,8 +583,8 @@ const Digital = () => {
               </div>
             </div>
 
-            {/* Inimigo - Posição Direita */}
-            <div className="absolute right-2 text-center top-5 md:right-[-2%] md:top-[35%]">
+                         {/* Inimigo - Posição Direita */}
+             <div className="absolute right-2 text-center top-5 md:right-[-2%] md:top-[10%]">
              <div className="mb-0 flex justify-center md:mb-0.5">
                <img 
                  src="/bossdigital.png" 
@@ -642,89 +644,91 @@ const Digital = () => {
            })}
         </div>
 
-                 {/* Pergunta */}
-        <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-5%', width: '18%', marginLeft: 'auto', marginRight: 'auto'}}>
-           <div className="flex items-center justify-center mb-0.5 md:mb-6">
-             <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-6 md:py-2">
-               <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
-                 🤖 {question.category === 'history' ? 'História Digital' : 
-                  question.category === 'finance' ? 'Fintech' : 
-                  question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
-               </span>
+                                    {/* Pergunta */}
+                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
+                                               <div className="flex items-center justify-center mb-0.5 md:mb-4">
+               <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-4 md:py-1.5">
+                 <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
+                   🤖 {question.category === 'history' ? 'História Digital' : 
+                    question.category === 'finance' ? 'Fintech' : 
+                    question.category === 'technology' ? 'Tecnologia' : 'Futuro'}
+                 </span>
+               </div>
              </div>
-           </div>
 
-           <h2 className="font-montserrat font-bold text-center text-foreground text-xs mb-0.5 md:text-2xl md:mb-8">
-             {question.question}
-           </h2>
+             <h2 className="font-montserrat font-bold text-center text-foreground text-xs mb-0.5 md:text-lg md:mb-6">
+               {question.question}
+             </h2>
 
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4">
-             {question.options.map((option, index) => (
-               <button
-                 key={index}
-                 onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
-                 disabled={gamePhase !== 'question'}
-                 className={`rounded border transition-all text-left backdrop-blur-sm p-2 text-xs min-h-[44px] md:p-4 md:border-2 md:rounded-lg ${
-                   gamePhase === 'question' 
-                     ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
-                     : selectedAnswer === index
-                       ? index === question.correct
-                         ? 'border-victory bg-victory/30 text-victory scale-105'
-                         : 'border-destructive bg-destructive/30 text-destructive'
-                       : index === question.correct
-                         ? 'border-victory bg-victory/30 text-victory scale-105'
-                         : 'border-border bg-card/50 opacity-50'
-                 }`}
-               >
-                 <div className="flex items-center space-x-1 md:space-x-4">
-                    <div className={`rounded-full flex items-center justify-center font-bold w-4 h-4 text-xs md:w-10 md:h-10 md:text-lg ${
-                     gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
-                     index === question.correct ? 'bg-victory text-victory-foreground' :
-                     selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
-                     'bg-muted text-muted-foreground'
-                   }`}>
-                     {gamePhase === 'result' && index === question.correct ? 
-                       <CheckCircle className="w-6 h-6" /> : 
-                       String.fromCharCode(65 + index)
-                     }
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
+               {question.options.map((option, index) => (
+                 <button
+                   key={index}
+                   onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
+                   disabled={gamePhase !== 'question'}
+                   className={`rounded border transition-all text-left backdrop-blur-sm p-1.5 text-xs min-h-[36px] md:p-2.5 md:border-2 md:rounded-lg ${
+                     gamePhase === 'question' 
+                       ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
+                       : selectedAnswer === index
+                         ? index === question.correct
+                           ? 'border-victory bg-victory/30 text-victory scale-105'
+                           : 'border-destructive bg-destructive/30 text-destructive'
+                         : index === question.correct
+                           ? 'border-victory bg-victory/30 text-victory scale-105'
+                           : 'border-border bg-card/50 opacity-50'
+                   }`}
+                 >
+                   <div className="flex items-center space-x-1 md:space-x-2">
+                      <div className={`rounded-full flex items-center justify-center font-bold w-3.5 h-3.5 text-xs md:w-8 md:h-8 md:text-base ${
+                       gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
+                       index === question.correct ? 'bg-victory text-victory-foreground' :
+                       selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
+                       'bg-muted text-muted-foreground'
+                     }`}>
+                       {gamePhase === 'result' && index === question.correct ? 
+                         <CheckCircle className="w-4 h-4" /> : 
+                         String.fromCharCode(65 + index)
+                       }
+                     </div>
+                     <span className="font-semibold text-xs md:text-base">{option}</span>
                    </div>
-                   <span className="font-semibold text-xs md:text-lg">{option}</span>
-                 </div>
-               </button>
-             ))}
-           </div>
+                 </button>
+               ))}
+             </div>
+          </div>
 
-          {showExplanation && (
-            <div className="mt-8 p-6 bg-background-soft/80 backdrop-blur-sm rounded-lg border border-card-border">
-              <h4 className="font-semibold text-cyan-400 mb-3 flex items-center">
-                <div className="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center mr-2">
-                  <span className="text-xs text-cyan-900">!</span>
-                </div>
-                Explicação:
-              </h4>
-              <p className="text-muted-foreground">{question.explanation}</p>
-              {question.source && (
-                <div className="mt-3 pt-3 border-t border-card-border/30">
-                  <p className="text-xs text-muted-foreground/80 italic">
-                    📚 Fonte: {question.source}
-                  </p>
-                </div>
-              )}
+                     {/* Explicação - FORA do card principal */}
+           {showExplanation && (
+             <div className="mt-3 mx-auto w-[39%] arena-card backdrop-blur-sm bg-background-soft/80 p-2.5 md:p-3 rounded-lg border border-card-border">
+               <h4 className="font-semibold text-cyan-400 mb-1.5 md:mb-2 flex items-center text-xs md:text-sm">
+                 <div className="w-3.5 h-3.5 md:w-5 md:h-5 bg-cyan-500 rounded-full flex items-center justify-center mr-1.5">
+                   <span className="text-xs text-cyan-900">!</span>
+                 </div>
+                 Explicação:
+               </h4>
+               <p className="text-muted-foreground text-xs md:text-sm">{question.explanation}</p>
+               {question.source && (
+                 <div className="mt-1.5 md:mt-2 pt-1.5 md:pt-2 border-t border-card-border/30">
+                   <p className="text-xs text-muted-foreground/80 italic">
+                     📚 Fonte: {question.source}
+                   </p>
+                 </div>
+               )}
+             </div>
+           )}
+
+          {/* Botão Próxima Pergunta - FORA do card principal */}
+          {gamePhase === 'result' && (
+            <div className="flex justify-center items-center mt-4 mb-4">
+              <ActionButton 
+                variant="epic" 
+                onClick={nextQuestion}
+                className="text-sm md:text-lg px-4 md:px-6 py-2 md:py-3 backdrop-blur-sm"
+              >
+                {currentQuestion < questions.length - 1 ? '⚡ Próxima Pergunta' : '🚀 Ver Resultado Final'}
+              </ActionButton>
             </div>
           )}
-        </div>
-
-        {gamePhase === 'result' && (
-          <div className="flex justify-center items-center mt-6 mb-6">
-            <ActionButton 
-              variant="epic" 
-              onClick={nextQuestion}
-              className="text-lg px-6 py-3 backdrop-blur-sm"
-            >
-              {currentQuestion < questions.length - 1 ? '⚡ Próxima Pergunta' : '🚀 Ver Resultado Final'}
-            </ActionButton>
-          </div>
-        )}
       </div>
     </div>
   );

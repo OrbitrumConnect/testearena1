@@ -195,10 +195,8 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
     // Limpar perguntas atuais para forçar re-render
     setQuestions([]);
     
-    // Pequeno delay para garantir que o estado seja limpo
-    setTimeout(() => {
-      getRandomQuestions();
-    }, 100);
+    // Chamar diretamente sem setTimeout para evitar problemas de timing
+    getRandomQuestions();
   };
 
   return { questions, loading, error, refetch: getRandomQuestions, forceNewQuestions, getCompletelyRandomQuestions };
