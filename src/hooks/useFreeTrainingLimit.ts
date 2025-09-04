@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 interface FreeTrainingData {
   date: string;
   eras: {
-    'egito-antigo': boolean;
-    'mesopotamia': boolean;
-    'medieval': boolean;
-    'digital': boolean;
+    'egito-antigo': number;
+    'mesopotamia': number;
+    'medieval': number;
+    'digital': number;
   };
 }
 
@@ -19,7 +19,7 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
 
   const [canTrain, setCanTrain] = useState<boolean>(true);
   const [trainingCount, setTrainingCount] = useState<number>(0);
-  const [maxTrainings] = useState<number>(4); // 4 eras = 4 treinos/dia para FREE
+  const [maxTrainings] = useState<number>(8); // 4 eras × 2 treinos = 8 treinos/dia para FREE
 
   useEffect(() => {
     checkDailyLimit();
@@ -43,12 +43,13 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
         const trainingData: FreeTrainingData = JSON.parse(storedData);
         
         if (trainingData.date === today) {
-          // Mesmo dia - verificar se já treinou nesta era
-          const alreadyTrainedInEra = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras];
-          setCanTrain(!alreadyTrainedInEra);
+          // Mesmo dia - verificar se já treinou nesta era (máximo 2x)
+          const eraTrainingCount = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] || 0;
+          const canTrainInEra = eraTrainingCount < 2;
+          setCanTrain(canTrainInEra);
           
           // Contar quantas eras já treinou hoje
-          const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
+          const trainedEras = Object.values(trainingData.eras).reduce((sum, count) => sum + count, 0);
           setTrainingCount(trainedEras);
         } else {
           // Novo dia - resetar contador
@@ -69,10 +70,10 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
     const newData: FreeTrainingData = {
       date: today,
       eras: {
-        'egito-antigo': false,
-        'mesopotamia': false,
-        'medieval': false,
-        'digital': false
+        'egito-antigo': 0,
+        'mesopotamia': 0,
+        'medieval': 0,
+        'digital': 0
       }
     };
     
@@ -90,16 +91,19 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
       
       if (trainingData.date === today) {
         // Marcar esta era como treinada hoje
-        trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] = true;
+        trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] = (trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] || 0) + 1;
         
         // Contar quantas eras já treinou hoje
-        const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
+        const trainedEras = Object.values(trainingData.eras).reduce((sum, count) => sum + count, 0);
         
         localStorage.setItem('free_training_limit', JSON.stringify(trainingData));
         setTrainingCount(trainedEras);
-        setCanTrain(false); // Não pode treinar novamente nesta era hoje
         
-        console.log(`🎯 FREE: Treino ${safeEraSlug} realizado! ${trainedEras}/4 eras treinadas hoje`);
+        // Verificar se ainda pode treinar nesta era
+        const eraTrainingCount = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras];
+        setCanTrain(eraTrainingCount < 2);
+        
+        console.log(`🎯 FREE: Treino ${safeEraSlug} realizado! ${eraTrainingCount}/2 treinos nesta era, ${trainedEras}/8 total hoje`);
       }
     }
   };

@@ -136,15 +136,24 @@ const AdminDashboard = () => {
       if (profilesError) throw profilesError;
 
       // Buscar dados de autenticação (apenas admins podem fazer isso)
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      let authUsers: any[] = [];
+      try {
+        const { data: authData, error: authError } = await supabase.auth.admin.listUsers();
+        if (!authError && authData?.users) {
+          authUsers = authData.users;
+        }
+      } catch (adminError) {
+        console.log('⚠️ Não foi possível buscar dados de autenticação (apenas admins):', adminError);
+        // Continuar sem dados de auth para usuários não-admin
+      }
       
       // Combinar dados de perfil com email e adicionar user_type padrão
       const usersWithEmail = (profiles || []).map(profile => {
-        const authUser = authUsers?.users?.find((u: any) => u.id === profile.user_id);
+        const authUser = authUsers.find((u: any) => u.id === profile.user_id);
         return {
           ...profile,
-          email: authUser?.email || 'N/A',
-          user_type: 'free' as const // Valor padrão
+          email: authUser?.email || 'Email não disponível',
+          user_type: (profile as any).user_type || 'free' as const
         };
       });
 

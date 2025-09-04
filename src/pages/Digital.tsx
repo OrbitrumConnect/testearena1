@@ -507,7 +507,7 @@ const Digital = () => {
 
      return (
      <BaseLayout>
-               <div className="scale-[0.9] origin-center w-[111%] h-[111%] md:scale-[0.628] md:origin-top-left md:w-[159%] md:h-[159%]">
+               <div className="scale-[0.9] origin-center w-[111%] h-[111%] md:scale-100 md:origin-top-left md:w-full md:h-full">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
@@ -654,7 +654,7 @@ const Digital = () => {
         </div>
 
                                     {/* Pergunta */}
-                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '28%', marginLeft: 'auto', marginRight: 'auto'}}>
+                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: isMobile ? '-5%' : '-10%', width: '39%', height: '28%', marginLeft: 'auto', marginRight: 'auto'}}>
                                                                                                 <div className="flex items-center justify-center mb-0.5 md:mb-4">
                <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-4 md:py-1.5">
                  <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
