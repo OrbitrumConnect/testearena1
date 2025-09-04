@@ -12,7 +12,7 @@ interface PersistentBackgroundMusicProps {
 
 // Instância global para manter o áudio persistente
 let globalAudio: HTMLAudioElement | null = null;
-let globalState = {
+const globalState = {
   isPlaying: false,
   isMuted: false,
   currentTrack: 0,

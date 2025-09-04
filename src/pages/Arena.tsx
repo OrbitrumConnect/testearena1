@@ -7,7 +7,6 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { calculateHpDamage, getArenaRewards } from '@/utils/gameBalance';
 import { handleNewBattleCredits, getUserPlan, getPvPValues } from '@/utils/creditsIntegration';
 import { calculateArenaCredits } from '@/utils/creditsSystem';
 import { Player } from '@/types/arena';
@@ -15,6 +14,24 @@ import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
 import medievalLanding from '@/assets/medieval-landing-bg.jpg';
 import digitalLanding from '@/assets/digital-landing-bg.jpg';
+
+// Função local para calcular dano baseado no número de perguntas
+const calculateHpDamage = (totalQuestions: number): number => {
+  return Math.max(15, Math.floor(100 / totalQuestions));
+};
+
+// Função local para calcular recompensas da arena
+const getArenaRewards = (era: string, correctAnswers: number, totalQuestions: number, isVictory: boolean) => {
+  const baseReward = 10;
+  const correctBonus = correctAnswers * 2;
+  const victoryBonus = isVictory ? 20 : 0;
+  
+  return {
+    credits: baseReward + correctBonus + victoryBonus,
+    experience: correctAnswers * 5 + (isVictory ? 10 : 0),
+    items: isVictory ? ['🏆 Troféu da Arena'] : []
+  };
+};
 
 interface Battle {
   player1: {
@@ -138,6 +155,7 @@ const Arena = () => {
         const rewards = getArenaRewards('egito-antigo', correctAnswers, questions.length, isVictory);
         
         // CALCULAR CRÉDITOS PvP (SISTEMA CORRETO)
+        const userPlan = getUserPlan();
         const pvpCredits = calculateArenaCredits(userPlan, isVictory);
         console.log(`⚔️ PvP: ${pvpCredits.creditsEarned} créditos ganhos!`);
         
@@ -145,15 +163,14 @@ const Arena = () => {
           eraName: 'Arena - Egito Antigo',
           questionsTotal: questions.length,
           questionsCorrect: correctAnswers,
-          xpEarned: rewards.xpEarned,
-          moneyEarned: rewards.moneyEarned,
+          xpEarned: rewards.experience,
+          moneyEarned: rewards.credits,
           battleDurationSeconds: battleDurationSeconds,
           battleType: 'pvp', // Novo: marcar como PvP para sistema de créditos
         });
 
         // Novo: Sistema de Percepção de Créditos para PvP
         const accuracyPercentage = Math.round((correctAnswers / questions.length) * 100);
-        const userPlan = getUserPlan();
         const creditsResult = handleNewBattleCredits({
           battleType: 'pvp',
           questionsCorrect: correctAnswers,
@@ -171,7 +188,7 @@ const Arena = () => {
   if (loading || questions.length === 0) {
     return (
       <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative flex items-center justify-center`}>
-        <div className={isMobile ? 'scale-[0.25] origin-top-left w-[400%] h-[400%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+        <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
         <ParticleBackground />
         <div className="relative z-10 text-center">
           <div className="arena-card-epic p-8">

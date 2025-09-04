@@ -58,7 +58,7 @@ export const useMonthlyDecay = () => {
     
     // Buscar créditos do mês anterior
     const creditsHistory = localStorage.getItem('monthly_credits_history');
-    let monthlyData = creditsHistory ? JSON.parse(creditsHistory) : {};
+    const monthlyData = creditsHistory ? JSON.parse(creditsHistory) : {};
     
     if (monthlyData[previousMonthKey]) {
       // Calcular primeiro dia útil do mês atual
@@ -104,7 +104,7 @@ export const useMonthlyDecay = () => {
     const monthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
     
     const creditsHistory = localStorage.getItem('monthly_credits_history');
-    let monthlyData = creditsHistory ? JSON.parse(creditsHistory) : {};
+    const monthlyData = creditsHistory ? JSON.parse(creditsHistory) : {};
     
     monthlyData[monthKey] = {
       credits,

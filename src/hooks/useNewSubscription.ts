@@ -220,8 +220,8 @@ export const useNewSubscription = () => {
     // Verificar se precisa resetar vidas
     const livesStatus = calculateLivesStatus(userSubscription.lives_remaining, userSubscription.lives_reset_date);
     
-    let currentLives = livesStatus.livesAvailable;
-    let needsUpdate = livesStatus.resetToday;
+    const currentLives = livesStatus.livesAvailable;
+    const needsUpdate = livesStatus.resetToday;
 
     if (currentLives <= 0) {
       return { success: false, error: 'Sem vidas disponíveis. Compre vidas extras!' };

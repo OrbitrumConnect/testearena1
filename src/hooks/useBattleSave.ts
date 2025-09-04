@@ -163,7 +163,7 @@ export const useBattleSave = () => {
 
     let localProfile = JSON.parse(localStorage.getItem(`profile_${userId}`) || 'null');
     let localWallet = JSON.parse(localStorage.getItem(`wallet_${userId}`) || 'null');
-    let localBattles = JSON.parse(localStorage.getItem(`battles_${userId}`) || '[]');
+    const localBattles = JSON.parse(localStorage.getItem(`battles_${userId}`) || '[]');
 
     if (!localProfile) {
       localProfile = {

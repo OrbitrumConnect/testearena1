@@ -28,6 +28,15 @@ export const KnowledgeViewer = () => {
   const [contributionCategory, setContributionCategory] = useState<string>('resumo');
   const [contributionEra, setContributionEra] = useState<string>('digital');
   
+  // Função para fechar todas as outras opções quando uma for aberta
+  const closeAllOthers = (optionToKeep: string) => {
+    if (optionToKeep !== 'connections') setShowConnections(false);
+    if (optionToKeep !== 'chatbot') setShowChatbot(false);
+    if (optionToKeep !== 'communityChat') setShowCommunityChat(false);
+    if (optionToKeep !== 'contributions') setShowContributions(false);
+    if (optionToKeep !== 'autoQuizzes') setShowAutoQuizzes(false);
+  };
+
   const ITEMS_PER_PAGE = 12;
 
   // 🌍 Dados de influências históricas
@@ -219,20 +228,55 @@ const handleRandomQuestion = () => {
     <div className="space-y-6">
              {/* Header Principal */}
        <div className="text-center space-y-4 px-4 md:px-0">
-         <h1 className="font-bold font-montserrat text-2xl md:text-3xl">
-           📚 Base de Conhecimento
-         </h1>
+         <div className="flex items-center justify-center gap-3 mb-2 mt-5">
+           <div className="relative">
+             {/* Efeito de neon envolvente */}
+             <div className="absolute inset-0 bg-gradient-to-t from-transparent via-epic/30 to-epic/60 rounded-full blur-md"></div>
+             <div className="absolute inset-0 bg-gradient-to-t from-transparent via-victory/20 to-victory/40 rounded-full blur-sm"></div>
+             
+             {/* Imagem principal */}
+             <img 
+               src="/Mestredoconhecimento.png" 
+               alt="Mestre do Conhecimento" 
+               className="relative w-18 h-18 md:w-28 md:h-28 object-contain drop-shadow-[0_0_15px_rgba(139,69,19,0.8)]"
+             />
+             
+             {/* Chamas de neon que sobem */}
+             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-6 bg-gradient-to-t from-epic/80 via-epic/40 to-transparent rounded-t-full blur-sm"></div>
+             <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-6 h-4 bg-gradient-to-t from-victory/60 via-victory/30 to-transparent rounded-t-full blur-sm"></div>
+             
+             {/* 50 Micropartículas subindo */}
+             {Array.from({ length: 50 }).map((_, i) => (
+               <div
+                 key={i}
+                 className="absolute w-0.5 h-0.5 bg-gradient-to-t from-transparent via-epic/60 to-epic/80 rounded-full animate-pulse"
+                 style={{
+                   left: `${Math.random() * 100}%`,
+                   top: `${Math.random() * 100}%`,
+                   animationDelay: `${Math.random() * 2}s`,
+                   animationDuration: `${1 + Math.random() * 1}s`,
+                   transform: `translateY(-${30 + Math.random() * 40}px) translateX(${Math.random() * 20 - 10}px)`,
+                   opacity: 0.3 + Math.random() * 0.7
+                 }}
+               />
+             ))}
+           </div>
+           
+           <h1 className="font-bold font-montserrat text-2xl md:text-3xl mt-4">
+             📚 Base de Conhecimento
+           </h1>
+         </div>
          <p className="text-muted-foreground text-sm md:text-base">
-           {filteredItems.length} {searchTerm ? 'resultados encontrados' : `itens de conhecimento em ${eras.length} eras históricas`}
+           {filteredItems.length} itens • {eras.length} eras
            {totalPages > 1 && (
-             <span className="block mt-1">
-               📄 Página {currentPage} de {totalPages} • Mostrando {currentItems.length} de {filteredItems.length} itens
+             <span className="block mt-1 text-sm md:text-base">
+               📄 {currentPage}/{totalPages} • {currentItems.length}/{filteredItems.length}
              </span>
            )}
          </p>
          {searchTerm && (
-           <p className="text-epic font-medium text-xs md:text-sm">
-             🔍 Buscando por: "{searchTerm}"
+           <p className="text-epic font-medium text-sm md:text-base">
+             🔍 "{searchTerm}"
            </p>
          )}
        </div>
@@ -288,21 +332,25 @@ const handleRandomQuestion = () => {
            <Button 
              onClick={handleRandomQuestion} 
              variant="outline" 
-             className="gap-2 text-xs md:text-sm bg-epic/10 border-epic/30 text-epic hover:bg-epic/20"
+             className="gap-2 text-xs md:text-sm bg-epic/50 border-epic/60 text-epic hover:bg-epic/60"
            >
              🎲 Nova Pergunta
            </Button>
 
            <Button 
-             onClick={() => setShowConnections(!showConnections)} 
+             onClick={() => {
+               closeAllOthers('connections');
+               setShowConnections(!showConnections);
+             }} 
              variant={showConnections ? "default" : "outline"}
-             className={`gap-2 text-xs md:text-sm ${showConnections ? 'bg-epic text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showConnections ? 'bg-epic text-white' : 'bg-victory/50 border-victory/60 text-victory hover:bg-victory/60'}`}
            >
              {showConnections ? '📚 Voltar aos Itens' : '🌍 Conexões Históricas'}
            </Button>
 
            <Button 
              onClick={() => {
+               closeAllOthers('chatbot');
                setShowChatbot(!showChatbot);
                if (!showChatbot && chatMessages.length === 0) {
                  setChatMessages([
@@ -311,31 +359,40 @@ const handleRandomQuestion = () => {
                }
              }} 
              variant={showChatbot ? "default" : "outline"}
-             className={`gap-2 text-xs md:text-sm ${showChatbot ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showChatbot ? 'bg-victory text-white' : 'bg-victory/50 border-victory/60 text-victory hover:bg-victory/60'}`}
            >
              {showChatbot ? '❌ Fechar Chat' : '🤖 Mestre do Conhecimento'}
            </Button>
 
            <Button 
-             onClick={() => setShowCommunityChat(!showCommunityChat)} 
+             onClick={() => {
+               closeAllOthers('communityChat');
+               setShowCommunityChat(!showCommunityChat);
+             }} 
              variant={showCommunityChat ? "default" : "outline"}
-             className={`gap-2 text-xs md:text-sm ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/10 border-victory/30 text-victory hover:bg-victory/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showCommunityChat ? 'bg-victory text-white' : 'bg-victory/50 border-victory/60 text-victory hover:bg-victory/60'}`}
            >
              💬 Chat da Comunidade
            </Button>
 
            <Button 
-             onClick={() => setShowContributions(!showContributions)} 
+             onClick={() => {
+               closeAllOthers('contributions');
+               setShowContributions(!showContributions);
+             }} 
              variant={showContributions ? "default" : "outline"}
-             className={`gap-2 text-xs md:text-sm ${showContributions ? 'bg-epic text-white' : 'bg-epic/10 border-epic/30 text-epic hover:bg-epic/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showContributions ? 'bg-epic text-white' : 'bg-epic/50 border-epic/60 text-epic hover:bg-epic/60'}`}
            >
              ✍️ Minhas Contribuições
            </Button>
 
            <Button 
-             onClick={() => setShowAutoQuizzes(!showAutoQuizzes)} 
+             onClick={() => {
+               closeAllOthers('autoQuizzes');
+               setShowAutoQuizzes(!showAutoQuizzes);
+             }} 
              variant={showAutoQuizzes ? "default" : "outline"}
-             className={`gap-2 text-xs md:text-sm ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/10 border-primary-glow/30 text-primary-glow hover:bg-primary-glow/20'}`}
+             className={`gap-2 text-xs md:text-sm ${showAutoQuizzes ? 'bg-primary-glow text-white' : 'bg-primary-glow/50 border-primary-glow/60 text-primary-glow hover:bg-primary-glow/60'}`}
            >
              📊 Provas Automáticas
            </Button>
@@ -805,8 +862,8 @@ const handleRandomQuestion = () => {
                                           {/* Knowledge Items Grid - MELHORADO e ORGANIZADO */}
             <div className="grid gap-4 grid-cols-1 px-4 md:grid-cols-2 md:px-0 lg:grid-cols-3">
               {currentItems.map(item => (
-                <Card key={item.id} className="arena-card hover-scale border-epic/20 hover:border-epic/40 transition-all duration-300 transform scale-95 md:scale-90">
-                  <CardHeader className="pb-3 md:pb-4 bg-gradient-to-br from-epic/5 to-transparent">
+                <Card key={item.id} className="arena-card hover-scale border-epic/60 hover:border-epic/80 transition-all duration-300 transform scale-95 md:scale-90">
+                  <CardHeader className="pb-3 md:pb-4 bg-gradient-to-br from-epic/25 to-transparent">
                     <div className="flex items-start flex-col gap-3 md:justify-between">
                       <CardTitle className="font-montserrat font-bold text-base md:text-lg text-epic leading-tight">
                         {item.title}
@@ -825,13 +882,13 @@ const handleRandomQuestion = () => {
                   <CardContent className="space-y-4 p-4 md:p-5">
                     {/* Questão e Resposta */}
                     {item.item_type === 'qa' && item.question && (
-                      <div className="space-y-3 bg-victory/5 rounded-lg p-3 border border-victory/20">
+                      <div className="space-y-3 bg-victory/25 rounded-lg p-3 border border-victory/40">
                         <p className="font-medium text-victory text-sm md:text-base">
                           ❓ {item.question}
                         </p>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-muted-foreground">✅ Resposta:</span>
-                          <Badge variant="default" className="bg-victory/20 text-victory font-medium text-xs md:text-sm">
+                          <Badge variant="default" className="bg-victory/40 text-victory font-medium text-xs md:text-sm">
                             {item.correct_answer}
                           </Badge>
                         </div>
@@ -840,7 +897,7 @@ const handleRandomQuestion = () => {
                     
                     {/* Conteúdo Principal */}
                     {item.content && (
-                      <div className="bg-background/30 rounded-lg p-3 border border-muted/30">
+                      <div className="bg-background/60 rounded-lg p-3 border border-muted/50">
                         <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                           📚 {item.content}
                         </p>
@@ -848,16 +905,16 @@ const handleRandomQuestion = () => {
                     )}
                     
                     {/* Metadados e Tags */}
-                    <div className="flex flex-wrap gap-2 pt-2 border-t border-muted/20">
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-muted/40">
                       {item.year_start && (
-                        <Badge variant="outline" className="gap-1 bg-epic/10 border-epic/30 text-epic text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
+                        <Badge variant="outline" className="gap-1 bg-epic/30 border-epic/60 text-epic text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
                           <Calendar className="w-3 h-3 md:w-4 md:h-4" />
                           {item.year_start > 0 ? `${item.year_start} d.C.` : `${Math.abs(item.year_start)} a.C.`}
                         </Badge>
                       )}
                       
                       {item.tags.slice(0, 2).map(tag => (
-                        <Badge key={tag} variant="outline" className="gap-1 bg-muted/20 border-muted/30 text-muted-foreground text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
+                        <Badge key={tag} variant="outline" className="gap-1 bg-muted/40 border-muted/50 text-muted-foreground text-xs px-2 py-1 md:text-sm md:px-3 md:py-1">
                           <Tag className="w-3 h-3 md:w-4 md:h-4" />
                           {tag}
                         </Badge>

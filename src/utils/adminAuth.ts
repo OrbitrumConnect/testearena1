@@ -54,16 +54,18 @@ export const useAdminAuth = () => {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
         
         if (authError || !user) {
+          console.log('🔒 Usuário não autenticado, não é admin');
           setAdminStatus(false);
           return;
         }
 
         // Verificar se é admin
         const adminStatus = isAdmin(user.email, user.id);
+        console.log(`🔐 Verificação admin para ${user.email}: ${adminStatus ? 'SIM' : 'NÃO'}`);
         setAdminStatus(adminStatus);
         
       } catch (err) {
-        console.error('Erro ao verificar admin:', err);
+        console.error('❌ Erro ao verificar admin:', err);
         setError('Erro ao verificar permissões');
         setAdminStatus(false);
       } finally {
@@ -72,6 +74,19 @@ export const useAdminAuth = () => {
     };
 
     checkAdminStatus();
+    
+    // Listener para mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          await checkAdminStatus();
+        } else if (event === 'SIGNED_OUT') {
+          setAdminStatus(false);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return { isAdmin: adminStatus, loading, error };

@@ -9,6 +9,7 @@ import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
+import BaseLayout from '@/components/BaseLayout';
 
 import { useDailyCreditsLimit } from '@/hooks/useDailyCreditsLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
@@ -268,10 +269,11 @@ const Digital = () => {
   // Tela inicial de treinamento
   if (gamePhase === 'start') {
     return (
-      <div className="min-h-screen bg-background relative overflow-hidden">
-        <ParticleBackground />
-        
-        <div className="relative z-10 max-w-4xl mx-auto p-1 h-full overflow-y-auto md:p-6">
+      <BaseLayout>
+        <div className="min-h-screen bg-background relative overflow-hidden">
+          <ParticleBackground />
+          
+          <div className="relative z-10 max-w-4xl mx-auto p-1 h-full overflow-y-auto md:p-6">
           <div className="text-center mb-2 md:mb-8">
             <ActionButton 
               variant="battle" 
@@ -372,15 +374,17 @@ const Digital = () => {
           </div>
         </div>
       </div>
+      </BaseLayout>
     );
   }
 
   if (gamePhase === 'finished') {
     return (
-      <div className="min-h-screen bg-background relative overflow-hidden">
-        <ParticleBackground />
-        
-        <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6">
+      <BaseLayout>
+        <div className="min-h-screen bg-background relative overflow-hidden">
+          <ParticleBackground />
+          
+          <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6">
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -482,6 +486,7 @@ const Digital = () => {
           </div>
         </div>
       </div>
+      </BaseLayout>
     );
   }
 
@@ -501,8 +506,8 @@ const Digital = () => {
      });
 
      return (
-     <div className="h-screen overflow-hidden bg-background relative">
-               <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-75 md:w-[133%] md:h-[133%]">
+     <BaseLayout>
+               <div className="scale-[0.9] origin-center w-[111%] h-[111%] md:scale-[0.628] md:origin-top-left md:w-[159%] md:h-[159%]">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
@@ -515,9 +520,9 @@ const Digital = () => {
       
       <ParticleBackground />
       
-                           <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-visible w-full md:p-6 md:overflow-visible" style={{transform: 'translate(-4.5%, -5%)'}}>
+                           <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
-        <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8" style={{marginTop: '5%'}}>
+        <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
           <ActionButton 
             variant="battle" 
             icon={<ArrowLeft />}
@@ -539,7 +544,7 @@ const Digital = () => {
         </div>
         
                  {/* Barra de Progresso Épica */}
-                   <div className="mb-1 mx-1 md:mb-8" style={{marginTop: '-2%'}}>
+                   <div className="mb-1 mx-1 md:mb-8">
            <div className="arena-card backdrop-blur-sm bg-card/80 p-1 scale-75 w-3/5 mx-auto md:p-4 md:scale-100 md:w-auto">
              <div className="flex items-center justify-between mb-1 md:mb-2">
                <span className="font-semibold text-epic text-xs md:text-sm">Progresso</span>
@@ -559,7 +564,7 @@ const Digital = () => {
          </div>
 
         {/* Arena de Combate */}
-        <div className="relative mb-1 mx-1 md:mb-3">
+        <div className="relative mb-1 mx-1 md:mb-4">
           <div className="relative w-full flex items-center justify-between h-20 mb-1 md:h-32 md:mb-4">
             {/* Jogador - Posição Esquerda */}
             <div className="absolute left-1 text-center top-5 md:left-[-2%] md:top-[60%]">
@@ -739,7 +744,7 @@ const Digital = () => {
             </div>
           )}
       </div>
-    </div>
+    </BaseLayout>
   );
 };
 
