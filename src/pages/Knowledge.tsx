@@ -10,7 +10,7 @@ const Knowledge = () => {
 
   return (
     <div 
-      className={`${isMobile ? 'h-screen overflow-hidden' : 'min-h-screen'} relative`}
+      className={`${isMobile ? 'min-h-screen' : 'min-h-screen'} relative`}
       style={{
         backgroundImage: 'url(/knowback.png)',
         backgroundSize: '140%',
