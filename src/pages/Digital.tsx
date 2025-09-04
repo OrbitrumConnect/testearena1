@@ -485,18 +485,20 @@ const Digital = () => {
     );
   }
 
-     const question = questions[currentQuestion];
+           const question = questions[currentQuestion];
 
-      // DEBUG: Log do estado atual
-    console.log('🔍 DEBUG Digital.tsx:', {
-      gamePhase,
-      currentQuestion,
-      questionsLength: questions.length,
-      question: question,
-      loading,
-      optionsLength: question?.options?.length,
-      options: question?.options
-    });
+       // DEBUG: Log do estado atual
+     console.log('🔍 DEBUG Digital.tsx:', {
+       gamePhase,
+       currentQuestion,
+       questionsLength: questions.length,
+       question: question,
+       loading,
+       optionsLength: question?.options?.length,
+       options: question?.options,
+       gamePhaseType: typeof gamePhase,
+       gamePhaseValue: gamePhase
+     });
 
      return (
      <div className="h-screen overflow-hidden bg-background relative">
@@ -647,8 +649,8 @@ const Digital = () => {
         </div>
 
                                     {/* Pergunta */}
-                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '60%', marginLeft: 'auto', marginRight: 'auto'}}>
-                                               <div className="flex items-center justify-center mb-0.5 md:mb-4">
+                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '28%', marginLeft: 'auto', marginRight: 'auto'}}>
+                                                                                                <div className="flex items-center justify-center mb-0.5 md:mb-4">
                <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-4 md:py-1.5">
                  <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
                    🤖 {question.category === 'history' ? 'História Digital' : 
@@ -662,8 +664,8 @@ const Digital = () => {
                {question.question}
              </h2>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
-               {question.options.map((option, index) => (
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
+                {question.options.map((option, index) => (
                  <button
                    key={index}
                    onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
