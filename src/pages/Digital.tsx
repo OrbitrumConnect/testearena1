@@ -485,16 +485,18 @@ const Digital = () => {
     );
   }
 
-  const question = questions[currentQuestion];
+     const question = questions[currentQuestion];
 
-     // DEBUG: Log do estado atual
-   console.log('🔍 DEBUG Digital.tsx:', {
-     gamePhase,
-     currentQuestion,
-     questionsLength: questions.length,
-     question: question,
-     loading
-   });
+      // DEBUG: Log do estado atual
+    console.log('🔍 DEBUG Digital.tsx:', {
+      gamePhase,
+      currentQuestion,
+      questionsLength: questions.length,
+      question: question,
+      loading,
+      optionsLength: question?.options?.length,
+      options: question?.options
+    });
 
      return (
      <div className="h-screen overflow-hidden bg-background relative">
@@ -511,7 +513,7 @@ const Digital = () => {
       
       <ParticleBackground />
       
-             <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6 md:overflow-hidden" style={{transform: 'translate(-4.5%, -5%)'}}>
+                           <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-visible w-full md:p-6 md:overflow-visible" style={{transform: 'translate(-4.5%, -5%)'}}>
         {/* Header com navegação */}
         <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8" style={{marginTop: '5%'}}>
           <ActionButton 
@@ -645,7 +647,7 @@ const Digital = () => {
         </div>
 
                                     {/* Pergunta */}
-                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
+                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '60%', marginLeft: 'auto', marginRight: 'auto'}}>
                                                <div className="flex items-center justify-center mb-0.5 md:mb-4">
                <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-4 md:py-1.5">
                  <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
