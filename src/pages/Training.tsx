@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useFreeLimit } from '@/hooks/useFreeLimit';
+import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import BaseLayout from '@/components/BaseLayout';
 // Função para calcular dano HP baseado no número de perguntas
@@ -40,13 +40,14 @@ const Training = () => {
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
   
-    // Hook para controlar limite de treinamentos
-const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
+  // Hook para controlar limite de treinamentos (diferente para FREE e assinantes)
+  const userHasSubscription = localStorage.getItem('demo_new_subscription');
+  const paidTrainingLimit = useTrainingLimit();
+  const freeTrainingLimit = useFreeTrainingLimit('egito-antigo');
   
-  // Hook para controlar limite free (3 treinos sem pontos)
-  const userType = 'free'; // TODO: pegar do perfil do usuário
-  const { canTrainFree, incrementFreeTraining, getFreeTrainingInfo } = useFreeLimit(userType);
-  const freeInfo = getFreeTrainingInfo();
+  // Usar o hook correto baseado no tipo de usuário
+  const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = 
+    userHasSubscription ? paidTrainingLimit : freeTrainingLimit;
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
@@ -118,7 +119,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       const battleDurationSeconds = Math.round((Date.now() - battleStartTime) / 1000);
       
       // Para usuários FREE: não ganham pontos/XP/créditos
-      if (userType === 'free') {
+      if (!userHasSubscription) {
         console.log('🆓 Usuário FREE: Treino concluído mas sem ganhos (apenas experiência)');
       } else {
         // Calcular recompensas usando novo sistema (apenas para usuários pagos)
@@ -165,8 +166,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
   const startTraining = () => {
     // Verificar limite free primeiro
-    if (userType === 'free' && !canTrainFree) {
-      return; // Usuário free atingiu limite de 3 treinos
+    if (!userHasSubscription && !canTrain) {
+      return; // Usuário free atingiu limite
     }
     
     if (!canTrain) {
@@ -184,9 +185,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     
     // Incrementar contadores
     incrementTrainingCount();
-    if (userType === 'free') {
-      incrementFreeTraining();
-    }
   };
 
   const restartTraining = () => {
@@ -260,19 +258,19 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               </p>
 
               {/* Informações do limite de treinamento */}
-              {userType === 'free' ? (
-                <div className={`arena-card border-epic/30 ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
-                  <h3 className={`font-semibold text-epic ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🆓 Modo FREE</h3>
+              {userHasSubscription ? (
+                <div className="arena-card p-3 mb-3">
+                  <h3 className="font-semibold mb-1 text-sm">📊 Limite Diário de Treinamento</h3>
                   <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                    Hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
+                    Hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
                   </p>
                   <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                    Restantes: <span className="font-bold text-victory">{freeInfo.remaining}</span>
+                    Restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
                   </p>
                   <p className={`text-warning ${isMobile ? 'text-xs mt-1' : 'text-xs mt-2'}`}>
                     ⚠️ Gratuito: Não ganha XP/créditos
                   </p>
-                  {!canTrainFree && (
+                  {!canTrain && (
                     <div className="mt-2 p-2 bg-warning/10 rounded border border-warning/20">
                       <p className="text-xs text-warning font-medium text-center">
                         ⏰ Limite diário atingido! Volte amanhã ou faça upgrade para modo PAGO
@@ -281,14 +279,24 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                   )}
                 </div>
               ) : (
-                <div className="arena-card p-3 mb-3">
-                  <h3 className="font-semibold mb-1 text-sm">📊 Limite Diário de Treinamento</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
+                <div className={`arena-card border-epic/30 ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
+                  <h3 className={`font-semibold text-epic ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🆓 Modo FREE</h3>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    Hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    Restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
                   </p>
+                  <p className={`text-warning ${isMobile ? 'text-xs mt-1' : 'text-xs mt-2'}`}>
+                    ⚠️ Gratuito: Não ganha XP/créditos
+                  </p>
+                  {!canTrain && (
+                    <div className="mt-2 p-2 bg-warning/10 rounded border border-warning/20">
+                      <p className="text-xs text-warning font-medium text-center">
+                        ⏰ Limite diário atingido! Volte amanhã ou faça upgrade para modo PAGO
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -327,12 +335,12 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                   variant="victory" 
                   icon={<Play />}
                   onClick={startTraining}
-                  disabled={userType === 'free' ? !canTrainFree : !canTrain}
+                  disabled={!userHasSubscription ? !canTrain : !canTrain}
                   className="w-full"
                 >
-                  {userType === 'free' ? 
-                    (canTrainFree ? '🆓 Iniciar Treino Gratuito' : 'Limite FREE Atingido') :
-                    (canTrain ? 'Iniciar Treinamento' : 'Limite Atingido')
+                  {userHasSubscription ? 
+                    (canTrain ? 'Iniciar Treinamento' : 'Limite Atingido') :
+                    (canTrain ? '🆓 Iniciar Treino Gratuito' : 'Limite FREE Atingido')
                   }
                 </ActionButton>
 
@@ -585,106 +593,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 </div>
               </div>
             </div>
-
-            {/* Efeito de Raio Apenas Durante Pergunta */}
-            {!attackEffect && gamePhase === 'question' && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-              <div className="text-4xl animate-ping opacity-50">⚡</div>
-            </div>
-            )}
-
-            {/* Fogo Viajando - ACERTO: Você → Inimigo */}
-            {attackEffect === 'player-attack' && (
-              <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'left-2 top-1/2 transform -translate-y-1/2' : 'left-[-15%] top-[95%]'}`}>
-                <div 
-                  className={`text-orange-500 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
-                  style={{
-                    animation: 'fireFromPlayerToEnemy 3s ease-out forwards',
-                    zIndex: 9999,
-                    textShadow: isMobile ? 'none' : '0 0 10px #f97316, 0 0 20px #dc2626, 0 0 30px #fbbf24',
-                    filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(249, 115, 22, 0.8)) drop-shadow(0 0 15px rgba(220, 38, 38, 0.6))'
-                  }}
-                >
-                  🔥💥
-                </div>
-              </div>
-            )}
-
-            {/* Fogo Viajando - ERRO: Inimigo → Você */}
-            {attackEffect === 'enemy-attack' && (
-              <div className={`absolute pointer-events-none z-[9999] ${isMobile ? 'right-2 top-1/2 transform -translate-y-1/2' : 'right-[-15%] top-[80%]'}`}>
-                <div 
-                  className={`text-red-500 ${isMobile ? 'text-2xl' : 'text-4xl'}`}
-                  style={{
-                    animation: 'fireFromEnemyToPlayer 3s ease-out forwards',
-                    zIndex: 9999,
-                    textShadow: isMobile ? 'none' : '0 0 10px #dc2626, 0 0 20px #b91c1c, 0 0 30px #fbbf24',
-                    filter: isMobile ? 'none' : 'drop-shadow(0 0 8px rgba(220, 38, 38, 0.8)) drop-shadow(0 0 15px rgba(185, 28, 28, 0.6))'
-                  }}
-                >
-                  🔥💥
-                </div>
-              </div>
-            )}
-
-            {/* Adicionar CSS Keyframes */}
-            <style>{`
-              @keyframes fireFromPlayerToEnemy {
-                0% {
-                  transform: translateX(0px);
-                  opacity: 1;
-                  scale: 1;
-                }
-                25% {
-                  transform: translateX(220px);
-                  opacity: 0.9;
-                  scale: 1.1;
-                }
-                50% {
-                  transform: translateX(440px);
-                  opacity: 0.8;
-                  scale: 1.2;
-                }
-                75% {
-                  transform: translateX(660px);
-                  opacity: 0.7;
-                  scale: 1.1;
-                }
-                100% {
-                  transform: translateX(880px);
-                  opacity: 0.5;
-                  scale: 0.8;
-                }
-              }
-
-              @keyframes fireFromEnemyToPlayer {
-                0% {
-                  transform: translateX(0px);
-                  opacity: 1;
-                  scale: 1;
-                }
-                25% {
-                  transform: translateX(-220px);
-                  opacity: 0.9;
-                  scale: 1.1;
-                }
-                50% {
-                  transform: translateX(-440px);
-                  opacity: 0.8;
-                  scale: 1.2;
-                }
-                75% {
-                  transform: translateX(-660px);
-                  opacity: 0.7;
-                  scale: 1.1;
-                }
-                100% {
-                  transform: translateX(-880px);
-                  opacity: 0.5;
-                  scale: 0.8;
-                }
-              }
-            `}</style>
           </div>
 
           {/* Pergunta */}
@@ -723,8 +631,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 >
                   <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-3'}`}>
                     <div className={`rounded-full flex items-center justify-center font-bold ${isMobile ? 'w-4 h-4 text-xs' : 'w-8 h-8 text-sm'} ${
-                      gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
-                      index === question.correct ? 'bg-victory text-victory-foreground' :
+                      gamePhase === 'result' && index === question.correct ? 'bg-victory text-victory-foreground' : 
                       selectedAnswer === index ? 'bg-destructive text-destructive-foreground' :
                       'bg-muted text-muted-foreground'
                     }`}>
@@ -770,7 +677,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
               </ActionButton>
             </div>
           )}
-        </div>
         </div>
       </div>
     </BaseLayout>
