@@ -99,17 +99,6 @@ export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps
           options: {
             data: {
               full_name: displayName,
-              birth_date: birthDate,
-              cpf: cpf.replace(/\D/g, ''),
-              phone: phone.replace(/\D/g, ''),
-              is_studying: isStudying,
-              institution: institution.trim(),
-              is_minor: isMinor,
-              parental_consent: parentalConsent,
-              age: age,
-              account_type: accountType,
-              can_pvp: !isMinor, // Menores não podem PvP
-              withdrawal_limit: isMinor ? 0.5 : 0.8, // 50% para menores, 80% para adultos
             },
           },
         });
