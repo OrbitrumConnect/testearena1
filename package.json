@@ -67,12 +67,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@swc/core": "^1.13.5",
+    "@swc/core": "1.3.96",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.16.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -89,7 +89,8 @@
   "resolutions": {
     "@rollup/rollup-native": "0.0.0",
     "vite": "4.5.2",
-    "rollup": "4.9.5"
+    "rollup": "4.9.5",
+    "@swc/core": "1.3.96"
   },
   "overrides": {
     "rollup": {
