@@ -119,6 +119,30 @@ export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps
           description: "Bem-vindo à Arena do Conhecimento!",
         });
         
+        // Salvar dados extras em tabela separada
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            await supabase.from('profiles').insert({
+              user_id: user.id,
+              birth_date: birthDate,
+              cpf: cpf.replace(/\D/g, ''),
+              phone: phone.replace(/\D/g, ''),
+              is_studying: isStudying,
+              institution: institution.trim(),
+              is_minor: isMinor,
+              parental_consent: parentalConsent,
+              age: age,
+              account_type: accountType,
+              can_pvp: !isMinor,
+              withdrawal_limit: isMinor ? 0.5 : 0.8,
+            });
+          }
+        } catch (profileError) {
+          console.log('Perfil criado, mas dados extras não puderam ser salvos:', profileError);
+          // Não falha o cadastro por causa dos dados extras
+        }
+
         if (redirectToApp) {
           window.location.href = '/app';
           return;
