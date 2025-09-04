@@ -80,6 +80,7 @@
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.9",
     "postcss": "^8.5.6",
+    "rollup": "4.9.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
@@ -97,6 +98,13 @@
       }
     },
     "vite": {
+      "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": false,
+        "@rollup/rollup-darwin-x64": false,
+        "@rollup/rollup-win32-x64-msvc": false
+      }
+    },
+    "*": {
       "optionalDependencies": {
         "@rollup/rollup-linux-x64-gnu": false,
         "@rollup/rollup-darwin-x64": false,
