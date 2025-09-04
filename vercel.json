@@ -1,10 +1,11 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "VITE_ROLLUP_NATIVE=false npm run build",
   "installCommand": "npm install --no-optional --no-optional-dependencies",
   "framework": "vite",
   "env": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "NPM_CONFIG_OPTIONAL": "false",
-    "NPM_CONFIG_OPTIONAL_DEPENDENCIES": "false"
+    "NPM_CONFIG_OPTIONAL_DEPENDENCIES": "false",
+    "VITE_ROLLUP_NATIVE": "false"
   }
 }
