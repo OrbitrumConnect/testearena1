@@ -125,14 +125,26 @@ export const useEraQuestions = (eraSlug: string, questionCount: number = 5) => {
           item.wrong_options.filter(opt => typeof opt === 'string') as string[] : [];
         const allOptions = [item.correct_answer, ...wrongOptions].filter(Boolean) as string[];
         
+        // Garantir que sempre tenhamos 4 opções
+        let finalOptions = [...allOptions];
+        if (finalOptions.length < 4) {
+          // Se não temos opções suficientes, usar perguntas padrão como fallback
+          const defaultQuestions = getDefaultQuestions(eraSlug);
+          const randomQuestion = defaultQuestions[Math.floor(Math.random() * defaultQuestions.length)];
+          const additionalOptions = randomQuestion.options.filter(opt => 
+            !finalOptions.includes(opt) && opt !== item.correct_answer
+          );
+          finalOptions = [...finalOptions, ...additionalOptions];
+        }
+        
         // Embaralhar opções usando Fisher-Yates também  
-        const shuffledOptions = shuffleArray(allOptions);
+        const shuffledOptions = shuffleArray(finalOptions);
         const correctIndex = shuffledOptions.indexOf(item.correct_answer as string);
 
         return {
           id: `${item.id}-${Date.now()}-${Math.random()}-${index}`, // ID único com random para evitar cache
           question: item.question || '',
-          options: shuffledOptions.slice(0, 4), // Máximo 4 opções
+          options: shuffledOptions.slice(0, 4), // Sempre 4 opções
           correct: correctIndex,
           explanation: item.content || item.title || 'Explicação não disponível.',
           category: (['history', 'finance', 'technology', 'future'].includes(item.category) ? 
