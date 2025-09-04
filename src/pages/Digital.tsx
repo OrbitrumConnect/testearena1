@@ -502,7 +502,7 @@ const Digital = () => {
 
      return (
      <div className="h-screen overflow-hidden bg-background relative">
-       <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-75 md:w-[133%] md:h-[133%]">
+               <div className="scale-[0.75] origin-top-left w-[133%] h-[133%] md:scale-75 md:w-[133%] md:h-[133%]">
       {/* Fundo Temático Digital */}
       <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
         <img 
@@ -665,23 +665,28 @@ const Digital = () => {
              </h2>
 
                            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
-                {question.options.map((option, index) => (
-                 <button
-                   key={index}
-                   onClick={() => gamePhase === 'question' ? handleAnswer(index) : null}
-                   disabled={gamePhase !== 'question'}
-                   className={`rounded border transition-all text-left backdrop-blur-sm p-1.5 text-xs min-h-[36px] md:p-2.5 md:border-2 md:rounded-lg ${
-                     gamePhase === 'question' 
-                       ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
-                       : selectedAnswer === index
-                         ? index === question.correct
-                           ? 'border-victory bg-victory/30 text-victory scale-105'
-                           : 'border-destructive bg-destructive/30 text-destructive'
-                         : index === question.correct
-                           ? 'border-victory bg-victory/30 text-victory scale-105'
-                           : 'border-border bg-card/50 opacity-50'
-                   }`}
-                 >
+                                 {question.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      console.log(`🔘 Botão ${index} clicado! gamePhase: ${gamePhase}`);
+                      if (gamePhase === 'question') {
+                        handleAnswer(index);
+                      }
+                    }}
+                    disabled={gamePhase !== 'question'}
+                                         className={`rounded border transition-all text-left backdrop-blur-sm p-1.5 text-xs min-h-[36px] md:p-2.5 md:border-2 md:rounded-lg relative z-50 ${
+                       gamePhase === 'question' 
+                         ? 'border-border bg-card/80 hover:border-cyan-500 hover:bg-cyan-500/20 hover:scale-105' 
+                         : selectedAnswer === index
+                           ? index === question.correct
+                             ? 'border-victory bg-victory/30 text-victory scale-105'
+                             : 'border-destructive bg-destructive/30 text-destructive'
+                           : index === question.correct
+                             ? 'border-victory bg-victory/30 text-victory scale-105'
+                             : 'border-border bg-card/50 opacity-50'
+                     }`}
+                  >
                    <div className="flex items-center space-x-1 md:space-x-2">
                       <div className={`rounded-full flex items-center justify-center font-bold w-3.5 h-3.5 text-xs md:w-8 md:h-8 md:text-base ${
                        gamePhase === 'question' ? 'bg-muted text-muted-foreground' : 
