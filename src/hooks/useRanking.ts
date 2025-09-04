@@ -1,177 +1,100 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../integrations/supabase/client";
 
-export interface RankingUser {
-  id: string;
-  display_name: string;
-  avatar_url?: string;
-  total_xp: number;
-  total_battles: number;
-  battles_won: number;
-  win_rate: number;
-  favorite_era?: string;
-  position: number;
-  total_earned?: number;
+type RankingType = "free" | "premium";
+
+// Função para validar UUID
+function isValidUUID(uuid: string): boolean {
+  const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return regex.test(uuid);
 }
 
-export interface EraRanking {
-  era_name: string;
-  era_slug: string;
-  top_users: RankingUser[];
-  background_theme: string;
-  icon: string;
-}
-
-export const useRanking = () => {
-  const [globalRanking, setGlobalRanking] = useState<RankingUser[]>([]);
-  const [eraRankings, setEraRankings] = useState<EraRanking[]>([]);
+export function useRanking(type: RankingType) {
+  const [ranking, setRanking] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGlobalRanking = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('total_xp', { ascending: false })
-        .limit(50);
-
-      if (error) throw error;
-
-      const rankingData = (data || []).map((user, index) => ({
-        ...user,
-        win_rate: user.total_battles > 0 ? Math.round((user.battles_won / user.total_battles) * 100) : 0,
-        position: index + 1
-      }));
-
-      setGlobalRanking(rankingData);
-    } catch (err) {
-      console.error('Erro ao buscar ranking global:', err);
-    }
-  };
-
-  const fetchEraRankings = async () => {
-    try {
-      // Get era-specific rankings based on battle history
-      const eras = [
-        { name: 'Egito Antigo', slug: 'egito-antigo', theme: 'bg-gradient-to-br from-yellow-600 via-orange-500 to-amber-700', icon: '🏺' },
-        { name: 'Mesopotâmia', slug: 'mesopotamia', theme: 'bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-700', icon: '🏛️' },
-        { name: 'Era Medieval', slug: 'medieval', theme: 'bg-gradient-to-br from-gray-600 via-stone-500 to-slate-700', icon: '⚔️' },
-        { name: 'Era Digital', slug: 'digital', theme: 'bg-gradient-to-br from-green-600 via-cyan-500 to-blue-700', icon: '💻' }
-      ];
-
-      const eraRankingData: EraRanking[] = [];
-
-      for (const era of eras) {
-        const { data: battleData, error } = await supabase
-          .from('battle_history')
-          .select(`
-            user_id,
-            xp_earned,
-            accuracy_percentage,
-            profiles!inner(
-              id,
-              display_name,
-              avatar_url,
-              total_xp,
-              total_battles,
-              battles_won
-            )
-          `)
-          .ilike('era_name', `%${era.name.split(' ')[0]}%`)
-          .order('xp_earned', { ascending: false })
-          .limit(10);
-
-        if (error) continue;
-
-        // Aggregate user performance in this era
-        const userStats = new Map<string, any>();
-        
-        (battleData || []).forEach(battle => {
-          const userId = battle.user_id;
-          if (!userStats.has(userId)) {
-            userStats.set(userId, {
-              ...battle.profiles,
-              era_xp: 0,
-              era_battles: 0,
-              era_accuracy: 0,
-              total_accuracy: 0
-            });
-          }
-          
-          const stats = userStats.get(userId);
-          stats.era_xp += battle.xp_earned;
-          stats.era_battles += 1;
-          stats.total_accuracy += battle.accuracy_percentage;
-        });
-
-        const topUsers = Array.from(userStats.values())
-          .map((user, index) => ({
-            ...user,
-            win_rate: user.total_battles > 0 ? Math.round((user.battles_won / user.total_battles) * 100) : 0,
-            era_accuracy: user.era_battles > 0 ? Math.round(user.total_accuracy / user.era_battles) : 0,
-            position: index + 1
-          }))
-          .sort((a, b) => b.era_xp - a.era_xp)
-          .slice(0, 5);
-
-        eraRankingData.push({
-          era_name: era.name,
-          era_slug: era.slug,
-          top_users: topUsers,
-          background_theme: era.theme,
-          icon: era.icon
-        });
-      }
-
-      setEraRankings(eraRankingData);
-    } catch (err) {
-      console.error('Erro ao buscar rankings por era:', err);
-    }
-  };
-
-  // Remover dados fictícios - usar apenas dados reais do Supabase
-  const generateMockRanking = async () => {
-    console.log('🚫 Mock ranking desabilitado - usando apenas dados reais do Supabase');
-    // Chamar fetchGlobalRanking para buscar dados reais
-    await fetchGlobalRanking();
-
-    // Chamar fetchEraRankings para buscar dados reais por era
-    await fetchEraRankings();
-  };
-
   useEffect(() => {
-    const loadRankings = async () => {
+    // Para usuário admin, sempre usar premium_rankings
+    let table = "premium_rankings"; // Forçar premium para admin
+    
+    // Se não for admin, usar o tipo especificado
+    // let table = type === "premium" ? "premium_rankings" : "free_rankings";
+
+    const fetchRanking = async () => {
       setLoading(true);
       setError(null);
 
+      console.log(`🔍 Tentando buscar ranking da tabela: ${table}`);
+
       try {
-        await Promise.all([fetchGlobalRanking(), fetchEraRankings()]);
-        
-        // If no real data, use mock data
-        if (globalRanking.length === 0) {
-          generateMockRanking();
+        // Verificar se a tabela existe antes de fazer a query
+        const { data, error } = await supabase
+          .from(table as any)
+          .select("*")
+          .order("total_points", { ascending: false })
+          .limit(100); // Limitar para evitar sobrecarga
+
+        if (error) {
+          console.warn(`Erro ao buscar ranking da tabela ${table}:`, error);
+          // Se a tabela não existir, usar dados vazios
+          if (error.code === 'PGRST116') {
+            console.warn(`Tabela ${table} não encontrada, usando dados vazios`);
+            setRanking([]);
+            return;
+          }
+          throw error;
         }
-      } catch (err) {
-        setError('Erro ao carregar rankings');
-        generateMockRanking(); // Fallback to mock data
+
+        // Validar dados recebidos
+        const validData = (data || []).filter((item: any) => {
+          if (item?.user_id && !isValidUUID(item.user_id)) {
+            console.warn("UUID inválido encontrado:", item.user_id);
+            return false;
+          }
+          return true;
+        });
+
+        setRanking(validData);
+      } catch (err: any) {
+        console.error("Erro ao buscar ranking:", err);
+        setError(err.message || "Erro desconhecido");
+        setRanking([]); // Garantir array vazio em caso de erro
       } finally {
         setLoading(false);
       }
     };
 
-    loadRankings();
-  }, []);
+    fetchRanking();
 
-  const refetch = () => {
-    return Promise.all([fetchGlobalRanking(), fetchEraRankings()]);
-  };
+    // Removido realtime temporariamente para evitar erros de WebSocket
+    // const subscription = supabase
+    //   .channel(`${table}_changes`)
+    //   .on(
+    //     "postgres_changes",
+    //     { event: "*", schema: "public", table },
+    //     () => fetchRanking()
+    //   )
+    //   .subscribe();
 
-  return {
-    globalRanking,
-    eraRankings,
-    loading,
-    error,
-    refetch
+    // return () => {
+    //   supabase.removeChannel(subscription);
+    // };
+  }, [type]);
+
+  const { top10, rest90 } = useMemo(() => {
+    const limit = Math.ceil(ranking.length * 0.1);
+    return {
+      top10: ranking.slice(0, limit) || [],
+      rest90: ranking.slice(limit) || [],
+    };
+  }, [ranking]);
+
+  return { 
+    ranking, 
+    top10: Array.isArray(top10) ? top10 : [],
+    rest90: Array.isArray(rest90) ? rest90 : [],
+    loading, 
+    error 
   };
-};
+}

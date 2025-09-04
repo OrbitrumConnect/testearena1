@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Play, Target, AlertTriangle } from 'lucide-react';
 import { ActionButton } from '@/components/arena/ActionButton';
@@ -37,6 +37,9 @@ const Digital = () => {
   const [hitEffect, setHitEffect] = useState<'player' | 'enemy' | null>(null);
   const [rewards, setRewards] = useState({ xpEarned: 0, moneyEarned: 0, bonusApplied: false });
   const [userHasSubscription, setUserHasSubscription] = useState(false);
+  
+  // Ref para controlar a velocidade do vídeo
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Usar o hook para buscar 25 perguntas aleatórias da Era Digital
   const { questions, loading, refetch, getCompletelyRandomQuestions } = useEraQuestions('digital', 25);
@@ -250,6 +253,9 @@ const Digital = () => {
   if (loading || questions.length === 0) {
     return (
       <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+        {/* Background preto simples sem vídeo para o loading */}
+        <div className="absolute inset-0 z-0 bg-black" />
+        
         <ParticleBackground />
         <div className="relative z-10 text-center">
           <div className="arena-card-epic p-8">
@@ -271,9 +277,12 @@ const Digital = () => {
     return (
       <BaseLayout>
         <div className="min-h-screen bg-background relative overflow-hidden">
+          {/* Background preto simples sem vídeo para a área de entrada */}
+          <div className="absolute inset-0 z-0 bg-black" />
+          
           <ParticleBackground />
           
-          <div className="relative z-10 max-w-4xl mx-auto p-1 h-full overflow-y-auto md:p-6">
+          <div className="relative z-10 max-w-4xl mx-auto p-1 h-full overflow-hidden md:p-6">
           <div className="text-center mb-2 md:mb-8">
             <ActionButton 
               variant="battle" 
@@ -382,9 +391,12 @@ const Digital = () => {
     return (
       <BaseLayout>
         <div className="min-h-screen bg-background relative overflow-hidden">
+          {/* Background preto simples sem vídeo para a tela de resultados */}
+          <div className="absolute inset-0 z-0 bg-black" />
+          
           <ParticleBackground />
           
-          <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6">
+                     <div className="relative z-10 max-w-7xl mx-auto p-1 h-screen overflow-hidden w-full md:p-6">
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -505,22 +517,38 @@ const Digital = () => {
        gamePhaseValue: gamePhase
      });
 
-     return (
-     <BaseLayout>
-               <div className="scale-[0.9] origin-center w-[111%] h-[111%] md:scale-[0.628] md:origin-top-left md:w-[159%] md:h-[159%]">
-      {/* Fundo Temático Digital */}
-      <div className="absolute inset-0 z-0" style={{transform: 'translate(-5%, -10%) scale(1.2)'}}>
-        <img 
-          src="/digital-background.png" 
-          alt="Digital Background" 
-          className="w-full h-full object-cover opacity-80"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-300/30 to-blue-600/50" />
-      </div>
+                       return (
+       <div className="h-screen overflow-hidden">
+                 <div className="w-full h-full">
+           {/* Fundo Temático Digital - Vídeo Animado */}
+             <div className="absolute inset-0 z-0">
+                           <video 
+            ref={videoRef}
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover opacity-80"
+            onLoadedMetadata={() => {
+              if (videoRef.current) {
+                videoRef.current.playbackRate = 0.5; // 50% da velocidade
+              }
+            }}
+          >
+            <source src="/videobackdigital.mp4" type="video/mp4" />
+            {/* Fallback para imagem caso o vídeo não carregue */}
+            <img 
+              src="/digital-background.png" 
+              alt="Digital Background" 
+              className="w-full h-full object-cover opacity-80"
+            />
+          </video>
+          {/* Removida a sobreposição azul para deixar o vídeo transparente */}
+       </div>
       
       <ParticleBackground />
       
-                           <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-y-auto w-full md:p-6" style={{transform: 'translate(-4.5%, -5%)'}}>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                               <div className="relative z-10 max-w-4xl mx-auto p-1 h-screen overflow-hidden w-full md:p-6" style={{transform: 'scale(0.78)', transformOrigin: 'center center', marginTop: '-4%'}}>
         {/* Header com navegação */}
         <div className="flex justify-between items-center mb-2 px-1 md:flex md:items-center md:justify-between md:mb-8">
           <ActionButton 
@@ -654,7 +682,7 @@ const Digital = () => {
         </div>
 
                                     {/* Pergunta */}
-                   <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-9/10 md:p-0.5 md:mb-0.5 md:mt-0.5 md:border-2 md:glow-epic md:scale-100 md:w-1/5 md:mx-auto" style={{marginTop: '-10%', width: '39%', height: '28%', marginLeft: 'auto', marginRight: 'auto'}}>
+                                       <div className="arena-card-epic backdrop-blur-sm bg-cyan-500/10 border border-cyan-500 p-0.5 mb-0.5 mx-1 w-full md:p-4 md:mb-4 md:border-2 md:glow-epic md:max-w-2xl md:mx-auto" style={{marginTop: '-15%', transform: 'scale(0.9)'}}>
                                                                                                 <div className="flex items-center justify-center mb-0.5 md:mb-4">
                <div className="inline-block bg-cyan-500/30 rounded-full backdrop-blur-sm border border-cyan-500 px-1 py-0.5 md:px-4 md:py-1.5">
                  <span className="text-cyan-400 font-bold uppercase tracking-wide text-xs md:text-sm">
@@ -712,8 +740,8 @@ const Digital = () => {
           </div>
 
                      {/* Explicação - FORA do card principal */}
-           {showExplanation && (
-             <div className="mt-3 mx-auto w-[39%] arena-card backdrop-blur-sm bg-background-soft/80 p-2.5 md:p-3 rounded-lg border border-card-border">
+                       {showExplanation && (
+              <div className="mt-1 mx-auto w-full arena-card backdrop-blur-sm bg-background-soft/80 p-2.5 md:p-3 rounded-lg border border-card-border md:max-w-2xl" style={{marginTop: '-5%', transform: 'scale(0.9)'}}>
                <h4 className="font-semibold text-cyan-400 mb-1.5 md:mb-2 flex items-center text-xs md:text-sm">
                  <div className="w-3.5 h-3.5 md:w-5 md:h-5 bg-cyan-500 rounded-full flex items-center justify-center mr-1.5">
                    <span className="text-xs text-cyan-900">!</span>
@@ -742,10 +770,10 @@ const Digital = () => {
                 {currentQuestion < questions.length - 1 ? '⚡ Próxima Pergunta' : '🚀 Ver Resultado Final'}
               </ActionButton>
             </div>
-          )}
-      </div>
-    </BaseLayout>
-  );
-};
+                     )}
+       </div>
+         </div>
+     );
+ };
 
 export default Digital;

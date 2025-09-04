@@ -14,6 +14,7 @@ import egyptArena from '@/assets/egypt-arena.png';
 import mesopotamiaLanding from '@/assets/mesopotamia-landing-bg.jpg';
 import medievalLanding from '@/assets/medieval-landing-bg.jpg';
 import digitalLanding from '@/assets/digital-landing-bg.jpg';
+import { RankingTable } from '@/components/RankingTable';
 
 // Função local para calcular dano baseado no número de perguntas
 const calculateHpDamage = (totalQuestions: number): number => {
@@ -51,6 +52,9 @@ interface Battle {
 const Arena = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  // Container unificado para tela cheia
+  const fullScreenContainer = "h-screen w-screen relative overflow-hidden";
   
   // Valores do PvP atualizados (sistema otimizado)
   const pvpValues = {
@@ -187,11 +191,10 @@ const Arena = () => {
   // Mostrar loading enquanto as perguntas carregam
   if (loading || questions.length === 0) {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} bg-background relative flex items-center justify-center`}>
-        <div className={isMobile ? 'scale-[0.9] origin-center w-[111%] h-[111%]' : 'scale-[0.628] origin-top-left w-[159%] h-[159%]'}>
+      <div className={fullScreenContainer}>
         <ParticleBackground />
-        <div className="relative z-10 text-center">
-          <div className="arena-card-epic p-8">
+        <div className="relative z-10 flex items-center justify-center h-full w-full">
+          <div className="arena-card-no-border p-8 text-center">
             <div className="text-4xl mb-4">🏺</div>
             <h2 className="text-2xl font-montserrat font-bold text-epic mb-4">
               Carregando Desafios...
@@ -201,74 +204,25 @@ const Arena = () => {
             </p>
           </div>
         </div>
-        </div>
       </div>
     );
   }
 
   if (gamePhase === 'waiting') {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
-        {/* Epic Arena Background - Fusão Suave das 4 Eras */}
-        <div className="absolute inset-0 z-0">
-          {/* Layer 1: Egypt (Base) */}
-          <div className="absolute inset-0 opacity-50">
-            <img 
-              src={egyptArena} 
-              alt="Egypt Era" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-900/40 to-transparent" />
-          </div>
-          
-          {/* Layer 2: Mesopotamia (Blend) */}
-          <div className="absolute inset-0 opacity-40" style={{mixBlendMode: 'multiply'}}>
-            <img 
-              src={mesopotamiaLanding} 
-              alt="Mesopotamia Era" 
-              className="w-full h-full object-cover scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-bl from-amber-700/50 to-transparent" />
-          </div>
-          
-          {/* Layer 3: Medieval (Overlay) */}
-          <div className="absolute inset-0 opacity-35" style={{mixBlendMode: 'overlay'}}>
-            <img 
-              src={medievalLanding} 
-              alt="Medieval Era" 
-              className="w-full h-full object-cover scale-105 rotate-1"
-            />
-            <div className="absolute inset-0 bg-gradient-to-tr from-stone-800/60 to-transparent" />
-          </div>
-          
-          {/* Layer 4: Digital (Soft Light) */}
-          <div className="absolute inset-0 opacity-30" style={{mixBlendMode: 'soft-light'}}>
-            <img 
-              src={digitalLanding} 
-              alt="Digital Era" 
-              className="w-full h-full object-cover scale-95 -rotate-1"
-            />
-            <div className="absolute inset-0 bg-gradient-to-tl from-blue-800/50 to-transparent" />
-          </div>
-          
-          {/* Central Epic Overlay */}
-          <div className="absolute inset-0 bg-gradient-radial from-transparent via-background/20 to-background/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/80" />
-          
-          {/* Arena Center Glow */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-epic/15 rounded-full blur-3xl animate-pulse" />
-          
-          {/* Mystical Particles Effect */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-epic rounded-full animate-ping" style={{animationDelay: '0s'}}></div>
-            <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-victory rounded-full animate-ping" style={{animationDelay: '1s'}}></div>
-            <div className="absolute bottom-1/4 left-2/3 w-1 h-1 bg-battle rounded-full animate-ping" style={{animationDelay: '2s'}}></div>
-          </div>
-        </div>
-        
-        <ParticleBackground />
-        
-        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
+      <div className={fullScreenContainer}>
+        {/* Background do Egito */}
+        <img
+          src={egyptArena}
+          alt="Egypt Era Background"
+          className="absolute top-0 left-0 w-screen h-screen object-cover z-[-1]"
+        />
+
+        {/* Overlay semi-transparente */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+
+        {/* Conteúdo interativo */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
           <div className="text-center mb-8">
             <ActionButton 
               variant="battle" 
@@ -280,7 +234,7 @@ const Arena = () => {
             </ActionButton>
           </div>
 
-          <div className="arena-card-epic p-8 text-center">
+          <div className="arena-card-no-border p-8 text-center">
             <h1 className="text-4xl font-montserrat font-bold text-epic mb-4">
               Arena do Conhecimento
             </h1>
@@ -288,60 +242,9 @@ const Arena = () => {
               Prepare-se para a batalha PvP meritocrática!
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <div className="arena-card p-6">
-                <div className="text-4xl mb-4">⚔️</div>
-                <h3 className="font-montserrat font-bold text-xl mb-2">Você</h3>
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <Shield className="w-5 h-5 text-victory" />
-                  <span className="font-semibold">HP: 100/100</span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Guerreiro do conhecimento, pronto para a batalha!
-                </p>
-              </div>
-
-              <div className="arena-card p-6">
-                <div className="text-4xl mb-4">🗿</div>
-                <h3 className="font-montserrat font-bold text-xl mb-2">IA Esfinge</h3>
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <Shield className="w-5 h-5 text-destructive" />
-                  <span className="font-semibold">HP: 100/100</span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Guardiã dos mistérios do Egito Antigo
-                </p>
-              </div>
-            </div>
-
-            <div className="arena-card p-6 mb-8">
-              <h3 className="font-montserrat font-bold text-lg mb-4">Regras da Batalha</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <Zap className="w-6 h-6 text-epic mx-auto mb-2" />
-                  <p><strong>30 segundos</strong> por pergunta</p>
-                </div>
-                <div>
-                  <Target className="w-6 h-6 text-victory mx-auto mb-2" />
-                  <p><strong>Acerto:</strong> -25 HP no oponente</p>
-                </div>
-                <div>
-                  <Shield className="w-6 h-6 text-destructive mx-auto mb-2" />
-                  <p><strong>Erro:</strong> -25 HP em você</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="arena-card p-4 mb-8 bg-epic/10 border-epic">
-              <p className="text-epic font-semibold">
-                💰 Custo da Batalha: {pvpValues.betAmount} créditos
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Vitória: +{pvpValues.netWin} créditos | Derrota: {pvpValues.netLoss} créditos | Pool: {pvpValues.totalPool} créditos
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                🏆 Sistema sustentável: Recompensas por mérito para jogadores ativos
-              </p>
+            <div className="arena-card-no-border p-6 mb-8">
+              <h3 className="font-montserrat font-bold text-lg mb-4">🏆 Ranking da Era</h3>
+              <RankingTable type="free" />
             </div>
 
             {localStorage.getItem('userAge') === 'minor' ? (
@@ -367,7 +270,7 @@ const Arena = () => {
 
   if (gamePhase === 'finished') {
     return (
-      <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
+      <div className="fixed inset-0 w-screen h-screen bg-background">
         {/* Epic Arena Background - Fusão Suave das 4 Eras */}
         <div className="absolute inset-0 z-0">
           {/* Layer 1: Egypt (Base) */}
@@ -427,7 +330,7 @@ const Arena = () => {
         
         <ParticleBackground />
         
-        <div className={`relative z-10 max-w-4xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
+        <div className={`relative z-10 w-full h-full ${isMobile ? 'p-3 overflow-y-auto' : 'p-6'}`}>
           <div className="arena-card-epic p-8 text-center">
             <div className="text-6xl mb-6">
               {battleResult === 'victory' ? '🏆' : '💀'}
@@ -490,7 +393,7 @@ const Arena = () => {
   const question = questions[currentQuestion];
 
   return (
-    <div className={`${isMobile ? 'h-screen overflow-hidden' : 'h-screen overflow-hidden'} relative`}>
+    <div className="min-h-screen w-full relative bg-background">
       {/* Epic Arena Background - Fusão Suave das 4 Eras */}
       <div className="absolute inset-0 z-0">
         {/* Layer 1: Egypt (Base) */}
@@ -550,7 +453,7 @@ const Arena = () => {
       
       <ParticleBackground />
       
-      <div className={`relative z-10 max-w-6xl mx-auto ${isMobile ? 'p-3 h-full overflow-y-auto' : 'p-6'}`}>
+      <div className={`relative z-10 w-full ${isMobile ? 'p-3 min-h-screen overflow-y-auto' : 'p-6 min-h-screen'}`}>
         {/* Battle HUD */}
         <div className="grid grid-cols-3 gap-6 mb-8">
           {/* Player 1 */}
@@ -590,7 +493,7 @@ const Arena = () => {
         </div>
 
         {/* Question */}
-        <div className={`arena-card-epic ${isMobile ? 'p-2 mx-2 mt-4' : 'p-8'}`} style={isMobile ? {width: '120%', marginLeft: '-10%', transform: 'translateY(-50%)'} : {}}>
+        <div className={`arena-card-epic ${isMobile ? 'p-2 mx-2 mt-4' : 'p-8'}`}>
           <div className={`text-center ${isMobile ? 'mb-2' : 'mb-6'}`}>
             <div className={`inline-block bg-epic/20 rounded-full ${isMobile ? 'px-2 py-1 mb-2' : 'px-4 py-2 mb-4'}`}>
               <span className={`text-epic font-semibold ${isMobile ? 'text-xs' : ''}`}>{question.category}</span>

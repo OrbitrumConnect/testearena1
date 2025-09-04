@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 interface FreeTrainingData {
   date: string;
   eras: {
-    'egito-antigo': boolean;
-    'mesopotamia': boolean;
-    'medieval': boolean;
-    'digital': boolean;
+    'egito-antigo': number; // Mudando de boolean para number para contar treinos
+    'mesopotamia': number;
+    'medieval': number;
+    'digital': number;
   };
 }
 
@@ -19,11 +19,30 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
 
   const [canTrain, setCanTrain] = useState<boolean>(true);
   const [trainingCount, setTrainingCount] = useState<number>(0);
-  const [maxTrainings] = useState<number>(4); // 4 eras = 4 treinos/dia para FREE
+  const [maxTrainings] = useState<number>(8); // 8 treinos totais por dia para FREE
+  const [eraTrainingCount, setEraTrainingCount] = useState<number>(0); // Contador específico da era
+  const [remainingTrainings, setRemainingTrainings] = useState<number>(8);
+  const [remainingEraTrainings, setRemainingEraTrainings] = useState<number>(2);
 
   useEffect(() => {
     checkDailyLimit();
   }, [safeEraSlug]);
+
+  // Proteção extra para garantir que os valores nunca sejam NaN
+  useEffect(() => {
+    if (isNaN(remainingTrainings) || remainingTrainings < 0) {
+      setRemainingTrainings(8);
+    }
+    if (isNaN(remainingEraTrainings) || remainingEraTrainings < 0) {
+      setRemainingEraTrainings(2);
+    }
+    if (isNaN(trainingCount) || trainingCount < 0) {
+      setTrainingCount(0);
+    }
+    if (isNaN(eraTrainingCount) || eraTrainingCount < 0) {
+      setEraTrainingCount(0);
+    }
+  }, [remainingTrainings, remainingEraTrainings, trainingCount, eraTrainingCount]);
 
   const checkDailyLimit = () => {
     try {
@@ -43,13 +62,26 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
         const trainingData: FreeTrainingData = JSON.parse(storedData);
         
         if (trainingData.date === today) {
-          // Mesmo dia - verificar se já treinou nesta era
-          const alreadyTrainedInEra = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras];
-          setCanTrain(!alreadyTrainedInEra);
+          // Mesmo dia - verificar se pode treinar nesta era (máximo 2 por era)
+          const eraCount = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] || 0;
+          setEraTrainingCount(eraCount);
           
-          // Contar quantas eras já treinou hoje
-          const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
-          setTrainingCount(trainedEras);
+          // Pode treinar se: menos de 2 treinos nesta era E menos de 8 treinos totais
+          const totalTrainings = Object.values(trainingData.eras).reduce((sum, count) => sum + (count || 0), 0);
+          const canTrainInEra = eraCount < 2; // Máximo 2 por era
+          const canTrainTotal = totalTrainings < 8; // Máximo 8 total
+          
+          setCanTrain(canTrainInEra && canTrainTotal);
+          setTrainingCount(totalTrainings);
+          
+          // Calcular valores restantes com proteção extra
+          const remainingTotal = Math.max(0, maxTrainings - (totalTrainings || 0));
+          const remainingEra = Math.max(0, 2 - (eraCount || 0));
+          
+          setRemainingTrainings(remainingTotal);
+          setRemainingEraTrainings(remainingEra);
+          
+          console.log(`🔍 FREE: Estado atualizado - Era: ${eraCount}/2, Total: ${totalTrainings}/8, Restantes: ${remainingTotal}, Era restantes: ${remainingEra}`);
         } else {
           // Novo dia - resetar contador
           resetDailyCount();
@@ -69,16 +101,19 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
     const newData: FreeTrainingData = {
       date: today,
       eras: {
-        'egito-antigo': false,
-        'mesopotamia': false,
-        'medieval': false,
-        'digital': false
+        'egito-antigo': 0,
+        'mesopotamia': 0,
+        'medieval': 0,
+        'digital': 0
       }
     };
     
     localStorage.setItem('free_training_limit', JSON.stringify(newData));
     setTrainingCount(0);
+    setEraTrainingCount(0);
     setCanTrain(true);
+    setRemainingTrainings(maxTrainings);
+    setRemainingEraTrainings(2);
   };
 
   const incrementTrainingCount = () => {
@@ -89,23 +124,32 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
       const trainingData: FreeTrainingData = JSON.parse(storedData);
       
       if (trainingData.date === today) {
-        // Marcar esta era como treinada hoje
-        trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] = true;
+        // Incrementar contador desta era
+        trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] = 
+          (trainingData.eras[safeEraSlug as keyof typeof trainingData.eras] || 0) + 1;
         
-        // Contar quantas eras já treinou hoje
-        const trainedEras = Object.values(trainingData.eras).filter(Boolean).length;
+        // Contar total de treinos hoje
+        const totalTrainings = Object.values(trainingData.eras).reduce((sum, count) => sum + (count || 0), 0);
+        const currentEraCount = trainingData.eras[safeEraSlug as keyof typeof trainingData.eras];
         
         localStorage.setItem('free_training_limit', JSON.stringify(trainingData));
-        setTrainingCount(trainedEras);
-        setCanTrain(false); // Não pode treinar novamente nesta era hoje
+        setTrainingCount(totalTrainings);
+        setEraTrainingCount(currentEraCount);
         
-        console.log(`🎯 FREE: Treino ${safeEraSlug} realizado! ${trainedEras}/4 eras treinadas hoje`);
+        // Verificar se ainda pode treinar
+        const canTrainInEra = currentEraCount < 2; // Máximo 2 por era
+        const canTrainTotal = totalTrainings < 8; // Máximo 8 total
+        setCanTrain(canTrainInEra && canTrainTotal);
+        
+        // Atualizar valores restantes com proteção extra
+        const remainingTotal = Math.max(0, maxTrainings - (totalTrainings || 0));
+        const remainingEra = Math.max(0, 2 - (currentEraCount || 0));
+        setRemainingTrainings(remainingTotal);
+        setRemainingEraTrainings(remainingEra);
+
+        console.log(`🎯 FREE: Treino ${safeEraSlug} realizado! ${currentEraCount}/2 nesta era, ${totalTrainings}/8 total hoje`);
       }
     }
-  };
-
-  const getRemainingTrainings = (): number => {
-    return Math.max(0, maxTrainings - trainingCount);
   };
 
   const resetTrainingCount = () => {
@@ -117,7 +161,9 @@ export const useFreeTrainingLimit = (eraSlug: string) => {
     trainingCount,
     canTrain,
     maxTrainings,
-    remainingTrainings: getRemainingTrainings(),
+    remainingTrainings,
+    eraTrainingCount,
+    remainingEraTrainings,
     incrementTrainingCount,
     resetTrainingCount,
     checkDailyLimit

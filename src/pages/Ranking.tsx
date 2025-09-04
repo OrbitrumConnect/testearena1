@@ -6,13 +6,13 @@ import { ParticleBackground } from '@/components/ui/particles';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRanking, RankingUser, EraRanking } from '@/hooks/useRanking';
+import { useRanking } from '@/hooks/useRanking';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Ranking = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { globalRanking, eraRankings, loading, error } = useRanking();
+  const { top10, rest90, loading, error } = useRanking("free");
   const [selectedTab, setSelectedTab] = useState('global');
 
   const getPositionIcon = (position: number) => {
@@ -33,7 +33,7 @@ const Ranking = () => {
     }
   };
 
-  const RankingUserCard = ({ user, showEraStats = false }: { user: RankingUser; showEraStats?: boolean }) => (
+  const RankingUserCard = ({ user, showEraStats = false }: { user: any; showEraStats?: boolean }) => (
     <Card className={`${getPositionBg(user.position)} hover-scale transition-all duration-300`}>
       <CardContent className={`${isMobile ? 'p-2' : 'p-3'}`}>
         <div className="flex items-center justify-between">
@@ -100,7 +100,7 @@ const Ranking = () => {
     </Card>
   );
 
-  const EraRankingSection = ({ eraRanking }: { eraRanking: EraRanking }) => (
+  const EraRankingSection = ({ eraRanking }: { eraRanking: any }) => (
     <div className={`relative overflow-hidden rounded-lg ${isMobile ? 'p-4' : 'p-6'}`}>
       {/* Background with era theme */}
       <div className={`absolute inset-0 ${eraRanking.background_theme} opacity-10`} />
@@ -192,12 +192,12 @@ const Ranking = () => {
               <CardHeader>
                 <CardTitle className={`flex items-center gap-2 ${isMobile ? 'text-lg' : 'text-xl'}`}>
                   <Crown className="w-6 h-6 text-epic" />
-                  Top {globalRanking.length} Guerreiros
+                  Top {top10?.length || 0} Guerreiros
                 </CardTitle>
               </CardHeader>
               <CardContent className={`space-y-3 ${isMobile ? 'space-y-2 p-4' : ''}`}>
-                {globalRanking.length > 0 ? (
-                  globalRanking.map((user) => (
+                {top10?.length > 0 ? (
+                  top10.map((user) => (
                     <RankingUserCard key={user.id} user={user} />
                   ))
                 ) : (
@@ -220,9 +220,9 @@ const Ranking = () => {
           </TabsContent>
 
           <TabsContent value="eras" className="space-y-6">
-            {eraRankings.length > 0 ? (
+            {rest90.length > 0 ? (
               <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
-                {eraRankings.map((eraRanking) => (
+                {rest90.map((eraRanking) => (
                   <Card key={eraRanking.era_slug} className="arena-card overflow-hidden">
                     <EraRankingSection eraRanking={eraRanking} />
                   </Card>

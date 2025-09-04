@@ -49,6 +49,12 @@ const AppWithMusic = () => {
         <Route path="/ranking" element={<ProtectedRoute><Ranking /></ProtectedRoute>} />
         <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
         <Route path="/world-quiz" element={<ProtectedRoute><WorldQuiz /></ProtectedRoute>} />
+        {/* ROTA ADMIN - Bypass do ProtectedRoute */}
+        <Route path="/admin-arena" element={<ArenaNew />} />
+        
+        {/* ROTA DIRETA PARA ARENA - Sem autenticação para teste */}
+        <Route path="/test-arena" element={<ArenaNew />} />
+        
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -8,7 +8,7 @@ import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useTrainingLimit } from '@/hooks/useTrainingLimit';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useFreeLimit } from '@/hooks/useFreeLimit';
+import { useFreeTrainingLimit } from '@/hooks/useFreeTrainingLimit';
 import { handleNewBattleCredits, getUserPlan } from '@/utils/creditsIntegration';
 import BaseLayout from '@/components/BaseLayout';
 // Função para calcular dano HP baseado no número de perguntas
@@ -40,13 +40,23 @@ const Training = () => {
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
   
-    // Hook para controlar limite de treinamentos
-const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
-  
-  // Hook para controlar limite free (3 treinos sem pontos)
+    // Hook para controlar limite de treinamentos (diferente para FREE e assinantes)
   const userType = 'free'; // TODO: pegar do perfil do usuário
-  const { canTrainFree, incrementFreeTraining, getFreeTrainingInfo } = useFreeLimit(userType);
-  const freeInfo = getFreeTrainingInfo();
+  
+  // Para usuários FREE: usar sistema específico por era (2x por era, 8 total)
+  const { 
+    canTrain, 
+    trainingCount, 
+    maxTrainings, 
+    remainingTrainings, 
+    eraTrainingCount,
+    remainingEraTrainings,
+    incrementTrainingCount, 
+    resetTrainingCount 
+  } = useFreeTrainingLimit('egito-antigo');
+  
+  // Para usuários pagos: usar sistema global
+  // const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrainingCount, resetTrainingCount } = useTrainingLimit();
 
   useEffect(() => {
     if (gamePhase === 'question' && timeLeft > 0) {
@@ -120,6 +130,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
       // Para usuários FREE: não ganham pontos/XP/créditos
       if (userType === 'free') {
         console.log('🆓 Usuário FREE: Treino concluído mas sem ganhos (apenas experiência)');
+        // Incrementar contador de treinos FREE
+        incrementTrainingCount();
       } else {
         // Calcular recompensas usando novo sistema (apenas para usuários pagos)
         const userPlan = getUserPlan();
@@ -165,8 +177,8 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
 
   const startTraining = () => {
     // Verificar limite free primeiro
-    if (userType === 'free' && !canTrainFree) {
-      return; // Usuário free atingiu limite de 3 treinos
+    if (userType === 'free' && !canTrain) {
+      return; // Usuário free atingiu limite de 2 treinos nesta era ou 8 total
     }
     
     if (!canTrain) {
@@ -184,9 +196,6 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
     
     // Incrementar contadores
     incrementTrainingCount();
-    if (userType === 'free') {
-      incrementFreeTraining();
-    }
   };
 
   const restartTraining = () => {
@@ -264,15 +273,18 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 <div className={`arena-card border-epic/30 ${isMobile ? 'p-1.5 mb-2' : 'p-3 mb-3'}`}>
                   <h3 className={`font-semibold text-epic ${isMobile ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>🆓 Modo FREE</h3>
                   <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                    Hoje: <span className="font-bold text-epic">{freeInfo.used}/{freeInfo.dailyLimit}</span>
+                    Hoje: <span className="font-bold text-epic">{trainingCount || 0}/{maxTrainings || 8}</span>
                   </p>
                   <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
-                    Restantes: <span className="font-bold text-victory">{freeInfo.remaining}</span>
+                    Restantes: <span className="font-bold text-victory">{remainingTrainings || 8}</span>
+                  </p>
+                  <p className={`text-muted-foreground ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                    Esta Era: <span className="font-bold text-epic">{eraTrainingCount || 0}/2</span>
                   </p>
                   <p className={`text-warning ${isMobile ? 'text-xs mt-1' : 'text-xs mt-2'}`}>
                     ⚠️ Gratuito: Não ganha XP/créditos
                   </p>
-                  {!canTrainFree && (
+                  {!canTrain && (
                     <div className="mt-2 p-2 bg-warning/10 rounded border border-warning/20">
                       <p className="text-xs text-warning font-medium text-center">
                         ⏰ Limite diário atingido! Volte amanhã ou faça upgrade para modo PAGO
@@ -284,10 +296,10 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                 <div className="arena-card p-3 mb-3">
                   <h3 className="font-semibold mb-1 text-sm">📊 Limite Diário de Treinamento</h3>
                   <p className="text-sm text-muted-foreground">
-                    Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount}/{maxTrainings}</span>
+                    Treinamentos realizados hoje: <span className="font-bold text-epic">{trainingCount || 0}/{maxTrainings || 8}</span>
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings}</span>
+                    Treinamentos restantes: <span className="font-bold text-victory">{remainingTrainings || 8}</span>
                   </p>
                 </div>
               )}
@@ -327,11 +339,11 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
                   variant="victory" 
                   icon={<Play />}
                   onClick={startTraining}
-                  disabled={userType === 'free' ? !canTrainFree : !canTrain}
+                  disabled={userType === 'free' ? !canTrain : !canTrain}
                   className="w-full"
                 >
                   {userType === 'free' ? 
-                    (canTrainFree ? '🆓 Iniciar Treino Gratuito' : 'Limite FREE Atingido') :
+                    (canTrain ? '🆓 Iniciar Treino Gratuito' : 'Limite FREE Atingido') :
                     (canTrain ? 'Iniciar Treinamento' : 'Limite Atingido')
                   }
                 </ActionButton>
@@ -452,7 +464,7 @@ const { canTrain, trainingCount, maxTrainings, remainingTrainings, incrementTrai
           {/* Fundo Temático Egípcio Continuado */}
           <div className="absolute inset-0 z-0">
             <div className="w-full h-full bg-gradient-to-b from-epic/40 to-battle-dark/60" />
-            <div className="absolute inset-0 opacity-40" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.2)'} : {}}>
+            <div className="absolute inset-0 opacity-40" style={isMobile ? {transform: 'translate(-5%, -10%) scale(1.98)'} : {transform: 'scale(1.3)'}}>
               <div className="w-full h-full bg-cover bg-center" 
                    style={{ 
                      backgroundImage: `url(${egyptArena})`

@@ -58,11 +58,16 @@ export const useDashboard = () => {
   // Gerar ou recuperar ID único do usuário
   const getOrCreateUserId = () => {
     let userId = localStorage.getItem('current_user_id');
-    if (!userId) {
-      userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // FORÇAR uso do UUID correto do Supabase para admin
+    if (!userId || userId.includes('user-')) {
+      // Limpar ID incorreto e usar UUID correto
+      localStorage.removeItem('current_user_id');
+      userId = 'cab3262e-c3bb-426a-a177-e3f792d8febo';
       localStorage.setItem('current_user_id', userId);
-      console.log('🆔 Novo usuário criado no Dashboard:', userId);
+      console.log('🆔 Usuário admin configurado no Dashboard:', userId);
     }
+    
     return userId;
   };
 

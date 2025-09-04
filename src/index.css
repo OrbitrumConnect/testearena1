@@ -138,8 +138,24 @@ Todas as cores em HSL para consistência */
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply text-foreground font-inter;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+  }
+  
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -171,6 +187,13 @@ Todas as cores em HSL para consistência */
     @apply arena-card;
     box-shadow: var(--shadow-epic);
     background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--epic) / 0.1));
+  }
+
+  /* Arena Card SEM BORDA para container principal */
+  .arena-card-no-border {
+    @apply bg-card rounded-lg backdrop-blur-sm;
+    box-shadow: var(--shadow-glow);
+    border: none !important;
   }
 
   /* Arena Buttons */
@@ -321,15 +344,31 @@ Todas as cores em HSL para consistência */
 
   @keyframes travel-left {
     0% {
-      right: 15%;
+      left: 75%;
       opacity: 1;
       transform: translateY(-50%) scale(1);
     }
     100% {
-      right: 75%;
+      left: 15%;
       opacity: 0;
       transform: translateY(-50%) scale(0.3);
     }
+  }
+
+  /* Corrigir bordas brancas laterais da Arena */
+  .min-h-screen {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Garantir que o container da Arena ocupe toda a tela */
+  .arena-container {
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Animações de Laser Neon Digital */
@@ -427,3 +466,32 @@ Todas as cores em HSL para consistência */
     display: none;  /* Safari and Chrome */
   }
 }
+
+  /* SOLUÇÃO GLOBAL para bordas brancas laterais */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow-x: hidden !important;
+    background-color: hsl(var(--background)) !important;
+  }
+
+  /* Garantir que o root ocupe toda a tela */
+  #root {
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* SOLUÇÃO COMPLETA para tela cheia */
+  html, body, #root {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    background-color: black !important;  /* elimina qualquer borda residual */
+    overflow-x: hidden !important;       /* evita scroll horizontal */
+  }
