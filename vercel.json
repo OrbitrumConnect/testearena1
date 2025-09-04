@@ -1,16 +1,13 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm install",
+  "installCommand": "npm install --no-optional",
   "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+  "functions": {
+    "src/**/*.tsx": {
+      "runtime": "nodejs20.x"
     }
-  ],
+  },
   "env": {
-    "VITE_SUPABASE_URL": "https://jidwywpecgmcqduzmvcv.supabase.co",
-    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppZHd5d3BlY2dtY3FkdXptdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyMjMzOTcsImV4cCI6MjA3MTc5OTM5N30.uZoWZQTzOOYHUyycwHbPInlrO2-kNz9N8LmDGMehNRI"
+    "NODE_OPTIONS": "--max-old-space-size=4096"
   }
 }

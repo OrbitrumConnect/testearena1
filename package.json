@@ -87,5 +87,21 @@
   },
   "resolutions": {
     "@rollup/rollup-native": "0.0.0"
+  },
+  "overrides": {
+    "rollup": {
+      "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": false,
+        "@rollup/rollup-darwin-x64": false,
+        "@rollup/rollup-win32-x64-msvc": false
+      }
+    },
+    "vite": {
+      "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": false,
+        "@rollup/rollup-darwin-x64": false,
+        "@rollup/rollup-win32-x64-msvc": false
+      }
+    }
   }
 }
