@@ -140,9 +140,22 @@ export const AuthForm = ({ onAuthSuccess, redirectToApp = false }: AuthFormProps
       onAuthSuccess();
     } catch (error) {
       console.error('Auth error:', error);
+      
+      // Tratar erro de email duplicado
+      let errorMessage = "Erro desconhecido";
+      if (error instanceof Error) {
+        if (error.message.includes("duplicate") || error.message.includes("already registered")) {
+          errorMessage = "Este e-mail já está cadastrado. Faça login ou use outro e-mail.";
+        } else if (error.message.includes("Database error saving new user")) {
+          errorMessage = "Este e-mail já está cadastrado. Faça login ou use outro e-mail.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Erro na autenticação",
-        description: error instanceof Error ? error.message : "Erro desconhecido",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
