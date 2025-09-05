@@ -294,7 +294,6 @@ export const resetMonthlyCycle = (user: UserMerit): UserMerit => {
     rankPosition: 0,
     isTopPerformer: false,
     meritTier: 'bronze',
-    merit_points: 1.0,
     meritBonus: 0,
     maxWithdrawal: 0,
     cycleMonth: new Date().toISOString().substring(0, 7),
