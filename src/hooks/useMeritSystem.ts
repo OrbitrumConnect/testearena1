@@ -351,7 +351,6 @@ export const useMeritSystem = () => {
         totalCorrect: userMerit.totalCorrect
       },
       financial: {
-        merit_points: userMerit.merit_points,
         monthlyCredits: userMerit.monthlyCreditsEarned,
         meritBonus: userMerit.meritBonus,
         maxWithdrawal: userMerit.maxWithdrawal
