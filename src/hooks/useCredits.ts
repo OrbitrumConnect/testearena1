@@ -5,12 +5,9 @@ import { calculateTrainingCredits, calculateArenaCredits, calculateMonthlyBonus 
 interface UserCredits {
   id: string;
   user_id: string;
-  credits_balance: number;
-  credits_earned: number;
-  credits_spent: number;
-  monthly_bonus: number;
-  deposit_date: string;
-  last_bonus_date: string;
+  credits: number;
+  daily_credits: number;
+  last_daily_reset: string;
   created_at: string;
   updated_at: string;
 }
@@ -18,10 +15,10 @@ interface UserCredits {
 interface CreditTransaction {
   id: string;
   user_id: string;
-  transaction_type: 'credit' | 'debit' | 'bonus';
+  transaction_type: string;
   amount: number;
   description: string;
-  source: 'training' | 'arena' | 'monthly_bonus' | 'initial_deposit';
+  battle_id?: string;
   created_at: string;
 }
 
@@ -49,12 +46,9 @@ export const useCredits = () => {
           const demoCredits: UserCredits = {
             id: 'demo-credits',
             user_id: 'demo-user',
-            credits_balance: 400, // 400 créditos iniciais (novo sistema)
-            credits_earned: 0,
-            credits_spent: 0,
-            monthly_bonus: 0,
-            deposit_date: new Date().toISOString(),
-            last_bonus_date: new Date().toISOString(),
+            credits: 400, // 400 créditos iniciais (novo sistema)
+            daily_credits: 0,
+            last_daily_reset: new Date().toISOString(),
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           };
@@ -64,7 +58,7 @@ export const useCredits = () => {
         }
         
         // Carregar transações demo
-        const localTransactions = localStorage.getItem('demo_credit_transactions');
+        const localTransactions = localStorage.getItem('demo_wallet_transactions');
         if (localTransactions) {
           setTransactions(JSON.parse(localTransactions));
         }
@@ -87,12 +81,9 @@ export const useCredits = () => {
         // Criar registro inicial de créditos
         const newCredits: Partial<UserCredits> = {
           user_id: user.id,
-          credits_balance: 400, // 400 créditos (novo sistema)
-          credits_earned: 0,
-          credits_spent: 0,
-          monthly_bonus: 0,
-          deposit_date: new Date().toISOString(),
-          last_bonus_date: new Date().toISOString()
+          credits: 400, // 400 créditos (novo sistema)
+          daily_credits: 0,
+          last_daily_reset: new Date().toISOString()
         };
 
         const { data: createdCredits, error: createError } = await supabase
@@ -109,14 +100,39 @@ export const useCredits = () => {
 
       // Buscar transações
       const { data: transactionsData, error: transactionsError } = await supabase
-        .from('credit_transactions')
+        .from('wallet_transactions')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (transactionsError) throw transactionsError;
-      setTransactions(transactionsData || []);
+      if (transactionsError) {
+        console.error('❌ Erro ao carregar transações:', transactionsError);
+        
+        // Se a tabela não existir, usar dados demo
+        if (transactionsError.code === 'PGRST116') {
+          console.warn('Tabela wallet_transactions não encontrada, usando dados demo');
+          const demoTransactions = localStorage.getItem('demo_transactions');
+          if (demoTransactions) {
+            setTransactions(JSON.parse(demoTransactions));
+          } else {
+            // Criar dados demo baseados no JSON que você enviou
+            const demoData: CreditTransaction[] = [
+              { id: '1', user_id: user.id, transaction_type: 'credit', amount: 1.5, description: 'Participação - Egito Antigo', created_at: new Date().toISOString() },
+              { id: '2', user_id: user.id, transaction_type: 'credit', amount: 2.0, description: 'Participação - Mesopotâmia', created_at: new Date().toISOString() },
+              { id: '3', user_id: user.id, transaction_type: 'credit', amount: 4.5, description: 'Vitória - Era Medieval', created_at: new Date().toISOString() },
+              { id: '4', user_id: user.id, transaction_type: 'credit', amount: 5.0, description: 'Vitória - Era Digital', created_at: new Date().toISOString() },
+              { id: '5', user_id: user.id, transaction_type: 'credit', amount: 2.0, description: 'Participação - Arena - Egito Antigo', created_at: new Date().toISOString() }
+            ];
+            setTransactions(demoData);
+            localStorage.setItem('demo_transactions', JSON.stringify(demoData));
+          }
+        } else {
+          throw transactionsError;
+        }
+      } else {
+        setTransactions(transactionsData || []);
+      }
 
     } catch (err) {
       console.error('❌ Erro ao carregar créditos:', err);
@@ -129,7 +145,6 @@ export const useCredits = () => {
   // 💰 Adicionar créditos (treino, arena, bônus)
   const addCredits = useCallback(async (
     amount: number, 
-    source: 'training' | 'arena' | 'monthly_bonus', 
     description: string
   ) => {
     if (!userCredits) return;
@@ -137,8 +152,7 @@ export const useCredits = () => {
     try {
       const updatedCredits = {
         ...userCredits,
-        credits_balance: userCredits.credits_balance + amount,
-        credits_earned: userCredits.credits_earned + amount,
+        credits: userCredits.credits + amount,
         updated_at: new Date().toISOString()
       };
 
@@ -161,9 +175,9 @@ export const useCredits = () => {
           created_at: new Date().toISOString()
         };
 
-        const currentTransactions = JSON.parse(localStorage.getItem('demo_credit_transactions') || '[]');
+        const currentTransactions = JSON.parse(localStorage.getItem('demo_wallet_transactions') || '[]');
         const updatedTransactions = [newTransaction, ...currentTransactions];
-        localStorage.setItem('demo_credit_transactions', JSON.stringify(updatedTransactions));
+        localStorage.setItem('demo_wallet_transactions', JSON.stringify(updatedTransactions));
         setTransactions(updatedTransactions);
 
         return { success: true };
@@ -173,8 +187,7 @@ export const useCredits = () => {
       const { error: updateError } = await supabase
         .from('user_credits')
         .update({
-          credits_balance: updatedCredits.credits_balance,
-          credits_earned: updatedCredits.credits_earned,
+          credits: updatedCredits.credits,
           updated_at: updatedCredits.updated_at
         })
         .eq('user_id', user.id);
@@ -183,7 +196,7 @@ export const useCredits = () => {
 
       // Registrar transação
       const { error: transactionError } = await supabase
-        .from('credit_transactions')
+        .from('wallet_transactions')
         .insert({
           user_id: user.id,
           transaction_type: 'credit',
@@ -209,9 +222,8 @@ export const useCredits = () => {
   const spendCredits = useCallback(async (
     amount: number, 
     description: string,
-    source: 'arena' | 'purchase' = 'arena'
   ) => {
-    if (!userCredits || userCredits.credits_balance < amount) {
+    if (!userCredits || userCredits.credits < amount) {
       setError('Créditos insuficientes');
       return { success: false, error: 'Créditos insuficientes' };
     }
@@ -219,8 +231,7 @@ export const useCredits = () => {
     try {
       const updatedCredits = {
         ...userCredits,
-        credits_balance: userCredits.credits_balance - amount,
-        credits_spent: userCredits.credits_spent + amount,
+        credits: userCredits.credits - amount,
         updated_at: new Date().toISOString()
       };
 
@@ -243,9 +254,9 @@ export const useCredits = () => {
           created_at: new Date().toISOString()
         };
 
-        const currentTransactions = JSON.parse(localStorage.getItem('demo_credit_transactions') || '[]');
+        const currentTransactions = JSON.parse(localStorage.getItem('demo_wallet_transactions') || '[]');
         const updatedTransactions = [newTransaction, ...currentTransactions];
-        localStorage.setItem('demo_credit_transactions', JSON.stringify(updatedTransactions));
+        localStorage.setItem('demo_wallet_transactions', JSON.stringify(updatedTransactions));
         setTransactions(updatedTransactions);
 
         return { success: true };
@@ -255,8 +266,7 @@ export const useCredits = () => {
       const { error: updateError } = await supabase
         .from('user_credits')
         .update({
-          credits_balance: updatedCredits.credits_balance,
-          credits_spent: updatedCredits.credits_spent,
+          credits: updatedCredits.credits,
           updated_at: updatedCredits.updated_at
         })
         .eq('user_id', user.id);
@@ -265,7 +275,7 @@ export const useCredits = () => {
 
       // Registrar transação
       const { error: transactionError } = await supabase
-        .from('credit_transactions')
+        .from('wallet_transactions')
         .insert({
           user_id: user.id,
           transaction_type: 'debit',
@@ -301,7 +311,6 @@ export const useCredits = () => {
     if (bonusResult.bonusCredits > 0) {
       await addCredits(
         bonusResult.bonusCredits, 
-        'monthly_bonus', 
         `Bônus Misterioso Mensal - ${bonusResult.bonusCredits} créditos`
       );
     }

@@ -46,7 +46,7 @@ export const useMeritSystem = () => {
             pvpWins: 0,
             winRate: 0,
             averageAccuracy: 0,
-            currentStreak: 0,
+            merit_points: 0,
             maxStreak: 0,
             daysActive: 1,
             totalQuestions: 0,
@@ -55,7 +55,7 @@ export const useMeritSystem = () => {
             rankPosition: 0,
             isTopPerformer: false,
             meritTier: 'bronze',
-            bonusMultiplier: 1.0,
+            merit_points: 1.0,
             monthlyCreditsEarned: 0,
             meritBonus: 0,
             maxWithdrawal: 0,
@@ -89,7 +89,7 @@ export const useMeritSystem = () => {
           pvpWins: 0,
           winRate: 0,
           averageAccuracy: 0,
-          currentStreak: 0,
+          merit_points: 0,
           maxStreak: 0,
           daysActive: 1,
           totalQuestions: 0,
@@ -98,11 +98,12 @@ export const useMeritSystem = () => {
           rankPosition: 0,
           isTopPerformer: false,
           meritTier: 'bronze',
-          bonusMultiplier: 1.0,
+          merit_points: 1.0,
           monthlyCreditsEarned: 0,
           meritBonus: 0,
           maxWithdrawal: 0,
-          cycleMonth: new Date().toISOString().substring(0, 7)
+          cycleMonth: new Date().toISOString().substring(0, 7),
+          user_type: user.id === 'cab3262e-c3bb-426a-a177-e3f792d8feb0' ? 'premium' : 'free' // Admin é premium
         };
 
         const { data: createdMerit, error: createError } = await supabase
@@ -143,10 +144,16 @@ export const useMeritSystem = () => {
         return { success: true };
       }
 
-      // Atualizar no Supabase (usuário real)
+      // Atualizar no Supabase (usuário real) - apenas colunas que existem
       const { error: updateError } = await supabase
         .from('user_merit')
-        .update(merit)
+        .update({
+          merit_points: merit.merit_points,
+          level: merit.level,
+          total_merit_earned: merit.total_merit_earned,
+          user_type: merit.user_type,
+          updated_at: merit.updated_at
+        })
         .eq('user_id', user.id);
 
       if (updateError) throw updateError;
@@ -187,7 +194,7 @@ export const useMeritSystem = () => {
             meritScore: updatedMerit.meritScore,
             tier: updatedMerit.meritTier,
             bonusEarned: updatedMerit.meritBonus - (userMerit.meritBonus || 0),
-            newStreak: updatedMerit.currentStreak,
+            newStreak: updatedMerit.merit_points,
             rankImprovement: userMerit.rankPosition - updatedMerit.rankPosition
           }
         };
@@ -295,7 +302,7 @@ export const useMeritSystem = () => {
           pvpWins: profile.battles_won || 0,
           winRate,
           averageAccuracy: accuracy,
-          currentStreak: profile.current_streak || 0,
+          merit_points: profile.current_streak || 0,
           maxStreak: profile.max_streak || 0,
           daysActive: 15, // Calculado baseado em created_at em produção
           totalQuestions: (profile.total_battles || 0) * 5,
@@ -304,7 +311,7 @@ export const useMeritSystem = () => {
           rankPosition: index + 1,
           isTopPerformer: index < 3,
           meritTier: index < 3 ? 'elite' : index < 8 ? 'gold' : index < 20 ? 'silver' : 'bronze',
-          bonusMultiplier: index < 3 ? 1.2 : index < 8 ? 1.1 : index < 20 ? 1.05 : 1.0,
+          merit_points: index < 3 ? 1.2 : index < 8 ? 1.1 : index < 20 ? 1.05 : 1.0,
           monthlyCreditsEarned: profile.total_xp || 0,
           meritBonus: index < 3 ? 50 : 0,
           maxWithdrawal: 200 + (profile.total_xp || 0) / 100,
@@ -335,7 +342,7 @@ export const useMeritSystem = () => {
         totalGames: userMerit.totalPvP,
         wins: userMerit.pvpWins,
         winRate: userMerit.winRate,
-        currentStreak: userMerit.currentStreak,
+        merit_points: userMerit.merit_points,
         maxStreak: userMerit.maxStreak
       },
       accuracy: {
@@ -344,7 +351,7 @@ export const useMeritSystem = () => {
         totalCorrect: userMerit.totalCorrect
       },
       financial: {
-        bonusMultiplier: userMerit.bonusMultiplier,
+        merit_points: userMerit.merit_points,
         monthlyCredits: userMerit.monthlyCreditsEarned,
         meritBonus: userMerit.meritBonus,
         maxWithdrawal: userMerit.maxWithdrawal

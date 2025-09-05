@@ -55,7 +55,7 @@ export const SmartWithdrawal: React.FC<SmartWithdrawalProps> = ({ className = ''
   const baseCredits = userSubscription.credits_balance;
   const baseAmount = baseCredits * 0.8; // 80% base
   const meritBonus = userStats.performance.isTopPerformer 
-    ? baseAmount * (userStats.financial.bonusMultiplier - 1)
+    ? baseAmount * (userStats.financial.merit_points - 1)
     : 0;
   const totalWithdrawable = baseAmount + meritBonus;
   
@@ -157,7 +157,7 @@ export const SmartWithdrawal: React.FC<SmartWithdrawalProps> = ({ className = ''
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground flex items-center gap-1">
                   <Star className="w-3 h-3 text-epic" />
-                  Bônus mérito ({Math.round((userStats.financial.bonusMultiplier - 1) * 100)}%):
+                  Bônus mérito ({Math.round((userStats.financial.merit_points - 1) * 100)}%):
                 </span>
                 <span className="font-medium text-epic">{creditsToReais(meritBonus)}</span>
               </div>
@@ -194,7 +194,7 @@ export const SmartWithdrawal: React.FC<SmartWithdrawalProps> = ({ className = ''
                   🌟 Usuário Top 5% - Bônus Ativo
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Você está recebendo {Math.round((userStats.financial.bonusMultiplier - 1) * 100)}% extra nos saques
+                  Você está recebendo {Math.round((userStats.financial.merit_points - 1) * 100)}% extra nos saques
                 </div>
               </div>
             </div>

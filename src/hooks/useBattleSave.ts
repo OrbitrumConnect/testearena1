@@ -24,7 +24,7 @@ export const useBattleSave = () => {
     if (!userId || userId.includes('user-')) {
       // Limpar ID incorreto e usar UUID correto
       localStorage.removeItem('current_user_id');
-      userId = 'cab3262e-c3bb-426a-a177-e3f792d8febo';
+      userId = 'cab3262e-c3bb-426a-a177-e3f792d8feb0';
       localStorage.setItem('current_user_id', userId);
       console.log('🆔 Usuário admin configurado:', userId);
     }

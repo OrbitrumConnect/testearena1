@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Sword, Clock, Target, ArrowLeft, Zap, Shield, Users, Search, Crown, Trophy } from 'lucide-react';
 import { ActionButton } from '@/components/arena/ActionButton';
 import { ParticleBackground } from '@/components/ui/particles';
-import { useEraQuestions } from '@/hooks/useEraQuestions';
 import { useBattleSave } from '@/hooks/useBattleSave';
 import { useArena } from '@/hooks/useArena';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -78,7 +77,12 @@ const Arena = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
 
   // Usar o hook para buscar 5 perguntas aleatórias do Egito Antigo
-  const { questions, loading } = useEraQuestions('egito-antigo', 5);
+  // Hook unificado para arena
+  const { questions, transactions, totalCredits, loading, error } = useArena(
+    'cab3262e-c3bb-426a-a177-e3f792d8feb0', // UUID do admin
+    'egito-antigo', // Era inicial
+    5 // Número de perguntas
+  );
   
   // Hook para salvar dados da batalha
   const { saveBattleResult, saving } = useBattleSave();
@@ -238,9 +242,24 @@ const Arena = () => {
             <h1 className="text-4xl font-montserrat font-bold text-epic mb-4">
               Arena do Conhecimento
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-muted-foreground mb-4">
               Prepare-se para a batalha PvP meritocrática!
             </p>
+            
+            {/* Exibição dos créditos */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-8">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-2xl">💰</span>
+                <span className="text-lg font-semibold text-white">
+                  Créditos: {totalCredits.toFixed(1)}
+                </span>
+              </div>
+              {error && (
+                <p className="text-sm text-yellow-300 mt-2">
+                  Usando dados demo (erro: {error})
+                </p>
+              )}
+            </div>
 
             <div className="arena-card-no-border p-6 mb-8">
               <h3 className="font-montserrat font-bold text-lg mb-4">🏆 Ranking da Era</h3>

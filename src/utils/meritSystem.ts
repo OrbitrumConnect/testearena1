@@ -10,7 +10,7 @@ export interface UserMerit {
   pvpWins: number;            // Vitórias em PvP
   winRate: number;            // Taxa de vitória (%)
   averageAccuracy: number;    // Precisão média das respostas
-  currentStreak: number;      // Sequência atual de vitórias
+  merit_points: number;      // Sequência atual de vitórias
   maxStreak: number;          // Maior sequência de vitórias
   
   // Métricas de Atividade
@@ -25,7 +25,7 @@ export interface UserMerit {
   meritTier: 'bronze' | 'silver' | 'gold' | 'elite'; // Categoria
   
   // Bônus Financeiros
-  bonusMultiplier: number;    // 1.0 a 1.2 (20% máximo)
+  merit_points: number;    // 1.0 a 1.2 (20% máximo)
   monthlyCreditsEarned: number; // Créditos ganhos no mês
   meritBonus: number;         // Bônus em créditos por mérito
   maxWithdrawal: number;      // Limite máximo de saque
@@ -61,10 +61,10 @@ export const MERIT_CONFIG = {
   
   // Limites por tier
   tiers: {
-    elite: { minScore: 85, bonusMultiplier: 1.2, color: '#FFD700' },    // Top 5%
-    gold: { minScore: 70, bonusMultiplier: 1.1, color: '#FFA500' },     // 5-15%
-    silver: { minScore: 50, bonusMultiplier: 1.05, color: '#C0C0C0' },  // 15-40%
-    bronze: { minScore: 0, bonusMultiplier: 1.0, color: '#CD7F32' }     // Resto
+    elite: { minScore: 85, merit_points: 1.2, color: '#FFD700' },    // Top 5%
+    gold: { minScore: 70, merit_points: 1.1, color: '#FFA500' },     // 5-15%
+    silver: { minScore: 50, merit_points: 1.05, color: '#C0C0C0' },  // 15-40%
+    bronze: { minScore: 0, merit_points: 1.0, color: '#CD7F32' }     // Resto
   }
 };
 
@@ -96,19 +96,19 @@ export const calculateMeritScore = (user: Partial<UserMerit>): number => {
 // 🏅 Determinar tier do usuário
 export const calculateUserTier = (meritScore: number): {
   tier: UserMerit['meritTier'];
-  bonusMultiplier: number;
+  merit_points: number;
   color: string;
 } => {
   const { tiers } = MERIT_CONFIG;
   
   if (meritScore >= tiers.elite.minScore) {
-    return { tier: 'elite', bonusMultiplier: tiers.elite.bonusMultiplier, color: tiers.elite.color };
+    return { tier: 'elite', merit_points: tiers.elite.merit_points, color: tiers.elite.color };
   } else if (meritScore >= tiers.gold.minScore) {
-    return { tier: 'gold', bonusMultiplier: tiers.gold.bonusMultiplier, color: tiers.gold.color };
+    return { tier: 'gold', merit_points: tiers.gold.merit_points, color: tiers.gold.color };
   } else if (meritScore >= tiers.silver.minScore) {
-    return { tier: 'silver', bonusMultiplier: tiers.silver.bonusMultiplier, color: tiers.silver.color };
+    return { tier: 'silver', merit_points: tiers.silver.merit_points, color: tiers.silver.color };
   } else {
-    return { tier: 'bronze', bonusMultiplier: tiers.bronze.bonusMultiplier, color: tiers.bronze.color };
+    return { tier: 'bronze', merit_points: tiers.bronze.merit_points, color: tiers.bronze.color };
   }
 };
 
@@ -145,7 +145,7 @@ export const calculateMeritBonus = (user: UserMerit): {
   // Bônus apenas para usuários qualificados
   let bonusCredits = 0;
   if (user.totalPvP >= MERIT_CONFIG.minGamesForRanking) {
-    bonusCredits = Math.round(baseCredits * (user.bonusMultiplier - 1));
+    bonusCredits = Math.round(baseCredits * (user.merit_points - 1));
   }
 
   const totalCredits = baseCredits + bonusCredits;
@@ -210,7 +210,7 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     pvpWins: currentUser.pvpWins || 0,
     winRate: 0,
     averageAccuracy: currentUser.averageAccuracy || 0,
-    currentStreak: currentUser.currentStreak || 0,
+    merit_points: currentUser.merit_points || 0,
     maxStreak: currentUser.maxStreak || 0,
     daysActive: currentUser.daysActive || 0,
     totalQuestions: currentUser.totalQuestions || 0,
@@ -219,7 +219,7 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     rankPosition: 0,
     isTopPerformer: false,
     meritTier: 'bronze',
-    bonusMultiplier: 1.0,
+    merit_points: 1.0,
     monthlyCreditsEarned: currentUser.monthlyCreditsEarned || 0,
     meritBonus: 0,
     maxWithdrawal: 0,
@@ -232,10 +232,10 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     updated.totalPvP += 1;
     if (newData.pvpResult.won) {
       updated.pvpWins += 1;
-      updated.currentStreak += 1;
-      updated.maxStreak = Math.max(updated.maxStreak, updated.currentStreak);
+      updated.merit_points += 1;
+      updated.maxStreak = Math.max(updated.maxStreak, updated.merit_points);
     } else {
-      updated.currentStreak = 0;
+      updated.merit_points = 0;
     }
     
     // Recalcular taxa de vitória
@@ -263,7 +263,7 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
   // Determinar tier e bônus
   const tierInfo = calculateUserTier(updated.meritScore);
   updated.meritTier = tierInfo.tier;
-  updated.bonusMultiplier = tierInfo.bonusMultiplier;
+  updated.merit_points = tierInfo.merit_points;
 
   // Calcular bônus de mérito
   const meritCalc = calculateMeritBonus(updated);
@@ -286,7 +286,7 @@ export const resetMonthlyCycle = (user: UserMerit): UserMerit => {
     totalPvP: 0,
     pvpWins: 0,
     winRate: 0,
-    currentStreak: 0,
+    merit_points: 0,
     daysActive: 0,
     totalQuestions: 0,
     totalCorrect: 0,
@@ -295,7 +295,7 @@ export const resetMonthlyCycle = (user: UserMerit): UserMerit => {
     rankPosition: 0,
     isTopPerformer: false,
     meritTier: 'bronze',
-    bonusMultiplier: 1.0,
+    merit_points: 1.0,
     meritBonus: 0,
     maxWithdrawal: 0,
     cycleMonth: new Date().toISOString().substring(0, 7),

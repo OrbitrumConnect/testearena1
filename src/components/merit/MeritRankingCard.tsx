@@ -84,7 +84,7 @@ export const MeritRankingCard: React.FC<MeritRankingCardProps> = ({
   };
 
   const getBonusDisplay = () => {
-    const bonusPercentage = Math.round((userStats.financial.bonusMultiplier - 1) * 100);
+    const bonusPercentage = Math.round((userStats.financial.merit_points - 1) * 100);
     if (bonusPercentage > 0) {
       return (
         <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-600 border-yellow-500/30">
@@ -155,12 +155,12 @@ export const MeritRankingCard: React.FC<MeritRankingCardProps> = ({
         </div>
 
         {/* Sequência de Vitórias */}
-        {userStats.pvp.currentStreak > 0 && (
+        {userStats.pvp.merit_points > 0 && (
           <div className="flex items-center gap-2 p-3 rounded bg-victory/10 border border-victory/30">
             <Flame className="w-4 h-4 text-victory" />
             <div className="flex-1">
               <div className="text-sm font-medium text-victory">
-                Sequência Atual: {userStats.pvp.currentStreak} vitórias
+                Sequência Atual: {userStats.pvp.merit_points} vitórias
               </div>
               <div className="text-xs text-muted-foreground">
                 Recorde: {userStats.pvp.maxStreak} vitórias
@@ -179,7 +179,7 @@ export const MeritRankingCard: React.FC<MeritRankingCardProps> = ({
                   🌟 TOP 5% - Usuário Elite
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Bônus de {Math.round((userStats.financial.bonusMultiplier - 1) * 100)}% em créditos
+                  Bônus de {Math.round((userStats.financial.merit_points - 1) * 100)}% em créditos
                 </div>
               </div>
             </div>
