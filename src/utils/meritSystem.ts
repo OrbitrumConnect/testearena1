@@ -10,7 +10,7 @@ export interface UserMerit {
   pvpWins: number;            // Vitórias em PvP
   winRate: number;            // Taxa de vitória (%)
   averageAccuracy: number;    // Precisão média das respostas
-  merit_points: number;      // Sequência atual de vitórias
+  currentStreak: number;      // Sequência atual de vitórias
   maxStreak: number;          // Maior sequência de vitórias
   
   // Métricas de Atividade
@@ -210,7 +210,7 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     pvpWins: currentUser.pvpWins || 0,
     winRate: 0,
     averageAccuracy: currentUser.averageAccuracy || 0,
-    merit_points: currentUser.merit_points || 0,
+    currentStreak: currentUser.currentStreak || 0,
     maxStreak: currentUser.maxStreak || 0,
     daysActive: currentUser.daysActive || 0,
     totalQuestions: currentUser.totalQuestions || 0,
@@ -219,7 +219,6 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     rankPosition: 0,
     isTopPerformer: false,
     meritTier: 'bronze',
-    merit_points: 1.0,
     monthlyCreditsEarned: currentUser.monthlyCreditsEarned || 0,
     meritBonus: 0,
     maxWithdrawal: 0,
@@ -232,10 +231,10 @@ export const updateUserMerit = (currentUser: Partial<UserMerit>, newData: {
     updated.totalPvP += 1;
     if (newData.pvpResult.won) {
       updated.pvpWins += 1;
-      updated.merit_points += 1;
-      updated.maxStreak = Math.max(updated.maxStreak, updated.merit_points);
+      updated.currentStreak += 1;
+      updated.maxStreak = Math.max(updated.maxStreak, updated.currentStreak);
     } else {
-      updated.merit_points = 0;
+      updated.currentStreak = 0;
     }
     
     // Recalcular taxa de vitória

@@ -148,7 +148,7 @@ export const useMeritSystem = () => {
       const { error: updateError } = await supabase
         .from('user_merit')
         .update({
-          merit_points: merit.merit_points,
+          currentStreak: merit.currentStreak,
           level: merit.level,
           total_merit_earned: merit.total_merit_earned,
           user_type: merit.user_type,
@@ -342,7 +342,7 @@ export const useMeritSystem = () => {
         totalGames: userMerit.totalPvP,
         wins: userMerit.pvpWins,
         winRate: userMerit.winRate,
-        merit_points: userMerit.merit_points,
+        currentStreak: userMerit.currentStreak,
         maxStreak: userMerit.maxStreak
       },
       accuracy: {
