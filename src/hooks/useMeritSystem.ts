@@ -46,7 +46,7 @@ export const useMeritSystem = () => {
             pvpWins: 0,
             winRate: 0,
             averageAccuracy: 0,
-            merit_points: 0,
+            currentStreak: 0,
             maxStreak: 0,
             daysActive: 1,
             totalQuestions: 0,
@@ -89,7 +89,7 @@ export const useMeritSystem = () => {
           pvpWins: 0,
           winRate: 0,
           averageAccuracy: 0,
-          merit_points: 0,
+          currentStreak: 0,
           maxStreak: 0,
           daysActive: 1,
           totalQuestions: 0,
@@ -194,7 +194,7 @@ export const useMeritSystem = () => {
             meritScore: updatedMerit.meritScore,
             tier: updatedMerit.meritTier,
             bonusEarned: updatedMerit.meritBonus - (userMerit.meritBonus || 0),
-            newStreak: updatedMerit.merit_points,
+            newStreak: updatedMerit.currentStreak,
             rankImprovement: userMerit.rankPosition - updatedMerit.rankPosition
           }
         };
@@ -302,7 +302,7 @@ export const useMeritSystem = () => {
           pvpWins: profile.battles_won || 0,
           winRate,
           averageAccuracy: accuracy,
-          merit_points: profile.current_streak || 0,
+          currentStreak: profile.current_streak || 0,
           maxStreak: profile.max_streak || 0,
           daysActive: 15, // Calculado baseado em created_at em produção
           totalQuestions: (profile.total_battles || 0) * 5,
